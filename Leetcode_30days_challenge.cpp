@@ -142,3 +142,93 @@ ListNode* middleNode(ListNode* head)
     return slow;
 }
 
+//day 10 (min stack)=====================================================================================
+
+    stack<long int> st;
+    long int mini = INT_MAX;
+    /** initialize your data structure here. */
+    MinStack() 
+    {    
+    }
+    
+    void push(int x) 
+    {
+        if(st.empty())
+        {
+            st.push(x);
+            mini = x;
+            return;
+        }
+        if(x < mini)
+        {
+            st.push(x-mini+x);
+            mini = x;
+        }
+        else
+            st.push(x);
+    }
+    
+    void pop() 
+    {
+        if(st.top() < mini)
+            mini = mini - st.top() + mini;
+        st.pop();
+        if(st.empty())
+            mini = INT_MAX;
+    }
+    
+    int top() 
+    {
+        if(st.top() < mini)
+            return mini;
+        else
+            return st.top();
+    }
+    
+    int getMin() 
+    {
+        return mini;    
+    }
+};
+
+//day 11 (diameter of binary tree)=======================================================================
+
+vi diameter_02(Node *node)  //OPTIMIZED
+{
+    if (node == NULL)
+        return {0, -1};  //0th index is diameter and 1st index is height
+
+    vi ld = diameter_02(node->left);
+    vi rd = diameter_02(node->right);
+
+    vi diaheight(2, 0);
+
+    diaheight[0] = max(max(ld[0], rd[0]), ld[1] + rd[1] + 2);  //SAME AS RETURN STATEMENT OF DIAMETER
+    diaheight[1] = max(ld[1],rd[1])+1;  //SAME AS RETURN STATEMENT OF HEIGHT
+
+    return diaheight;   
+}
+
+//Day 12 (Last stone weight)====================================================================================
+
+int firefist_ace = []() {std::ios::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);return 0;}();
+
+int lastStoneWeight(vector<int>& stones) 
+{
+    priority_queue<int> pq;
+    for(int i=0;i<stones.size();i++)
+        pq.push(stones[i]);
+    
+    while(pq.size() != 1)
+    {
+        int hs = pq.top();
+        pq.pop();
+        int ls = pq.top();
+        pq.pop();
+        if(hs - ls != 0)
+            pq.push(hs-ls);
+        if(pq.empty())
+            return 0;
+    }
+    return pq.top();
+}
