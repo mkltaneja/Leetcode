@@ -34,7 +34,7 @@ int numJewelsInStones(string J, string S)
     return count;
 }
 
-////////////// OR /////////////
+////////////// OR //////////////
 //O(n)
 int numJewelsInStones(string J, string S)
 {
