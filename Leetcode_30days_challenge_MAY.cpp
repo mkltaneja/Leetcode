@@ -161,6 +161,7 @@ int majorityElement(vector<int> &arr)
 }
 
 ///////////////OR/////////////////////
+
 //O(n)
 //BOYER - MOORE VOTING ALGORITHM
 int majorityElement(vector<int> &nums)
