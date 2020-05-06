@@ -34,7 +34,7 @@ int numJewelsInStones(string J, string S)
     return count;
 }
 
-////////////// OR /////////////
+////////////// OR //////////////
 //O(n)
 int numJewelsInStones(string J, string S)
 {
@@ -91,7 +91,7 @@ bool canConstruct(string ransomNote, string magazine)
 }
 
 // DAY 4()=============================================================================
-// O(no. of bits)
+// O(no. of bits of num)
 int findComplement(int num)
 {
     int bsize = 0;
