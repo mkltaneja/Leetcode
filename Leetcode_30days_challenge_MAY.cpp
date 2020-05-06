@@ -179,3 +179,6 @@ int majorityElement(vector<int> &nums)
     }
     return candidate;
 }
+////OR//// -> We can also use hashmap with O(n) complexity
+////OR//// -> We can also use Divide And Conquer Approach of O(nlogn) complexity
+////OR//// -> We can alse use Randomised Algorithm of random time complexity, ranged from O(n/2) to O(infinity)
