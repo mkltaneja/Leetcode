@@ -64,9 +64,9 @@ int maxSubArray(vector<int>& nums)
 
 void moveZeroes(vector<int>& nums) 
 {
-    for(int lastnonzeroFoundAt=0, itr=0; itr<nums.size();itr++)
+    for(int lastzeroFoundAt=0, itr=0; itr<nums.size();itr++)
         if(nums[itr] != 0)
-            swap(nums[lastnonzeroFoundAt++],nums[itr]);
+            swap(nums[lastzeroFoundAt++],nums[itr]);
 }
 
 //day 5 (best time to buy and sell stock 2)==================================================

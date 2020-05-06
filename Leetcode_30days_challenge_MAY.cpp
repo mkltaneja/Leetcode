@@ -122,3 +122,60 @@ int firstUniqChar(string s)
             return i;
     return -1;
 }
+
+//DAY 6(Majority Element)====================================================================================
+// O(n^2)
+int majorityElement(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<bool> vis(n, false);
+    for (int i = 0; i < n; i++)
+    {
+        int count = 1;
+        if (count > n / 2)
+            return nums[i];
+        if (!vis[i])
+        {
+            vis[i] = true;
+            for (int j = i + 1; j < n; j++)
+            {
+                if (nums[j] == nums[i])
+                {
+                    vis[j] = true;
+                    if (++count > n / 2)
+                        return nums[i];
+                }
+            }
+        }
+    }
+    return -1;
+}
+
+//////////////OR///////////////////
+// O(nlog(n))
+int majorityElement(vector<int> &arr)
+{
+    int n = arr.size();
+    sort(arr.begin(), arr.end());
+    return arr[n / 2];
+}
+
+///////////////OR/////////////////////
+
+//O(n)
+//BOYER - MOORE VOTING ALGORITHM
+int majorityElement(vector<int> &nums)
+{
+    int n = nums.size();
+
+    int count = 0;
+    int candidate;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (count == 0)
+            candidate = nums[i];
+        count += (candidate == nums[i]) ? 1 : -1;
+    }
+    return candidate;
+}
