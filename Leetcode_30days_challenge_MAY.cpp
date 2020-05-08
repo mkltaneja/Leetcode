@@ -300,4 +300,8 @@ public:
         }
         return true;
     }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> b1236289d7b5a09ea25680f2513edcc7d6b2b576
