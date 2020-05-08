@@ -263,3 +263,41 @@ bool isCousins(TreeNode *root, int x, int y)
         return false;
     return true;
 }
+
+//DAY 8(Check If It Is a Straight Line)===============================================================================
+
+class Solution {
+public:
+    bool checkStraightLine(vector<vector<int>>& coordinates) 
+    {
+        ios::sync_with_stdio(0);
+        cin.tie(0);
+        cout.tie(0);
+        
+        int n = coordinates.size();
+        if(n == 2)
+            return true;
+        if((coordinates[1][0]-coordinates[0][0]) == 0)
+        {
+            for(int i=0;i<n-1;i++)
+            {
+                // cout<<(coordinates[i+1][0]-coordinates[i][0])<<endl;
+                if((coordinates[i+1][0]-coordinates[i][0]) != 0)
+                    return false;
+            }
+        }
+        else
+        {
+            float m = (float)(coordinates[1][1]-coordinates[0][1])/(coordinates[1][0]-coordinates[0][0]);    
+            for(int i=0;i<n-1;i++)
+            {
+                // cout<<(float)(coordinates[i+1][1]-coordinates[i][1])/(coordinates[i+1][0]-coordinates[i][0])<<endl;
+                if((coordinates[i+1][0]-coordinates[i][0]) == 0)
+                    return false;
+                if((float)(coordinates[i+1][1]-coordinates[i][1])/(coordinates[i+1][0]-coordinates[i][0]) != m)
+                    return false;
+            }
+        }
+        return true;
+    }
+};
