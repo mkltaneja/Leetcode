@@ -179,3 +179,125 @@ int majorityElement(vector<int> &nums)
     }
     return candidate;
 }
+
+////OR//// -> We can also use hashmap with O(n) complexity
+////OR//// -> We can also use Divide And Conquer Approach of O(nlogn) complexity
+////OR//// -> We can alse use Randomised Algorithm of random time complexity, ranged from O(n/2) to O(infinity)
+
+//DAY 7(Cousins in Binary Tree)===============================================================
+
+vector<TreeNode *> rootToNodePath(TreeNode *node, int data)
+{
+    if (node == nullptr)
+        return {};
+
+    if (node->val == data)
+    {
+        vector<TreeNode *> path;
+        path.push_back(node);
+        return path;
+    }
+
+    vector<TreeNode *> lnode = rootToNodePath(node->left, data);
+    if (!lnode.empty())
+    {
+        lnode.push_back(node);
+        return lnode;
+    }
+
+    vector<TreeNode *> rnode = rootToNodePath(node->right, data);
+    if (!rnode.empty())
+    {
+        rnode.push_back(node);
+        return rnode;
+    }
+    return {};
+}
+
+bool isCousins(TreeNode *root, int x, int y)
+{
+    vector<TreeNode *> xarr = rootToNodePath(root, x);
+    vector<TreeNode *> yarr = rootToNodePath(root, y);
+
+    int n = xarr.size();
+    int m = yarr.size();
+
+    if (n != m)
+        return false;
+    return (xarr[1]->val != yarr[1]->val);
+}
+
+////////////////OR//////////////////////
+// Better approach
+int xlevel = 0;
+int ylevel = 0;
+int xpar = -1;
+int ypar = -2;
+
+void leveloder(TreeNode *node, TreeNode *par, int x, int y, int level)
+{
+    if (node == nullptr)
+        return;
+
+    if (node->val == x)
+    {
+        xlevel = level;
+        xpar = par->val;
+    }
+    if (node->val == y)
+    {
+        ylevel = level;
+        ypar = par->val;
+    }
+
+    leveloder(node->left, node, x, y, level + 1);
+    leveloder(node->right, node, x, y, level + 1);
+}
+
+bool isCousins(TreeNode *root, int x, int y)
+{
+    leveloder(root, root, x, y, 0);
+    // cout<<xlevel<<" "<<ylevel<<endl;
+    // cout<<xpar<<" "<<ypar<<endl;
+    if (xlevel != ylevel || xpar == ypar)
+        return false;
+    return true;
+}
+
+//DAY 8(Check If It Is a Straight Line)===============================================================================
+
+class Solution {
+public:
+    bool checkStraightLine(vector<vector<int>>& coordinates) 
+    {
+        ios::sync_with_stdio(0);
+        cin.tie(0);
+        cout.tie(0);
+        
+        int n = coordinates.size();
+        if(n == 2)
+            return true;
+        if((coordinates[1][0]-coordinates[0][0]) == 0)
+        {
+            for(int i=0;i<n-1;i++)
+            {
+                // cout<<(coordinates[i+1][0]-coordinates[i][0])<<endl;
+                if((coordinates[i+1][0]-coordinates[i][0]) != 0)
+                    return false;
+            }
+        }
+        else
+        {
+            float m = (float)(coordinates[1][1]-coordinates[0][1])/(coordinates[1][0]-coordinates[0][0]);    
+            for(int i=0;i<n-1;i++)
+            {
+                // cout<<(float)(coordinates[i+1][1]-coordinates[i][1])/(coordinates[i+1][0]-coordinates[i][0])<<endl;
+                if((coordinates[i+1][0]-coordinates[i][0]) == 0)
+                    return false;
+                if((float)(coordinates[i+1][1]-coordinates[i][1])/(coordinates[i+1][0]-coordinates[i][0]) != m)
+                    return false;
+            }
+        }
+        return true;
+    }
+};
