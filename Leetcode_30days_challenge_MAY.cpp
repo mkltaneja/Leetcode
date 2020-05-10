@@ -266,42 +266,71 @@ bool isCousins(TreeNode *root, int x, int y)
 
 //DAY 8(Check If It Is a Straight Line)===============================================================================
 
-class Solution {
-public:
-    bool checkStraightLine(vector<vector<int>>& coordinates) 
-    {
-        ios::sync_with_stdio(0);
-        cin.tie(0);
-        cout.tie(0);
-        
-        int n = coordinates.size();
-        if(n == 2)
-            return true;
-        if((coordinates[1][0]-coordinates[0][0]) == 0)
-        {
-            for(int i=0;i<n-1;i++)
-            {
-                // cout<<(coordinates[i+1][0]-coordinates[i][0])<<endl;
-                if((coordinates[i+1][0]-coordinates[i][0]) != 0)
-                    return false;
-            }
-        }
-        else
-        {
-            float m = (float)(coordinates[1][1]-coordinates[0][1])/(coordinates[1][0]-coordinates[0][0]);    
-            for(int i=0;i<n-1;i++)
-            {
-                // cout<<(float)(coordinates[i+1][1]-coordinates[i][1])/(coordinates[i+1][0]-coordinates[i][0])<<endl;
-                if((coordinates[i+1][0]-coordinates[i][0]) == 0)
-                    return false;
-                if((float)(coordinates[i+1][1]-coordinates[i][1])/(coordinates[i+1][0]-coordinates[i][0]) != m)
-                    return false;
-            }
-        }
+bool checkStraightLine(vector<vector<int>> &coordinates)
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+
+    int n = coordinates.size();
+    if (n == 2)
         return true;
+    if ((coordinates[1][0] - coordinates[0][0]) == 0)
+    {
+        for (int i = 0; i < n - 1; i++)
+        {
+            // cout<<(coordinates[i+1][0]-coordinates[i][0])<<endl;
+            if ((coordinates[i + 1][0] - coordinates[i][0]) != 0)
+                return false;
+        }
     }
-<<<<<<< HEAD
-};
-=======
-};
->>>>>>> b1236289d7b5a09ea25680f2513edcc7d6b2b576
+    else
+    {
+        float m = (float)(coordinates[1][1] - coordinates[0][1]) / (coordinates[1][0] - coordinates[0][0]);
+        for (int i = 0; i < n - 1; i++)
+        {
+            // cout<<(float)(coordinates[i+1][1]-coordinates[i][1])/(coordinates[i+1][0]-coordinates[i][0])<<endl;
+            if ((coordinates[i + 1][0] - coordinates[i][0]) == 0)
+                return false;
+            if ((float)(coordinates[i + 1][1] - coordinates[i][1]) / (coordinates[i + 1][0] - coordinates[i][0]) != m)
+                return false;
+        }
+    }
+    return true;
+}
+
+//DAY 9(Valid Perfect Square)=============================================================
+// O(sqrt(num))
+bool isPerfectSquare(int num)
+{
+    long long int i = 1;
+    while (i * i != num)
+    {
+        if (i * i > num)
+            return false;
+        i++;
+    }
+    return true;
+}
+
+///////////////OR//////////////////////
+// O(log(sqrt(num)))
+bool isPerfectSquare(int num)
+{
+    if (num == 1)
+        return true;
+
+    long int l = 0;
+    long int h = num / 2;
+    while (l <= h)
+    {
+        long int mid = (l + h) / 2;
+        if (mid * mid == num)
+            return true;
+        else if (mid * mid < num)
+            l = mid + 1;
+        else
+            h = mid - 1;
+    }
+    return false;
+}
