@@ -334,3 +334,23 @@ bool isPerfectSquare(int num)
     }
     return false;
 }
+
+// DAY 10(Find The Town Judge)====================================================
+
+// O(n)
+int findJudge(int N, vector<vector<int>> &trust)
+{
+    if (N == 1)
+        return 1;
+    vector<int> childsize(N + 1, 0);
+
+    for (vector<int> arr : trust)
+    {
+        childsize[arr[1]]++;
+        childsize[arr[0]]--;
+    }
+    for (int i = 0; i <= N; i++)
+        if (childsize[i] == N - 1)
+            return i;
+    return -1;
+}
