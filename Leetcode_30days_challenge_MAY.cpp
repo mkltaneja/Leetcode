@@ -354,3 +354,65 @@ int findJudge(int N, vector<vector<int>> &trust)
             return i;
     return -1;
 }
+
+//DAY 11(Flood Fill)=====================================================================
+
+// by DFS
+void dfs(vector<vector<int>> &image, int sr, int sc, int oldColor, int newColor, int n, int m)
+{
+    if (sr == n || sc == m || sr == -1 || sc == -1 || image[sr][sc] != oldColor)
+        return;
+
+    image[sr][sc] = newColor;
+
+    dfs(image, sr + 1, sc, oldColor, newColor, n, m);
+    dfs(image, sr, sc + 1, oldColor, newColor, n, m);
+    dfs(image, sr - 1, sc, oldColor, newColor, n, m);
+    dfs(image, sr, sc - 1, oldColor, newColor, n, m);
+}
+
+vector<vector<int>> floodFill(vector<vector<int>> &image, int sr, int sc, int newColor)
+{
+    int n = image.size();
+    int m = image[0].size();
+    int oldColor = image[sr][sc];
+
+    if (oldColor != newColor)
+        dfs(image, sr, sc, oldColor, newColor, n, m);
+
+    return image;
+}
+
+// by BFS
+vector<vector<int>> floodFill(vector<vector<int>> &image, int sr, int sc, int newColor)
+{
+    int n = image.size();
+    int m = image[0].size();
+    int oldColor = image[sr][sc];
+
+    int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+    if (oldColor != newColor)
+    {
+        queue<int> que;
+        que.push(m * sr + sc);
+        image[sr][sc] = newColor;
+        while (!que.empty())
+        {
+            int ridx = que.front();
+            que.pop();
+            for (int d = 0; d < 4; d++)
+            {
+                int i = (ridx / m) + dir[d][0];
+                int j = (ridx % m) + dir[d][1];
+                if (i >= 0 && j >= 0 && i < n && j < m && image[i][j] == oldColor)
+                {
+                    image[i][j] = newColor;
+                    que.push(i * m + j);
+                }
+            }
+        }
+    }
+
+    return image;
+}
