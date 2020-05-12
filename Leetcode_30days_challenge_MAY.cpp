@@ -416,3 +416,44 @@ vector<vector<int>> floodFill(vector<vector<int>> &image, int sr, int sc, int ne
 
     return image;
 }
+
+// DAY 12(Single Element in a Sorted Array)===================================================
+//O(n)
+int singleNonDuplicate(vector<int> &nums)
+{
+    for (int i = 1; i < nums.size(); i++)
+    {
+        nums[0] ^= nums[i];
+    }
+    return nums[0];
+}
+
+// O(logn)
+int singleNonDuplicate(vector<int> &nums)
+{
+    int n = nums.size();
+    int si = 0;
+    int ei = n - 1;
+    while (si < ei)
+    {
+        int mid = (si + ei) / 2;
+        if (mid % 2 == 1)
+        {
+            if (nums[mid] == nums[mid - 1])
+                si = mid + 1;
+            else
+                ei = mid - 2;
+        }
+        if (mid % 2 == 0)
+        {
+            if (nums[mid] == nums[mid + 1])
+                si = mid + 2;
+            else
+                ei = mid - 1;
+        }
+    }
+    return nums[si];
+}
+
+//DAY 13()====================================================================================
+
