@@ -572,3 +572,29 @@ int maxSubarraySumCircular(vector<int> &A)
 
     return max(maxsum, circularsum);
 }
+
+//DAY 16(Odd Even Linked List)====================================================================
+
+ListNode *oddEvenList(ListNode *head)
+{
+    if (head == nullptr || head->next == nullptr || head->next->next == nullptr)
+        return head;
+    ListNode *evenhead = head->next;
+    ListNode *node = head;
+    int nodecount = 1;
+    ListNode *temp = nullptr;
+    while (node->next != nullptr)
+    {
+        temp = node;
+        node = node->next;
+        temp->next = nullptr;
+        temp->next = node->next;
+        // prev = temp;
+        nodecount++;
+    }
+    if (nodecount % 2 == 0)
+        temp->next = evenhead;
+    else
+        node->next = evenhead;
+    return head;
+}
