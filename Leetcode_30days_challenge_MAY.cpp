@@ -456,6 +456,36 @@ int singleNonDuplicate(vector<int> &nums)
 }
 
 //DAY 13()====================================================================================
+// O(num.size())
+string removeKdigits(string num, int k)
+{
+    int n = num.size();
+    stack<char> st;
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && num[i] < st.top() && k != 0)
+        {
+            st.pop();
+            k--;
+        }
+        st.push(num[i]);
+    }
+
+    while (k--)
+        st.pop();
+
+    string nnum;
+    while (!st.empty())
+    {
+        nnum += st.top();
+        st.pop();
+    }
+    reverse(nnum.begin(), nnum.end());
+    int i = 0;
+    while (nnum[i] == '0')
+        i++;
+    return (nnum.substr(i, nnum.size()) != "") ? nnum.substr(i, nnum.size()) : "0";
+}
 
 //DAY 14()=======================================================================================
 
@@ -530,7 +560,7 @@ bool startsWith(string prefix)
  */
 
 //DAY 15()=====================================================================================
-
+// O(n)
 int kedanes(int n, vector<int> A, int sum, int maxsum)
 {
     for (int i = 0; i < n; i++)
@@ -574,7 +604,7 @@ int maxSubarraySumCircular(vector<int> &A)
 }
 
 //DAY 16(Odd Even Linked List)====================================================================
-
+// O(nodes)
 ListNode *oddEvenList(ListNode *head)
 {
     if (head == nullptr || head->next == nullptr || head->next->next == nullptr)
