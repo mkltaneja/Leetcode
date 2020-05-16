@@ -457,70 +457,69 @@ int singleNonDuplicate(vector<int> &nums)
 
 //DAY 13()====================================================================================
 
-
-
 //DAY 14()=======================================================================================
 
 class Node
+{
+public:
+    int wordEnd = 0;
+    vector<Node *> childs;
+    Node()
     {
-        public:
-        int wordEnd = 0;
-        vector<Node*> childs;
-        Node()
-        {
-            this->wordEnd = 0;
-            this->childs.assign(26,nullptr);
-        }
-    };
-    
-    Node* root = nullptr;
-    Trie() 
-    {
-        root = new Node();                                               
-    }
-    
-    /** Inserts a word into the trie. */
-    void insert(string word) 
-    {
-        Node* curr = root;
-        for(auto c : word)
-        {
-            int idx = c - 'a';                                              
-            if(curr->childs[idx] == nullptr)
-                curr->childs[idx] = new Node();
-            curr = curr->childs[idx];
-        }
-        curr->wordEnd++;
-    }
-    
-    /** Returns if the word is in the trie. */
-    bool search(string word) 
-    {
-        Node* curr = root;
-        for(auto c : word)
-        {
-            int idx = c -'a';
-            if(curr->childs[idx] == nullptr)
-                return false;
-            curr = curr->childs[idx];
-        }
-        return curr->wordEnd > 0;
-    }
-    
-    /** Returns if there is any word in the trie that starts with the given prefix. */
-    bool startsWith(string prefix) 
-    {
-        Node* curr = root;
-        for(auto c : prefix)
-        {
-            int idx = c - 'a';
-            if(curr->childs[idx] == nullptr)
-                return false;
-            curr = curr->childs[idx];
-        }
-        return true;
+        this->wordEnd = 0;
+        this->childs.assign(26, nullptr);
     }
 };
+
+Node *root = nullptr;
+Trie()
+{
+    root = new Node();
+}
+
+/** Inserts a word into the trie. */
+void insert(string word)
+{
+    Node *curr = root;
+    for (auto c : word)
+    {
+        int idx = c - 'a';
+        if (curr->childs[idx] == nullptr)
+            curr->childs[idx] = new Node();
+        curr = curr->childs[idx];
+    }
+    curr->wordEnd++;
+}
+
+/** Returns if the word is in the trie. */
+bool search(string word)
+{
+    Node *curr = root;
+    for (auto c : word)
+    {
+        int idx = c - 'a';
+        if (curr->childs[idx] == nullptr)
+            return false;
+        curr = curr->childs[idx];
+    }
+    return curr->wordEnd > 0;
+}
+
+/** Returns if there is any word in the trie that starts with the given prefix. */
+bool startsWith(string prefix)
+{
+    Node *curr = root;
+    for (auto c : prefix)
+    {
+        int idx = c - 'a';
+        if (curr->childs[idx] == nullptr)
+            return false;
+        curr = curr->childs[idx];
+    }
+    return true;
+}
+}
+;
 
 /**
  * Your Trie object will be instantiated and called as such:
@@ -531,3 +530,45 @@ class Node
  */
 
 //DAY 15()=====================================================================================
+
+int kedanes(int n, vector<int> A, int sum, int maxsum)
+{
+    for (int i = 0; i < n; i++)
+    {
+        sum += A[i];
+        if (sum < 0)
+            sum = 0;
+        maxsum = max(sum, maxsum);
+    }
+    return maxsum;
+}
+
+int maxSubarraySumCircular(vector<int> &A)
+{
+    int n = A.size();
+
+    bool flag = true;
+    int maxi = INT_MIN;
+    for (int i = 0; i < n; i++)
+    {
+        maxi = max(A[i], maxi);
+        if (A[i] > 0)
+        {
+            flag = false;
+            break;
+        }
+    }
+    if (flag)
+        return maxi;
+    int circularsum = 0;
+    int maxsum = kedanes(n, A, 0, INT_MIN);
+    for (int i = 0; i < n; i++)
+    {
+        circularsum += A[i];
+        A[i] = -A[i];
+    }
+    int maxnegsum = kedanes(n, A, 0, INT_MIN);
+    circularsum += maxnegsum;
+
+    return max(maxsum, circularsum);
+}
