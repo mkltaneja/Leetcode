@@ -698,3 +698,25 @@ vector<int> findAnagrams(string s, string p)
     }
     return ans;
 }
+
+//DAY 18(Permutation in String)========================================================================
+
+bool checkInclusion(string s1, string s2)
+{
+    int n = s1.size();
+    int m = s2.size();
+    vector<int> sc1(26, 0);
+    vector<int> sc2(26, 0);
+
+    for (int i = 0; i < n; i++)
+        sc1[s1[i] - 'a']++;
+    for (int i = 0; i < m; i++)
+    {
+        if (i >= n)
+            sc2[s2[i - n] - 'a']--;
+        sc2[s2[i] - 'a']++;
+        if (sc2 == sc1)
+            return true;
+    }
+    return false;
+}
