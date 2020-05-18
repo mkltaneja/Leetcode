@@ -628,3 +628,73 @@ ListNode *oddEvenList(ListNode *head)
         node->next = evenhead;
     return head;
 }
+
+//DAY 17(Find All Anagrams in a String)==========================================================
+// (my method - O(s.size()*s.size()))
+vector<int> findAnagrams(string s, string p)
+{
+    int n = s.size();
+    int m = p.size();
+
+    vector<int> ispres(26, 0);
+    for (int i = 0; i < m; i++)
+        ispres[p[i] - 'a']++;
+
+    vector<int> ans;
+    for (int i = 0; i < n; i++)
+    {
+        bool flag = false;
+        if (ispres[s[i] - 'a'])
+        {
+            // cout<<s[i]<<endl;
+            flag = true;
+            int j = i;
+            int count = 0;
+
+            while (j != n && ispres[s[j] - 'a'])
+            {
+                count++;
+                // cout<<j<<" "<<s[j]<<" "<<count<<endl;
+                // cout<<ispres[0]<<" "<<ispres[1]<<" "<<ispres[2]<<endl;
+                if (count == m)
+                {
+                    ans.push_back(i);
+                    break;
+                }
+                ispres[s[j] - 'a']--;
+                j++;
+            }
+            // i = j-1;
+        }
+        if (flag)
+        {
+            memset(&ispres[0], 0, 26);
+            for (int i = 0; i < m; i++)
+                ispres[p[i] - 'a']++;
+        }
+    }
+    return ans;
+}
+
+/////////OR////////////
+// O(n)
+vector<int> findAnagrams(string s, string p)
+{
+    int m = p.size();
+    int n = s.size();
+    vector<int> sc(26, 0);
+    vector<int> pc(26, 0);
+
+    for (int i = 0; i < m; i++)
+        pc[p[i] - 'a']++;
+    vector<int> ans;
+    for (int i = 0; i < n; i++)
+    {
+        if (i >= m)
+            sc[s[i - m] - 'a']--;
+        sc[s[i] - 'a']++;
+        if (sc == pc)
+            ans.push_back(i - m + 1);
+    }
+    return ans;
+}
