@@ -720,3 +720,80 @@ bool checkInclusion(string s1, string s2)
     }
     return false;
 }
+
+//DAY 19(Online Stock Span)======================================================================================
+
+//using vector :-
+class StockSpanner
+{
+public:
+    vector<pair<int, int>> span;
+    int i;
+    StockSpanner()
+    {
+        this->span = {};
+        this->i = 0;
+    }
+    int next(int price)
+    {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+
+        span.push_back(make_pair(price, 1));
+        int j = i - 1;
+        while (j >= 0)
+        {
+            if (span[j].first <= span[i].first)
+            {
+                span[i].second += span[j].second;
+                j -= span[j].second;
+            }
+            else
+                break;
+        }
+        cout << i << " " << span[i].first << " " << span[i].second << endl;
+        i++;
+        return span[i - 1].second;
+    }
+};
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */
+
+//////////////////OR/////////////////////
+// optimized approach(using stack) :-
+class StockSpanner
+{
+public:
+    stack<pair<int, int>> span;
+    StockSpanner()
+    {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        cout.tie(nullptr);
+    }
+    int next(int price)
+    {
+        int ans = 1;
+        ;
+        while (!span.empty() && span.top().first <= price)
+        {
+            ans += span.top().second;
+            span.pop();
+        }
+        span.push({price, ans});
+        // cout<<span.top().first<<" "<<span.top().second<<endl;
+
+        return span.top().second;
+    }
+};
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */
