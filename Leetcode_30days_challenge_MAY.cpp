@@ -797,3 +797,71 @@ public:
  * StockSpanner* obj = new StockSpanner();
  * int param_1 = obj->next(price);
  */
+
+//DAY 20()====================================================================================
+// O(k*nodes)
+int mini = INT_MAX;
+int inoder(TreeNode *node, int lastmin)
+{
+    if (node == nullptr)
+        return INT_MAX;
+
+    inoder(node->left, lastmin);
+
+    if (node->val > lastmin)
+        mini = min(node->val, mini);
+
+    inoder(node->right, lastmin);
+
+    return mini;
+}
+
+int kthSmallest(TreeNode *root, int k)
+{
+    int kmin = INT_MIN;
+    while (k--)
+    {
+        kmin = inoder(root, kmin);
+        mini = INT_MAX;
+    }
+    return kmin;
+}
+
+///////////////////OR////////////////////
+// O(height of BST)
+int kthSmallest(TreeNode *root, int k)
+{
+    stack<TreeNode *> mintree;
+    TreeNode *kmin;
+    while (k--)
+    {
+        for (; root != nullptr; root = root->left)
+            mintree.push(root);
+        kmin = mintree.top();
+        mintree.pop();
+        root = kmin->right;
+    }
+    return kmin->val;
+}
+
+////////////////OR///////////////////
+// by recursion
+int idx = 0;
+int kmin;
+void inoder(TreeNode *node, int k)
+{
+    if (node == nullptr)
+        return;
+    inoder(node->left, k);
+    idx++;
+    if (idx == k)
+        kmin = node->val;
+    else
+        inoder(node->right, k);
+}
+
+int kthSmallest(TreeNode *root, int k)
+{
+    inoder(root, k);
+    return kmin;
+}
