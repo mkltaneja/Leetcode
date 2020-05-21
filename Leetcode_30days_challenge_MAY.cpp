@@ -828,7 +828,7 @@ int kthSmallest(TreeNode *root, int k)
 }
 
 ///////////////////OR////////////////////
-// O(height of BST)
+// O(height of BST) - (by loops)
 int kthSmallest(TreeNode *root, int k)
 {
     stack<TreeNode *> mintree;
@@ -864,4 +864,63 @@ int kthSmallest(TreeNode *root, int k)
 {
     inoder(root, k);
     return kmin;
+}
+
+//DAY 22(Count Square Submatrices with All Ones)================================================================
+
+// O(n^4)
+int countSquares(vector<vector<int>> &matrix)
+{
+    int n = matrix.size();
+    int m = matrix[0].size();
+
+    int squares = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            for (int s = 0; (j + s < m) && (i + s < n); s++)
+            {
+                bool flag = true;
+                for (int k = 0; k <= s; k++)
+                {
+                    // cout << matrix[i + s][j + k] << " " << matrix[i + k][j + s] << endl;
+                    if (matrix[i + s][j + k] == 0 || matrix[i + k][j + s] == 0)
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (!flag)
+                    break;
+                squares++;
+                // cout << endl;
+            }
+        }
+    }
+    return squares;
+}
+
+//////////////OR/////////////////
+// O(n^2)
+int countSquares(vector<vector<int>> &matrix)
+{
+    int n = matrix.size();
+    int m = matrix[0].size();
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            int valid_sqsize = 0;
+            if (i && j && matrix[i][j])
+                valid_sqsize = min(min(matrix[i - 1][j], matrix[i][j - 1]), matrix[i - 1][j - 1]);
+            matrix[i][j] += valid_sqsize;
+        }
+    }
+    int squares = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            squares += matrix[i][j];
+    return squares;
 }
