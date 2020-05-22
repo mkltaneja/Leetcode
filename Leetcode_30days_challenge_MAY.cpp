@@ -924,3 +924,44 @@ int countSquares(vector<vector<int>> &matrix)
             squares += matrix[i][j];
     return squares;
 }
+
+//DAY 23(Sort Characters By Frequency)==============================================================================
+
+//     template <typename T1, typename T2>
+// struct sort_by_second {
+//     typedef pair<T1, T2> type;
+//     bool operator ()(type const& a, type const& b) const {
+//         return a.second > b.second;
+//     }
+// };
+
+static bool sort_by_second(const pair<char, int> &p1, const pair<char, int> &p2)
+{
+    return (p1.second > p2.second);
+}
+
+string frequencySort(string s)
+{
+    if (s.size() == 0)
+        return "";
+    unordered_map<char, int> freq;
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (freq.find(s[i]) != freq.end())
+            freq[s[i]]++;
+        else
+            freq.insert(pair<char, int>(s[i], 1));
+    }
+    vector<pair<char, int>> nmap(freq.begin(), freq.end());
+    sort(nmap.begin(), nmap.end(), sort_by_second);
+
+    // for (int i = 0; i < nmap.size(); i++)
+    // {
+    //     cout << nmap[i].first << ": " << nmap[i].second << endl;
+    // }
+    string str = "";
+    for (auto c = nmap.begin(); c != nmap.end(); c++)
+        while (c->second--)
+            str += c->first;
+    return str;
+}
