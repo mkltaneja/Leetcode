@@ -926,6 +926,7 @@ int countSquares(vector<vector<int>> &matrix)
 }
 
 //DAY 23(Sort Characters By Frequency)==============================================================================
+// (by using map and vector)
 
 //     template <typename T1, typename T2>
 // struct sort_by_second {
@@ -963,5 +964,35 @@ string frequencySort(string s)
     for (auto c = nmap.begin(); c != nmap.end(); c++)
         while (c->second--)
             str += c->first;
+    return str;
+}
+
+////////////////OR///////////////////
+// (by using only vector)
+static bool sort_bydec(const pair<int, char> &p1, const pair<int, char> &p2)
+{
+    return p1.first > p2.first;
+}
+
+string frequencySort(string s)
+{
+    vector<pair<int, char>> freq(256, make_pair(0, 'a'));
+    for (int i = 0; i < s.size(); i++)
+    {
+        freq[s[i]].first++;
+        freq[s[i]].second = s[i];
+    }
+    // for(int i=0;i<freq.size();i++)
+    //     cout<<i<<" "<<freq[i].first<<" "<<freq[i].second<<endl;
+
+    sort(freq.begin(), freq.end(), sort_bydec);
+    // for(int i=0;i<freq.size();i++)
+    //     cout<<i<<" "<<freq[i].first<<" "<<freq[i].second<<endl;
+
+    string str = "";
+    for (int i = 0; i < freq.size(); i++)
+        if (freq[i].first)
+            while (freq[i].first--)
+                str += freq[i].second;
     return str;
 }
