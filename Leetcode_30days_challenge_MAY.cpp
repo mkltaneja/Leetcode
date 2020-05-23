@@ -866,7 +866,7 @@ int kthSmallest(TreeNode *root, int k)
     return kmin;
 }
 
-//DAY 22(Count Square Submatrices with All Ones)================================================================
+//DAY 21(Count Square Submatrices with All Ones)================================================================
 
 // O(n^4)
 int countSquares(vector<vector<int>> &matrix)
@@ -925,7 +925,7 @@ int countSquares(vector<vector<int>> &matrix)
     return squares;
 }
 
-//DAY 23(Sort Characters By Frequency)==============================================================================
+//DAY 22(Sort Characters By Frequency)==============================================================================
 // (by using map and vector)
 
 //     template <typename T1, typename T2>
@@ -995,4 +995,114 @@ string frequencySort(string s)
             while (freq[i].first--)
                 str += freq[i].second;
     return str;
+}
+
+//DAY 23()=======================================================================
+
+vector<vector<int>> intervalIntersection(vector<vector<int>> &A, vector<vector<int>> &B)
+{
+    int n = A.size();
+    int m = B.size();
+    int i = 0, j = 0, k = 0;
+
+    vector<vector<int>> common;
+    int a, b;
+    while (i < n && j < m)
+    {
+        // cout<<i<<" "<<j<<endl;
+        if (A[i][0] > B[j][1])
+        {
+            // cout<<"A\n";
+            j++;
+            continue;
+        }
+        if (B[j][0] > A[i][1])
+        {
+            // cout<<"B\n";
+            i++;
+            continue;
+        }
+        if (A[i][0] >= B[j][0] && A[i][0] <= B[j][1])
+        {
+            a = A[i][0];
+            if (A[i][1] < B[j][1])
+            {
+                b = A[i][1];
+                i++;
+            }
+            else if (A[i][1] > B[j][1])
+            {
+                b = B[j][1];
+                j++;
+            }
+            else
+            {
+                b = A[i][1];
+                i++;
+                j++;
+            }
+            common.push_back(vector<int>(2, 0));
+            common[k][0] = a;
+            common[k][1] = b;
+            k++;
+        }
+        else if (B[j][0] >= A[i][0] && B[j][0] <= A[i][1])
+        {
+            a = B[j][0];
+            if (B[j][1] < A[i][1])
+            {
+                b = B[j][1];
+                j++;
+            }
+            else if (B[j][1] > A[i][1])
+            {
+                b = A[i][1];
+                i++;
+            }
+            else
+            {
+                b = B[j][1];
+                i++;
+                j++;
+            }
+            common.push_back(vector<int>(2, 0));
+            common[k][0] = a;
+            common[k][1] = b;
+            k++;
+        }
+    }
+    // common.resize(k);
+    return common;
+}
+
+//////////OR//////////////////
+// (less complex)
+vector<vector<int>> intervalIntersection(vector<vector<int>> &A, vector<vector<int>> &B)
+{
+    int n = A.size();
+    int m = B.size();
+    int i = 0, j = 0;
+    vector<vector<int>> intervals;
+    while (i < n && j < m)
+    {
+        if (A[i][0] > B[j][1])
+        {
+            j++;
+            continue;
+        }
+        if (B[j][0] > A[i][1])
+        {
+            i++;
+            continue;
+        }
+        int start = max(A[i][0], B[j][0]);
+        int end = min(A[i][1], B[j][1]);
+        intervals.push_back({start, end});
+
+        if (A[i][1] <= intervals.back()[1])
+            i++;
+        if (B[j][1] <= intervals.back()[1])
+            j++;
+    }
+    return intervals;
 }
