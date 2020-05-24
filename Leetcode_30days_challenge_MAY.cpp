@@ -1106,3 +1106,24 @@ vector<vector<int>> intervalIntersection(vector<vector<int>> &A, vector<vector<i
     }
     return intervals;
 }
+
+//DAY 24(Construct Binary Search Tree from Preorder Traversal)======================================================================================
+
+TreeNode *constructTREE(int data, TreeNode *&node)
+{
+    if (node == nullptr)
+        return new TreeNode(data);
+    if (data <= node->val)
+        node->left = constructTREE(data, node->left);
+    else if (data > node->val)
+        node->right = constructTREE(data, node->right);
+    return node;
+}
+
+TreeNode *bstFromPreorder(vector<int> &preorder)
+{
+    TreeNode *root = new TreeNode(preorder[0], NULL, NULL);
+    for (int i = 1; i < preorder.size(); i++)
+        constructTREE(preorder[i], root);
+    return root;
+}
