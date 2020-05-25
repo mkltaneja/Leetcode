@@ -1127,3 +1127,42 @@ TreeNode *bstFromPreorder(vector<int> &preorder)
         constructTREE(preorder[i], root);
     return root;
 }
+
+//DAY 25(Uncrossed Lines)============================================================================
+
+class Solution
+{
+public:
+    int maxcount = INT_MIN;
+    void maxmatched_subsequence(int i, int j, int n, int m, vector<int> &A, vector<int> &B, int count)
+    {
+        if (i == n || j == m)
+        {
+            maxcount = max(count, maxcount);
+            return;
+        }
+        int k = j;
+        for (; k < m; k++)
+        {
+            if (B[k] == A[i])
+            {
+                count++;
+                j = k;
+                break;
+            }
+        }
+        if (k == m)
+            maxmatched_subsequence(i + 1, j, n, m, A, B, count);
+        else
+            maxmatched_subsequence(i + 1, j + 1, n, m, A, B, count);
+        maxmatched_subsequence(i + 1, j, n, m, A, B, count);
+    }
+
+    int maxUncrossedLines(vector<int> &A, vector<int> &B)
+    {
+        int n = A.size();
+        int m = B.size();
+        maxmatched_subsequence(0, 0, n, m, B, A, 0);
+        return maxcount;
+    }
+};
