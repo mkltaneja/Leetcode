@@ -1129,40 +1129,69 @@ TreeNode *bstFromPreorder(vector<int> &preorder)
 }
 
 //DAY 25(Uncrossed Lines)============================================================================
-
-class Solution
+int maxcount = INT_MIN;
+void maxmatched_subsequence(int i, int j, int n, int m, vector<int> &A, vector<int> &B, int count)
 {
-public:
-    int maxcount = INT_MIN;
-    void maxmatched_subsequence(int i, int j, int n, int m, vector<int> &A, vector<int> &B, int count)
+    if (i == n || j == m)
     {
-        if (i == n || j == m)
+        maxcount = max(count, maxcount);
+        return;
+    }
+    int k = j;
+    for (; k < m; k++)
+    {
+        if (B[k] == A[i])
         {
-            maxcount = max(count, maxcount);
-            return;
+            count++;
+            j = k;
+            break;
         }
-        int k = j;
-        for (; k < m; k++)
-        {
-            if (B[k] == A[i])
-            {
-                count++;
-                j = k;
-                break;
-            }
-        }
-        if (k == m)
-            maxmatched_subsequence(i + 1, j, n, m, A, B, count);
-        else
-            maxmatched_subsequence(i + 1, j + 1, n, m, A, B, count);
+    }
+    if (k == m)
         maxmatched_subsequence(i + 1, j, n, m, A, B, count);
+    else
+        maxmatched_subsequence(i + 1, j + 1, n, m, A, B, count);
+    maxmatched_subsequence(i + 1, j, n, m, A, B, count);
+}
+
+int maxUncrossedLines(vector<int> &A, vector<int> &B)
+{
+    int n = A.size();
+    int m = B.size();
+    maxmatched_subsequence(0, 0, n, m, B, A, 0);
+    return maxcount;
+}
+//////////OR/////////////////
+// (by DP)
+
+int maxUncrossedLines(vector<int> &A, vector<int> &B)
+{
+    int n = A.size();
+    int m = B.size();
+
+    // vector<vector<int>> dp(n+1,vector<int>(m+1,0));
+    int dp[n + 1][m + 1];
+    for (int i = 0; i <= n; i++)
+        for (int j = 0; j <= m; j++)
+            if (i == 0 || j == 0)
+                dp[i][j] = 0;
+
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= m; j++)
+        {
+            if (A[i - 1] == B[j - 1])
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            else
+                dp[i][j] = max(max(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]);
+        }
+    }
+    for(int i=0;i<=n;i++)
+    {
+        for(int j=0;j<=m;j++)
+            cout<<dp[i][j]<<" ";
+        cout<<endl;
     }
 
-    int maxUncrossedLines(vector<int> &A, vector<int> &B)
-    {
-        int n = A.size();
-        int m = B.size();
-        maxmatched_subsequence(0, 0, n, m, B, A, 0);
-        return maxcount;
-    }
-};
+    return dp[n][m];
+}
