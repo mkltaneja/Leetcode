@@ -1186,12 +1186,38 @@ int maxUncrossedLines(vector<int> &A, vector<int> &B)
                 dp[i][j] = max(max(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]);
         }
     }
-    for(int i=0;i<=n;i++)
+    for (int i = 0; i <= n; i++)
     {
-        for(int j=0;j<=m;j++)
-            cout<<dp[i][j]<<" ";
-        cout<<endl;
+        for (int j = 0; j <= m; j++)
+            cout << dp[i][j] << " ";
+        cout << endl;
     }
 
     return dp[n][m];
+}
+
+//DAY 26(Contiguous Subarray)=========================================================================
+// (this solution may give TLE as it runs in (n^2))
+int findMaxLength(vector<int> &nums)
+{
+    int maxlen = 0, ptr = -1;
+    for (int i = 0; i < nums.size() - 1; i++)
+    {
+        int count = 0;
+        count += (nums[i] == 1) ? 1 : -1;
+        if (maxlen >= nums.size() - i)
+            break;
+        for (int j = i + 1; j < nums.size(); j++)
+        {
+            if (nums[j] == 0)
+                count--;
+            else
+                count++;
+            // cout<<count<<endl;
+            if (count == 0)
+                ptr = j;
+        }
+        maxlen = max(ptr - i + 1, maxlen);
+    }
+    return maxlen;
 }
