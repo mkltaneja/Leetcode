@@ -1221,3 +1221,35 @@ int findMaxLength(vector<int> &nums)
     }
     return maxlen;
 }
+
+// DAY 27(Possible Bipartition)=======================================================================
+
+bool dfs(vector<vector<int>> &graph, int i, vector<int> &color, int c)
+{
+    if (color[i] == -1)
+        color[i] = c;
+    else
+        return (color[i] == c);
+
+    for (int e : graph[i])
+        if (!dfs(graph, e, color, 1 - c))
+            return false;
+    return true;
+}
+
+bool possibleBipartition(int N, vector<vector<int>> &dislikes)
+{
+    int n = dislikes.size();
+
+    vector<vector<int>> graph(N, vector<int>());
+    vector<int> color(N, -1);
+    for (int i = 0; i < n; i++)
+    {
+        graph[dislikes[i][0] - 1].push_back(dislikes[i][1] - 1);
+        graph[dislikes[i][1] - 1].push_back(dislikes[i][0] - 1);
+    }
+    for (int i = 0; i < N; i++)
+        if (color[i] == -1 && !dfs(graph, i, color, 0))
+            return false;
+    return true;
+}
