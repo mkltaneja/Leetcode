@@ -1293,3 +1293,16 @@ vector<int> countBits(int num)
     }
     return countar;
 }
+
+////////OR///////////
+// (most optimised)
+// O(n)
+vector<int> countBits(int num)
+{
+    vector<int> countar(num + 1);
+    for (int i = 1; i <= num; i++)
+    {
+        countar[i] = countar[i & (i - 1)] + 1;
+    }
+    return countar;
+}
