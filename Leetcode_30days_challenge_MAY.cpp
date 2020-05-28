@@ -1275,4 +1275,21 @@ vector<int> countBits(int num)
     return countar;
 }
 
-
+///////////////////OR////////////////////
+// O(n*(no.of 1s in the bits))
+vector<int> countBits(int num)
+{
+    vector<int> countar;
+    for (int i = 0; i <= num; i++)
+    {
+        int count = 0;
+        int n = i;
+        while (n)
+        {
+            count++;
+            n &= (n - 1);
+        }
+        countar.push_back(count);
+    }
+    return countar;
+}
