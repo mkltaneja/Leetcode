@@ -1253,3 +1253,26 @@ bool possibleBipartition(int N, vector<vector<int>> &dislikes)
             return false;
     return true;
 }
+
+//DAY 28(Counting Bits)===========================================================
+
+// O(n*(no. of bits))
+vector<int> countBits(int num)
+{
+    vector<int> countar;
+    for (int i = 0; i <= num; i++)
+    {
+        int count = 0;
+        int n = i;
+        while (n)
+        {
+            if (n & 1)
+                count++;
+            n >>= 1;
+        }
+        countar.push_back(count);
+    }
+    return countar;
+}
+
+
