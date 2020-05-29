@@ -1342,3 +1342,41 @@ bool canFinish(int numCourses, vector<vector<int>> &prerequisites)
     }
     return true;
 }
+
+///////////////////OR/////////////////////
+
+// (by BFS)
+bool canFinish(int numCourses, vector<vector<int>> &prerequisites)
+{
+    vector<vector<int>> graph(numCourses, vector<int>());
+
+    for (int i = 0; i < prerequisites.size(); i++)
+        graph[prerequisites[i][0]].push_back(prerequisites[i][1]);
+
+    vector<int> inDegree(graph.size(), 0);
+    for (int i = 0; i < graph.size(); i++)
+    {
+        for (int e : graph[i])
+            inDegree[e]++;
+    }
+
+    queue<int> que;
+    for (int i = 0; i < graph.size(); i++)
+        if (inDegree[i] == 0)
+            que.push(i);
+    while (!que.empty())
+    {
+        int rvtx = que.front();
+        que.pop();
+        for (int e : graph[rvtx])
+        {
+            inDegree[e]--;
+            if (inDegree[e] == 0)
+                que.push(e);
+        }
+    }
+    for (int i = 0; i < graph.size(); i++)
+        if (inDegree[i] > 0)
+            return false;
+    return true;
+}
