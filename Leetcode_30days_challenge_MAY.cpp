@@ -1306,3 +1306,39 @@ vector<int> countBits(int num)
     }
     return countar;
 }
+
+//DAY 29(Course Schedule)===================================================================
+
+// (by dfs)
+bool dfs(int src, vector<vector<int>> &graph, vector<int> &vis)
+{
+    vis[src] = 2;    //marking all the vertices in that particular path as 2(which will                                                                                              also work as visited)
+    bool res = true; //assuming there is no cycle
+    for (int e : graph[src])
+    {
+        if (!vis[e])
+            res &= dfs(e, graph, vis);
+        else if (vis[e] == 2)
+            return false; // found cycle
+    }
+    vis[src] = 1; // unmarking all the vertices (which will only work as visited)
+    return res;
+}
+
+bool canFinish(int numCourses, vector<vector<int>> &prerequisites)
+{
+    int n = prerequisites.size();
+    vector<vector<int>> graph(numCourses, vector<int>());
+    for (int i = 0; i < n; i++)
+    {
+        graph[prerequisites[i][0]].push_back(prerequisites[i][1]);
+    }
+    vector<int> vis(graph.size(), 0);
+
+    for (int i = 0; i < graph.size(); i++)
+    {
+        if (vis[i] == 0 && !dfs(i, graph, vis))
+            return false;
+    }
+    return true;
+}
