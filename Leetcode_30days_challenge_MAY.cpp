@@ -1380,3 +1380,23 @@ bool canFinish(int numCourses, vector<vector<int>> &prerequisites)
             return false;
     return true;
 }
+
+// DAY 30(K Closest Points to Origin)
+
+static bool sort_bydist(vector<int> a, vector<int> b)
+{
+    return (a[0] * a[0] + a[1] * a[1]) < (b[0] * b[0] + b[1] * b[1]);
+}
+
+vector<vector<int>> kClosest(vector<vector<int>> &points, int K)
+{
+    int n = points.size();
+
+    vector<vector<int>> ans;
+    sort(points.begin(), points.end(), sort_bydist);
+    int i = -1;
+    while (K - ++i)
+        ans.push_back(points[i]);
+
+    return ans;
+}
