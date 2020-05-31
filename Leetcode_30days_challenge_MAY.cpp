@@ -1400,3 +1400,30 @@ vector<vector<int>> kClosest(vector<vector<int>> &points, int K)
 
     return ans;
 }
+
+//DAY 31(Edit Distance)========================================================================
+
+// O(n^3) (by recursion) --> will give TLE
+int edit_dist(string s1, int i, string s2, int j)
+{
+    if (i == 0)
+        return j;
+    else if (j == 0)
+        return i;
+    int ans = 0;
+    if (s1[i - 1] == s2[j - 1])
+        ans = edit_dist(s1, i - 1, s2, j - 1);
+    else
+    {
+        int insertion = edit_dist(s1, i, s2, j - 1);
+        int deletion = edit_dist(s1, i - 1, s2, j);
+        int replace = edit_dist(s1, i - 1, s2, j - 1);
+        ans = min(insertion, min(deletion, replace)) + 1;
+    }
+    return ans;
+}
+
+int minDistance(string word1, string word2)
+{
+    return edit_dist(word1, word1.length(), word2, word2.length());
+}
