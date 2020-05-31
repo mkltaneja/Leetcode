@@ -1427,3 +1427,53 @@ int minDistance(string word1, string word2)
 {
     return edit_dist(word1, word1.length(), word2, word2.length());
 }
+
+//////////////OR//////////////
+
+// less than O(n^3) --> (by DP)
+int edit_dist_dp(string s1, string s2, vector<vector<int>> &dp)
+{
+    for (int i = 0; i < dp.size(); i++)
+    {
+        for (int j = 0; j < dp[0].size(); j++)
+        {
+            if (i == 0)
+            {
+                dp[i][j] = j;
+                continue;
+            }
+            if (j == 0)
+            {
+                dp[i][j] = i;
+                continue;
+            }
+
+            int ans = 0;
+            if (s1[i - 1] == s2[j - 1])
+                dp[i][j] = dp[i - 1][j - 1];
+            else
+            {
+                int insertion = dp[i][j - 1];
+                int deletion = dp[i - 1][j];
+                int replace = dp[i - 1][j - 1];
+                dp[i][j] = min(insertion, min(deletion, replace)) + 1;
+            }
+        }
+    }
+    // for(int i=0;i<dp.size();i++)
+    // {
+    //     for(int j=0;j<dp[0].size();j++)
+    //     {
+    //         cout<<dp[i][j]<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+    return dp[dp.size() - 1][dp[0].size() - 1];
+}
+
+int minDistance(string word1, string word2)
+{
+    vector<vector<int>> dp(word1.size() + 1, vector<int>(word2.size() + 1));
+
+    return edit_dist_dp(word1, word2, dp);
+}
