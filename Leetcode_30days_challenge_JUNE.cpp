@@ -34,3 +34,10 @@ void deleteNode(ListNode *&node)
     node->val = node->next->val;
     node->next = node->next->next;
 }
+
+///////////////OR///////////////
+
+void deleteNode(ListNode *&node)
+{
+    *node = *(node->next);
+}
