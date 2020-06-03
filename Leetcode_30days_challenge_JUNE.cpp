@@ -41,3 +41,25 @@ void deleteNode(ListNode *&node)
 {
     *node = *(node->next);
 }
+
+//DAY 3()===============================================================================
+
+// (by custom comparator)
+static bool sort_bydiff(vector<int> &a, vector<int> &b)
+{
+    return (a[0] - a[1]) < (b[0] - b[1]);
+}
+
+int twoCitySchedCost(vector<vector<int>> &costs)
+{
+    int n = costs.size();
+    int sum = 0;
+    sort(costs.begin(), costs.end(), sort_bydiff);
+
+    for (int i = 0; i < n / 2; i++)
+        sum += costs[i][0];
+    for (int i = n / 2; i < n; i++)
+        sum += costs[i][1];
+
+    return sum;
+}
