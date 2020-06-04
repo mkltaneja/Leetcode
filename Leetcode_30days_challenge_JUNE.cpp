@@ -99,3 +99,17 @@ void reverseString(vector<char> &s)
 {
     reverse(s.begin(), s.end());
 }
+
+///////////////OR/////////////////
+// (using 2 pointer approach)
+void reverseString(vector<char> &s)
+{
+    int l = 0, h = s.size() - 1;
+    while (l < h)
+    {
+        char c = s[l];
+        s[l] = s[h];
+        s[h] = c;
+        l++, h--;
+    }
+}
