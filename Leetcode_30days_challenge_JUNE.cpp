@@ -84,10 +84,18 @@ int twoCitySchedCost(vector<vector<int>> &costs)
     return sum;
 }
 
-//DAY 4()==============================================================================
+//DAY 4(Reverse String)==============================================================================
 
+// (using swap function)
 void reverseString(vector<char> &s)
 {
     for (int i = 0; i < s.size() / 2; i++)
         swap(s[i], s[s.size() - i - 1]);
+}
+
+////////////////OR/////////////////
+// (using reverse function)
+void reverseString(vector<char> &s)
+{
+    reverse(s.begin(), s.end());
 }
