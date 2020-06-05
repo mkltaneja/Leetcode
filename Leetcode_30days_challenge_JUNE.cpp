@@ -113,3 +113,46 @@ void reverseString(vector<char> &s)
         l++, h--;
     }
 }
+
+// DAY 5( Random Pick with Weight)=================================================================
+
+class Solution {
+public:
+    vector<int> wsum;
+    int sum;
+    Solution(vector<int>& w) 
+    {
+        sum = 0;
+        for(int i : w)
+        {
+            sum += i;
+            wsum.push_back(sum);
+        }
+    }
+    
+    int binary_search(int val)
+    {
+        int l = 0, h = wsum.size()-1;
+        while(l < h)
+        {
+            int mid = (l+h)/2;
+            if(wsum[mid] < val)
+                l = mid+1;
+            else
+                h = mid;
+        }
+        return l;
+    }
+    
+    int pickIndex() 
+    {
+        int idx = rand() % sum;
+        return binary_search(idx+1);
+    }
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(w);
+ * int param_1 = obj->pickIndex();
+ */
