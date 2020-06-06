@@ -159,7 +159,7 @@ public:
  */
 
 // DAY 6()==========================================================================================
-
+// (by sorting a[0] in ascending order)
 // O(n^2)
 vector<vector<int>> reconstructQueue(vector<vector<int>> &people)
 {
@@ -189,5 +189,26 @@ vector<vector<int>> reconstructQueue(vector<vector<int>> &people)
                 foll--;
         }
     }
+    return qu;
+}
+
+/////////////////////OR//////////////////////////
+// (by sorting a[0] in descending order and a[1] in ascending order)
+// <O(n^2) & >O(n)
+vector<vector<int>> reconstructQueue(vector<vector<int>> &people)
+{
+    int n = people.size();
+
+    sort(people.begin(), people.end(), [](const vector<int> &a, const vector<int> &b) {
+        if (a[0] == b[0])
+            return a[1] < b[1];
+        else
+            return a[0] > b[0];
+    });
+
+    vector<vector<int>> qu;
+    for (vector<int> ar : people)
+        qu.insert(qu.begin() + ar[1], ar);
+
     return qu;
 }
