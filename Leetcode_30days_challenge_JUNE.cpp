@@ -116,38 +116,39 @@ void reverseString(vector<char> &s)
 
 // DAY 5( Random Pick with Weight)=================================================================
 
-class Solution {
+class Solution
+{
 public:
     vector<int> wsum;
     int sum;
-    Solution(vector<int>& w) 
+    Solution(vector<int> &w)
     {
         sum = 0;
-        for(int i : w)
+        for (int i : w)
         {
             sum += i;
             wsum.push_back(sum);
         }
     }
-    
+
     int binary_search(int val)
     {
-        int l = 0, h = wsum.size()-1;
-        while(l < h)
+        int l = 0, h = wsum.size() - 1;
+        while (l < h)
         {
-            int mid = (l+h)/2;
-            if(wsum[mid] < val)
-                l = mid+1;
+            int mid = (l + h) / 2;
+            if (wsum[mid] < val)
+                l = mid + 1;
             else
                 h = mid;
         }
         return l;
     }
-    
-    int pickIndex() 
+
+    int pickIndex()
     {
         int idx = rand() % sum;
-        return binary_search(idx+1);
+        return binary_search(idx + 1);
     }
 };
 
@@ -156,3 +157,37 @@ public:
  * Solution* obj = new Solution(w);
  * int param_1 = obj->pickIndex();
  */
+
+// DAY 6()==========================================================================================
+
+// O(n^2)
+vector<vector<int>> reconstructQueue(vector<vector<int>> &people)
+{
+    int n = people.size();
+
+    sort(people.begin(), people.end(), [](const vector<int> &a, const vector<int> &b) {
+        return a[0] < b[0];
+    });
+
+    // for(int i=0;i<n;i++)
+    //     cout<<people[i][0]<<" "<<people[i][1]<<endl;
+
+    vector<vector<int>> qu(n, vector<int>(2, -1));
+
+    for (int i = 0; i < n; i++)
+    {
+        int foll = people[i][1];
+        for (int j = 0; j < n; j++)
+        {
+            if (foll == 0 && qu[j][0] == -1)
+            {
+                qu[j][0] = people[i][0];
+                qu[j][1] = people[i][1];
+                break;
+            }
+            else if (foll > 0 && (qu[j][0] == -1 || qu[j][0] >= people[i][0]))
+                foll--;
+        }
+    }
+    return qu;
+}
