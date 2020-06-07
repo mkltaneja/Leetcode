@@ -299,7 +299,7 @@ int change(int amount, vector<int> &coins)
 
 /////////////////OR/////////////////////
 
-// Method->4(2D DP)
+// Method->4(1D DP)
 int change(int amount, vector<int> &coins)
 {
     vector<int> dp(amount + 1, 0);
