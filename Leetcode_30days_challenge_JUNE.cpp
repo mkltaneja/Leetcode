@@ -233,3 +233,30 @@ int change(int amount, vector<int> &coins)
 {
     return count_change(amount, 0, coins);
 }
+
+///////////////////OR/////////////////
+
+// Method 2 -> by subsequences
+// O(2^n)
+// this may also TLE
+int count_change(int amount, int idx, vector<int> &coins)
+{
+    if (idx == coins.size() || amount == 0)
+    {
+        if (amount == 0)
+            return 1;
+        return 0;
+    }
+
+    int count = 0;
+    if (amount - coins[idx] >= 0)
+        count += count_change(amount - coins[idx], idx, coins);
+    count += count_change(amount, idx + 1, coins);
+
+    return count;
+}
+
+int change(int amount, vector<int> &coins)
+{
+    return count_change(amount, 0, coins);
+}
