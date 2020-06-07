@@ -212,3 +212,24 @@ vector<vector<int>> reconstructQueue(vector<vector<int>> &people)
 
     return qu;
 }
+
+// DAY 7()====================================================================
+
+// Method 1 -> by combinations
+// <O(tar^n)
+// this code msay give TLE
+int count_change(int amount, int idx, vector<int> &coins)
+{
+    if (amount == 0)
+        return 1;
+    int count = 0;
+    for (int i = idx; i < coins.size(); i++)
+        if (amount - coins[i] >= 0)
+            count += count_change(amount - coins[i], i, coins);
+    return count;
+}
+
+int change(int amount, vector<int> &coins)
+{
+    return count_change(amount, 0, coins);
+}
