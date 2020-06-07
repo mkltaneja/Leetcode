@@ -260,3 +260,39 @@ int change(int amount, vector<int> &coins)
 {
     return count_change(amount, 0, coins);
 }
+
+////////////////OR//////////////////
+
+// by DP(2D) of subsequence
+// O(n^2)
+int count_change(int tar, vector<int> &coins, vector<vector<int>> &dp, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j <= tar; j++)
+        {
+            if (j == 0)
+            {
+                dp[i][j] = 1;
+                continue;
+            }
+            if (i == 0)
+            {
+                dp[i][j] = 0;
+                continue;
+            }
+            if (j - coins[i - 1] >= 0)
+                dp[i][j] += dp[i][j - coins[i - 1]] + dp[i - 1][j];
+            else
+                dp[i][j] += dp[i - 1][j];
+        }
+    }
+    return dp[n - 1][tar];
+}
+
+int change(int amount, vector<int> &coins)
+{
+    vector<vector<int>> dp(coins.size() + 1, vector<int>(amount + 1, 0));
+
+    return count_change(amount, coins, dp, coins.size() + 1);
+}
