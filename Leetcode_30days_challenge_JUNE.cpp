@@ -309,3 +309,10 @@ int change(int amount, vector<int> &coins)
             dp[i] += dp[i - coin];
     return dp[amount];
 }
+
+// DAY 8(Power of Two)===================================================================
+
+bool isPowerOfTwo(int n)
+{
+    return n > 0 && !(n & (n - 1));
+}
