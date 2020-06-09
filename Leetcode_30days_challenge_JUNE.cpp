@@ -319,6 +319,7 @@ bool isPowerOfTwo(int n)
 
 // DAY 9(Is Subsequence)======================================================================
 
+// (in 2 loops but O(t.size()))
 bool isSubsequence(string s, string t)
 {
     int l = 0;
@@ -338,4 +339,32 @@ bool isSubsequence(string s, string t)
             return false;
     }
     return true;
+}
+
+//////////////////OR///////////////
+
+// (by 1 loop and O(t.size()))
+bool isSubsequence(string s, string t)
+{
+    int n = s.size();
+    int m = t.size();
+
+    if (n > m)
+        return false;
+
+    if (n == m && s != t)
+        return false;
+    else if (n == m && s == t)
+        return true;
+
+    int j = 0;
+    if (n < m)
+    {
+        for (int i = 0; i < m; i++)
+        {
+            if (t[i] == s[j])
+                j++;
+        }
+    }
+    return (j == n);
 }
