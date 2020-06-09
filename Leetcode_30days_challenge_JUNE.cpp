@@ -316,3 +316,26 @@ bool isPowerOfTwo(int n)
 {
     return n > 0 && !(n & (n - 1));
 }
+
+// DAY 9(Is Subsequence)======================================================================
+
+bool isSubsequence(string s, string t)
+{
+    int l = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        bool f = false;
+        for (int j = l; j < t.size(); j++)
+        {
+            if (t[j] == s[i])
+            {
+                f = true;
+                l = j + 1;
+                break;
+            }
+        }
+        if (!f)
+            return false;
+    }
+    return true;
+}
