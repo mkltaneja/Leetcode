@@ -368,3 +368,16 @@ bool isSubsequence(string s, string t)
     }
     return (j == n);
 }
+
+// DAY 10(Search Insert Position)=====================================================================
+
+// O(n)
+int searchInsert(vector<int> &nums, int target)
+{
+    for (int i = -0; i < nums.size(); i++)
+    {
+        if (target <= nums[i])
+            return i;
+    }
+    return nums.size();
+}
