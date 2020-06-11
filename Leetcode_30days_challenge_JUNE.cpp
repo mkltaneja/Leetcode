@@ -423,43 +423,75 @@ int searchInsert(vector<int> &nums, int target)
 
 //DAY 11(Sort colors)=======================================================================================
 
-// O(n) 
+// O(n)
 // by counting 0,1,2 --> (O(n)) space
-void sortColors(vector<int>& nums) 
+void sortColors(vector<int> &nums)
+{
+    int count0 = 0;
+    int count1 = 0;
+    int count2 = 0;
+    for (int i : nums)
     {
-        int count0 = 0;    
-        int count1 = 0;    
-        int count2 = 0;
-        for(int i : nums)
+        if (i == 0)
+            count0++;
+        else if (i == 1)
+            count1++;
+        else
+            count2++;
+    }
+    for (int i = 0; i < nums.size(); i++)
+    {
+        if (count0 > 0)
         {
-            if(i == 0)
-                count0++;
-            else if(i == 1)
-                count1++;
-            else
-                count2++;
+            nums[i] = 0;
+            count0--;
+            continue;
         }
-        for(int i=0;i<nums.size();i++)
+        else if (count1 > 0)
         {
-            if(count0 > 0)
-            {
-                nums[i] = 0;
-                count0--;
-                continue;
-            }
-            else if(count1 > 0)
-            {
-                
-                nums[i] = 1;
-                count1--;
-                continue;
-            }
-            else if(count2 > 0)
-            {
-                
-                nums[i] = 2;
-                count2--;
-                continue;
-            }
+
+            nums[i] = 1;
+            count1--;
+            continue;
+        }
+        else if (count2 > 0)
+        {
+
+            nums[i] = 2;
+            count2--;
+            continue;
         }
     }
+}
+
+/////////////////OR////////////////
+
+// O(n)
+// by swapping
+void sortColors(vector<int> &nums)
+{
+    int i = 0, p1 = 0, p2 = nums.size() - 1;
+    while (i < nums.size())
+    {
+        if (nums[i] == 0)
+        {
+            swap(nums[i], nums[p1]);
+            i++;
+            p1++;
+        }
+        else if (nums[i] == 1)
+        {
+            i++;
+        }
+        else if (nums[i] == 2)
+        {
+            while (nums[p2] == 2)
+            {
+                if (p2 == i)
+                    return;
+                p2--;
+            }
+            swap(nums[i], nums[p2]);
+        }
+    }
+}
