@@ -559,7 +559,7 @@ public:
     bool insert(int val) 
     {
         return s.insert(val).second;    //   -->  the second of the insert iterator is bool and first is int
-    }
+    }                                   //   -->  if element is present it will return false
     
     bool remove(int val) 
     {
@@ -572,3 +572,45 @@ public:
     }
 };
 
+/////////////////OR//////////////////////////
+
+// O(1)
+class RandomizedSet {
+public:
+    vector<int> arr;
+    unordered_map<int,int> m;
+
+    RandomizedSet() 
+    {
+        
+    }
+    
+    bool insert(int val) 
+    {
+        if(m.find(val) != m.end())
+            return false;
+        
+        arr.emplace_back(val);
+        m[val] = arr.size()-1;
+        return true;
+    }
+    
+    bool remove(int val) 
+    {
+        if(m.find(val) == m.end())
+            return false;
+        
+        int idx = m[val];
+        arr[idx] = arr[arr.size()-1];        
+        m[arr[idx]] = idx;
+        
+        arr.pop_back();
+        m.erase(val);
+        return true;
+    }
+    
+    int getRandom() 
+    {
+        return arr[rand() % arr.size()];    
+    }
+};
