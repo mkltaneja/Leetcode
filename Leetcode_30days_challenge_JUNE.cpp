@@ -544,3 +544,31 @@ public:
  * bool param_2 = obj->remove(val);
  * int param_3 = obj->getRandom();
  */
+
+///////////////////OR///////////////////////
+
+// less complex insert and remove
+class RandomizedSet {
+public:
+    unordered_set<int> s;
+    RandomizedSet() 
+    {
+        
+    }
+    
+    bool insert(int val) 
+    {
+        return s.insert(val).second;    //   -->  the second of the insert iterator is bool and first is int
+    }
+    
+    bool remove(int val) 
+    {
+        return s.erase(val);    // -> will return false if not present
+    }
+    
+    int getRandom() 
+    {
+        return *next(s.begin(),rand()%s.size());    
+    }
+};
+
