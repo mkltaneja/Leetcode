@@ -614,3 +614,58 @@ public:
         return arr[rand() % arr.size()];    
     }
 };
+
+//DAY 13()=========================================================================
+
+// O(n^2) time and O(n^2) space --> this may give TLE
+class Solution {
+public:
+    vector<int> largestDivisibleSubset(vector<int>& nums) 
+    {
+        int n = nums.size();
+        if(n <= 1)
+            return nums;
+        // vector<int> nums1 = nums;
+        sort(nums.begin(),nums.end());
+        
+        vector<vector<int>> maxmult(n,vector<int>());
+        // for(int i=0;i<n;i++)
+        
+        int maxlen = 0;
+        int maxidx = 0;
+        for(int i=n-1;i>=0;i--)
+        {
+            maxmult[i].push_back(nums[i]);
+            int maxsize = 0;
+            int k = i;
+            for(int j=i+1;j<n;j++)
+            {
+                cout<<j<<" ";
+                if(nums[j] % nums[i] == 0 && maxmult[j].size() > maxsize)
+                {
+                    maxsize = maxmult[j].size();
+                    k = j;
+                }
+            }
+            if(k != i)
+            {
+                maxmult[i].insert(maxmult[i].end(),maxmult[k].begin(),maxmult[k].end());
+                if(maxmult[i].size() > maxlen)
+                {
+                    maxlen = maxmult[i].size();
+                    maxidx = i;
+                    // cout<<maxidx<<" "<<maxlen<<endl;
+                }
+            }
+        }
+        
+        // cout<<endl;
+        // for(int i=0;i<maxmult.size();i++)
+        // {
+        //     for(int j=0;j<maxmult[i].size();j++)
+        //         cout<<maxmult[i][j]<<" ";
+        //     cout<<endl;
+        // }
+        return maxmult[maxidx];
+    }
+};
