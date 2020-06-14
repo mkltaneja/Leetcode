@@ -727,3 +727,51 @@ vector<int> largestDivisibleSubset(vector<int> &nums)
     // }
     return maxmult;
 }
+
+// DAY 14()=================================================================
+
+// Method 1 -> DFS
+// this may give TLE
+class Solution {
+public:
+    
+    int mcost = INT_MAX;
+    int mincost_dfs(vector<vector<pair<int,int>>> &graph, vector<bool> &vis, int src, int dest, int k, int cost)
+    {
+        if(src == dest)
+            return cost;
+        
+        if(k == 0)
+            return INT_MAX;
+        
+        for(pair<int,int> itr : graph[src])
+        {
+            if(!vis[itr.first])
+            {
+                vis[itr.first] = true;
+                cost += itr.second;
+                k--;
+                
+                mcost = min(mcost,mincost_dfs(graph,vis,itr.first,dest,k,cost));
+             
+                vis[itr.first] = false;
+                cost -= itr.second;
+                k++;   
+            }
+        }
+        return mcost;
+    }
+    
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dest, int K) 
+    {
+        vector<vector<pair<int,int>>> graph(n,vector<pair<int,int>>());
+        
+        for(int i=0;i<flights.size();i++)
+            graph[flights[i][0]].push_back( {flights[i][1], flights[i][2]} );
+        
+        vector<bool> vis(n,false);
+        vis[src] = true;
+        mincost_dfs(graph,vis,src,dest,K+1,0);
+        return mcost == INT_MAX ? -1 : mcost;
+    }
+};
