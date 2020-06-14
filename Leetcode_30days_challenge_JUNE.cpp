@@ -499,41 +499,41 @@ void sortColors(vector<int> &nums)
 // DAY 12(Insert Delete GetRandom O(1))====================================================================
 
 // this code will return random in O(n) and not in O(1)
-class RandomizedSet {
+class RandomizedSet
+{
 public:
     /** Initialize your data structure here. */
-    set<int> s;     
-    RandomizedSet() 
+    set<int> s;
+    RandomizedSet()
     {
-
     }
-    
+
     /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
-    bool insert(int val) 
+    bool insert(int val)
     {
-        if(s.find(val) == s.end())
+        if (s.find(val) == s.end())
         {
             s.insert(val);
             return true;
         }
         return false;
     }
-    
+
     /** Removes a value from the set. Returns true if the set contained the specified element. */
-    bool remove(int val) 
+    bool remove(int val)
     {
-        if(s.find(val) != s.end())
+        if (s.find(val) != s.end())
         {
             s.erase(val);
             return true;
         }
         return false;
     }
-    
+
     /** Get a random element from the set. */
-    int getRandom() 
+    int getRandom()
     {
-        return *next(s.begin(),rand()%s.size());    // --> next will iterate to the next one but rand will give any random address
+        return *next(s.begin(), rand() % s.size()); // --> next will iterate to the next one but rand will give any random address
     }
 };
 
@@ -548,124 +548,182 @@ public:
 ///////////////////OR///////////////////////
 
 // less complex insert and remove
-class RandomizedSet {
+class RandomizedSet
+{
 public:
     unordered_set<int> s;
-    RandomizedSet() 
+    RandomizedSet()
     {
-        
     }
-    
-    bool insert(int val) 
+
+    bool insert(int val)
     {
-        return s.insert(val).second;    //   -->  the second of the insert iterator is bool and first is int
-    }                                   //   -->  if element is present it will return false
-    
-    bool remove(int val) 
+        return s.insert(val).second; //   -->  the second of the insert iterator is bool and first is int
+    }                                //   -->  if element is present it will return false
+
+    bool remove(int val)
     {
-        return s.erase(val);    // -> will return false if not present
+        return s.erase(val); // -> will return false if not present
     }
-    
-    int getRandom() 
+
+    int getRandom()
     {
-        return *next(s.begin(),rand()%s.size());    
+        return *next(s.begin(), rand() % s.size());
     }
 };
 
 /////////////////OR//////////////////////////
 
 // O(1)
-class RandomizedSet {
+class RandomizedSet
+{
 public:
     vector<int> arr;
-    unordered_map<int,int> m;
+    unordered_map<int, int> m;
 
-    RandomizedSet() 
+    RandomizedSet()
     {
-        
     }
-    
-    bool insert(int val) 
+
+    bool insert(int val)
     {
-        if(m.find(val) != m.end())
+        if (m.find(val) != m.end())
             return false;
-        
+
         arr.emplace_back(val);
-        m[val] = arr.size()-1;
+        m[val] = arr.size() - 1;
         return true;
     }
-    
-    bool remove(int val) 
+
+    bool remove(int val)
     {
-        if(m.find(val) == m.end())
+        if (m.find(val) == m.end())
             return false;
-        
+
         int idx = m[val];
-        arr[idx] = arr[arr.size()-1];        
+        arr[idx] = arr[arr.size() - 1];
         m[arr[idx]] = idx;
-        
+
         arr.pop_back();
         m.erase(val);
         return true;
     }
-    
-    int getRandom() 
+
+    int getRandom()
     {
-        return arr[rand() % arr.size()];    
+        return arr[rand() % arr.size()];
     }
 };
 
 //DAY 13()=========================================================================
 
 // O(n^2) time and O(n^2) space --> this may give TLE
-class Solution {
-public:
-    vector<int> largestDivisibleSubset(vector<int>& nums) 
+
+vector<int> largestDivisibleSubset(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n <= 1)
+        return nums;
+    // vector<int> nums1 = nums;
+    sort(nums.begin(), nums.end());
+
+    vector<vector<int>> maxmult(n, vector<int>());
+    // for(int i=0;i<n;i++)
+
+    int maxlen = 0;
+    int maxidx = 0;
+    for (int i = n - 1; i >= 0; i--)
     {
-        int n = nums.size();
-        if(n <= 1)
-            return nums;
-        // vector<int> nums1 = nums;
-        sort(nums.begin(),nums.end());
-        
-        vector<vector<int>> maxmult(n,vector<int>());
-        // for(int i=0;i<n;i++)
-        
-        int maxlen = 0;
-        int maxidx = 0;
-        for(int i=n-1;i>=0;i--)
+        maxmult[i].push_back(nums[i]);
+        int maxsize = 0;
+        int k = i;
+        for (int j = i + 1; j < n; j++)
         {
-            maxmult[i].push_back(nums[i]);
-            int maxsize = 0;
-            int k = i;
-            for(int j=i+1;j<n;j++)
+            cout << j << " ";
+            if (nums[j] % nums[i] == 0 && maxmult[j].size() > maxsize)
             {
-                cout<<j<<" ";
-                if(nums[j] % nums[i] == 0 && maxmult[j].size() > maxsize)
-                {
-                    maxsize = maxmult[j].size();
-                    k = j;
-                }
-            }
-            if(k != i)
-            {
-                maxmult[i].insert(maxmult[i].end(),maxmult[k].begin(),maxmult[k].end());
-                if(maxmult[i].size() > maxlen)
-                {
-                    maxlen = maxmult[i].size();
-                    maxidx = i;
-                    // cout<<maxidx<<" "<<maxlen<<endl;
-                }
+                maxsize = maxmult[j].size();
+                k = j;
             }
         }
-        
-        // cout<<endl;
-        // for(int i=0;i<maxmult.size();i++)
-        // {
-        //     for(int j=0;j<maxmult[i].size();j++)
-        //         cout<<maxmult[i][j]<<" ";
-        //     cout<<endl;
-        // }
-        return maxmult[maxidx];
+        if (k != i)
+        {
+            maxmult[i].insert(maxmult[i].end(), maxmult[k].begin(), maxmult[k].end());
+            if (maxmult[i].size() > maxlen)
+            {
+                maxlen = maxmult[i].size();
+                maxidx = i;
+                // cout<<maxidx<<" "<<maxlen<<endl;
+            }
+        }
     }
-};
+
+    // cout<<endl;
+    // for(int i=0;i<maxmult.size();i++)
+    // {
+    //     for(int j=0;j<maxmult[i].size();j++)
+    //         cout<<maxmult[i][j]<<" ";
+    //     cout<<endl;
+    // }
+    return maxmult[maxidx];
+}
+
+////////////////////OR//////////////////////
+
+// O(n^2) time and O(n) space --> this won't give TLE
+
+vector<int> largestDivisibleSubset(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n <= 1)
+        return nums;
+    // vector<int> nums1 = nums;
+    sort(nums.begin(), nums.end());
+
+    vector<int> next_idx(n, -1);
+    vector<int> sizes(n, 1);
+    // for(int i=0;i<n;i++)
+
+    int maxlen = 0;
+    int maxidx = 0;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        int maxsize = 0;
+        int k = i;
+        for (int j = i + 1; j < n; j++)
+        {
+            if (nums[j] % nums[i] == 0 && sizes[j] > maxsize)
+            {
+                maxsize = sizes[j];
+                k = j;
+            }
+        }
+        if (k != i)
+        {
+            sizes[i] += sizes[k];
+            next_idx[i] = k;
+            if (sizes[i] > maxlen)
+            {
+                maxlen = sizes[i];
+                maxidx = i;
+                // cout<<maxidx<<" "<<maxlen<<endl;
+            }
+        }
+    }
+    vector<int> maxmult;
+    int curr = maxidx;
+    while (curr != -1)
+    {
+        maxmult.push_back(nums[curr]);
+        curr = next_idx[curr];
+    }
+
+    // cout<<endl;
+    // for(int i=0;i<maxmult.size();i++)
+    // {
+    //     for(int j=0;j<maxmult[i].size();j++)
+    //         cout<<maxmult[i][j]<<" ";
+    //     cout<<endl;
+    // }
+    return maxmult;
+}
