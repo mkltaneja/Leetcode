@@ -778,6 +778,7 @@ public:
 
 // DAY 15(Search in Binary Search Tree)=================================================================
 
+// Method 1 -> by declaring statically
 TreeNode *node = nullptr;
 void findnode(TreeNode *root, int val)
 {
