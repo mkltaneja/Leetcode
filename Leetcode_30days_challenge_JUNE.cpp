@@ -862,7 +862,61 @@ string validIPAddress(string IP)
 
 // DAY 17(Surrounded Regions)==========================================================================
 
-// Method 1 (DFS)
+//Method 1(BFS)
+//  this solution may give TLE
+void bfs(int r, int c, int n, int m, vector<vector<char>> &board)
+{
+    queue<int> que;
+    que.push(r * m + c);
+
+    int dir[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    while (!que.empty())
+    {
+        int rv = que.front();
+        board[rv / m][rv % m] = '#';
+        que.pop();
+
+        for (int d = 0; d < 4; d++)
+        {
+            int i = rv / m + dir[d][0];
+            int j = rv % m + dir[d][1];
+            if (i != n && i != -1 && j != m && j != -1 && board[i][j] == 'O')
+                que.push(i * m + j);
+        }
+    }
+}
+
+void solve(vector<vector<char>> &board)
+{
+    if (board.size() == 0)
+        return;
+
+    int n = board.size();
+    int m = board[0].size();
+
+    for (int j = 0; j < m; j++)
+        if (board[0][j] == 'O')
+            bfs(0, j, n, m, board);
+    for (int j = 0; j < m; j++)
+        if (board[n - 1][j] == 'O')
+            bfs(n - 1, j, n, m, board);
+    for (int i = 0; i < n; i++)
+        if (board[i][0] == 'O')
+            bfs(i, 0, n, m, board);
+    for (int i = 0; i < n; i++)
+        if (board[i][m - 1] == 'O')
+            bfs(i, m - 1, n, m, board);
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            if (board[i][j] == '#')
+                board[i][j] = 'O';
+            else if (board[i][j] == 'O')
+                board[i][j] = 'X';
+}
+
+// Method 2 (DFS)
 void dfs(int r, int c, int n, int m, vector<vector<char>> &board)
 {
     if (r == n || c == m || r == -1 || c == -1 || board[r][c] != 'O')
