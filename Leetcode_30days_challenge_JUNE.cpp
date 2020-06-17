@@ -859,3 +859,48 @@ string validIPAddress(string IP)
     }
     return "Neither";
 }
+
+// DAY 17(Surrounded Regions)==========================================================================
+
+// Method 1 (DFS)
+void dfs(int r, int c, int n, int m, vector<vector<char>> &board)
+{
+    if (r == n || c == m || r == -1 || c == -1 || board[r][c] != 'O')
+        return;
+
+    board[r][c] = '#';
+
+    dfs(r + 1, c, n, m, board);
+    dfs(r - 1, c, n, m, board);
+    dfs(r, c + 1, n, m, board);
+    dfs(r, c - 1, n, m, board);
+}
+
+void solve(vector<vector<char>> &board)
+{
+    if (board.size() == 0)
+        return;
+
+    int n = board.size();
+    int m = board[0].size();
+
+    for (int j = 0; j < m; j++)
+        if (board[0][j] == 'O')
+            dfs(0, j, n, m, board);
+    for (int j = 0; j < m; j++)
+        if (board[n - 1][j] == 'O')
+            dfs(n - 1, j, n, m, board);
+    for (int i = 0; i < n; i++)
+        if (board[i][0] == 'O')
+            dfs(i, 0, n, m, board);
+    for (int i = 0; i < n; i++)
+        if (board[i][m - 1] == 'O')
+            dfs(i, m - 1, n, m, board);
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            if (board[i][j] == '#')
+                board[i][j] = 'O';
+            else if (board[i][j] == 'O')
+                board[i][j] = 'X';
+}
