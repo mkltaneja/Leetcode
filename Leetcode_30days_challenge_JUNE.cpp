@@ -958,3 +958,30 @@ void solve(vector<vector<char>> &board)
             else if (board[i][j] == 'O')
                 board[i][j] = 'X';
 }
+
+//DAY 21(Permutation Sequence)====================================================================================
+
+string kstr = "";
+void kth_perm(int n, int &k, string que, string ans)
+{
+    if (que.size() == 0)
+    {
+        // cout<<ans<<endl;
+        if (k-- == 1)
+            kstr = ans;
+        return;
+    }
+    // cout<<que<<endl;
+    for (int i = 0; i < que.size(); i++)
+        kth_perm(n, k, que.substr(0, i) + que.substr(i + 1), ans + que[i]);
+}
+
+string getPermutation(int n, int k)
+{
+    string s = "";
+    for (int i = 1; i <= n; i++)
+        s += to_string(i);
+    // cout<<s;
+    kth_perm(n, k, s, "");
+    return kstr;
+}
