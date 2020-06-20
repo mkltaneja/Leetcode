@@ -961,6 +961,8 @@ void solve(vector<vector<char>> &board)
 
 //DAY 21(Permutation Sequence)====================================================================================
 
+// void type  --> O([sigma(1->n)](n!))
+// this code may give TLE
 string kstr = "";
 void kth_perm(int n, int &k, string que, string ans)
 {
