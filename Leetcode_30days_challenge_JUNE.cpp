@@ -987,3 +987,37 @@ string getPermutation(int n, int k)
     kth_perm(n, k, s, "");
     return kstr;
 }
+
+///////////////OR/////////////////
+
+// Method 2 (by taking flag)
+// this will optimize the code but this may also give TLE in some cases
+string kstr = "";
+bool flag = false;
+void kth_perm(int n, int &k, string que, string ans)
+{
+    if (que.size() == 0)
+    {
+        // cout<<ans<<endl;
+        if (k-- == 1)
+        {
+            kstr = ans;
+            flag = true;
+        }
+        return;
+    }
+    // cout<<que<<endl;
+    for (int i = 0; i < que.size(); i++)
+        if (!flag)
+            kth_perm(n, k, que.substr(0, i) + que.substr(i + 1), ans + que[i]);
+}
+
+string getPermutation(int n, int k)
+{
+    string s = "";
+    for (int i = 1; i <= n; i++)
+        s += to_string(i);
+    // cout<<s;
+    kth_perm(n, k, s, "");
+    return kstr;
+}
