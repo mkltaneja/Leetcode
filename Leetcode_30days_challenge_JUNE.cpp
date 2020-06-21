@@ -1021,3 +1021,39 @@ string getPermutation(int n, int k)
     kth_perm(n, k, s, "");
     return kstr;
 }
+
+/////////////OR////////////
+
+// O(n)
+string getPermutation(int n, int k)
+{
+    vector<int> fact(n, 1);
+    vector<int> digits(n, 1);
+
+    for (int i = 1; i < n; i++)
+    {
+        fact[i] = fact[i - 1] * (i + 1);
+        digits[i] = i + 1;
+    }
+
+    string ans = "";
+
+    while (ans.size() < n - 1)
+    {
+        int tcombi = fact[fact.size() - 2];
+        int dig_idx = (k - 1) / tcombi;
+
+        ans += to_string(digits[dig_idx]);
+
+        digits.erase(digits.begin() + dig_idx);
+        fact.pop_back();
+
+        k %= tcombi;
+        if (k == 0)
+            for (int i = digits.size() - 1; i >= 0; i--)
+                ans += to_string(digits[i]);
+    }
+    if (ans.size() < n)
+        ans += to_string(digits[0]);
+    return ans;
+}
