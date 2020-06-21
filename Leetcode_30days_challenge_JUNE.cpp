@@ -1057,3 +1057,47 @@ string getPermutation(int n, int k)
         ans += to_string(digits[0]);
     return ans;
 }
+
+// DAY 22(Dungeon Game)=========================================================
+
+// Method 1 Recursion(DFS)
+// recursion may give TLE
+int minreq = INT_MAX;
+void dfs(vector<vector<int>> &arr, int sr, int sc, int er, int ec, int req, int gain, string ans)
+{
+    // cout<<arr[sr][sc]<<endl;
+    if (sr == er && sc == ec)
+    {
+        int g = gain, r = req;
+        g += arr[sr][sc];
+        if (g < 0)
+            r += -g;
+
+        // cout<<ans<<" "<<to_string(arr[sr][sc])<<endl<<r<<endl;
+        // cout<<"BASE\n";
+        minreq = min(r, minreq);
+        return;
+    }
+    if (sr == er + 1 || sc == ec + 1)
+        return;
+
+    int g = gain, r = req;
+    g += arr[sr][sc];
+    if (g < 0)
+    {
+        r += -g;
+        g = 0;
+    }
+
+    dfs(arr, sr + 1, sc, er, ec, r, g, ans + to_string(arr[sr][sc]) + " ");
+    dfs(arr, sr, sc + 1, er, ec, r, g, ans + to_string(arr[sr][sc]) + " ");
+}
+
+int calculateMinimumHP(vector<vector<int>> &dungeon)
+{
+    int n = dungeon.size();
+    int m = dungeon[0].size();
+    int sr = 0, sc = 0, er = n - 1, ec = m - 1;
+    dfs(dungeon, sr, sc, er, ec, 1, 0, "");
+    return minreq;
+}
