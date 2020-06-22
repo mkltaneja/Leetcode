@@ -1101,3 +1101,36 @@ int calculateMinimumHP(vector<vector<int>> &dungeon)
     dfs(dungeon, sr, sc, er, ec, 1, 0, "");
     return minreq;
 }
+
+////////////////OR/////////////////////
+
+// Method 2 (by DP)
+
+int calculateMinimumHP(vector<vector<int>> &dungeon)
+{
+    int n = dungeon.size();
+    int m = dungeon[0].size();
+    vector<vector<int>> dp(n, vector<int>(m, 0));
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        for (int j = m - 1; j >= 0; j--)
+        {
+            if (i == n - 1 && j == m - 1)
+            {
+                dp[i][j] = (dungeon[i][j] <= 0) ? 1 - dungeon[i][j] : 1;
+                continue;
+            }
+            int r = (j + 1 != m) ? dp[i][j + 1] : INT_MAX;
+            int d = (i + 1 != n) ? dp[i + 1][j] : INT_MAX;
+            dp[i][j] = max(min(r, d) - dungeon[i][j], 1);
+        }
+    }
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+            cout << dp[i][j] << " ";
+        cout << endl;
+    }
+    return dp[0][0];
+}
