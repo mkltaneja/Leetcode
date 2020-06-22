@@ -1150,7 +1150,7 @@ int singleNumber(vector<int> &nums)
 }
 
 ////////////////////////////OR//////////////////////////////
-// Approach 2 -- > O(n), space - O(n) 
+// Approach 2 -- > O(n), space - O(n)
 int singleNumber(vector<int> &nums)
 {
     int n = nums.size();
@@ -1161,4 +1161,25 @@ int singleNumber(vector<int> &nums)
         if (itr.second == 1)
             return itr.first;
     return -1;
+}
+
+////////////////////OR//////////////////////////
+
+// Approach 3 --> O(n), space O(1)
+int k = 3; // this code is valid for every k(no. of times every element is repeting, HERE k = 3)
+int singleNumber(vector<int> &nums)
+{
+    int unique_num = 0;
+    for (int i = 0; i < 32; i++)
+    {
+        int total_ON_ith_BITS = 0;
+        int ith_BIT = (1 << i);
+        for (int num : nums)
+            if (num & ith_BIT)
+                total_ON_ith_BITS++;
+
+        if (total_ON_ith_BITS % k)
+            unique_num |= ith_BIT;
+    }
+    return unique_num;
 }
