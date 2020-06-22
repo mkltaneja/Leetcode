@@ -1137,14 +1137,28 @@ int calculateMinimumHP(vector<vector<int>> &dungeon)
 
 // DAY 23 (Single Number 2)=========================================================================
 
-// Approach 1 O(nlogn)
-int singleNumber(vector<int>& nums) 
+// Approach 1 --> O(nlogn) space O(1)
+int singleNumber(vector<int> &nums)
 {
-    sort(nums.begin(),nums.end());
-    for(int i=0;i<nums.size()-1;i+=3)
+    sort(nums.begin(), nums.end());
+    for (int i = 0; i < nums.size() - 1; i += 3)
     {
-        if(nums[i+1] != nums[i])
+        if (nums[i + 1] != nums[i])
             return nums[i];
     }
-    return nums[nums.size()-1];
+    return nums[nums.size() - 1];
+}
+
+////////////////////////////OR//////////////////////////////
+// Approach 2 -- > O(n), space - O(n) 
+int singleNumber(vector<int> &nums)
+{
+    int n = nums.size();
+    unordered_map<int, int> m;
+    for (int i : nums)
+        m[i]++;
+    for (auto itr : m)
+        if (itr.second == 1)
+            return itr.first;
+    return -1;
 }
