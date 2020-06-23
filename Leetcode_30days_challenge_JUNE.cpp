@@ -1196,3 +1196,13 @@ int countNodes(TreeNode *root)
 
     return leftcount + rightcount + 1;
 }
+
+/////////////////////OR///////////////////////
+
+// Method 2
+int countNodes(TreeNode *root)
+{
+    if (root == nullptr)
+        return 0;
+    return countNodes(root->left) + countNodes(root->right) + 1;
+}
