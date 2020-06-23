@@ -69,7 +69,7 @@ int climbStairs(int n)
 
 // optimization
 // accepted
-int tab_ways(int i, int n)
+int opt_ways(int i, int n)
 {
     int a = 1;
     int b = 1;
