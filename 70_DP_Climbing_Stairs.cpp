@@ -66,3 +66,26 @@ int climbStairs(int n)
     vector<int> dp(n + 1, 0);
     return tab_ways(0, n, dp);
 }
+
+// optimization
+// accepted
+int tab_ways(int i, int n)
+{
+    int a = 1;
+    int b = 1;
+    int sum = 1;
+    for (int i = 2; i <= n; i++)
+    {
+        sum = a + b;
+        a = b;
+        b = sum;
+    }
+    return sum;
+}
+
+int climbStairs(int n)
+{
+    if (n == 0)
+        return 1;
+    return tab_ways(0, n);
+}
