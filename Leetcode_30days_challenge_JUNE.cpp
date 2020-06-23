@@ -959,7 +959,7 @@ void solve(vector<vector<char>> &board)
                 board[i][j] = 'X';
 }
 
-//DAY 21(Permutation Sequence)====================================================================================
+//DAY 20(Permutation Sequence)====================================================================================
 
 // void type  --> O([sigma(1->n)](n!))
 // this code may give TLE
@@ -1058,7 +1058,7 @@ string getPermutation(int n, int k)
     return ans;
 }
 
-// DAY 22(Dungeon Game)=========================================================
+// DAY 21(Dungeon Game)=========================================================
 
 // Method 1 Recursion(DFS)
 // recursion may give TLE
@@ -1135,7 +1135,7 @@ int calculateMinimumHP(vector<vector<int>> &dungeon)
     return dp[0][0];
 }
 
-// DAY 23 (Single Number 2)=========================================================================
+// DAY 22 (Single Number 2)=========================================================================
 
 // Approach 1 --> O(nlogn) space O(1)
 int singleNumber(vector<int> &nums)
@@ -1182,4 +1182,17 @@ int singleNumber(vector<int> &nums)
             unique_num |= ith_BIT;
     }
     return unique_num;
+}
+
+// DAY 23(Count Complete Tree Nodes)===========================================
+
+// Method 1
+int countNodes(TreeNode *root)
+{
+    if (root == nullptr)
+        return 0;
+    int leftcount = countNodes(root->left);
+    int rightcount = countNodes(root->right);
+
+    return leftcount + rightcount + 1;
 }
