@@ -1206,3 +1206,16 @@ int countNodes(TreeNode *root)
         return 0;
     return countNodes(root->left) + countNodes(root->right) + 1;
 }
+
+// Method 3
+int countNodes(TreeNode *root)
+{
+    if (root == nullptr)
+        return 0;
+
+    int count = 0;
+    count += countNodes(root->left);
+    count += countNodes(root->right);
+
+    return count + 1;
+}
