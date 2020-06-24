@@ -1219,3 +1219,23 @@ int countNodes(TreeNode *root)
 
     return count + 1;
 }
+
+//DAY 24(Unique Binary Seartch Trees)======================================================
+
+int numTrees(int n)
+{
+    if (n < 2)
+        return 1;
+    vector<int> unique(n + 1, 0);
+    unique[0] = 1;
+    unique[1] = 1;
+
+    for (int i = 2; i <= n; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            unique[i] += unique[j] * unique[i - j - 1];
+        }
+    }
+    return unique[n];
+}
