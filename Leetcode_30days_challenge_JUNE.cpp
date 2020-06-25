@@ -1254,3 +1254,19 @@ int findDuplicate(vector<int> &nums)
                 return nums[i];
     return -1;
 }
+
+/////////////////////OR/////////////////////
+// O(n) time O(n) space
+int findDuplicate(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 2)
+        return nums[0];
+    unordered_map<int, int> m;
+    for (int i : nums)
+        if (m[i] > 0)
+            return i;
+        else
+            m[i]++;
+    return -1;
+}
