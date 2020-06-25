@@ -1239,3 +1239,18 @@ int numTrees(int n)
     }
     return unique[n];
 }
+
+// DAY 25(Find The Duplicate Number)========================================================
+
+// O(n^2) time O(1) space
+int findDuplicate(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 2)
+        return nums[0];
+    for (int i = 0; i < n - 1; i++)
+        for (int j = i + 1; j < n; j++)
+            if (nums[j] == nums[i])
+                return nums[i];
+    return -1;
+}
