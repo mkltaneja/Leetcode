@@ -1273,7 +1273,7 @@ int findDuplicate(vector<int> &nums)
 
 ////////////////////OR/////////////////////////
 
-// O(n) time O(n) space but changed the array
+// O(n) time O(1) space but changed the array
 int findDuplicate(vector<int> &nums)
 {
     int n = nums.size();
