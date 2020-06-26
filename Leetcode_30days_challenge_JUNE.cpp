@@ -1270,3 +1270,21 @@ int findDuplicate(vector<int> &nums)
             m[i]++;
     return -1;
 }
+
+////////////////////OR/////////////////////////
+
+// O(n) time O(n) space but changed the array
+int findDuplicate(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 2)
+        return nums[0];
+    for (int i : nums)
+    {
+        // cout<<nums[i]<<endl;
+        if (nums[abs(i)] < 0)
+            return abs(i);
+        nums[abs(i)] = nums[abs(i)] * (-1);
+    }
+    return -1;
+}
