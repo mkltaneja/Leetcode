@@ -1288,3 +1288,44 @@ int findDuplicate(vector<int> &nums)
     }
     return -1;
 }
+
+///////////////////////////OR//////////////////////////
+// O(n) time O(nlogn) space
+int findDuplicate(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 2)
+        return nums[0];
+    sort(nums.begin(), nums.end());
+    for (int i = 0; i < n - 1; i++)
+        if (nums[i] == nums[i + 1])
+            return nums[i];
+    return -1;
+}
+
+////////////////////////////OR////////////////////////////
+// O(n) time O(1) sapce
+int findDuplicate(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 2)
+        return nums[0];
+
+    int turt = nums[0];
+    int hare = nums[0];
+
+    do
+    {
+        hare = nums[nums[hare]];
+        turt = nums[turt];
+    } while (hare != turt);
+
+    turt = nums[0];
+    while (hare != turt)
+    {
+        hare = nums[hare];
+        turt = nums[turt];
+    }
+
+    return hare;
+}
