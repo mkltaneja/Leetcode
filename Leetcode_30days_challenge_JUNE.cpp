@@ -1382,3 +1382,27 @@ int sumNumbers(TreeNode *root)
     allsum(root, 0, sum);
     return sum;
 }
+
+// Method 3(int type)
+int allsum(TreeNode *node, int num)
+{
+    int num_ = num * 10 + node->val;
+    int leftsum = 0;
+    int rightsum = 0;
+    if (node->left == nullptr && node->right == nullptr)
+        return num_;
+
+    if (node->left)
+        leftsum = allsum(node->left, num_);
+    if (node->right)
+        rightsum = allsum(node->right, num_);
+
+    return leftsum + rightsum;
+}
+
+int sumNumbers(TreeNode *root)
+{
+    if (!root)
+        return 0;
+    return allsum(root, 0);
+}
