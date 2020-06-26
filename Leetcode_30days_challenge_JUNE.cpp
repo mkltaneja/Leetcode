@@ -1329,3 +1329,30 @@ int findDuplicate(vector<int> &nums)
 
     return hare;
 }
+
+// DAY 26(Sum Root to Leaf Numbers)
+// Method 1
+int sum = 0;
+void allsum(TreeNode *node, int num)
+{
+    if (node == nullptr)
+        return;
+
+    int num_ = num;
+    num_ *= 10;
+    num_ += node->val;
+    if (node->left == nullptr && node->right == nullptr)
+    {
+        sum += num_;
+        return;
+    }
+
+    allsum(node->left, num_);
+    allsum(node->right, num_);
+}
+
+int sumNumbers(TreeNode *root)
+{
+    allsum(root, 0);
+    return sum;
+}
