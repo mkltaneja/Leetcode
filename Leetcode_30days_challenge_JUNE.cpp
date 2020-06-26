@@ -1331,7 +1331,7 @@ int findDuplicate(vector<int> &nums)
 }
 
 // DAY 26(Sum Root to Leaf Numbers)
-// Method 1
+// Method 1 (void type)
 int sum = 0;
 void allsum(TreeNode *node, int num)
 {
@@ -1354,5 +1354,31 @@ void allsum(TreeNode *node, int num)
 int sumNumbers(TreeNode *root)
 {
     allsum(root, 0);
+    return sum;
+}
+
+// Method 2 (void type -- without using global(using "&"))
+void allsum(TreeNode *node, int num, int &sum)
+{
+    if (node == nullptr)
+        return;
+
+    int num_ = num;
+    num_ *= 10;
+    num_ += node->val;
+    if (node->left == nullptr && node->right == nullptr)
+    {
+        sum += num_;
+        return;
+    }
+
+    allsum(node->left, num_, sum);
+    allsum(node->right, num_, sum);
+}
+
+int sumNumbers(TreeNode *root)
+{
+    int sum = 0;
+    allsum(root, 0, sum);
     return sum;
 }
