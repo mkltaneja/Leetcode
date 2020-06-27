@@ -1383,7 +1383,7 @@ int sumNumbers(TreeNode *root)
     return sum;
 }
 
-// Method 3(int type)
+// Method 3 (int type)
 int allsum(TreeNode *node, int num)
 {
     int num_ = num * 10 + node->val;
@@ -1405,4 +1405,28 @@ int sumNumbers(TreeNode *root)
     if (!root)
         return 0;
     return allsum(root, 0);
+}
+
+//DAY 27 (Perfect Squares)==========================================================
+
+// Method 1 (recursion)
+// this will give TLE
+int minans(int n, int root, int count)
+{
+    // cout<<n<<" "<<root<<" "<<count<<endl;
+    if (n == 0)
+        return count;
+
+    int mini = INT_MAX;
+    for (int r = root; r > root / 2; r--)
+    {
+        int num = n - (r * r);
+        mini = min(mini, minans(num, floor(sqrt(num)), count + 1));
+    }
+    return mini;
+}
+
+int numSquares(int n)
+{
+    return minans(n, floor(sqrt(n)), 0);
 }
