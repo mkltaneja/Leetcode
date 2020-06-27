@@ -1430,3 +1430,31 @@ int numSquares(int n)
 {
     return minans(n, floor(sqrt(n)), 0);
 }
+
+/////////////////OR///////////////
+
+// Memoisation
+// Accepted
+int memo_minans(int n, int root, vector<int> &dp)
+{
+    // cout<<n<<" "<<root<<" "<<count<<endl;
+    if (n == 0)
+        return dp[0] = 0;
+
+    if (dp[n] != 0)
+        return dp[n];
+
+    int mini = INT_MAX;
+    for (int r = root; r > root / 2; r--)
+    {
+        int num = n - (r * r);
+        mini = min(mini, memo_minans(num, floor(sqrt(num)), dp) + 1);
+    }
+    return dp[n] = mini;
+}
+
+int numSquares(int n)
+{
+    vector<int> dp(n + 1, 0);
+    return memo_minans(n, floor(sqrt(n)), dp);
+}
