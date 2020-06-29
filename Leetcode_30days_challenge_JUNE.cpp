@@ -1461,6 +1461,7 @@ int numSquares(int n)
 
 // DAY 28()============================================================
 
+// Method 1 (using multiset)
 void dfs(unordered_map<string, multiset<string>> &graph, string from, vector<string> &places)
 {
     while (graph[from].size())
@@ -1489,6 +1490,36 @@ vector<string> findItinerary(vector<vector<string>> &tickets)
     //         cout<<e1<<" ";
     //     cout<<endl;
     // }
+    vector<string> places;
+    dfs(graph, "JFK", places);
+
+    reverse(places.begin(), places.end());
+
+    return places;
+}
+
+// Method 2 (using priority queue)
+void dfs(unordered_map<string, priority_queue<string, vector<string>, greater<string>>> &graph, string from, vector<string> &places)
+{
+    while (graph[from].size())
+    {
+        string to = graph[from].top();
+        // cout<<to<<endl;
+        graph[from].pop();
+        dfs(graph, to, places);
+    }
+    places.push_back(from);
+}
+
+vector<string> findItinerary(vector<vector<string>> &tickets)
+{
+    int n = tickets.size();
+    unordered_map<string, priority_queue<string, vector<string>, greater<string>>> graph;
+    for (vector<string> from : tickets)
+    {
+        graph[from[0]].push(from[1]);
+    }
+
     vector<string> places;
     dfs(graph, "JFK", places);
 
