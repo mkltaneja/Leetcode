@@ -1531,7 +1531,6 @@ vector<string> findItinerary(vector<vector<string>> &tickets)
 // DAY 29(Unique Paths)==========================================
 
 // Method 1 (DFS recursion)
-
 int dfs(int sr, int sc, int er, int ec)
 {
     if (sr == er && sc == ec)
@@ -1547,4 +1546,27 @@ int dfs(int sr, int sc, int er, int ec)
 int uniquePaths(int m, int n)
 {
     return dfs(1, 1, n, m);
+}
+
+// Method 2 (memoized)
+int dfs(int sr, int sc, int er, int ec, vector<vector<int>> &dp)
+{
+    if (sr == er && sc == ec)
+        return dp[sr][sc] = 1;
+
+    if (dp[sr][sc] != 0)
+        return dp[sr][sc];
+
+    int count = 0;
+    if (sr + 1 <= er)
+        count += dfs(sr + 1, sc, er, ec, dp);
+    if (sc + 1 <= ec)
+        count += dfs(sr, sc + 1, er, ec, dp);
+    return dp[sr][sc] = count;
+}
+
+int uniquePaths(int m, int n)
+{
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+    return dfs(1, 1, n, m, dp);
 }
