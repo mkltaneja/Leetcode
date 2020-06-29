@@ -1458,3 +1458,41 @@ int numSquares(int n)
     vector<int> dp(n + 1, 0);
     return memo_minans(n, floor(sqrt(n)), dp);
 }
+
+// DAY 28()============================================================
+
+void dfs(unordered_map<string, multiset<string>> &graph, string from, vector<string> &places)
+{
+    while (graph[from].size())
+    {
+        string to = *graph[from].begin();
+        // cout<<to<<endl;
+        graph[from].erase(graph[from].begin());
+        dfs(graph, to, places);
+    }
+    places.push_back(from);
+}
+
+vector<string> findItinerary(vector<vector<string>> &tickets)
+{
+    int n = tickets.size();
+    unordered_map<string, multiset<string>> graph;
+    for (vector<string> from : tickets)
+    {
+        graph[from[0]].insert(from[1]);
+    }
+
+    // for(pair<string,multiset<string>> itr : graph)
+    // {
+    //     cout<<itr.first<<" --> ";
+    //     for(string e1 : graph[itr.first])
+    //         cout<<e1<<" ";
+    //     cout<<endl;
+    // }
+    vector<string> places;
+    dfs(graph, "JFK", places);
+
+    reverse(places.begin(), places.end());
+
+    return places;
+}
