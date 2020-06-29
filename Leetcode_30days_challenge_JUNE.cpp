@@ -1459,7 +1459,7 @@ int numSquares(int n)
     return memo_minans(n, floor(sqrt(n)), dp);
 }
 
-// DAY 28()============================================================
+// DAY 28(Reconstruct Itinerary)============================================================
 
 // Method 1 (using multiset)
 void dfs(unordered_map<string, multiset<string>> &graph, string from, vector<string> &places)
@@ -1526,4 +1526,25 @@ vector<string> findItinerary(vector<vector<string>> &tickets)
     reverse(places.begin(), places.end());
 
     return places;
+}
+
+// DAY 29(Unique Paths)==========================================
+
+// Method 1 (DFS recursion)
+
+int dfs(int sr, int sc, int er, int ec)
+{
+    if (sr == er && sc == ec)
+        return 1;
+    int count = 0;
+    if (sr + 1 <= er)
+        count += dfs(sr + 1, sc, er, ec);
+    if (sc + 1 <= ec)
+        count += dfs(sr, sc + 1, er, ec);
+    return count;
+}
+
+int uniquePaths(int m, int n)
+{
+    return dfs(1, 1, n, m);
 }
