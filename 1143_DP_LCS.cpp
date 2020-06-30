@@ -45,7 +45,7 @@ int longestCommonSubsequence(string text1, string text2)
 }
 
 // Method 3 (Tabulation)
-// TLE
+// AC
 int longestCommonSubsequence(string text1, string text2)
 {
     int n = text1.size();
