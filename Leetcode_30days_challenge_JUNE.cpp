@@ -1592,3 +1592,85 @@ int uniquePaths(int m, int n)
     }
     return dp[0][0];
 }
+
+// DAY 30 (Word Search 2)=========================================================
+
+private:
+class Trie
+{
+public:
+    bool wordEnd;
+    vector<Trie *> childs;
+
+    Trie()
+    {
+        wordEnd = false;
+        childs.assign(26, nullptr);
+    }
+    ~Trie()
+    {
+        for (Trie *child : childs)
+            if (child)
+                delete child;
+    }
+
+    void insert(string &word)
+    {
+        Trie *curr = this;
+        for (char c : word)
+        {
+            int idx = c - 'a';
+            if (curr->childs[idx] == nullptr)
+                curr->childs[idx] = new Trie();
+            curr = curr->childs[idx];
+        }
+        curr->wordEnd = true;
+    }
+};
+
+public:
+void dfs(vector<vector<char>> &arr, Trie *node, int i, int j, int n, int m, set<string> &out, string s)
+{
+    char c = arr[i][j];
+    if (c == '$')
+        return;
+    // cout<<c<<endl;
+    arr[i][j] = '$';
+
+    Trie *curr = node->childs[c - 'a'];
+    if (curr)
+    {
+        string ss = s + c;
+        if (curr->wordEnd)
+            out.insert(ss);
+        if (i + 1 < n)
+            dfs(arr, curr, i + 1, j, n, m, out, ss);
+        if (j + 1 < m)
+            dfs(arr, curr, i, j + 1, n, m, out, ss);
+        if (i - 1 >= 0)
+            dfs(arr, curr, i - 1, j, n, m, out, ss);
+        if (j - 1 >= 0)
+            dfs(arr, curr, i, j - 1, n, m, out, ss);
+    }
+
+    arr[i][j] = c;
+}
+
+vector<string> findWords(vector<vector<char>> &board, vector<string> &words)
+{
+    int n = board.size();
+    int m = board[0].size();
+    Trie node;
+    for (string word : words)
+        node.insert(word);
+
+    set<string> out;
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            dfs(board, &node, i, j, n, m, out, "");
+
+    vector<string> ans(out.begin(), out.end());
+
+    return ans;
+}
