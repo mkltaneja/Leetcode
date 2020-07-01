@@ -13,3 +13,11 @@ int arrangeCoins(int n)
     }
     return count;
 }
+
+///////////////////OR////////////////////\
+
+// O(1)
+int arrangeCoins(int n)
+{
+    return (int)(-0.5 + sqrt(0.25 + (long int)2 * n));
+}
