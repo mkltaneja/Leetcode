@@ -77,3 +77,34 @@ vector<vector<int>> levelOrderBottom(TreeNode *root)
     reverse(ans.begin(), ans.end());
     return ans;
 }
+
+///////////////////////////OR//////////////////////
+
+// recursion
+int height(TreeNode *node)
+{
+    if (!node)
+        return 0;
+    return max(height(node->left), height(node->right)) + 1;
+}
+
+void level_rec(TreeNode *node, int level, int h, vector<vector<int>> &ans)
+{
+    if (!node)
+        return;
+    ans[level].push_back(node->val);
+    if (node->left)
+        level_rec(node->left, level + 1, h, ans);
+    if (node->right)
+        level_rec(node->right, level + 1, h, ans);
+}
+
+vector<vector<int>> levelOrderBottom(TreeNode *root)
+{
+    int h = height(root);
+    // cout<<h<<endl;
+    vector<vector<int>> ans(h, vector<int>());
+    level_rec(root, 0, h, ans);
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
