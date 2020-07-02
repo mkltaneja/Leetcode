@@ -38,3 +38,42 @@ int arrangeCoins(int n)
 {
     return (int)(-0.5 + sqrt(0.25 + (long int)2 * n));
 }
+
+// DAY 2 (Binary Tree Level Order Traversal 2)====================================================================
+
+// BFS
+vector<vector<int>> levelOrderBottom(TreeNode *root)
+{
+    if (root == nullptr)
+        return {};
+    queue<TreeNode *> que;
+    que.push(root);
+    vector<vector<int>> ans;
+    ans.push_back({root->val});
+    while (!que.empty())
+    {
+        vector<int> level;
+        int size = que.size();
+        while (size--)
+        {
+            TreeNode *top = que.front();
+            que.pop();
+            TreeNode *l = top->left;
+            TreeNode *r = top->right;
+            if (l)
+            {
+                que.push(l);
+                level.push_back(l->val);
+            }
+            if (r)
+            {
+                que.push(r);
+                level.push_back(r->val);
+            }
+        }
+        if (level.size())
+            ans.push_back(level);
+    }
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
