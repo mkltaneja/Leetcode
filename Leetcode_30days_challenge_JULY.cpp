@@ -129,3 +129,39 @@ vector<int> prisonAfterNDays(vector<int> &cells, int N)
     }
     return cells;
 }
+
+////////////////////////////////OR//////////////////////////////
+
+// O(index of repetetion)
+vector<int> prisonAfterNDays(vector<int> &cells, int N)
+{
+    unordered_map<string, int> m;
+    for (int n = 0; n < N; n++)
+    {
+        string s(cells.begin(), cells.end());
+        if (m.find(s) == m.end())
+        {
+            m.insert({s, n});
+            int prev, curr = cells[0];
+            for (int i = 0; i < 6; i++)
+            {
+                prev = curr;
+                curr = cells[i + 1];
+                cells[i + 1] = !(prev ^ cells[i + 2]);
+                // cout<<prev<<" "<<cells[i+1]<<" "<<cells[i+2]<<endl;
+            }
+            cells[0] = 0;
+            cells[7] = 0;
+            for (int i = 0; i < 8; i++)
+                cout << cells[i] << " ";
+            cout << endl;
+        }
+        else
+        {
+            int len_of_repetetion = n - m[s];
+            int rem_days = (N - n) % len_of_repetetion;
+            return prisonAfterNDays(cells, rem_days);
+        }
+    }
+    return cells;
+}
