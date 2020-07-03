@@ -108,3 +108,24 @@ vector<vector<int>> levelOrderBottom(TreeNode *root)
     reverse(ans.begin(), ans.end());
     return ans;
 }
+
+// DAY 3 (Prison Cells After N Days)============================================================
+// O(8*N)
+// TLE
+vector<int> prisonAfterNDays(vector<int> &cells, int N)
+{
+    while (N--)
+    {
+        int prev, curr = cells[0];
+        for (int i = 0; i < 6; i++)
+        {
+            prev = curr;
+            curr = cells[i + 1];
+            cells[i + 1] = !(prev ^ cells[i + 2]);
+            // cout<<prev<<" "<<cells[i+1]<<" "<<cells[i+2]<<endl;
+        }
+        cells[0] = 0;
+        cells[7] = 0;
+    }
+    return cells;
+}
