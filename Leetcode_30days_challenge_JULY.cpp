@@ -165,3 +165,34 @@ vector<int> prisonAfterNDays(vector<int> &cells, int N)
     }
     return cells;
 }
+
+// DAY 4 (Ugly number 2)===============================================================
+
+// TLE
+int nthUglyNumber(int n)
+{
+    long int i = 1;
+    while (n)
+    {
+        int num = i;
+        bool flag = true;
+        while (num != 1)
+        {
+            if (num % 2 == 0)
+                num /= 2;
+            else if (num % 3 == 0)
+                num /= 3;
+            else if (num % 5 == 0)
+                num /= 5;
+            else
+            {
+                flag = false;
+                break;
+            }
+        }
+        if (flag)
+            n--;
+        i++;
+    }
+    return i - 1;
+}
