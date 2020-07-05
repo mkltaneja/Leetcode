@@ -223,3 +223,18 @@ int nthUglyNumber(int n)
     //     cout<<ugly[i]<<" ";
     return ugly[n - 1];
 }
+
+// DAY 5 (Hamming Distance)=====================================================================================
+
+int hammingDistance(int x, int y)
+{
+    int ham_dist = 0;
+    while (x || y)
+    {
+        if ((x & 1) ^ (y & 1))
+            ham_dist++;
+        x >>= 1;
+        y >>= 1;
+    }
+    return ham_dist;
+}
