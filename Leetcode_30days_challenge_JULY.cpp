@@ -238,3 +238,21 @@ int hammingDistance(int x, int y)
     }
     return ham_dist;
 }
+
+// DAY 6 (Plus One)===============================================================
+
+vector<int> plusOne(vector<int> &digits)
+{
+    int n = digits.size();
+    if (n == 0)
+        return {1};
+
+    int i = n - 1;
+    while (i >= 0 && digits[i] == 9)
+        digits[i--] = 0;
+    if (i >= 0)
+        digits[i]++;
+    else
+        digits.insert(digits.begin(), 1);
+    return digits;
+}
