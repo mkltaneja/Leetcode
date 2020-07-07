@@ -286,3 +286,33 @@ int islandPerimeter(vector<vector<int>> &grid)
     }
     return 4 * ones - commreg;
 }
+
+///////////////////OR///////////////////
+
+// O(2*n^2)
+int islandPerimeter(vector<vector<int>> &grid)
+{
+    int n = grid.size();
+    int m = grid[0].size();
+
+    int ones = 0, commreg = 0;
+    int dir[4][2] = {{1, 0}, {0, 1}};
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (grid[i][j] == 1)
+            {
+                ones++;
+                for (int d = 0; d < 2; d++)
+                {
+                    int r = i + dir[d][0];
+                    int c = j + dir[d][1];
+                    if (r < n && c < m && grid[r][c] == 1)
+                        commreg++;
+                }
+            }
+        }
+    }
+    return 4 * ones - 2 * commreg;
+}
