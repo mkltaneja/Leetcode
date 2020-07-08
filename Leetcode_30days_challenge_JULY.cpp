@@ -319,6 +319,8 @@ int islandPerimeter(vector<vector<int>> &grid)
 
 // DAY 8 (3Sum)=============================================================================
 
+// O(n^3)
+// TLE
 vector<vector<int>> threeSum(vector<int> &nums)
 {
     int n = nums.size();
@@ -343,6 +345,54 @@ vector<vector<int>> threeSum(vector<int> &nums)
         }
     }
     vector<vector<int>> ans;
+    for (auto itr : s)
+        ans.push_back(itr);
+
+    return ans;
+}
+
+//////////////////OR//////////////////////
+
+// O(N^3)  recursively
+// TLE
+void rec_sol(vector<int> &nums, int n, int count, int idx, int sum, vector<int> res, set<vector<int>> &ans)
+{
+    if (count == 3 || idx == n)
+    {
+        if (sum == 0)
+        {
+            ans.insert(res);
+        }
+        return;
+    }
+    int m;
+    if (count == 0)
+        m = n - 2;
+    else if (count == 1)
+        m = n - 1;
+    else if (count == 2)
+        m = n;
+
+    for (int i = idx; i < m; i++)
+    {
+        res.push_back(nums[i]);
+        rec_sol(nums, n, count + 1, i + 1, sum + nums[i], res, ans);
+        res.pop_back();
+    }
+}
+
+vector<vector<int>> threeSum(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 0)
+        return {};
+    sort(nums.begin(), nums.end());
+
+    vector<vector<int>> ans;
+    set<vector<int>> s;
+    vector<int> a;
+    rec_sol(nums, n, 0, 0, 0, a, s);
+
     for (auto itr : s)
         ans.push_back(itr);
 
