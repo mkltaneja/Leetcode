@@ -316,3 +316,35 @@ int islandPerimeter(vector<vector<int>> &grid)
     }
     return 4 * ones - 2 * commreg;
 }
+
+// DAY 8 (3Sum)=============================================================================
+
+vector<vector<int>> threeSum(vector<int> &nums)
+{
+    int n = nums.size();
+    set<vector<int>> s;
+
+    for (int i = 0; i < n - 2; i++)
+    {
+        int a = nums[i];
+        for (int j = i + 1; j < n - 1; j++)
+        {
+            int b = nums[j];
+            for (int k = j + 1; k < n; k++)
+            {
+                int c = nums[k];
+                if (a + b + c == 0)
+                {
+                    vector<int> ar{a, b, c};
+                    sort(ar.begin(), ar.end());
+                    s.insert(ar);
+                }
+            }
+        }
+    }
+    vector<vector<int>> ans;
+    for (auto itr : s)
+        ans.push_back(itr);
+
+    return ans;
+}
