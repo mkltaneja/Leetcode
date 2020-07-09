@@ -398,3 +398,36 @@ vector<vector<int>> threeSum(vector<int> &nums)
 
     return ans;
 }
+
+//////////////OR//////////////
+
+// O(n^2 * logn)
+// TLE
+vector<vector<int>> threeSum(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 0)
+        return {};
+    // cout<<n;
+    sort(nums.begin(), nums.end()); // it makes sure that elements, adding in the set will be sorted (to                                                 check the repetetion of every vector in the set)
+    vector<vector<int>> ans;
+    set<vector<int>> s;
+
+    for (int i = 0; i < n - 2; i++)
+    {
+        int a = nums[i];
+        for (int j = i + 1; j < n - 1; j++)
+        {
+            int b = nums[j];
+            int c = -(a + b);
+            unordered_set<int> st(nums.begin() + j + 1, nums.end());
+            if (st.find(c) != st.end())
+                s.insert({a, b, c});
+        }
+    }
+
+    for (auto itr : s)
+        ans.push_back(itr);
+
+    return ans;
+}
