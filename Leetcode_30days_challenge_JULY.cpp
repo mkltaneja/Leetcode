@@ -431,3 +431,47 @@ vector<vector<int>> threeSum(vector<int> &nums)
 
     return ans;
 }
+
+//////////OR//////////
+
+// O(n^2)
+__ATOMIC_ACQ_REL
+vector<vector<int>> threeSum(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 0)
+        return {};
+    // cout<<n;
+    sort(nums.begin(), nums.end()); // it makes sure that elements, adding in the set will be sorted (to                                                 check the repetetion of every vector in the set)
+    vector<vector<int>> ans;
+    set<vector<int>> s;
+    // vector<int> a;
+    // vector<vector<set<vector<int>>>> dp(3, vector<set<vector<int>>>(n+1, set<vector<int>>()));
+    // rec_sol(nums,n,0,0,0,a,s,dp);
+
+    for (int i = 0; i < n - 2; i++)
+    {
+        int a = nums[i];
+        int j = i + 1;
+        int k = n - 1;
+        while (j < k)
+        {
+            int b = nums[j];
+            int c = nums[k];
+            if (b + c < -a)
+                j++;
+            else if (b + c > -a)
+                k--;
+            else
+            {
+                s.insert({a, b, c});
+                j++, k--;
+            }
+        }
+    }
+
+    for (auto itr : s)
+        ans.push_back(itr);
+
+    return ans;
+}
