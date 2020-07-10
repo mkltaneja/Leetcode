@@ -522,6 +522,7 @@ vector<vector<int>> threeSum(vector<int> &nums)
 
 // DAY 9 (Maximum Width Of Binary Tree)================================================================
 
+// by using long to prevent signed integer overflow(Runtoime Error)
 int widthOfBinaryTree(TreeNode *root)
 {
     if (root == nullptr)
@@ -537,13 +538,46 @@ int widthOfBinaryTree(TreeNode *root)
         int end = que.back().second;
         while (size--)
         {
-            pair<TreeNode *, int> par = que.front();
+            pair<TreeNode *, long> par = que.front();
             que.pop();
 
             if (par.first->left)
                 que.push({par.first->left, (long)2 * par.second + 1});
             if (par.first->right)
                 que.push({par.first->right, (long)2 * par.second + 2});
+        }
+        // cout<<start<<" "<<end<<endl;
+        maxwidth = max(maxwidth, end - start + 1);
+    }
+    return maxwidth;
+}
+
+//////////////////////////OR//////////////////////////
+
+// without using long to prevent signed integer overflow (Runtime error)
+int widthOfBinaryTree(TreeNode *root)
+{
+    if (root == nullptr)
+        return 0;
+    queue<pair<TreeNode *, int>> que;
+    que.push({root, 0});
+
+    int maxwidth = 1;
+    while (!que.empty())
+    {
+        int size = que.size();
+        int start = que.front().second;
+        int end = que.back().second;
+        while (size--)
+        {
+            pair<TreeNode *, int> par = que.front();
+            que.pop();
+            int idx = par.second - start;
+
+            if (par.first->left)
+                que.push({par.first->left, 2 * idx + 1});
+            if (par.first->right)
+                que.push({par.first->right, 2 * idx + 2});
         }
         // cout<<start<<" "<<end<<endl;
         maxwidth = max(maxwidth, end - start + 1);
