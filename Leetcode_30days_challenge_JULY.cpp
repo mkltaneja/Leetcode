@@ -519,3 +519,34 @@ vector<vector<int>> threeSum(vector<int> &nums)
     }
     return ans;
 }
+
+// DAY 9 (Maximum Width Of Binary Tree)================================================================
+
+int widthOfBinaryTree(TreeNode *root)
+{
+    if (root == nullptr)
+        return 0;
+    queue<pair<TreeNode *, long>> que;
+    que.push({root, 0});
+
+    int maxwidth = 1;
+    while (!que.empty())
+    {
+        int size = que.size();
+        int start = que.front().second;
+        int end = que.back().second;
+        while (size--)
+        {
+            pair<TreeNode *, int> par = que.front();
+            que.pop();
+
+            if (par.first->left)
+                que.push({par.first->left, (long)2 * par.second + 1});
+            if (par.first->right)
+                que.push({par.first->right, (long)2 * par.second + 2});
+        }
+        // cout<<start<<" "<<end<<endl;
+        maxwidth = max(maxwidth, end - start + 1);
+    }
+    return maxwidth;
+}
