@@ -614,3 +614,36 @@ Node *flatten(Node *head)
     }
     return head;
 }
+
+///////////////////////////OR////////////////////////////////
+
+// by recursion
+Node *flatten(Node *head)
+{
+    Node *itr = head;
+    while (itr)
+    {
+        if (itr->child)
+        {
+            Node *temp = itr->next;
+            itr->next = nullptr;
+            if (temp)
+                temp->prev = nullptr;
+
+            Node *chtemp = itr->child;
+            itr->next = flatten(chtemp);
+
+            itr->next->prev = itr;
+            while (chtemp->next != nullptr)
+                chtemp = chtemp->next;
+            chtemp->next = temp;
+
+            if (temp)
+                temp->prev = chtemp;
+
+            itr->child = nullptr;
+        }
+        itr = itr->next;
+    }
+    return head;
+}
