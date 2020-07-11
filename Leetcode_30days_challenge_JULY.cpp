@@ -647,3 +647,24 @@ Node *flatten(Node *head)
     }
     return head;
 }
+
+///////////////OR///////////////////
+
+// by combination
+void subset_combi(vector<int> &nums, int idx, vector<vector<int>> &ans, vector<int> sub)
+{
+    ans.push_back(sub);
+    for (int i = idx; i < nums.size(); i++)
+    {
+        sub.push_back(nums[i]);
+        subset_combi(nums, i + 1, ans, sub);
+        sub.pop_back();
+    }
+}
+
+vector<vector<int>> subsets(vector<int> &nums)
+{
+    vector<vector<int>> ans;
+    subset_combi(nums, 0, ans, {});
+    return ans;
+}
