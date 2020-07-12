@@ -667,4 +667,18 @@ vector<vector<int>> subsets(vector<int> &nums)
     vector<vector<int>> ans;
     subset_combi(nums, 0, ans, {});
     return ans;
+// DAY 12 (Reverse Bits)======================================================
+
+uint32_t reverseBits(uint32_t n)
+{
+    uint32_t nn = 0;
+    for (int i = 0; i < 32; i++)
+    {
+        uint32_t lsb = (n & 1);
+        n >>= 1;
+
+        nn <<= 1;
+        nn |= lsb;
+    }
+    return nn;
 }
