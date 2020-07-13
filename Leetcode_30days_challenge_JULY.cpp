@@ -667,6 +667,7 @@ vector<vector<int>> subsets(vector<int> &nums)
     vector<vector<int>> ans;
     subset_combi(nums, 0, ans, {});
     return ans;
+}
 // DAY 12 (Reverse Bits)======================================================
 
 uint32_t reverseBits(uint32_t n)
@@ -681,4 +682,36 @@ uint32_t reverseBits(uint32_t n)
         nn |= lsb;
     }
     return nn;
+}
+
+// DAY 13(Same Tree)==========================================================
+
+bool checkisSameTree(TreeNode *p, TreeNode *q)
+{
+    bool res = true;
+
+    if (p->val != q->val)
+        return false;
+
+    if (p->left && q->left)
+        res &= checkisSameTree(p->left, q->left);
+    else if (!p->left && q->left || p->left && !q->left)
+        return false;
+
+    if (p->right && q->right)
+        res &= checkisSameTree(p->right, q->right);
+    else if (!p->right && q->right || p->right && !q->right)
+        return false;
+
+    return res;
+}
+
+bool isSameTree(TreeNode *p, TreeNode *q)
+{
+    if (p == nullptr && q == nullptr)
+        return true;
+    else if ((p && !q) || (!p && q))
+        return false;
+
+    return checkisSameTree(p, q);
 }
