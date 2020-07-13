@@ -686,6 +686,7 @@ uint32_t reverseBits(uint32_t n)
 
 // DAY 13(Same Tree)==========================================================
 
+// recursion
 bool checkisSameTree(TreeNode *p, TreeNode *q)
 {
     bool res = true;
@@ -714,4 +715,18 @@ bool isSameTree(TreeNode *p, TreeNode *q)
         return false;
 
     return checkisSameTree(p, q);
+}
+
+/////////////////////OR/////////////////////////////
+
+// short recursion
+bool isSameTree(TreeNode *p, TreeNode *q)
+{
+    if (!p && !q)
+        return true;
+    if (!p || !q)
+        return false;
+    if (p->val != q->val)
+        return false;
+    return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
 }
