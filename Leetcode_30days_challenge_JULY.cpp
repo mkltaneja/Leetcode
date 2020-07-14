@@ -730,3 +730,15 @@ bool isSameTree(TreeNode *p, TreeNode *q)
         return false;
     return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
 }
+
+// DAY 15 (Angle Between Hands of a Clock)==================================================
+
+double angleClock(int hour, int minutes)
+{
+    double minute_angle = minutes * 6;
+    double hour_angle = hour * 30;
+    hour_angle += minute_angle / 12;
+    // cout<<minute_angle<<" "<<hour_angle<<endl;
+
+    return min(abs(hour_angle - minute_angle), 360 - abs(hour_angle - minute_angle));
+}
