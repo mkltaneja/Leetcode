@@ -742,3 +742,13 @@ double angleClock(int hour, int minutes)
 
     return min(abs(hour_angle - minute_angle), 360 - abs(hour_angle - minute_angle));
 }
+
+///////////////////////OR//////////////////////////
+
+double angleClock(int hour, int minutes)
+{
+    double minute_angle = minutes * 6;
+    double hour_angle = (hour * 30) + (minutes / 2.0);
+
+    return min(abs(hour_angle - minute_angle), 360 - abs(hour_angle - minute_angle));
+}
