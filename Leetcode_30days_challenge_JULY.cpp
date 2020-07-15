@@ -752,3 +752,36 @@ double angleClock(int hour, int minutes)
 
     return min(abs(hour_angle - minute_angle), 360 - abs(hour_angle - minute_angle));
 }
+
+// DAY 15(Reverse Words in a String)====================================================================
+
+// Method 1
+string reverseWords(string s)
+{
+    int n = s.size();
+    int si = 0;
+    while (isspace(s[si]))
+        si++;
+    int i = n - 1;
+    string rev = "";
+    while (i >= si)
+    {
+        string word = "";
+        while (i >= si && !isspace(s[i]))
+        {
+            word += s[i];
+            i--;
+        }
+        if (word.size() > 0)
+        {
+            reverse(word.begin(), word.end());
+            rev += word;
+            cout << i << endl;
+            if (i > si)
+                rev += " ";
+        }
+        i--;
+    }
+    cout << endl;
+    return rev;
+}
