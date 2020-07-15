@@ -755,7 +755,7 @@ double angleClock(int hour, int minutes)
 
 // DAY 15(Reverse Words in a String)====================================================================
 
-// Method 1
+// Method 1 (naive method)
 string reverseWords(string s)
 {
     int n = s.size();
@@ -784,4 +784,27 @@ string reverseWords(string s)
     }
     cout << endl;
     return rev;
+}
+
+///////////////////////OR//////////////////////
+
+// Method 2 (using stringstream)
+string reverseWords(string s)
+{
+    int n = s.size();
+    stringstream ss(s);
+    string word;
+    vector<string> rev;
+
+    while (ss >> word)
+        rev.push_back(word);
+
+    string revstr = "";
+    for (int i = rev.size() - 1; i >= 0; i--)
+    {
+        revstr += rev[i];
+        if (i != 0)
+            revstr += " ";
+    }
+    return revstr;
 }
