@@ -812,7 +812,36 @@ string reverseWords(string s)
 // DAY 16 (Pow(x,n))====================================
 
 // Method 1 -> using pow() function
-double myPow(double x, int n) 
+double myPow(double x, int n)
 {
-    return pow(x,n);
+    return pow(x, n);
+}
+
+// Method 2 -> naive approach
+// TLE
+
+double powp(double x, int n)
+{
+    double x1 = x;
+    while (--n)
+        x1 *= x;
+    return x1;
+}
+
+double pown(double x, int n)
+{
+    double x1 = x;
+    while (--n)
+        x1 *= x;
+    return x1;
+}
+
+double myPow(double x, int n)
+{
+    if (n == 0)
+        return 1;
+    else if (n > 0)
+        return powp(x, n);
+    else
+        return pown(1 / x, -n);
 }
