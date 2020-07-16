@@ -817,18 +817,12 @@ double myPow(double x, int n)
     return pow(x, n);
 }
 
-// Method 2 -> naive approach
+////////////////////OR/////////////////////
+
+// Method 2 -> naive approach O(n)
 // TLE
 
-double powp(double x, int n)
-{
-    double x1 = x;
-    while (--n)
-        x1 *= x;
-    return x1;
-}
-
-double pown(double x, int n)
+double pow(double x, int n)
 {
     double x1 = x;
     while (--n)
@@ -841,7 +835,33 @@ double myPow(double x, int n)
     if (n == 0)
         return 1;
     else if (n > 0)
-        return powp(x, n);
+        return pow(x, n);
     else
-        return pown(1 / x, -n);
+        return pow(1 / x, -n);
+}
+
+/////////////////OR///////////////////////
+
+// Method 3 (Divide and Conquer) -> O(log n)==================================================
+
+double pow(double x, unsigned int n)
+{
+    if (n == 0)
+        return 1;
+    double ans = myPow(x, n / 2);
+    ans *= ans;
+    if (n & 1)
+        ans *= x;
+    return ans;
+}
+
+double myPow(double x, int n)
+{
+    if (n == 0 || x == 1)
+        return 1;
+
+    else if (n > 0)
+        return pow(x, n);
+    else
+        return pow(1 / x, -(unsigned)n);
 }
