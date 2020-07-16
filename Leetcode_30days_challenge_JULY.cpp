@@ -891,3 +891,23 @@ double myPow(double x, int n)
 
     return (n < 0) ? 1 / ans : ans;
 }
+
+///////////////////OR//////////////////
+
+// Method 4 (Iterative) -> O(log n)
+double myPow(double x, int n)
+{
+    if (n == 0 || x == 1)
+        return 1;
+    if (n == -1)
+        return 1 / x;
+
+    double ans = 1;
+    for (int i = n; i != 0; i /= 2)
+    {
+        if (i & 1)
+            ans *= x;
+        x *= x;
+    }
+    return (n < 0) ? 1 / ans : ans;
+}
