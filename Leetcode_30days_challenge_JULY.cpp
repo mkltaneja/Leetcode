@@ -848,7 +848,7 @@ double pow(double x, unsigned int n)
 {
     if (n == 0)
         return 1;
-    double ans = myPow(x, n / 2);
+    double ans = pow(x, n / 2);
     ans *= ans;
     if (n & 1)
         ans *= x;
@@ -864,4 +864,30 @@ double myPow(double x, int n)
         return pow(x, n);
     else
         return pow(1 / x, -(unsigned)n);
+}
+
+//////////////////////////OR////////////////////////////
+
+// same as prev without conditions
+double pow(double x, int n)
+{
+    if (n == 0)
+        return 1;
+    double ans = pow(x, n / 2);
+    ans *= ans;
+    if (n & 1)
+        ans *= x;
+    return ans;
+}
+
+double myPow(double x, int n)
+{
+    if (n == 0 || x == 1)
+        return 1;
+    if (n == -1)
+        return 1 / x;
+
+    double ans = pow(x, n);
+
+    return (n < 0) ? 1 / ans : ans;
 }
