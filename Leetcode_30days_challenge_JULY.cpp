@@ -808,3 +808,11 @@ string reverseWords(string s)
     }
     return revstr;
 }
+
+// DAY 16 (Pow(x,n))====================================
+
+// Method 1 -> using pow() function
+double myPow(double x, int n) 
+{
+    return pow(x,n);
+}
