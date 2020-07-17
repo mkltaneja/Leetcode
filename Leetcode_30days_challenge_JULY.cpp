@@ -911,3 +911,31 @@ double myPow(double x, int n)
     }
     return (n < 0) ? 1 / ans : ans;
 }
+
+// DAY 17(Top K frequent elements)========================================
+
+// Method 1 (using map) -> O(n)
+static bool sortby_Second(pair<int, int> &a, pair<int, int> &b)
+{
+    return a.second < b.second;
+}
+vector<int> topKFrequent(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    map<int, int> m;
+    for (int i : nums)
+        m[i]++;
+
+    vector<pair<int, int>> freqarr(m.begin(), m.end());
+    sort(freqarr.begin(), freqarr.end(), sortby_Second);
+
+    vector<int> kfreq;
+    while (k--)
+    {
+        kfreq.push_back(freqarr.back().first);
+        freqarr.erase(freqarr.end());
+        if (freqarr.empty())
+            break;
+    }
+    return kfreq;
+}
