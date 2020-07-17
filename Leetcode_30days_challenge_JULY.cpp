@@ -965,3 +965,38 @@ vector<int> topKFrequent(vector<int> &nums, int k)
     }
     return kfreq;
 }
+
+//////////////////////////////OR//////////////////////
+
+// Method 3 (using hashmap and heap(priority queue)) O(nlogn)
+struct customCompare
+{
+    bool operator()(const pair<int, int> &a, const pair<int, int> &b)
+    {
+        return a.second > b.second;
+    }
+};
+
+vector<int> topKFrequent(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    unordered_map<int, int> m;
+    for (int i : nums)
+        m[i]++;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, customCompare> pq;
+    for (pair<int, int> p : m)
+    {
+        pq.push(p);
+        if (pq.size() > k)
+            pq.pop();
+    }
+
+    vector<int> kfreq(k, 0);
+    int i = 0;
+    while (i < k && !pq.empty())
+    {
+        kfreq[i++] = pq.top().first;
+        pq.pop();
+    }
+    return kfreq;
+}
