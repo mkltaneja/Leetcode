@@ -1000,3 +1000,37 @@ vector<int> topKFrequent(vector<int> &nums, int k)
     }
     return kfreq;
 }
+
+// DAY 18 (Course Schedule 2)==================================================================
+
+vector<int> findOrder(int numCourses, vector<vector<int>> &prerequisites)
+{
+    vector<vector<int>> graph(numCourses, vector<int>());
+    for (vector<int> ar : prerequisites)
+        graph[ar[0]].push_back(ar[1]);
+
+    queue<int> que;
+    vector<int> inDegree(numCourses, 0);
+    for (vector<int> g : graph)
+        for (int vert : g)
+            inDegree[vert]++;
+    for (int i = 0; i < inDegree.size(); i++)
+        if (inDegree[i] == 0)
+            que.push(i);
+
+    vector<int> result;
+    while (!que.empty())
+    {
+        int v = que.front();
+        que.pop();
+        result.push_back(v);
+        for (int vert : graph[v])
+        {
+            inDegree[vert]--;
+            if (inDegree[vert] == 0)
+                que.push(vert);
+        }
+    }
+    reverse(result.begin(), result.end());
+    return (result.size() < numCourses) ? vector<int>() : result;
+}
