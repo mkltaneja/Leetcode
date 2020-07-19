@@ -1034,3 +1034,76 @@ vector<int> findOrder(int numCourses, vector<vector<int>> &prerequisites)
     reverse(result.begin(), result.end());
     return (result.size() < numCourses) ? vector<int>() : result;
 }
+
+// DAY 19 (Add Binary)===================================================
+
+// Method 1 (naive approach)
+string addBinary(string a, string b)
+{
+    int n = a.size() - 1;
+    int m = b.size() - 1;
+    int carry = 0;
+    string sum = "";
+    while (n >= 0 && m >= 0)
+    {
+        if (carry == 0)
+        {
+            if ((a[n] - '0') ^ (b[m] - '0'))
+                sum += '1';
+            else
+                sum += '0';
+            if (a[n] == '1' && b[m] == '1')
+                carry = 1;
+            n--, m--;
+        }
+        else
+        {
+            if ((a[n] - '0') ^ (b[m] - '0'))
+                sum += '0';
+            else
+                sum += '1';
+            if (a[n] == '0' && b[m] == '0')
+                carry = 0;
+            n--, m--;
+        }
+    }
+
+    while (n >= 0)
+    {
+        if (carry == 1)
+        {
+            if (a[n] == '0')
+            {
+                sum += '1';
+                carry = 0;
+            }
+            else
+                sum += '0';
+            n--;
+        }
+        else
+            sum += a[n--];
+    }
+    while (m >= 0)
+    {
+        if (carry == 1)
+        {
+            if (b[m] == '0')
+            {
+                sum += '1';
+                carry = 0;
+            }
+            else
+                sum += '0';
+            m--;
+        }
+        else
+            sum += b[m--];
+    }
+    if (carry == 1)
+        sum += '1';
+
+    reverse(sum.begin(), sum.end());
+
+    return sum;
+}
