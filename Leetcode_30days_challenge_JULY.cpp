@@ -1107,3 +1107,33 @@ string addBinary(string a, string b)
 
     return sum;
 }
+
+////////////////////////OR////////////////////////////
+
+// Method 2 (shortcut approach)
+string addBinary(string a, string b)
+{
+    int n = a.size() - 1;
+    int m = b.size() - 1;
+    int carry = 0;
+
+    string binsum = "";
+
+    while (n >= 0 || m >= 0)
+    {
+        int sum = carry;
+        if (n >= 0)
+            sum += a[n--] - '0';
+        if (m >= 0)
+            sum += b[m--] - '0';
+        binsum += (sum % 2) + '0';
+        carry = sum / 2;
+    }
+
+    if (carry == 1)
+        binsum += '1';
+
+    reverse(binsum.begin(), binsum.end());
+
+    return binsum;
+}
