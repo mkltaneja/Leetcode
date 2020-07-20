@@ -1209,7 +1209,11 @@ ListNode *removeElements(ListNode *head, int val)
     while (*node)
     {
         if ((*node)->val == val)
+        {
+            ListNode** temp = node;
             (*node) = (*node)->next;    // like  6->4->5  changed to 4->5
+            delete &temp;               // deleting that address
+        }
         else
             node = &((*node)->next);   // just gave the address of next node to the prev
     }
