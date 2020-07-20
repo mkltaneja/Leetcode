@@ -1140,6 +1140,7 @@ string addBinary(string a, string b)
 
 // DAY 20 (Remove Linked List Elements)==============================================================
 
+// Method 1
 ListNode *removeElements(ListNode *head, int val)
 {
     ListNode *node = head;
@@ -1195,6 +1196,22 @@ ListNode *removeElements(ListNode *head, int val)
             prev = node;
             node = node->next;
         }
+    }
+    return head;
+}
+
+///////////////////////////////OR////////////////////////////////
+
+// Method 3 (by taking double pointer)
+ListNode *removeElements(ListNode *head, int val)
+{
+    ListNode **node = &head;
+    while (*node)
+    {
+        if ((*node)->val == val)
+            (*node) = (*node)->next;    // like  6->4->5  changed to 4->5
+        else
+            node = &((*node)->next);   // just gave the address of next node to the prev
     }
     return head;
 }
