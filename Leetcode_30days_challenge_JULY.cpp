@@ -1137,3 +1137,31 @@ string addBinary(string a, string b)
 
     return binsum;
 }
+
+// DAY 20 (Remove Linked List Elements)==============================================================
+
+ListNode *removeElements(ListNode *head, int val)
+{
+    ListNode *node = head;
+    ListNode *prev = nullptr;
+    while (node)
+    {
+        bool ff = false;
+        while (node != nullptr && node->val == val)
+        {
+            ff = true;
+            node = node->next;
+        }
+        if (ff)
+        {
+            if (!prev)
+                head = node;
+            else
+                prev->next = node;
+        }
+        prev = node;
+        if (node)
+            node = node->next;
+    }
+    return head;
+}
