@@ -1165,3 +1165,36 @@ ListNode *removeElements(ListNode *head, int val)
     }
     return head;
 }
+
+////////////////////////OR//////////////////////////
+
+// Method 2 - Standard Approach
+ListNode *removeElements(ListNode *head, int val)
+{
+    ListNode *node = head;
+    ListNode *prev = nullptr;
+    while (node)
+    {
+        if (node->val == val)
+        {
+            ListNode *temp = node;
+            if (!prev)
+            {
+                node = node->next;
+                head = node;
+            }
+            else
+            {
+                prev->next = node->next;
+                node = node->next;
+            }
+            delete temp;
+        }
+        else
+        {
+            prev = node;
+            node = node->next;
+        }
+    }
+    return head;
+}
