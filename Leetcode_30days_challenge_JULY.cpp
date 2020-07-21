@@ -1258,3 +1258,41 @@ bool exist(vector<vector<char>> &board, string word)
                     return true;
     return false;
 }
+
+////////////////////////////OR///////////////////////////
+
+// Method 2 (same as prev) -> more optimized by using calls as the conditions
+bool dfs(string &word, int k, int i, int j, int n, int m, vector<vector<char>> &board)
+{
+    // cout<<i<<" "<<j<<" "<<board[i][j]<<"   "<<k<<" "<<word[k]<<endl;
+    if (k == word.size() - 1)
+        return true;
+
+    char c = board[i][j];
+    board[i][j] = '#';
+
+    if (i + 1 < n && board[i + 1][j] == word[k + 1] && dfs(word, k + 1, i + 1, j, n, m, board))
+        return true;
+    if (j + 1 < m && board[i][j + 1] == word[k + 1] && dfs(word, k + 1, i, j + 1, n, m, board))
+        return true;
+    if (i - 1 >= 0 && board[i - 1][j] == word[k + 1] && dfs(word, k + 1, i - 1, j, n, m, board))
+        return true;
+    if (j - 1 >= 0 && board[i][j - 1] == word[k + 1] && dfs(word, k + 1, i, j - 1, n, m, board))
+        return true;
+
+    board[i][j] = c;
+
+    return false;
+}
+
+bool exist(vector<vector<char>> &board, string word)
+{
+    int n = board.size();
+    int m = board[0].size();
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            if (board[i][j] == word[0])
+                if (dfs(word, 0, i, j, n, m, board))
+                    return true;
+    return false;
+}
