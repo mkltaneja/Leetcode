@@ -1210,12 +1210,51 @@ ListNode *removeElements(ListNode *head, int val)
     {
         if ((*node)->val == val)
         {
-            ListNode** temp = node;
-            (*node) = (*node)->next;    // like  6->4->5  changed to 4->5
-            delete &temp;               // deleting that address
+            ListNode **temp = node;
+            (*node) = (*node)->next; // like  6->4->5  changed to 4->5
+            delete &temp;            // deleting that address
         }
         else
-            node = &((*node)->next);   // just gave the address of next node to the prev
+            node = &((*node)->next); // just gave the address of next node to the prev
     }
     return head;
+}
+
+// DAY 21 (Word Search)==============================================
+
+// Method 1 (DFS)
+// TLE
+
+bool dfs(string &word, int k, int i, int j, int n, int m, vector<vector<char>> &board)
+{
+    if (i == n || j == m || i == -1 || j == -1 || board[i][j] == '#' || board[i][j] != word[k])
+        return false;
+    if (k == word.size() - 1)
+        return true;
+    // cout<<i<<" "<<j<<" "<<board[i][j]<<"   "<<k<<" "<<word[k]<<endl;
+
+    char c = board[i][j];
+    board[i][j] = '#';
+
+    bool res = false;
+    res |= dfs(word, k + 1, i + 1, j, n, m, board);
+    res |= dfs(word, k + 1, i, j + 1, n, m, board);
+    res |= dfs(word, k + 1, i - 1, j, n, m, board);
+    res |= dfs(word, k + 1, i, j - 1, n, m, board);
+
+    board[i][j] = c;
+
+    return res;
+}
+
+bool exist(vector<vector<char>> &board, string word)
+{
+    int n = board.size();
+    int m = board[0].size();
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            if (board[i][j] == word[0])
+                if (dfs(word, 0, i, j, n, m, board))
+                    return true;
+    return false;
 }
