@@ -1296,3 +1296,37 @@ bool exist(vector<vector<char>> &board, string word)
                     return true;
     return false;
 }
+
+// DAY 22(Binary Tree Zig Zag Level order Traversal)==================================================================
+
+vector<vector<int>> zigzagLevelOrder(TreeNode *root)
+{
+    if (root == nullptr)
+        return {};
+    queue<TreeNode *> que;
+    que.push(root);
+
+    vector<vector<int>> larr;
+    int l = 0;
+
+    while (!que.empty())
+    {
+        int sz = que.size();
+        vector<int> arr;
+        while (sz--)
+        {
+            TreeNode *node = que.front();
+            que.pop();
+            arr.push_back(node->val);
+            if (node->left)
+                que.push(node->left);
+            if (node->right)
+                que.push(node->right);
+        }
+        larr.push_back(arr);
+        if (l & 1)
+            reverse(larr[l].begin(), larr[l].end());
+        l++;
+    }
+    return larr;
+}
