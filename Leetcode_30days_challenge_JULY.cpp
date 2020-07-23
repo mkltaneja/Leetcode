@@ -1345,3 +1345,31 @@ vector<int> singleNumber(vector<int> &nums)
             once.push_back(itr.first);
     return once;
 }
+
+////////////////////OR////////////////////
+
+// Method 2 (by sorting)
+vector<int> singleNumber(vector<int> &nums)
+{
+    int n = nums.size();
+    sort(nums.begin(), nums.end());
+
+    vector<int> once;
+    for (int i = 0; i < n;)
+    {
+        // cout<<i<<endl;
+        if (i + 1 == n)
+        {
+            once.push_back(nums[i++]);
+            continue;
+        }
+        if (nums[i + 1] != nums[i])
+        {
+            once.push_back(nums[i]);
+            i++;
+        }
+        else
+            i += 2;
+    }
+    return once;
+}
