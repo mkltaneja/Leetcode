@@ -1330,3 +1330,18 @@ vector<vector<int>> zigzagLevelOrder(TreeNode *root)
     }
     return larr;
 }
+
+// DAY 23 (Single Number 3)===================================================
+
+// Method 1 (using map)
+vector<int> singleNumber(vector<int> &nums)
+{
+    unordered_map<int, int> m;
+    for (int i : nums)
+        m[i]++;
+    vector<int> once;
+    for (auto itr : m)
+        if (itr.second == 1)
+            once.push_back(itr.first);
+    return once;
+}
