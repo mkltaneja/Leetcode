@@ -1373,3 +1373,23 @@ vector<int> singleNumber(vector<int> &nums)
     }
     return once;
 }
+
+///////////////////////////OR/////////////////////////////////////
+
+// Method 3 (by XOR)
+vector<int> singleNumber(vector<int> &nums)
+{
+    int xor2 = 0;
+    for (int i : nums)
+        xor2 ^= i; // gives xor of 2 unique elements
+
+    xor2 &= -xor2; // will only ON the first ON bit of xor2 from LSB
+
+    vector<int> once(2, 0);
+    for (int i : nums)
+        if (i & xor2)     // check if the first ON bit is ON in "i"
+            once[1] ^= i; // XOR of all elements with ON bit
+        else
+            once[0] ^= i; // XOR of all elements with OFF bit
+    return once;
+}
