@@ -1393,3 +1393,14 @@ vector<int> singleNumber(vector<int> &nums)
             once[0] ^= i; // XOR of all elements with OFF bit
     return once;
 }
+
+// DAY 25 (Find Minimum Using Rotated Sorted Array)===============================================
+
+// Method 1 (traverse and find min)
+int findMin(vector<int> &nums)
+{
+    int mini = nums[0];
+    for (int i : nums)
+        mini = min(mini, i);
+    return mini;
+}
