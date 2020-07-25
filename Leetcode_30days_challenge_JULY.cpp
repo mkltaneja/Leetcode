@@ -1396,11 +1396,20 @@ vector<int> singleNumber(vector<int> &nums)
 
 // DAY 25 (Find Minimum Using Rotated Sorted Array)===============================================
 
-// Method 1 (traverse and find min)
+// Method 1 (traverse and find min)  -> O(n)
 int findMin(vector<int> &nums)
 {
     int mini = nums[0];
     for (int i : nums)
         mini = min(mini, i);
     return mini;
+}
+
+//////////////////////OR////////////////////////
+
+// Method 2 (sort) -> O(logn)
+int findMin(vector<int> &nums)
+{
+    sort(nums.begin(), nums.end());
+    return nums[0];
 }
