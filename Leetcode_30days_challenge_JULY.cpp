@@ -1416,11 +1416,33 @@ int findMin(vector<int> &nums)
 
 ////////////////////////OR///////////////////////
 
-// Method 3 (finding pivot) O(n)
+// Method 3 (finding pivot) -> O(n)
 int findMin(vector<int> &nums)
 {
     for (int i = 1; i < nums.size(); i++)
         if (nums[i - 1] > nums[i])
             return nums[i];
     return nums[0];
+}
+
+////////////////////////OR////////////////////////
+
+// Method 4 (finding pivot through binary search) -> O(logn)
+int findMin(vector<int> &nums)
+{
+    int l = 0, h = nums.size() - 1;
+    if (nums[l] < nums[h])
+        return nums[l];
+
+    while (l <= h)
+    {
+        int mid = (l + h) / 2;
+        if (nums[mid] > nums[h])
+            l = mid + 1;
+        else if (nums[mid] > nums[h])
+            h = mid;
+        else
+            h--;
+    }
+    return nums[h + 1];
 }
