@@ -1407,9 +1407,20 @@ int findMin(vector<int> &nums)
 
 //////////////////////OR////////////////////////
 
-// Method 2 (sort) -> O(logn)
+// Method 2 (sort) -> O(nlogn)
 int findMin(vector<int> &nums)
 {
     sort(nums.begin(), nums.end());
+    return nums[0];
+}
+
+////////////////////////OR///////////////////////
+
+// Method 3 (finding pivot) O(n)
+int findMin(vector<int> &nums)
+{
+    for (int i = 1; i < nums.size(); i++)
+        if (nums[i - 1] > nums[i])
+            return nums[i];
     return nums[0];
 }
