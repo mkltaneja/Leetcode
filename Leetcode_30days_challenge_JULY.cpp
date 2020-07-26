@@ -1449,7 +1449,7 @@ int findMin(vector<int> &nums)
 
 // DAY 26 (Add Digits)==================================
 
-// Method 1 (naive)
+// Method 1 (naive) --> O(n)
 int addDigits(int num)
 {
     // cout<<num<<endl;
@@ -1462,4 +1462,16 @@ int addDigits(int num)
         num /= 10;
     }
     return addDigits(n);
+}
+
+//////////////////////////////OR/////////////////////////////
+
+// Method 2 (using mathematical formula) --> O(1)
+int addDigits(int num)
+{
+    if (num == 0)
+        return 0;
+    if (num % 9 == 0)
+        return 9;
+    return num % 9;
 }
