@@ -1431,7 +1431,7 @@ int findMin(vector<int> &nums)
 int findMin(vector<int> &nums)
 {
     int l = 0, h = nums.size() - 1;
-    if (nums[l] < nums[h])
+    if (nums[l] < nums[h]) // CHECK if already sorted
         return nums[l];
 
     while (l <= h)
@@ -1445,4 +1445,21 @@ int findMin(vector<int> &nums)
             h--;
     }
     return nums[h + 1];
+}
+
+// DAY 26 (Add Digits)==================================
+
+// Method 1 (naive)
+int addDigits(int num)
+{
+    // cout<<num<<endl;
+    if (num - 9 <= 0)
+        return num;
+    int n = 0;
+    while (num)
+    {
+        n += num % 10;
+        num /= 10;
+    }
+    return addDigits(n);
 }
