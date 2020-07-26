@@ -1475,3 +1475,13 @@ int addDigits(int num)
         return 9;
     return num % 9;
 }
+
+/////////////////////////////////OR///////////////////////////
+
+// subMethod 2 (shortcut way) --> O(1)
+int addDigits(int num)
+{
+    if (num == 0)
+        return 0;
+    return 1 + (num - 1) % 9;
+}
