@@ -1485,3 +1485,32 @@ int addDigits(int num)
         return 0;
     return 1 + (num - 1) % 9;
 }
+
+// DAY 27 (Construct Binary Tree from Inorder and Postorder Traversal)===================================================
+
+TreeNode *construct(vector<int> &in, vector<int> &post, int psi, int pei, int isi, int iei)
+{
+    // cout<<isi<<" "<<iei<<endl;
+    // cout<<psi<<" "<<pei<<endl;
+    if (isi == iei)
+        return new TreeNode(in[isi]);
+    if (isi > iei)
+        return nullptr;
+    TreeNode *root = new TreeNode(post[pei]);
+
+    int ri = isi;
+    for (; ri <= iei; ri++)
+        if (in[ri] == post[pei])
+            break;
+    int diff = ri - isi;
+    // cout<<ri<<endl;
+    root->left = construct(in, post, psi, psi + diff - 1, isi, ri - 1);
+    root->right = construct(in, post, psi + diff, pei - 1, ri + 1, iei);
+
+    return root;
+}
+
+TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder)
+{
+    return construct(inorder, postorder, 0, postorder.size() - 1, 0, inorder.size() - 1);
+}
