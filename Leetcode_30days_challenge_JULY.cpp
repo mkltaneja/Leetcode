@@ -1514,3 +1514,37 @@ TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder)
 {
     return construct(inorder, postorder, 0, postorder.size() - 1, 0, inorder.size() - 1);
 }
+
+// DAY 28 (Task Scheduler)=============================================
+
+int leastInterval(vector<char> &tasks, int n)
+{
+    map<char, int> s;
+    for (char c : tasks)
+        s[c]++;
+
+    priority_queue<int> pq;
+    for (auto p : s)
+        pq.push(p.second);
+
+    int count = 0, countz = 0;
+    while (!pq.empty())
+    {
+        int lasttime = 0;
+        vector<int> temp;
+        for (int i = 0; i <= n; i++)
+        {
+            if (!pq.empty())
+            {
+                temp.push_back(pq.top() - 1);
+                pq.pop();
+                lasttime++;
+            }
+        }
+        for (int i : temp)
+            if (i)
+                pq.push(i);
+        count += !pq.empty() ? n + 1 : lasttime;
+    }
+    return count;
+}
