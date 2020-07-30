@@ -1591,3 +1591,33 @@ vector<string> wordBreak(string s, vector<string> &wordDict)
     }
     return sentences;
 }
+
+///////////////////////////OR///////////////////////////
+
+// Method 2 (by adding a CACHE)===============================
+
+unordered_map<string, vector<string>> dp; // added a CACHE
+vector<string> wordBreak(string s, vector<string> &wordDict)
+{
+    vector<string> sentences;
+
+    if (dp.find(s) != dp.end())
+        return dp[s];
+    for (string word : wordDict)
+    {
+        if (word == s.substr(0, word.size()))
+        {
+            if (word.size() == s.size())
+                sentences.push_back(word);
+            else
+            {
+                vector<string> temp = wordBreak(s.substr(word.size()), wordDict);
+
+                for (string t : temp)
+                    sentences.push_back(word + " " + t);
+            }
+        }
+    }
+    dp[s] = sentences;
+    return sentences;
+}
