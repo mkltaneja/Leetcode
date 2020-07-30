@@ -1548,3 +1548,20 @@ int leastInterval(vector<char> &tasks, int n)
     }
     return count;
 }
+
+// DAY 29 (Best Time to Buy and Sell Stock with Cooldown)=========================================
+
+int maxProfit(vector<int> &prices)
+{
+    if (prices.size() <= 1)
+        return 0;
+    int SA = 0, SB = -prices[0], SC = 0;
+    for (int i = 1; i < prices.size(); i++)
+    {
+        int temp = SA;
+        SA = max(SA, SC);
+        SC = SB + prices[i];
+        SB = max(SB, temp - prices[i]);
+    }
+    return max(SA, SC);
+}
