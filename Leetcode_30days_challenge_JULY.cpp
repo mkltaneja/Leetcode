@@ -1565,3 +1565,29 @@ int maxProfit(vector<int> &prices)
     }
     return max(SA, SC);
 }
+
+// DAY 30 (Word Break 2)====================================================
+
+// Method 1 (without using cache)
+// TLE
+vector<string> wordBreak(string s, vector<string> &wordDict)
+{
+    vector<string> sentences;
+
+    for (string word : wordDict)
+    {
+        if (word == s.substr(0, word.size()))
+        {
+            if (word.size() == s.size())
+                sentences.push_back(word);
+            else
+            {
+                vector<string> temp = wordBreak(s.substr(word.size()), wordDict);
+
+                for (string t : temp)
+                    sentences.push_back(word + " " + t);
+            }
+        }
+    }
+    return sentences;
+}
