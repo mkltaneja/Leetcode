@@ -1621,3 +1621,22 @@ vector<string> wordBreak(string s, vector<string> &wordDict)
     dp[s] = sentences;
     return sentences;
 }
+
+// DAY 31 (Climbing Stairs)===========================================
+
+// Method 1 (recursion)  
+// TLE 
+int climbStairs(int n)
+{
+    if (n <= 0)
+    {
+        if (n == 0)
+            return 1;
+        return 0;
+    }
+    int count = 0;
+    count += climbStairs(n - 1);
+    count += climbStairs(n - 2);
+
+    return count;
+}
