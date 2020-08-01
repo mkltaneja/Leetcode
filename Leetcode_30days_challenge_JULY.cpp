@@ -1694,3 +1694,18 @@ int climbStairs(int n)
 
     return climbStairs_tab(n, dp);
 }
+
+// Method 4 (3 Pointers approach)
+// space friendly
+int climbStairs(int n)
+{
+    int a = 1, b = 1, c = 1;
+    while (n != 1)
+    {
+        c = a + b;
+        a = b;
+        b = c;
+        n--;
+    }
+    return c;
+}
