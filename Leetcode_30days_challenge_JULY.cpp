@@ -1666,3 +1666,31 @@ int climbStairs(int n)
 
     return climbStairs_dp(n, dp);
 }
+
+// Method 3 (Tabulation)
+int climbStairs_tab(int n, vector<int> &dp)
+{
+    for (int i = 0; i <= n; i++)
+    {
+        if (i == 0)
+        {
+            dp[i] = 1;
+            continue;
+        }
+        int count = 0;
+
+        count += dp[i - 1];
+        if (i >= 2)
+            count += dp[i - 2];
+
+        dp[i] = count;
+    }
+    return dp[n];
+}
+
+int climbStairs(int n)
+{
+    vector<int> dp(n + 1, 0);
+
+    return climbStairs_tab(n, dp);
+}
