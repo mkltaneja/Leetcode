@@ -1624,8 +1624,8 @@ vector<string> wordBreak(string s, vector<string> &wordDict)
 
 // DAY 31 (Climbing Stairs)===========================================
 
-// Method 1 (recursion)  
-// TLE 
+// Method 1 (recursion)
+// TLE
 int climbStairs(int n)
 {
     if (n <= 0)
@@ -1639,4 +1639,30 @@ int climbStairs(int n)
     count += climbStairs(n - 2);
 
     return count;
+}
+
+// Method 2 (DP)
+// AC
+int climbStairs_dp(int n, vector<int> &dp)
+{
+    if (n == 0)
+        return dp[n] = 1;
+    if (dp[n])
+        return dp[n];
+    int count = 0;
+
+    count += climbStairs_dp(n - 1, dp);
+    if (n >= 2)
+        count += climbStairs_dp(n - 2, dp);
+
+    dp[n] = count;
+
+    return dp[n];
+}
+
+int climbStairs(int n)
+{
+    vector<int> dp(n + 1, 0);
+
+    return climbStairs_dp(n, dp);
 }
