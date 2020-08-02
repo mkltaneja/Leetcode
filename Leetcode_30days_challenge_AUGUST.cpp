@@ -102,3 +102,43 @@ bool contains(int key)
     int address = hash_function(key);
     return (find(buckets[address].begin(), buckets[address].end(), key) != buckets[address].end());
 }
+
+////////////////////////////////OR/////////////////////////////
+
+// 3rd -> by taking bucket size as 1  -->  time complexity increased to "10 times"
+int numbuckets;
+vector<list<int>> buckets;
+int hash_function(int key)
+{
+    return key % numbuckets;
+}
+
+public:
+/** Initialize your data structure here. */
+MyHashSet()
+{
+    this->numbuckets = 15000;
+    this->buckets.assign(numbuckets, list<int>());
+}
+
+void add(int key)
+{
+    int address = hash_function(key);
+    if (find(buckets[address].begin(), buckets[address].end(), key) == buckets[address].end())
+        buckets[address].push_back(key);
+}
+
+void remove(int key)
+{
+    int address = hash_function(key);
+    auto itr = find(buckets[address].begin(), buckets[address].end(), key);
+    if (itr != buckets[address].end())
+        buckets[address].erase(itr);
+}
+
+/** Returns true if this set contains the specified element */
+bool contains(int key)
+{
+    int address = hash_function(key);
+    return (find(buckets[address].begin(), buckets[address].end(), key) != buckets[address].end());
+}
