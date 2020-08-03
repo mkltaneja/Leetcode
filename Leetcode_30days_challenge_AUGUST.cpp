@@ -161,3 +161,22 @@ bool isPalindrome(string s)
             return false;
     return true;
 }
+
+/////////////////////OR/////////////////////////
+
+// Method 2
+bool isPalindrome(string s)
+{
+    string s1 = "";
+    for (int i = 0; i < s.size(); i++)
+    {
+        s[i] = tolower(s[i]);
+        if (isalnum(s[i]))
+            s1 += s[i];
+    }
+    // cout<<s1<<endl;
+    for (int i = 0; i < s1.size() / 2; i++)
+        if (s1[i] != s1[s1.size() - i - 1])
+            return false;
+    return true;
+}
