@@ -142,3 +142,22 @@ bool contains(int key)
     int address = hash_function(key);
     return (find(buckets[address].begin(), buckets[address].end(), key) != buckets[address].end());
 }
+
+// DAY 3 (Valid Palindrome)=========================================
+
+// Method 1
+bool isPalindrome(string s)
+{
+    string s1 = "";
+    for (int i = 0; i < s.size(); i++)
+    {
+        s[i] = tolower(s[i]);
+        if ((s[i] - 'a' >= 0 && s[i] - 'a' < 26) || (s[i] - '0' >= 0 && s[i] - '0' < 10))
+            s1 += s[i];
+    }
+    // cout<<s1<<endl;
+    for (int i = 0; i < s1.size() / 2; i++)
+        if (s1[i] != s1[s1.size() - i - 1])
+            return false;
+    return true;
+}
