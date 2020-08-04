@@ -222,3 +222,11 @@ bool isPowerOfFour(int num)
     }
     return !(count % 2);
 }
+
+////////////////////////////////OR///////////////////////////////
+
+// Method 2 (one - liner)
+bool isPowerOfFour(int num)
+{
+    return num > 0 && !(num & (num - 1)) && (num & 0x55555555);
+}
