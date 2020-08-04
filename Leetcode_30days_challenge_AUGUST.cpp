@@ -206,3 +206,19 @@ bool isPalindrome(string s)
     }
     return true;
 }
+
+// DAY 4 (Power of 4)==============================================
+
+// Method 1 (loop)
+bool isPowerOfFour(int num)
+{
+    if ((num <= 0) || (num & (num - 1)))
+        return false;
+    int count = 0;
+    while (num != 1)
+    {
+        count++;
+        num >>= 1;
+    }
+    return !(count % 2);
+}
