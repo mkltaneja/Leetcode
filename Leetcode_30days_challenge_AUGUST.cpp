@@ -230,3 +230,67 @@ bool isPowerOfFour(int num)
 {
     return num > 0 && !(num & (num - 1)) && (num & 0x55555555);
 }
+
+// DAY 5 (Add and Search Word - Data structure design)======================================================================
+
+// Method 1 (Search by indices)
+class WordDictionary
+{
+public:
+    vector<WordDictionary *> wd;
+    bool wordEnd;
+    /** Initialize your data structure here. */
+    WordDictionary()
+    {
+        this->wd.assign(26, nullptr);
+        this->wordEnd = false;
+    }
+
+    /** Adds a word into the data structure. */
+    void addWord(string word)
+    {
+        WordDictionary *curr = this;
+        for (char c : word)
+        {
+            if (!curr->wd[c - 'a'])
+                curr->wd[c - 'a'] = new WordDictionary;
+            curr = curr->wd[c - 'a'];
+        }
+        curr->wordEnd = true;
+    }
+
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+
+    bool search2(string &word, int idx, WordDictionary *curr)
+    {
+        for (int i = idx; i < word.size(); i++)
+        {
+            if (word[i] == '.')
+            {
+                for (WordDictionary *ch : curr->wd)
+                    if (ch && search2(word, i + 1, ch))
+                        return true;
+                return false;
+            }
+            else
+            {
+                if (!curr->wd[word[i] - 'a'])
+                    return false;
+                curr = curr->wd[word[i] - 'a'];
+            }
+        }
+        return curr->wordEnd;
+    }
+
+    bool search(string word)
+    {
+        return search2(word, 0, this);
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
