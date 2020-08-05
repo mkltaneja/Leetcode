@@ -288,6 +288,29 @@ public:
     }
 };
 
+// OR -> change in search part (by substring)//////////////////////////////////////////////////
+
+bool search(string word)
+{
+    WordDictionary *curr = this;
+    for (int i = 0; i < word.size(); i++)
+    {
+        if (word[i] == '.')
+        {
+            for (WordDictionary *ch : curr->wd)
+                if (ch && ch->search(word.substr(i + 1)))
+                    return true;
+            return false;
+        }
+        else
+        {
+            if (!curr->wd[word[i] - 'a'])
+                return false;
+            curr = curr->wd[word[i] - 'a'];
+        }
+    }
+    return curr->wordEnd;
+}
 /**
  * Your WordDictionary object will be instantiated and called as such:
  * WordDictionary* obj = new WordDictionary();
