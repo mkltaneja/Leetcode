@@ -320,7 +320,7 @@ bool search(string word)
 
 // DAY 6 (Find All Duplicates in an Array)=====================================================
 
-// O(n) time and space
+// O(n) time and O(n) space
 vector<int> findDuplicates(vector<int>& nums) 
 {
     unordered_map<int,int> m;
@@ -345,6 +345,24 @@ vector<int> findDuplicates(vector<int>& nums)
     {
         if(nums[i-1] == nums[i])
             ans.push_back(nums[i++]);
+    }
+    return ans;
+}
+
+////////////////////////////OR//////////////////////
+
+// O(n) time and O(1) space
+vector<int> findDuplicates(vector<int>& nums) 
+{
+    vector<int> ans;
+    for(int ele : nums)
+    {
+        if(nums[abs(ele)-1] < 0)
+        {
+            ans.push_back(abs(ele));
+            continue;
+        }
+        nums[abs(ele)-1] *= -1;
     }
     return ans;
 }
