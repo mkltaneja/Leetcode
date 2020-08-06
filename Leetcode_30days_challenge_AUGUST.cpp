@@ -317,3 +317,17 @@ bool search(string word)
  * obj->addWord(word);
  * bool param_2 = obj->search(word);
  */
+
+// DAY 6 (Find All Duplicates in an Array)=====================================================
+
+vector<int> findDuplicates(vector<int>& nums) 
+{
+    unordered_map<int,int> m;
+    for(int i : nums)
+        m[i]++;
+    vector<int> ans;
+    for(auto itr : m)
+        if(itr.second > 1)
+            ans.push_back(itr.first);
+    return ans;
+}
