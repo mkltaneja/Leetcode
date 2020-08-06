@@ -333,6 +333,25 @@ vector<int> findDuplicates(vector<int>& nums)
     return ans;
 }
 
+/////////////////////////////OR/////////////////////////
+
+// O(nlogn) time and O(n) space
+vector<int> findDuplicates(vector<int>& nums) 
+{
+    ios::sync_with_stdio(false); cin.tie(0);
+    
+    vector<int> ans;
+    set<int> s;
+    for(int i : nums)
+    {
+        if(s.find(i) == s.end())
+            s.insert(i);
+        else
+            ans.push_back(i);
+    }
+    return ans;
+}
+
 //////////////////////////OR/////////////////////////
 
 // O(nlogn) time and O(1) space
