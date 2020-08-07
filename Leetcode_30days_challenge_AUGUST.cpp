@@ -385,3 +385,53 @@ vector<int> findDuplicates(vector<int>& nums)
     }
     return ans;
 }
+
+// DAY 7 (Vertical Order Traversal of a Binary Tree)==============================================================
+
+static bool sortby_vlhld(const pair<int,pair<int,int>> &a, const pair<int,pair<int,int>> &b)
+{
+    if(a.second.second == b.second.second)
+    {
+        if(a.second.first == b.second.first)
+            return a.first < b.first;
+        return a.second.first < b.second.first;
+    }
+    return a.second.second < b.second.second;
+}
+
+void preorder_append(vector<pair<int,pair<int,int>>> &vpp, TreeNode* node, int hl, int vl)
+{
+    if(node == nullptr)
+        return;
+    vpp.push_back({node->val,{hl,vl}});
+    preorder_append(vpp, node->left, hl+1, vl-1);
+    preorder_append(vpp, node->right, hl+1, vl+1);
+}
+
+vector<vector<int>> verticalTraversal(TreeNode* root) 
+{
+    if(root == nullptr)
+        return {};
+    vector<pair<int,pair<int,int>>> vpp;
+    preorder_append(vpp,root,0,0);
+    // for(auto p : vpp)
+    //     cout<<p.first<<" "<<p.second.first<<" "<<p.second.second<<endl;
+    sort(vpp.begin(), vpp.end(), sortby_vlhld);
+    // for(auto p : vpp)
+    //     cout<<p.first<<" "<<p.second.first<<" "<<p.second.second<<endl;
+    
+    vector<vector<int>> ans;
+    for(int i=0;i<vpp.size();i++)
+    {
+        vector<int> temp;
+        int j = i;
+        int vl = vpp[i].second.second;
+        
+        while(j < vpp.size() && vl == vpp[j].second.second)
+            temp.push_back(vpp[j++].first);
+        
+        ans.push_back(temp);
+        i = j-1;
+    }
+    return ans;
+}
