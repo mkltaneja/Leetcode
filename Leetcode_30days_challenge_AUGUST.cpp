@@ -435,3 +435,39 @@ vector<vector<int>> verticalTraversal(TreeNode* root)
     }
     return ans;
 }
+
+// DAY 8 (Path Sum 3)=================================================================
+
+int nodesum(TreeNode* node, int sum, int &count)
+{
+    if(sum == 0)
+        count++;
+    // cout<<count<<" --> "<<sum<<" - "<<node->val<<",  ";
+    if(node->left)
+        nodesum(node->left, sum - node->left->val, count);
+    if(node->right)
+        nodesum(node->right, sum - node->right->val, count);
+    // cout<<endl;
+    return count;
+}
+
+int preorder_sum(TreeNode* node, int sum, int &count)
+{
+    if(node == nullptr)
+        return 0;
+    int total = 0;
+    // cout<<node->val<<": \n";
+    nodesum(node, sum-node->val, total);
+    count += total;
+    // cout<<count<<endl;
+    preorder_sum(node->left, sum, count);
+    preorder_sum(node->right, sum, count);
+    return count;
+}
+
+int pathSum(TreeNode* root, int sum) 
+{
+    int count = 0;
+    preorder_sum(root, sum, count);
+    return count;
+}
