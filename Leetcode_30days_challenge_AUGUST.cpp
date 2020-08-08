@@ -471,3 +471,25 @@ int pathSum(TreeNode* root, int sum)
     preorder_sum(root, sum, count);
     return count;
 }
+
+///////////////////////////////////////////OR/////////////////////////////////
+
+// less complex
+int rootsum(TreeNode* node, int sum)
+{
+    if(node == nullptr)
+        return 0;
+    int count = 0;
+    if(node->val == sum)
+        count++;
+    count += rootsum(node->left, sum-node->val);
+    count += rootsum(node->right, sum-node->val);
+    return count;
+}
+
+int pathSum(TreeNode* root, int sum) 
+{
+    if(root == nullptr)
+        return 0;
+    return rootsum(root, sum) + pathSum(root->left, sum) + pathSum(root->right, sum);    
+}
