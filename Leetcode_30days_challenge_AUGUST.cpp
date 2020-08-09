@@ -493,3 +493,61 @@ int pathSum(TreeNode* root, int sum)
         return 0;
     return rootsum(root, sum) + pathSum(root->left, sum) + pathSum(root->right, sum);    
 }
+
+// DAY 9 (Rotten Oranges)=======================================
+
+int orangesRotting(vector<vector<int>>& grid) 
+{
+    int n = grid.size();
+    int m = grid[0].size();
+    
+    queue<pair<int,int>> que;
+    
+    bool f = false;
+    for(int i = 0 ; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(grid[i][j] == 1)
+                f = true;
+            else if(grid[i][j] == 2)
+                que.push({i,j});
+        }
+    }
+    if(!f)
+        return 0;
+    
+    vector<vector<int>> dir = {{1,0},{0,1},{-1,0},{0,-1}};
+    
+    int time = 0;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            pair<int,int> tp = que.front();
+            que.pop();
+            // cout<<tp.first<<" "<<tp.second<<endl;
+            for(int d=0;d<4;d++)
+            {
+                int r = tp.first + dir[d][0];
+                int c = tp.second + dir[d][1];
+                if(r >= 0 && c >= 0 && r < n && c < m && grid[r][c] == 1)
+                {
+                    grid[r][c] = 2;
+                    que.push({r,c});
+                }
+            }
+        }
+        if(!que.empty())
+            time++;
+    }
+    for(vector<int> v : grid)
+        for(int i : v)
+            if(i == 1)
+            {
+                f = false;
+                break;
+            }
+    return time == 0 || !f ? -1 : time;
+}
