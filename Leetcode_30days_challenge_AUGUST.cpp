@@ -551,3 +551,30 @@ int orangesRotting(vector<vector<int>>& grid)
             }
     return time == 0 || !f ? -1 : time;
 }
+
+// DAY 10 (Excel Sheet Column Number)===========================================================
+
+uint64_t pow(uint64_t n, int x)
+{
+    uint64_t ans = 1;
+    while(x)
+    {
+        if(x & 1)
+            ans *= n;
+        n *= n;
+        x >>= 1;
+    }
+    return ans;
+}
+
+int titleToNumber(string s) 
+{
+    int col = 0;
+    for(int i = 0 ; i < s.size(); ++i)
+    {
+        int r = s.size() - i - 1;
+        int idx = s[i] - 'A' + 1;
+        col += pow(26,r)*idx;
+    }
+    return col;
+}
