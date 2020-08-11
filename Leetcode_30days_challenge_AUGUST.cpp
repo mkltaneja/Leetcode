@@ -578,3 +578,35 @@ int titleToNumber(string s)
     }
     return col;
 }
+
+// DAY 11 (H -index)====================================================
+
+// Method 1 (naive approach)
+int hIndex(vector<int>& citations) 
+{
+    int n = citations.size();
+    unordered_map<int,int> m;
+    for(int i : citations)
+        m[i]++;
+    
+    for(int h = n; h>0; h--)
+    {
+        int lh = 0, gh = 0;
+        for(int i : citations)
+            if(i > h)
+                gh++;
+            else if(i < h)
+                lh++;
+        int hh = m[h];
+        int req = 0;
+        if(lh > n-h || gh > h)
+            continue;
+        if(lh < n-h)
+            req += (n-h) - lh;
+        if(gh < h)
+            req += h - gh;
+        if(hh >= req)
+            return h;
+    }
+    return 0;
+}
