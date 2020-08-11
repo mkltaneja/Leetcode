@@ -581,7 +581,7 @@ int titleToNumber(string s)
 
 // DAY 11 (H -index)====================================================
 
-// Method 1 (naive approach)
+// Method 1 (naive approach) --> O(n^2)
 int hIndex(vector<int>& citations) 
 {
     int n = citations.size();
@@ -609,4 +609,23 @@ int hIndex(vector<int>& citations)
             return h;
     }
     return 0;
+}
+
+////////////////////////OR///////////////////////
+
+// Method 2 (optimized) --> O(n)
+int hIndex(vector<int>& citations) 
+{
+    int n = citations.size();
+    int h = 0;
+    sort(citations.begin(), citations.end());
+    
+    for(int  i = n-1; i >= 0; i--)
+    {
+        if(citations[i] >= h + 1)
+            h++;
+        else
+            return h;
+    }
+    return h;
 }
