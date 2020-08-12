@@ -609,7 +609,7 @@ int hIndex(vector<int>& citations)
         if(hh >= req)
             return h;
     }
-    return 0;
+    return 0; 
 }
 
 ////////////////////////OR///////////////////////
@@ -630,4 +630,35 @@ int hIndex(vector<int>& citations)
             return h;
     }
     return h;
+}
+
+// DAY 12 (Pascal's Triangle 2)===================================================
+
+// Method 1 (using queue)
+vector<int> getRow(int rowIndex) 
+{
+    queue<int> que;
+    que.push(1);
+    int lvl = 0;
+    while(lvl != rowIndex)
+    {
+        int prev = 0;
+        int sz = que.size();
+        while(sz--)
+        {
+            int top = que.front();
+            que.pop();
+            que.push(top + prev);
+            prev = top;
+        }
+        lvl++;
+        que.push(1);
+    }
+    vector<int> ans;
+    while(!que.empty())
+    {
+        ans.push_back(que.front());
+        que.pop();
+    }
+    return ans;
 }
