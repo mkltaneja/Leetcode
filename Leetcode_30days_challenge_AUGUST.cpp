@@ -794,3 +794,37 @@ bool hasNext()
 {
     return !comb.empty();
 }
+
+// OR
+// same as prev, just made the main string as the member function
+
+string s;
+queue<string> comb;
+void combs(string &s, int k, int idx, string ans)
+{
+    if (ans.size() == k)
+    {
+        comb.push(ans);
+        return;
+    }
+    for (int i = idx; i < s.size(); i++)
+        combs(s, k, i + 1, ans + s[i]);
+}
+
+CombinationIterator(string characters, int combinationLength)
+{
+    this->s = characters;
+    combs(characters, combinationLength, 0, "");
+}
+
+string next()
+{
+    string s = comb.front();
+    comb.pop();
+    return s;
+}
+
+bool hasNext()
+{
+    return !comb.empty();
+}
