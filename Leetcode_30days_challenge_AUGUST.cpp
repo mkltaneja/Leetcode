@@ -321,14 +321,14 @@ bool search(string word)
 // DAY 6 (Find All Duplicates in an Array)=====================================================
 
 // O(n) time and O(n) space
-vector<int> findDuplicates(vector<int>& nums) 
+vector<int> findDuplicates(vector<int> &nums)
 {
-    unordered_map<int,int> m;
-    for(int i : nums)
+    unordered_map<int, int> m;
+    for (int i : nums)
         m[i]++;
     vector<int> ans;
-    for(auto itr : m)
-        if(itr.second > 1)
+    for (auto itr : m)
+        if (itr.second > 1)
             ans.push_back(itr.first);
     return ans;
 }
@@ -336,15 +336,16 @@ vector<int> findDuplicates(vector<int>& nums)
 /////////////////////////////OR/////////////////////////
 
 // O(nlogn) time and O(n) space
-vector<int> findDuplicates(vector<int>& nums) 
+vector<int> findDuplicates(vector<int> &nums)
 {
-    ios::sync_with_stdio(false); cin.tie(0);
-    
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
     vector<int> ans;
     set<int> s;
-    for(int i : nums)
+    for (int i : nums)
     {
-        if(s.find(i) == s.end())
+        if (s.find(i) == s.end())
             s.insert(i);
         else
             ans.push_back(i);
@@ -355,14 +356,14 @@ vector<int> findDuplicates(vector<int>& nums)
 //////////////////////////OR/////////////////////////
 
 // O(nlogn) time and O(1) space
-vector<int> findDuplicates(vector<int>& nums) 
+vector<int> findDuplicates(vector<int> &nums)
 {
     sort(nums.begin(), nums.end());
-    
+
     vector<int> ans;
-    for(int i=1;i<nums.size();i++)
+    for (int i = 1; i < nums.size(); i++)
     {
-        if(nums[i-1] == nums[i])
+        if (nums[i - 1] == nums[i])
             ans.push_back(nums[i++]);
     }
     return ans;
@@ -371,93 +372,93 @@ vector<int> findDuplicates(vector<int>& nums)
 ////////////////////////////OR//////////////////////
 
 // O(n) time and O(1) space
-vector<int> findDuplicates(vector<int>& nums) 
+vector<int> findDuplicates(vector<int> &nums)
 {
     vector<int> ans;
-    for(int ele : nums)
+    for (int ele : nums)
     {
-        if(nums[abs(ele)-1] < 0)
+        if (nums[abs(ele) - 1] < 0)
         {
             ans.push_back(abs(ele));
             continue;
         }
-        nums[abs(ele)-1] *= -1;
+        nums[abs(ele) - 1] *= -1;
     }
     return ans;
 }
 
 // DAY 7 (Vertical Order Traversal of a Binary Tree)==============================================================
 
-static bool sortby_vlhld(const pair<int,pair<int,int>> &a, const pair<int,pair<int,int>> &b)
+static bool sortby_vlhld(const pair<int, pair<int, int>> &a, const pair<int, pair<int, int>> &b)
 {
-    if(a.second.second == b.second.second)
+    if (a.second.second == b.second.second)
     {
-        if(a.second.first == b.second.first)
+        if (a.second.first == b.second.first)
             return a.first < b.first;
         return a.second.first < b.second.first;
     }
     return a.second.second < b.second.second;
 }
 
-void preorder_append(vector<pair<int,pair<int,int>>> &vpp, TreeNode* node, int hl, int vl)
+void preorder_append(vector<pair<int, pair<int, int>>> &vpp, TreeNode *node, int hl, int vl)
 {
-    if(node == nullptr)
+    if (node == nullptr)
         return;
-    vpp.push_back({node->val,{hl,vl}});
-    preorder_append(vpp, node->left, hl+1, vl-1);
-    preorder_append(vpp, node->right, hl+1, vl+1);
+    vpp.push_back({node->val, {hl, vl}});
+    preorder_append(vpp, node->left, hl + 1, vl - 1);
+    preorder_append(vpp, node->right, hl + 1, vl + 1);
 }
 
-vector<vector<int>> verticalTraversal(TreeNode* root) 
+vector<vector<int>> verticalTraversal(TreeNode *root)
 {
-    if(root == nullptr)
+    if (root == nullptr)
         return {};
-    vector<pair<int,pair<int,int>>> vpp;
-    preorder_append(vpp,root,0,0);
+    vector<pair<int, pair<int, int>>> vpp;
+    preorder_append(vpp, root, 0, 0);
     // for(auto p : vpp)
     //     cout<<p.first<<" "<<p.second.first<<" "<<p.second.second<<endl;
     sort(vpp.begin(), vpp.end(), sortby_vlhld);
     // for(auto p : vpp)
     //     cout<<p.first<<" "<<p.second.first<<" "<<p.second.second<<endl;
-    
+
     vector<vector<int>> ans;
-    for(int i=0;i<vpp.size();i++)
+    for (int i = 0; i < vpp.size(); i++)
     {
         vector<int> temp;
         int j = i;
         int vl = vpp[i].second.second;
-        
-        while(j < vpp.size() && vl == vpp[j].second.second)
+
+        while (j < vpp.size() && vl == vpp[j].second.second)
             temp.push_back(vpp[j++].first);
-        
+
         ans.push_back(temp);
-        i = j-1;
+        i = j - 1;
     }
     return ans;
 }
 
 // DAY 8 (Path Sum 3)=================================================================
 
-int nodesum(TreeNode* node, int sum, int &count)
+int nodesum(TreeNode *node, int sum, int &count)
 {
-    if(sum == 0)
+    if (sum == 0)
         count++;
     // cout<<count<<" --> "<<sum<<" - "<<node->val<<",  ";
-    if(node->left)
+    if (node->left)
         nodesum(node->left, sum - node->left->val, count);
-    if(node->right)
+    if (node->right)
         nodesum(node->right, sum - node->right->val, count);
     // cout<<endl;
     return count;
 }
 
-int preorder_sum(TreeNode* node, int sum, int &count)
+int preorder_sum(TreeNode *node, int sum, int &count)
 {
-    if(node == nullptr)
+    if (node == nullptr)
         return 0;
     int total = 0;
     // cout<<node->val<<": \n";
-    nodesum(node, sum-node->val, total);
+    nodesum(node, sum - node->val, total);
     count += total;
     // cout<<count<<endl;
     preorder_sum(node->left, sum, count);
@@ -465,7 +466,7 @@ int preorder_sum(TreeNode* node, int sum, int &count)
     return count;
 }
 
-int pathSum(TreeNode* root, int sum) 
+int pathSum(TreeNode *root, int sum)
 {
     int count = 0;
     preorder_sum(root, sum, count);
@@ -475,76 +476,76 @@ int pathSum(TreeNode* root, int sum)
 ///////////////////////////////////////////OR/////////////////////////////////
 
 // less complex
-int rootsum(TreeNode* node, int sum)
+int rootsum(TreeNode *node, int sum)
 {
-    if(node == nullptr)
+    if (node == nullptr)
         return 0;
     int count = 0;
-    if(node->val == sum)
+    if (node->val == sum)
         count++;
-    count += rootsum(node->left, sum-node->val);
-    count += rootsum(node->right, sum-node->val);
+    count += rootsum(node->left, sum - node->val);
+    count += rootsum(node->right, sum - node->val);
     return count;
 }
 
-int pathSum(TreeNode* root, int sum) 
+int pathSum(TreeNode *root, int sum)
 {
-    if(root == nullptr)
+    if (root == nullptr)
         return 0;
-    return rootsum(root, sum) + pathSum(root->left, sum) + pathSum(root->right, sum);    
+    return rootsum(root, sum) + pathSum(root->left, sum) + pathSum(root->right, sum);
 }
 
 // DAY 9 (Rotten Oranges)=======================================
 
-int orangesRotting(vector<vector<int>>& grid) 
+int orangesRotting(vector<vector<int>> &grid)
 {
     int n = grid.size();
     int m = grid[0].size();
-    
-    queue<pair<int,int>> que;
-    
+
+    queue<pair<int, int>> que;
+
     bool f = false;
-    for(int i = 0 ; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        for(int j = 0; j < m; j++)
+        for (int j = 0; j < m; j++)
         {
-            if(grid[i][j] == 1)
+            if (grid[i][j] == 1)
                 f = true;
-            else if(grid[i][j] == 2)
-                que.push({i,j});
+            else if (grid[i][j] == 2)
+                que.push({i, j});
         }
     }
-    if(!f)
+    if (!f)
         return 0;
-    
-    vector<vector<int>> dir = {{1,0},{0,1},{-1,0},{0,-1}};
-    
+
+    vector<vector<int>> dir = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
     int time = 0;
-    while(!que.empty())
+    while (!que.empty())
     {
         int sz = que.size();
-        while(sz--)
+        while (sz--)
         {
-            pair<int,int> tp = que.front();
+            pair<int, int> tp = que.front();
             que.pop();
             // cout<<tp.first<<" "<<tp.second<<endl;
-            for(int d=0;d<4;d++)
+            for (int d = 0; d < 4; d++)
             {
                 int r = tp.first + dir[d][0];
                 int c = tp.second + dir[d][1];
-                if(r >= 0 && c >= 0 && r < n && c < m && grid[r][c] == 1)
+                if (r >= 0 && c >= 0 && r < n && c < m && grid[r][c] == 1)
                 {
                     grid[r][c] = 2;
-                    que.push({r,c});
+                    que.push({r, c});
                 }
             }
         }
-        if(!que.empty())
+        if (!que.empty())
             time++;
     }
-    for(vector<int> v : grid)
-        for(int i : v)
-            if(i == 1)
+    for (vector<int> v : grid)
+        for (int i : v)
+            if (i == 1)
             {
                 f = false;
                 break;
@@ -557,9 +558,9 @@ int orangesRotting(vector<vector<int>>& grid)
 uint64_t pow(uint64_t n, int x)
 {
     uint64_t ans = 1;
-    while(x)
+    while (x)
     {
-        if(x & 1)
+        if (x & 1)
             ans *= n;
         n *= n;
         x >>= 1;
@@ -567,14 +568,14 @@ uint64_t pow(uint64_t n, int x)
     return ans;
 }
 
-int titleToNumber(string s) 
+int titleToNumber(string s)
 {
     int col = 0;
-    for(int i = 0 ; i < s.size(); ++i)
+    for (int i = 0; i < s.size(); ++i)
     {
         int r = s.size() - i - 1;
         int idx = s[i] - 'A' + 1;
-        col += pow(26,r)*idx;
+        col += pow(26, r) * idx;
     }
     return col;
 }
@@ -583,48 +584,48 @@ int titleToNumber(string s)
 
 // Method 1 (naive approach) --> O(n^2)
 
-int hIndex(vector<int>& citations) 
+int hIndex(vector<int> &citations)
 {
     int n = citations.size();
-    unordered_map<int,int> m;
-    for(int i : citations)
+    unordered_map<int, int> m;
+    for (int i : citations)
         m[i]++;
-    
-    for(int h = n; h>0; h--)
+
+    for (int h = n; h > 0; h--)
     {
         int lh = 0, gh = 0;
-        for(int i : citations)
-            if(i > h)
+        for (int i : citations)
+            if (i > h)
                 gh++;
-            else if(i < h)
+            else if (i < h)
                 lh++;
         int hh = m[h];
         int req = 0;
-        if(lh > n-h || gh > h)
+        if (lh > n - h || gh > h)
             continue;
-        if(lh < n-h)
-            req += (n-h) - lh;
-        if(gh < h)
+        if (lh < n - h)
+            req += (n - h) - lh;
+        if (gh < h)
             req += h - gh;
-        if(hh >= req)
+        if (hh >= req)
             return h;
     }
-    return 0; 
+    return 0;
 }
 
 ////////////////////////OR///////////////////////
 
 // Method 2 (optimized) --> O(n)
 
-int hIndex(vector<int>& citations) 
+int hIndex(vector<int> &citations)
 {
     int n = citations.size();
     int h = 0;
     sort(citations.begin(), citations.end());
-    
-    for(int  i = n-1; i >= 0; i--)
+
+    for (int i = n - 1; i >= 0; i--)
     {
-        if(citations[i] >= h + 1)
+        if (citations[i] >= h + 1)
             h++;
         else
             return h;
@@ -635,16 +636,16 @@ int hIndex(vector<int>& citations)
 // DAY 12 (Pascal's Triangle 2)===================================================
 
 // Method 1 (using queue)
-vector<int> getRow(int rowIndex) 
+vector<int> getRow(int rowIndex)
 {
     queue<int> que;
     que.push(1);
     int lvl = 0;
-    while(lvl != rowIndex)
+    while (lvl != rowIndex)
     {
         int prev = 0;
         int sz = que.size();
-        while(sz--)
+        while (sz--)
         {
             int top = que.front();
             que.pop();
@@ -655,7 +656,7 @@ vector<int> getRow(int rowIndex)
         que.push(1);
     }
     vector<int> ans;
-    while(!que.empty())
+    while (!que.empty())
     {
         ans.push_back(que.front());
         que.pop();
@@ -666,15 +667,61 @@ vector<int> getRow(int rowIndex)
 /////////////////////////////OR///////////////////////
 
 // Method 2 (using loops)
-vector<int> getRow(int rowIndex) 
+vector<int> getRow(int rowIndex)
 {
     vector<int> ans;
-    
-    for(int i = 0; i <= rowIndex; i++)
+
+    for (int i = 0; i <= rowIndex; i++)
     {
         ans.push_back(1);
-        for(int j = i-1; j > 0; j--)
-            ans[j] = ans[j] + ans[j-1];
+        for (int j = i - 1; j > 0; j--)
+            ans[j] = ans[j] + ans[j - 1];
     }
     return ans;
 }
+
+// Day 13 (Iterator for Combination)==================================================
+
+// Method 1 (by popping the front element every time)
+// very slow
+class CombinationIterator
+{
+public:
+    vector<string> comb;
+    void combs(string &s, int k, int idx, string ans, vector<string> &res)
+    {
+        if (ans.size() == k)
+        {
+            res.push_back(ans);
+            return;
+        }
+        for (int i = idx; i < s.size(); i++)
+            combs(s, k, i + 1, ans + s[i], res);
+    }
+
+    CombinationIterator(string characters, int combinationLength)
+    {
+        combs(characters, combinationLength, 0, "", this->comb);
+        // for(string s : comb)
+        //     cout<<s<<" ";
+    }
+
+    string next()
+    {
+        string s = comb.front();
+        this->comb.erase(comb.begin());
+        return s;
+    }
+
+    bool hasNext()
+    {
+        return comb.size() > 0;
+    }
+};
+
+/**
+ * Your CombinationIterator object will be instantiated and called as such:
+ * CombinationIterator* obj = new CombinationIterator(characters, combinationLength);
+ * string param_1 = obj->next();
+ * bool param_2 = obj->hasNext();
+ */
