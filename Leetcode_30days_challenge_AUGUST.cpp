@@ -725,3 +725,72 @@ public:
  * string param_1 = obj->next();
  * bool param_2 = obj->hasNext();
  */
+
+/////////////////////////////////OR//////////////////////////
+
+// Method 2 (using index to print, instead of front element)
+// much faster
+
+vector<string> comb;
+int ele;
+void combs(string &s, int k, int idx, string ans, vector<string> &res)
+{
+    if (ans.size() == k)
+    {
+        res.push_back(ans);
+        return;
+    }
+    for (int i = idx; i < s.size(); i++)
+        combs(s, k, i + 1, ans + s[i], res);
+}
+
+CombinationIterator(string characters, int combinationLength)
+{
+    this->ele = 0;
+    combs(characters, combinationLength, 0, "", this->comb);
+    // for(string s : comb)
+    //     cout<<s<<" ";
+}
+
+string next()
+{
+    string s = comb[ele++];
+    return s;
+}
+
+bool hasNext()
+{
+    return ele != comb.size();
+}
+
+// Method 3 (using queue instead of array to add strings)
+// same time
+
+queue<string> comb;
+void combs(string &s, int k, int idx, string ans)
+{
+    if (ans.size() == k)
+    {
+        comb.push(ans);
+        return;
+    }
+    for (int i = idx; i < s.size(); i++)
+        combs(s, k, i + 1, ans + s[i]);
+}
+
+CombinationIterator(string characters, int combinationLength)
+{
+    combs(characters, combinationLength, 0, "");
+}
+
+string next()
+{
+    string s = comb.front();
+    comb.pop();
+    return s;
+}
+
+bool hasNext()
+{
+    return !comb.empty();
+}
