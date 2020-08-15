@@ -828,3 +828,51 @@ bool hasNext()
 {
     return !comb.empty();
 }
+
+// DAY 15 (Lonegest Palindrome)======================================================
+
+// Method 1 (using map)
+int longestPalindrome(string s) 
+{
+    unordered_map<char,int> mc;
+    for(char c : s)
+        mc[c]++;
+    
+    int maxlen = 0;
+    bool odd = false;
+    for(auto itr : mc)
+    {
+        if(itr.second & 1)
+        {
+            maxlen += itr.second - 1;
+            odd = true;
+        }
+        else
+            maxlen += itr.second;
+    }
+    return maxlen + odd;
+}
+
+// DAY 15 (Non - Overlapping intervals)==============================================
+
+int eraseOverlapIntervals(vector<vector<int>>& intervals) 
+{
+    int n = intervals.size();
+    sort(intervals.begin(),intervals.end(),[](const vector<int> &a, const vector<int> &b){      
+        return a[0] < b[0];
+    });
+    
+    int nono = 0, last = 0;
+    for(int i = 1; i < n ; i++)
+    {
+        if(intervals[i][0] < intervals[last][1])
+        {
+            nono++;
+            if(intervals[i][1] < intervals[last][1])
+                last = i;
+        }
+        else
+            last = i;
+    }
+    return nono;
+}
