@@ -876,3 +876,31 @@ int eraseOverlapIntervals(vector<vector<int>>& intervals)
     }
     return nono;
 }
+
+// DAY 17 (Best Time to Buy and Sell Stock III)====================================================
+
+int maxProfit(vector<int>& prices) 
+{
+    int n = prices.size();
+    if(n <= 1)
+        return 0;
+    vector<int> profit1(n,0);
+    vector<int> profit2(n,0);
+    int pmin = prices[0], pmax = prices[n-1];
+    
+    for(int i=1; i<n; i++)
+    {
+        profit1[i] = max(profit1[i-1], prices[i] - pmin);
+        pmin = min(pmin, prices[i]);
+        
+        int j = n-i-1;
+        profit2[j] = max(profit2[j+1], pmax - prices[j]);
+        pmax = max(pmax, prices[j]);
+    }
+    
+    int maxprofit = 0;
+    for(int i=0; i<n; i++)
+        maxprofit = max(maxprofit, profit1[i]+profit2[i]);
+    
+    return maxprofit;
+}
