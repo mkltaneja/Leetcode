@@ -923,3 +923,52 @@ vector<int> distributeCandies(int candies, int num_people)
     dist[i] += candies;
     return dist;
 }
+
+///////////////////////////OR//////////////////////////////
+
+// Method 2 --> O(n)
+int sqroot(int n)
+{
+    int si = 1, ei = n;
+    
+    while(si <= ei)
+    {
+        int mid = (si + ei) / 2;
+        if((long long)mid*mid == n)
+            return mid;
+        else if((long long)mid*mid < n)
+            si = mid + 1;
+        else
+            ei = mid - 1;
+    }
+    return si - 1;
+}
+
+vector<int> distributeCandies(int candies, int num_people) 
+{
+    int n = 2*candies;
+    int x = sqroot(n);
+    // cout<<x<<" ";
+    while(x*x + x > n)   // here x is the number for which sum of first x nos.(x(x+1)/2) is just less or     
+        x--;                                                                               // equal to n.
+    // cout<<x<<endl;
+    
+    int cycles = x / num_people;
+    int cycle_end = x % num_people;
+    int candies_before_end = num_people * (cycles*(cycles+1)/2);
+    int candies_after_end = num_people * (cycles*(cycles-1)/2);
+    int rem_candies = candies - (x*(x+1))/2;
+    // cout<<cycles<<" "<<cycle_end<<" "<<candies_before_end<<" "<<candies_after_end<<" "<<rem_candies<<endl;
+    
+    vector<int> dist(num_people, 0);
+    for(int i=0; i<num_people; i++)
+    {
+        if(i < cycle_end)
+            dist[i] += candies_before_end + (cycles+1) * (i + 1);
+        else
+            dist[i] += candies_after_end + cycles * (i + 1);
+    }
+    dist[cycle_end % num_people] += rem_candies;
+    
+    return dist;
+}
