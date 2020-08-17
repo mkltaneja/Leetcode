@@ -877,7 +877,7 @@ int eraseOverlapIntervals(vector<vector<int>>& intervals)
     return nono;
 }
 
-// DAY 17 (Best Time to Buy and Sell Stock III)====================================================
+// DAY 16 (Best Time to Buy and Sell Stock III)====================================================
 
 int maxProfit(vector<int>& prices) 
 {
@@ -903,4 +903,23 @@ int maxProfit(vector<int>& prices)
         maxprofit = max(maxprofit, profit1[i]+profit2[i]);
     
     return maxprofit;
+}
+
+// DAY 17 (Distribute Candies to People) =======================================================
+
+// Method 1 --> x*O(n)  (x >= 1)
+vector<int> distributeCandies(int candies, int num_people) 
+{
+    int req = 1;
+    vector<int> dist(num_people,0);
+    int i = 0;
+    while(candies - req >= 0)
+    {
+        dist[i] += req;
+        candies -= req;
+        req++;
+        i = (i + 1) % num_people;
+    }
+    dist[i] += candies;
+    return dist;
 }
