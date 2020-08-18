@@ -972,3 +972,34 @@ vector<int> distributeCandies(int candies, int num_people)
     
     return dist;
 }
+
+// DAY 18 (Numbers With Same Consecutive Differences)================================================
+
+vector<int> digits;
+
+void kdiff(long int num, int last, int count, int n, int k)
+{
+    if(count == n+1)
+    {
+        digits.push_back(num/10);
+        return;
+    }
+    
+    // cout<<last<<" "<<num<<endl;
+    if(last - k >= 0)
+        kdiff((num + (last-k))*10, last - k, count + 1, n, k);
+    if(last + k <= 9 && k != 0)
+        kdiff((num + (last+k))*10, last + k, count + 1, n, k);
+}
+
+vector<int> numsSameConsecDiff(int N, int K) 
+{
+    if(N == 1)
+        digits.push_back(0);
+    for(int i = 1 ; i <= 9 ; i++)
+    {
+        long int num = i*10;
+        kdiff(num, i, 2, N, K);
+    }
+    return digits;
+}
