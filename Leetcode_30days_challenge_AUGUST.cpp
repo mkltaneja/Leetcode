@@ -1003,3 +1003,34 @@ vector<int> numsSameConsecDiff(int N, int K)
     }
     return digits;
 }
+
+// DAY 19(Goat Latin)=================================================
+
+bool isVowel(char c)
+{
+    c = tolower(c);
+    if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
+        return true;
+    return false;
+}
+
+string toGoatLatin(string S) 
+{
+    stringstream ss(S);
+    string word, a = "a", ans;
+    while(ss >> word)
+    {
+        if(!isVowel(word[0]))
+        {
+            char c = word[0];
+            word.erase(word.begin());
+            word += c;
+        }
+        word += "ma" + a;
+        // cout<<word<<endl;
+        ans += word + " ";
+        a += "a";
+    }
+    ans.pop_back();
+    return ans;
+}
