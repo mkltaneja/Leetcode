@@ -1034,3 +1034,55 @@ string toGoatLatin(string S)
     ans.pop_back();
     return ans;
 }
+
+// DAY 20(Reorder List)==============================================
+
+// Method 1
+void reorderList(ListNode* head) 
+{
+    if(head == nullptr)
+        return;
+    ListNode* node = head;
+    int size = 0;
+    while(node)
+    {
+        node = node->next;
+        size++;
+    }
+    node = head;
+    ListNode *temp = node;
+    int mid = (size+1)/2;
+    while(--mid)
+        temp = temp->next;
+    ListNode *rnode = temp->next;
+    temp->next = nullptr;
+    
+    ListNode *curr = rnode, *prev = nullptr, *forw = rnode;
+    while(curr)
+    {
+        forw = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = forw;
+    }
+    rnode = prev;
+    
+    ListNode *i1 = node, *i2 = rnode, *res = node;
+    temp = res;
+    i1 = i1->next;
+    while(i1 || i2)
+    {
+        if(i2)
+        {
+            temp->next = i2;
+            i2 = i2->next;
+            temp = temp->next;
+        }
+        if(i1)
+        {
+            temp->next = i1;
+            i1 = i1->next;
+            temp = temp->next;
+        }
+    }
+}
