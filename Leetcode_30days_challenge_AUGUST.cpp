@@ -1152,3 +1152,26 @@ vector<int> sortArrayByParity(vector<int>& A)
             B.insert(B.begin(),i);
     return B;
 }
+
+// Method 2 (same approach as separating 0 and 1) --> O(n)
+vector<int> sortArrayByParity(vector<int>& A) 
+{
+    int n = A.size();
+    int s = 0, e = n-1;
+    while(s < e)
+    {
+        if(A[s] % 2 == 1)
+        {
+            if(A[e] % 2 == 0)
+                swap(A[s++], A[e--]);
+            else
+            {
+                e--;
+                continue;
+            }
+        }
+        else
+            s++;
+    }
+    return A;
+}
