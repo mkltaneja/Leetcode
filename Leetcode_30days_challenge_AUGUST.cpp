@@ -1177,7 +1177,6 @@ vector<int> sortArrayByParity(vector<int>& A)
 }
 
 // Method 3 (using custom comaprator) --> O(n*logn)
-
 vector<int> sortArrayByParity(vector<int>& A) 
 {
     int n = A.size();
@@ -1185,4 +1184,19 @@ vector<int> sortArrayByParity(vector<int>& A)
         return (a % 2) < (b % 2);
     });
     return A;
+}
+
+// Method 4 (Using extra memory but less time) --> O(2*n)
+vector<int> sortArrayByParity(vector<int>& A) 
+{
+    int n = A.size();
+    vector<int> B(n);
+    int j = 0;
+    for(int i : A)
+        if(!(i & 1))
+            B[j++] = i;
+    for(int i : A)
+        if((i & 1))
+            B[j++] = i;
+    return B;
 }
