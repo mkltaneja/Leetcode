@@ -1175,3 +1175,14 @@ vector<int> sortArrayByParity(vector<int>& A)
     }
     return A;
 }
+
+// Method 3 (using custom comaprator) --> O(n*logn)
+
+vector<int> sortArrayByParity(vector<int>& A) 
+{
+    int n = A.size();
+    sort(A.begin(), A.end(), [](const int &a, const int &b){
+        return (a % 2) < (b % 2);
+    });
+    return A;
+}
