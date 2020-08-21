@@ -1086,3 +1086,69 @@ void reorderList(ListNode* head)
         }
     }
 }
+
+///////////////////////////////OR////////////////////////////////
+// Method 2 (cleaner)
+
+ListNode* findmid(ListNode* head)
+{
+    ListNode *slow = head, *fast = head, *prev = nullptr;
+    while(fast && fast->next)
+    {
+        prev = slow;
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    if(fast == nullptr)
+        slow = prev;
+    return slow;
+}
+
+ListNode* reverselist(ListNode* node)      // recursively
+{
+    if(!node->next)
+        return node;
+    ListNode* head = reverselist(node->next);
+    node->next->next = node;
+    node->next = nullptr;
+    return head;
+}
+
+void reorderList(ListNode* head) 
+{
+    if(!head || !head->next)
+        return;
+    
+    ListNode* midnode = findmid(head);
+    ListNode *node = head, *rnode = midnode->next;
+    midnode->next = nullptr;
+    
+    rnode = reverselist(rnode);
+    
+    while(node && rnode)
+    {
+        ListNode *temp1 = node->next, *temp2 = rnode->next;
+        
+        node->next = rnode;
+        rnode->next = temp1;
+        node = temp1;
+        rnode = temp2;
+    }
+    return;
+}
+
+// DAY 21 (Sort Array By Parity)=============================================
+
+// Method 1 (extra memory) O(n^2) time
+vector<int> sortArrayByParity(vector<int>& A) 
+{
+    int n = A.size();
+    vector<int> B;
+    B.reserve(n);
+    for(int i : A)
+        if(i & 1)
+            B.push_back(i);
+        else
+            B.insert(B.begin(),i);
+    return B;
+}
