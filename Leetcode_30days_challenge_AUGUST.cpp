@@ -1201,6 +1201,9 @@ vector<int> sortArrayByParity(vector<int>& A)
     return B;
 }
 // DAY 23 (Stream of Characters)==========================================================
+
+// Method 1 (by checking in the queried string if its equal to the given words) --> O(n^2)
+// TLE
 class StreamChecker {
 public:
     
@@ -1232,3 +1235,61 @@ public:
  * StreamChecker* obj = new StreamChecker(words);
  * bool param_1 = obj->query(letter);
  */
+
+////////////////////////////////OR///////////////////////////////
+
+// Method 2 (Using Trie) --> O(n)
+// AC
+class StreamChecker {
+public:
+    
+    class trie
+    {
+        public:
+        vector<trie*> t;
+        bool wordEnd;
+        trie()
+        {
+            t.assign(26,nullptr);
+            wordEnd = false;
+        }
+    };
+    
+    string s;
+    trie* node;
+    StreamChecker(vector<string>& words) 
+    {
+        this->s = "";
+        this->node = new trie();
+        
+        for(string word : words)    // INSERTING
+        {
+            trie* curr = node;
+            for(int i=word.size()-1; i>=0; i--)
+            {
+                char c = word[i];
+                if(!curr->t[c-'a'])
+                    curr->t[c-'a'] = new trie();
+                curr = curr->t[c-'a'];
+            }
+            curr->wordEnd = true;
+        }
+    }
+    
+    bool query(char letter) 
+    {
+        s += letter;
+        trie* curr = node;
+        if(!curr->t[letter - 'a'])
+            return false;
+        for(int i=s.size()-1; i>=0; i--)
+        {
+            if(!curr->t[s[i] - 'a'])
+                return false;
+            if(curr->t[s[i] - 'a'] && curr->t[s[i] - 'a']->wordEnd)
+                return true;
+            curr = curr->t[s[i] - 'a'];
+        }
+        return false;
+    }
+};
