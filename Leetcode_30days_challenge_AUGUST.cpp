@@ -1200,3 +1200,35 @@ vector<int> sortArrayByParity(vector<int>& A)
             B[j++] = i;
     return B;
 }
+// DAY 23 (Stream of Characters)==========================================================
+class StreamChecker {
+public:
+    
+    string s;
+    unordered_map<char,vector<string>> lc;
+    StreamChecker(vector<string>& words) 
+    {
+        s = "";
+        for(string word : words)
+            lc[word[word.size()-1]].push_back(word);
+    }
+    
+    bool query(char letter) 
+    {
+        s += letter;
+        if(lc.find(letter) == lc.end())
+           return false;
+        for(string str : lc[letter])
+        {
+            if(s.size() >= str.size() && s.substr(s.size()-str.size(), s.size()) == str)
+                return true;
+        }
+        return false;
+    }
+};
+
+/**
+ * Your StreamChecker object will be instantiated and called as such:
+ * StreamChecker* obj = new StreamChecker(words);
+ * bool param_1 = obj->query(letter);
+ */
