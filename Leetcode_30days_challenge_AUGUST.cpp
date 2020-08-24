@@ -1332,3 +1332,14 @@ int sumOfLeftLeaves(TreeNode* root, bool left = false)
         sum = root->val;
     return sum;
 }
+
+// Method 3 (without using any extra parameter)====================================
+int sumOfLeftLeaves(TreeNode* root)
+{
+    if(!root)
+        return 0;
+    int sum = sumOfLeftLeaves(root->left) + sumOfLeftLeaves(root->right);
+    if(root->left && !root->left->right && !root->left->left)
+        sum += root->left->val;
+    return sum;
+}
