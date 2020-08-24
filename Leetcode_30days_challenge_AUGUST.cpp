@@ -1320,3 +1320,15 @@ int sumOfLeftLeaves(TreeNode* root)
     totalleft(root,c);
     return sum;
 }
+
+// Method 2 (using true for left)================================
+// faster
+int sumOfLeftLeaves(TreeNode* root, bool left = false)
+{
+    if(!root)
+        return 0;
+    int sum = sumOfLeftLeaves(root->left, true) + sumOfLeftLeaves(root->right, false);
+    if(!root->left && !root->right && left)
+        sum = root->val;
+    return sum;
+}
