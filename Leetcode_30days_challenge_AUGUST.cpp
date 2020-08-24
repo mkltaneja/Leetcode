@@ -1293,3 +1293,30 @@ public:
         return false;
     }
 };
+
+// DAY 25 (Sum of Left Leaves)========================================
+
+// Method 1 (by checking for left with a character)
+int sum = 0;
+void totalleft(TreeNode* node, char c)
+{
+    if(!node->left && !node->right)
+    {
+        if(c == 'l')
+            sum += node->val;
+        return;
+    }
+    if(node->left)
+        totalleft(node->left, 'l');
+    if(node->right)
+        totalleft(node->right, 'r');
+}
+
+int sumOfLeftLeaves(TreeNode* root)
+{
+    if(!root || (!root->left && !root->right))
+        return 0;
+    char c = 'n';
+    totalleft(root,c);
+    return sum;
+}
