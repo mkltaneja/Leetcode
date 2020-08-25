@@ -1343,3 +1343,36 @@ int sumOfLeftLeaves(TreeNode* root)
         sum += root->left->val;
     return sum;
 }
+
+// DAY 26 (Minimum Cost For Tickets)====================================================
+
+// Method 1 (recursion)
+// TLE
+int mincost = INT_MAX;
+
+void ways(int idx, vector<int> &days, vector<int> &costs, int cost)
+{
+    if(idx >= days.size())
+    {
+        mincost = min(mincost, cost);
+        return;
+    }
+    // cout<<idx<<endl;
+    ways(idx+1, days, costs, cost+costs[0]);
+    
+    int i = idx;
+    for(; i < days.size() && days[i] < days[idx]+7; i++)
+    {}
+    ways(i, days, costs, cost+costs[1]);
+    
+    i = idx;
+    for(; i < days.size() && days[i] < days[idx]+30; i++)
+    {}
+    ways(i, days, costs, cost+costs[2]);
+}
+
+int mincostTickets(vector<int>& days, vector<int>& costs) 
+{
+    ways(0, days, costs, 0);
+    return mincost;
+}
