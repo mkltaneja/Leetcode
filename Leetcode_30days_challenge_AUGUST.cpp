@@ -1376,3 +1376,37 @@ int mincostTickets(vector<int>& days, vector<int>& costs)
     ways(0, days, costs, 0);
     return mincost;
 }
+
+// Method 2 (memoized)
+// AC
+
+int ways(int idx, vector<int> &days, vector<int> &costs, vector<int> &dp, int maxcost)
+{
+    if(idx == days.size())
+        return dp[idx] = 0;
+    if(dp[idx] != maxcost)
+        return dp[idx];
+    // cout<<idx<<endl;
+    int cost1, cost7, cost30;
+    
+    cost1 = ways(idx+1, days, costs, dp, maxcost) + costs[0];
+    
+    int i = idx;
+    for(; i < days.size() && days[i] < days[idx]+7; i++)
+    {}
+    cost7 = ways(i, days, costs, dp, maxcost) + costs[1];
+    
+    i = idx;
+    for(; i < days.size() && days[i] < days[idx]+30; i++)
+    {}
+    cost30 = ways(i, days, costs, dp, maxcost) + costs[2];
+    
+    return dp[idx] = min(dp[idx], min(cost1, min(cost7, cost30)));
+}
+
+int mincostTickets(vector<int>& days, vector<int>& costs) 
+{
+    int maxcost = 365*costs[0];
+    vector<int> dp(days.size()+1,maxcost);
+    return ways(0, days, costs, dp, maxcost);
+}
