@@ -1491,6 +1491,8 @@ vector<string> fizzBuzz(int n)
 }
 
 // DAY 27 (Find Right Interval)=================================================
+
+// Method 1 (using hash map)
 vector<int> findRightInterval(vector<vector<int>>& intervals) 
 {
     int n = intervals.size();
@@ -1525,5 +1527,42 @@ vector<int> findRightInterval(vector<vector<int>>& intervals)
         res[i] = aidx;
     }
     cout<<endl;
+    return res;
+}
+
+/////////////////////////////////////OR///////////////////////////////
+
+// Method 2 (without using hash map --> optimized)
+vector<int> findRightInterval(vector<vector<int>>& intervals) 
+{
+    int n = intervals.size();
+    
+    vector<int> res(n);
+    for(int i=0; i<n; i++)
+    {
+        res[i] = intervals[i][1];
+        intervals[i][1] = i;
+    }
+    sort(intervals.begin(), intervals.end(),[](const vector<int> &a, const vector<int> &b)
+            {
+                return a[0] <= b[0];
+            });
+    
+    for(int i=0; i<n; i++)
+    {
+        int end = res[i];
+        int si = 0, ei = n-1;
+        while(si <= ei)
+        {
+            int mid = (si + ei) / 2;
+            int st = intervals[mid][0];
+            if(st < end)
+                si = mid + 1;
+            else if(st >= end)
+                ei = mid - 1;
+        }
+        // cout<<intervals2[si][0]<<" "<<intervals2[si][1]<<" --> "<<aidx<<endl;
+        res[i] = si == n ? -1 : intervals[si][1];
+    }
     return res;
 }
