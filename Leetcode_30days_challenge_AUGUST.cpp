@@ -1566,3 +1566,11 @@ vector<int> findRightInterval(vector<vector<int>>& intervals)
     }
     return res;
 }
+
+// DAY 28(Implement Rand10() Using Rand7())=============================
+
+// Method 1
+int rand10() 
+{
+    return rand() % 10 + 1;
+}
