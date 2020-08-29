@@ -1590,3 +1590,42 @@ int rand10()
     
     return b <= 3 ? a : a + 5;
 }
+
+// DAY 29 (Pancake Sorting)==============================================================
+ 
+void swap(int &a, int &b)
+{
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+void reverse(int si, int ei, vector<int> &A)
+{
+    while(si < ei)
+        swap(A[si++], A[ei--]);
+}
+
+vector<int> pancakeSort(vector<int>& A) 
+{
+    int n = A.size();
+    vector<int> K;
+    for(int i = A.size() - 1; i >= 1; i--)
+    {
+        for(int j = 1; j <= i; j++)
+        {
+            if(A[j] == i + 1)
+            {
+                reverse(0, j, A);
+                K.push_back(j+1);
+                break;
+            }
+        }
+        reverse(0, i, A);
+        K.push_back(i+1);
+    }
+    // for(int i : A)
+    //     cout<<i<<" ";
+    // cout<<endl;
+    return K;
+}
