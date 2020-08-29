@@ -1591,8 +1591,8 @@ int rand10()
     return b <= 3 ? a : a + 5;
 }
 
-// DAY 29 (Pancake Sorting)==============================================================
- 
+// DAY 29 (Pancake Sorting)============================================================== 
+
 void swap(int &a, int &b)
 {
     int temp = a;
@@ -1612,6 +1612,8 @@ vector<int> pancakeSort(vector<int>& A)
     vector<int> K;
     for(int i = A.size() - 1; i >= 1; i--)
     {
+        if(A[i] == i+1)
+            continue;
         for(int j = 1; j <= i; j++)
         {
             if(A[j] == i + 1)
