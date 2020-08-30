@@ -1631,3 +1631,51 @@ vector<int> pancakeSort(vector<int>& A)
     // cout<<endl;
     return K;
 }
+
+// DAY 30 (Largest Component Size by Common Factor)===========================================
+
+// Method 1 ()
+// TLE
+int comp_size(int src, vector<bool> &vis, int n, vector<vector<int>> &gp)
+{
+    vis[src] = true;
+    int count = 0;
+    for(int i : gp[src])
+        if(!vis[i])
+            count += comp_size(i, vis, n, gp);
+        
+    return count + 1;
+}
+
+int gcd(int a, int b)
+{
+    if(a % b == 0)
+        return b;
+    return gcd(b, a%b);
+}
+
+int largestComponentSize(vector<int>& A) 
+{
+    int n = A.size();
+    // cout<<n<<endl;
+    vector<vector<int>> graph(A.size(), vector<int>());
+    for(int i=0; i<n-1; i++)
+    {
+        for(int j=i+1; j<n; j++)
+        {
+            if(gcd(max(A[i], A[j]),min(A[i], A[j])) > 1)
+            {
+                graph[i].push_back(j);
+                graph[j].push_back(i);
+            }
+        }
+    }
+    
+    vector<bool> vis(n, false);
+    int maxsize = 0;
+    for(int i = 0; i < n; i++)
+        if(!vis[i])
+            maxsize = max(maxsize, comp_size(i, vis, n, graph));
+    
+    return maxsize;
+}
