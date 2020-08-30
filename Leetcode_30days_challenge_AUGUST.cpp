@@ -1679,3 +1679,53 @@ int largestComponentSize(vector<int>& A)
     
     return maxsize;
 }
+
+/////////////////////////////////////////OR//////////////////////////////
+// METHOD 2 (using DISJOINT SETS UNION)
+// AC
+int findpar(int child, vector<int> &par)
+{
+    if(par[child] == child)
+        return child;
+    return par[child] = findpar(par[child], par);
+}
+
+void union_(int x, int y, vector<int> &par)
+{
+    int xpar = findpar(x, par);
+    int ypar = findpar(y, par);
+    if(xpar != ypar)
+        par[ypar] = xpar;
+}
+
+void factors(int n, vector<int> &par)
+{
+    for(int i = 2; i*i <= n; i++)
+    {
+        if(n % i == 0)
+        {
+            union_(i, n, par);
+            union_(n, n/i, par);
+        }
+    }
+}
+
+int largestComponentSize(vector<int>& A) 
+{
+    vector<int> par(100001);
+    for(int i = 2; i <= 100000; i++)
+        par[i] = i;
+    for(int i : A)
+        factors(i,par);
+    
+    int maxsize = 0;
+    unordered_map<int,int> cache;
+    for(int i : A)
+    {
+        int ipar = findpar(i, par);
+        cache[ipar]++;
+        maxsize = max(maxsize, cache[ipar]);
+    }
+    
+    return maxsize;
+}
