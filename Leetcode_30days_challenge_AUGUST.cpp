@@ -1862,3 +1862,37 @@ TreeNode* deleteNode(TreeNode* root, int key)
     }
     return root;
 }
+
+///////////////////////////////////////OR///////////////////////////
+
+// METHOD 3 (shortest and most optimized)
+TreeNode* deleteNode(TreeNode* root, int key) 
+{
+    if(root == nullptr)
+        return root;
+    if(root->val > key)
+        root->left = deleteNode(root->left, key);
+    else if(root->val < key)
+        root->right = deleteNode(root->right, key);
+    else
+    {
+        if(root->left && root->right)
+        {
+            TreeNode* succ = root->right;
+            TreeNode* par = root;
+            while(succ->left)
+            {
+                par = succ;
+                succ = succ->left;
+            }
+            if(par == root)
+                par->right = succ->right;
+            else
+                par->left = succ->right;
+            root->val = succ->val;
+        }
+        else
+            return root->left ? root->left : root->right;
+    }
+    return root;
+}
