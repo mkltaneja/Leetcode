@@ -1816,3 +1816,49 @@ TreeNode* deleteNode(TreeNode* root, int key)
         removenode(root, key);
     return root;
 }
+
+//////////////////////////////////OR/////////////////////////////
+
+// METHOD 2 (shorter but time complex)
+TreeNode* left_rightmost(TreeNode* node)
+{
+    if(node->right == nullptr)
+        return node;
+    return left_rightmost(node->right);
+}
+TreeNode* right_leftmost(TreeNode* node)
+{
+    if(node->left == nullptr)
+        return node;
+    return right_leftmost(node->left);
+}
+
+TreeNode* deleteNode(TreeNode* root, int key) 
+{
+    if(root == nullptr)
+        return root;
+    if(root->val > key)
+        root->left = deleteNode(root->left, key);
+    else if(root->val < key)
+        root->right = deleteNode(root->right, key);
+    else
+    {
+        // cout<<root->val<<endl;
+        if(!root->left && !root->right)
+            root = nullptr;
+        
+        else if(root->right)
+        {
+            TreeNode* rlm_node = right_leftmost(root->right);
+            root->val = rlm_node->val;
+            root->right = deleteNode(root->right, root->val);
+        }
+        else
+        {
+            TreeNode* lrm_node = left_rightmost(root->left);
+            root->val = lrm_node->val;
+            root->left = deleteNode(root->left, root->val);
+        }
+    }
+    return root;
+}
