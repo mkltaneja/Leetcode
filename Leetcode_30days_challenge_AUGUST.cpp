@@ -1729,3 +1729,90 @@ int largestComponentSize(vector<int>& A)
     
     return maxsize;
 }
+
+// DAY 31 (Delete Node in a BST)===================================================================
+
+// METHOD 1
+TreeNode* findnode(TreeNode* node, int k)
+{
+    if(node == nullptr)
+        return nullptr;
+    if(node->val == k)
+        return node;
+    TreeNode* left = findnode(node->left, k);
+    if(left != nullptr)
+        return left;
+    TreeNode* right = findnode(node->right, k);
+    if(right != nullptr)
+        return right;
+    return nullptr;
+}
+
+TreeNode* left_rightmost(TreeNode* node)
+{
+    if(node->right == nullptr)
+        return node;
+    return left_rightmost(node->right);
+}
+TreeNode* right_leftmost(TreeNode* node)
+{
+    if(node->left == nullptr)
+        return node;
+    return right_leftmost(node->left);
+}
+
+void swapdata(TreeNode* node1, TreeNode* node2)
+{
+    int temp = node1->val;
+    node1->val = node2->val;
+    node2->val = temp;
+}
+
+bool removenode(TreeNode* node, int k)
+{
+    if(node == nullptr)
+        return false;
+    
+    bool removed = false;
+    if(node->left && node->left->val == k)
+    {
+        node->left = nullptr;
+        removed = true;
+    }
+    else if(node->right && node->right->val == k)
+    {
+        node->right = nullptr;
+        return true;
+    }
+    removed |= removenode(node->left, k);
+    if(removed)
+        return true;
+    removed |= removenode(node->right, k);
+    if(removed)
+        return true;
+    return removed;
+}
+
+TreeNode* deleteNode(TreeNode* root, int key) 
+{
+    if(root == nullptr || (root->left == nullptr && root->right == nullptr && root->val == key))
+        return nullptr;
+    TreeNode* node = findnode(root, key);
+    if(node == nullptr)
+        return root;
+
+    TreeNode* capable_node;
+    if(node->left == nullptr && node->right == nullptr)
+        capable_node = node;
+    else if(node->right)
+        capable_node = right_leftmost(node->right);
+    else
+        capable_node = left_rightmost(node->left);
+    
+    swapdata(node, capable_node);
+    if(capable_node->left || capable_node->right)
+        deleteNode(capable_node, key);
+    else
+        removenode(root, key);
+    return root;
+}
