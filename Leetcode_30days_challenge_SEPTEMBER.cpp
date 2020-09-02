@@ -21,3 +21,22 @@ string largestTimeFromDigits(vector<int>& A)
     }
     return res;
 }
+
+// DAY 2 ()======================================
+
+// MEHTOD 1 
+// TLE
+bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t)
+{
+    int n = nums.size();
+    for(int i=0; i<n; i++)
+    {
+        for(int j=i+1; j<=(i+k) && j<n; j++)
+        {
+            long diff = abs((long)nums[i] - (long)nums[j]);
+            if(diff <= t)
+                return true;
+        }
+    }
+    return false;
+}
