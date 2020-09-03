@@ -22,7 +22,7 @@ string largestTimeFromDigits(vector<int>& A)
     return res;
 }
 
-// DAY 2 ()======================================
+// DAY 2 (Contains Duplicate III)======================================
 
 // MEHTOD 1 
 // TLE
@@ -68,5 +68,36 @@ bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
             else break;
         }
     }            
+    return false;
+}
+
+// DAY 3 (Repeated Substring Pattern)===========================================================================
+
+// METHOD 1 (Naive - by selecting the substrings of the factors)
+bool checksub_i(int i, string &s)
+{
+    string sub = s.substr(0, i);
+    for(int j = 0; j < s.size(); j += i)
+        if(s.substr(j, i) != sub)
+            return false;
+    return true;
+}
+
+bool repeatedSubstringPattern(string &s) 
+{
+    int n = s.size();
+    if(n == 0 || n == 1)
+        return false;
+    
+    for(int i=1; i*i <= n; i++)
+    {
+        if(n % i == 0)
+        {
+            if(checksub_i(i,s))
+                return true;
+            if(i != 1 && checksub_i(n/i, s))
+                return true;
+        }
+    }
     return false;
 }
