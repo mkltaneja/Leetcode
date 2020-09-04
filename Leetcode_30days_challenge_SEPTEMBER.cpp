@@ -109,3 +109,31 @@ bool repeatedSubstringPattern(string s)
 {
     return (s+s).substr(1, 2*s.size()-2).find(s) != -1;
 }
+
+// DAY 4 (Partition Labels)===============================================================================
+
+vector<int> partitionLabels(string S) 
+{
+    int n = S.size();
+    vector<int> lastocc(26,0);
+    for(int i = 0; i < n; i++)
+        lastocc[S[i] - 'a'] = i;
+    // for(int i=0; i<26; i++)
+    //     cout<<(char)(i + 'a')<<" "<<lastocc[i]<<endl;
+    
+    vector<int> slen;
+    int lo = lastocc[S[0] - 'a'];
+    int i = 0;
+    while(true)
+    {
+        int st = i;
+        while(i++ < lo)
+            if(lastocc[S[i] - 'a'] > lo)
+                lo = lastocc[S[i] - 'a'];
+        slen.push_back(i - st);
+        if(i == n)
+            break;
+        lo = lastocc[S[i] - 'a'];
+    }
+    return slen;
+}
