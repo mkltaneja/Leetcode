@@ -1897,9 +1897,10 @@ TreeNode* deleteNode(TreeNode* root, int key)
     return root;
 }
 
-// DAY 5 () ===================================================================
+// DAY 5 (All Elements in Two Binary Search Trees) ===================================================================
 
 // METHOD 1 (vector<int> return type)
+// > O(n + m)
 vector<int> inoder(TreeNode* node)
 {
     if(node == nullptr)
@@ -1940,7 +1941,7 @@ vector<int> getAllElements(TreeNode* root1, TreeNode* root2)
 }
 
 // METHOD 2 (void return type)  --> faster
-
+// O(n + m)
 void inoder(TreeNode* node, vector<int> &in, int &i)
 {
     if(node == nullptr)
@@ -1976,7 +1977,7 @@ vector<int> getAllElements(TreeNode* root1, TreeNode* root2)
 }
 
 // METHOD 3 (alternative - using one array - by sorting -- slower)
-
+// O((n+m)*(log(n+m)))
 void inoder(TreeNode* node, vector<int> &in, int &i)
 {
     if(node == nullptr)
