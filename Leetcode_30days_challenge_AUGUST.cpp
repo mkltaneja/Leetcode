@@ -1896,3 +1896,105 @@ TreeNode* deleteNode(TreeNode* root, int key)
     }
     return root;
 }
+
+// DAY 5 () ===================================================================
+
+// METHOD 1 (vector<int> return type)
+vector<int> inoder(TreeNode* node)
+{
+    if(node == nullptr)
+        return {};
+    
+    vector<int> in;
+    
+    vector<int> left = inoder(node->left);
+    in.insert(in.end(), left.begin(), left.end());
+    
+    in.push_back(node->val);
+
+    vector<int> right = inoder(node->right);
+    in.insert(in.end(), right.begin(), right.end());
+    
+    return in;
+}
+
+vector<int> getAllElements(TreeNode* root1, TreeNode* root2) 
+{
+    vector<int> intree1 = inoder(root1);
+    vector<int> intree2 = inoder(root2);
+    
+    vector<int> res;
+    int i = 0, j = 0;
+    while(i < intree1.size() && j < intree2.size())
+    {
+        if(intree1[i] < intree2[j])
+            res.push_back(intree1[i++]);
+        else
+            res.push_back(intree2[j++]);
+    }
+    while(i < intree1.size())
+            res.push_back(intree1[i++]);
+    while(j < intree2.size())
+            res.push_back(intree2[j++]);
+    return res;
+}
+
+// METHOD 2 (void return type)  --> faster
+
+void inoder(TreeNode* node, vector<int> &in, int &i)
+{
+    if(node == nullptr)
+        return;
+    inoder(node->left, in, i);
+    in[i++] = node->val;
+    inoder(node->right, in, i);
+}
+
+vector<int> getAllElements(TreeNode* root1, TreeNode* root2) 
+{
+    vector<int> intree1(5000);
+    int idx1 = 0;
+    inoder(root1, intree1, idx1);
+    vector<int> intree2(5000);
+    int idx2 = 0;
+    inoder(root2, intree2, idx2);
+    
+    vector<int> res;
+    int i = 0, j = 0;
+    while(i < idx1 && j < idx2)
+    {
+        if(intree1[i] < intree2[j])
+            res.push_back(intree1[i++]);
+        else
+            res.push_back(intree2[j++]);
+    }
+    while(i < idx1)
+            res.push_back(intree1[i++]);
+    while(j < idx2)
+            res.push_back(intree2[j++]);
+    return res;
+}
+
+// METHOD 3 (alternative - using one array - by sorting -- slower)
+
+void inoder(TreeNode* node, vector<int> &in, int &i)
+{
+    if(node == nullptr)
+        return;
+    inoder(node->left, in, i);
+    in[i++] = node->val;
+    inoder(node->right, in, i);
+}
+
+vector<int> getAllElements(TreeNode* root1, TreeNode* root2) 
+{
+    vector<int> res(10000);
+    int size = 0;
+    inoder(root1, res, size);
+    inoder(root2, res, size);
+    res.resize(size);
+    
+    // cout<<size<<endl;
+    sort(res.begin(), res.end());
+    return res;
+}
