@@ -137,3 +137,30 @@ vector<int> partitionLabels(string S)
     }
     return slen;
 }
+
+// DAY 5 (Image Overlap)=============================================================
+
+int largestOverlap_(vector<vector<int>>& A, vector<vector<int>>& B) 
+{
+    int n = A.size();
+    int maxcount = 0;
+    for(int x = 0; x < n; x++)
+    {
+        for(int y = 0; y < n; y++)
+        {
+            int count = 0;
+            for(int i = x; i < n; i++)
+                for(int j = y; j < n; j++)
+                    if(A[i][j] == 1 && B[i-x][j-y] == 1)
+                        count++;
+            maxcount = max(maxcount, count);
+        }
+    }
+    return maxcount;
+}
+
+public:
+int largestOverlap(vector<vector<int>>& A, vector<vector<int>>& B) 
+{
+    return max(largestOverlap_(A,B), largestOverlap_(B,A));
+}
