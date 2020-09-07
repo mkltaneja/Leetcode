@@ -164,3 +164,37 @@ int largestOverlap(vector<vector<int>>& A, vector<vector<int>>& B)
 {
     return max(largestOverlap_(A,B), largestOverlap_(B,A));
 }
+
+// DAY 7 (Word Pattern) ===========================================================================
+
+bool wordPattern(string pattern, string str) 
+{
+    vector<string> map(26);
+    stringstream ss(str);
+    int count = 0;
+    string word;
+    while(ss >> word)
+        count++;
+    if(pattern.size() != count)
+        return false;
+    
+    stringstream ss1(str);
+    set<string> st;
+    int i = 0;
+    while(ss1 >> word)
+    {
+        char c = pattern[i++];
+    
+        if(map[c - 'a'] != "" && map[c - 'a'] != word)
+            return false;
+        
+        if(map[c - 'a'] == "")
+        {
+            if(st.find(word) != st.end())
+                return false;
+            map[c - 'a'] = word;
+            st.insert(word);
+        }
+    }
+    return true;
+}
