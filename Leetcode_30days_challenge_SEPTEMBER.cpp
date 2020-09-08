@@ -198,3 +198,39 @@ bool wordPattern(string pattern, string str)
     }
     return true;
 }
+
+// DAY 8 (Sum of Root To Leaf Binary Numbers)====================================================================
+
+// METHOD 1 (Using string of binary)
+void findsum(TreeNode* node, string bin, int &sum)
+{
+    if(!node)
+        return;
+    
+    bin += to_string(node->val);
+    
+    if(!node->left && !node->right)
+    {
+        int num = 0, t = 1;
+        for(int i = bin.size()-1; i >= 0; i--)
+        {
+            num += (bin[i]-'0') * t;
+            t *= 2;
+        }
+        // cout<<bin<<" "<<num<<endl;
+        sum += num;
+        return;
+    }
+    findsum(node->left, bin, sum);
+    findsum(node->right, bin, sum);
+    
+    bin[bin.size()-1] = NULL;
+}
+
+public:
+int sumRootToLeaf(TreeNode* root) 
+{
+    int sum = 0;
+    findsum(root, "", sum);
+    return sum;
+}
