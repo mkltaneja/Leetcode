@@ -234,3 +234,16 @@ int sumRootToLeaf(TreeNode* root)
     findsum(root, "", sum);
     return sum;
 }
+
+//////////////////////////OR//////////////////////
+
+// METHOD 2 (by multiplying 2 in existing sum and adding the present value)
+int sumRootToLeaf(TreeNode* root, int sum = 0) 
+{
+    if(!root)
+        return 0;
+    sum = 2*sum + root->val;
+    if(!root->left && !root->right)
+        return sum;
+    return sumRootToLeaf(root->left, sum) + sumRootToLeaf(root->right, sum);
+}
