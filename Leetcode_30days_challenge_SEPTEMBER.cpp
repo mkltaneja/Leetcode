@@ -247,3 +247,53 @@ int sumRootToLeaf(TreeNode* root, int sum = 0)
         return sum;
     return sumRootToLeaf(root->left, sum) + sumRootToLeaf(root->right, sum);
 }
+
+// DAY 9 (Compare Version Numbers) ===================================================================================
+
+int tonum(string &s)
+{
+    int num = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        num *= 10;
+        num += s[i] - '0';
+    }
+    return num;
+}
+
+int compareVersion(string version1, string version2)
+{
+    stringstream ss1(version1);
+    stringstream ss2(version2);
+    vector<int> ver1, ver2;
+
+    string levelv1, levelv2;
+    while (getline(ss1, levelv1, '.'))
+    {
+        int num = tonum(levelv1);
+        ver1.push_back(num);
+    }
+    while (getline(ss2, levelv2, '.'))
+    {
+        int num = tonum(levelv2);
+        ver2.push_back(num);
+    }
+    int i = 0, j = 0;
+    while (i < ver1.size() && j < ver2.size())
+    {
+        if (ver2[j] > ver1[i])
+            return -1;
+        else if (ver1[i] > ver2[j])
+            return 1;
+        i++, j++;
+    }
+
+    while (i < ver1.size())
+        if (ver1[i++] > 0)
+            return 1;
+    while (j < ver2.size())
+        if (ver2[j++] > 0)
+            return -1;
+
+    return 0;
+}
