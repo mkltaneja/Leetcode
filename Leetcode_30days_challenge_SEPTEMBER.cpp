@@ -337,3 +337,50 @@ string getHint(string secret, string guess)
 
     return res;
 }
+
+/////////////////////////////////////////////OR/////////////////////////////////////
+
+// METHOD 2
+// Faster
+int countBulls(string &secret, string &guess, vector<vector<int>> &arr)
+{
+    int bulls = 0;
+    for (int i = 0; i < guess.size(); i++)
+    {
+        if (guess[i] == secret[i])
+        {
+            bulls++;
+            arr[guess[i] - '0'][3]++;
+        }
+    }
+    return bulls;
+}
+
+int countCows(string &secret, string &guess, vector<vector<int>> &arr)
+{
+    for (int i = 0; i < guess.size(); i++)
+    {
+        int sidx = secret[i] - '0';
+        int gidx = guess[i] - '0';
+        arr[sidx][0]++;
+        arr[gidx][1]++;
+    }
+
+    int cows = 0;
+    for (int i = 0; i < 10; i++)
+    {
+        arr[i][2] = min(arr[i][0], arr[i][1]) - arr[i][3];
+        cows += arr[i][2];
+    }
+
+    return cows;
+}
+
+string getHint(string secret, string guess)
+{
+    vector<vector<int>> arr(10, vector<int>(4, 0));
+    int A = countBulls(secret, guess, arr);
+    int B = countCows(secret, guess, arr);
+
+    return to_string(A) + "A" + to_string(B) + "B";
+}
