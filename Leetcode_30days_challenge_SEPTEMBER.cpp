@@ -1,20 +1,20 @@
 // DAY 1 (Largest Time For Given Digits)===================================================
 
-string largestTimeFromDigits(vector<int>& A) 
+string largestTimeFromDigits(vector<int> &A)
 {
     string res = "";
-    for(int i=0; i<4; i++)
+    for (int i = 0; i < 4; i++)
     {
-        for(int j=0; j<4; j++)
+        for (int j = 0; j < 4; j++)
         {
-            for(int k=0; k<4; k++)
+            for (int k = 0; k < 4; k++)
             {
-                if(i == j || j == k || k == i)
+                if (i == j || j == k || k == i)
                     continue;
                 string hh = to_string(A[i]) + to_string(A[j]);
-                string mm = to_string(A[k]) + to_string(A[6 - (i+j+k)]);
+                string mm = to_string(A[k]) + to_string(A[6 - (i + j + k)]);
                 string time = hh + ":" + mm;
-                if(hh < "24" && mm < "60" && time > res)
+                if (hh < "24" && mm < "60" && time > res)
                     res = time;
             }
         }
@@ -24,17 +24,17 @@ string largestTimeFromDigits(vector<int>& A)
 
 // DAY 2 (Contains Duplicate III)======================================
 
-// MEHTOD 1 
+// MEHTOD 1
 // TLE
-bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t)
+bool containsNearbyAlmostDuplicate(vector<int> &nums, int k, int t)
 {
     int n = nums.size();
-    for(int i=0; i<n; i++)
+    for (int i = 0; i < n; i++)
     {
-        for(int j=i+1; j<=(i+k) && j<n; j++)
+        for (int j = i + 1; j <= (i + k) && j < n; j++)
         {
             long diff = abs((long)nums[i] - (long)nums[j]);
-            if(diff <= t)
+            if (diff <= t)
                 return true;
         }
     }
@@ -46,28 +46,34 @@ bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t)
 // METHOD 2 (Using multimap)
 // AC
 
-bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
-    multimap <int,int> mp;
-    for(int i=0;i<nums.size();i++) mp.insert(pair< int, int >(nums[i], i));
-    
-    multimap <int,int>::iterator it;
-    multimap <int,int>::iterator itnext;
-    
-    for(it=mp.begin();it!=mp.end();it++){
+bool containsNearbyAlmostDuplicate(vector<int> &nums, int k, int t)
+{
+    multimap<int, int> mp;
+    for (int i = 0; i < nums.size(); i++)
+        mp.insert(pair<int, int>(nums[i], i));
+
+    multimap<int, int>::iterator it;
+    multimap<int, int>::iterator itnext;
+
+    for (it = mp.begin(); it != mp.end(); it++)
+    {
         itnext = it;
-        while(true){
+        while (true)
+        {
             itnext++;
-            if(itnext == mp.end()) break;
+            if (itnext == mp.end())
+                break;
             long long a = (*it).first;
             long long b = (*itnext).first;
-            if(abs(a-b) <= t)  
+            if (abs(a - b) <= t)
             {
-                if(abs((*it).second - (*itnext).second) <= k) 
+                if (abs((*it).second - (*itnext).second) <= k)
                     return true;
             }
-            else break;
+            else
+                break;
         }
-    }            
+    }
     return false;
 }
 
@@ -77,25 +83,25 @@ bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
 bool checksub_i(int i, string &s)
 {
     string sub = s.substr(0, i);
-    for(int j = 0; j < s.size(); j += i)
-        if(s.substr(j, i) != sub)
+    for (int j = 0; j < s.size(); j += i)
+        if (s.substr(j, i) != sub)
             return false;
     return true;
 }
 
-bool repeatedSubstringPattern(string &s) 
+bool repeatedSubstringPattern(string &s)
 {
     int n = s.size();
-    if(n == 0 || n == 1)
+    if (n == 0 || n == 1)
         return false;
-    
-    for(int i=1; i*i <= n; i++)
+
+    for (int i = 1; i * i <= n; i++)
     {
-        if(n % i == 0)
+        if (n % i == 0)
         {
-            if(checksub_i(i,s))
+            if (checksub_i(i, s))
                 return true;
-            if(i != 1 && checksub_i(n/i, s))
+            if (i != 1 && checksub_i(n / i, s))
                 return true;
         }
     }
@@ -107,31 +113,31 @@ bool repeatedSubstringPattern(string &s)
 // METHOD 2 (One - Liner)
 bool repeatedSubstringPattern(string s)
 {
-    return (s+s).substr(1, 2*s.size()-2).find(s) != -1;
+    return (s + s).substr(1, 2 * s.size() - 2).find(s) != -1;
 }
 
 // DAY 4 (Partition Labels)===============================================================================
 
-vector<int> partitionLabels(string S) 
+vector<int> partitionLabels(string S)
 {
     int n = S.size();
-    vector<int> lastocc(26,0);
-    for(int i = 0; i < n; i++)
+    vector<int> lastocc(26, 0);
+    for (int i = 0; i < n; i++)
         lastocc[S[i] - 'a'] = i;
     // for(int i=0; i<26; i++)
     //     cout<<(char)(i + 'a')<<" "<<lastocc[i]<<endl;
-    
+
     vector<int> slen;
     int lo = lastocc[S[0] - 'a'];
     int i = 0;
-    while(true)
+    while (true)
     {
         int st = i;
-        while(i++ < lo)
-            if(lastocc[S[i] - 'a'] > lo)
+        while (i++ < lo)
+            if (lastocc[S[i] - 'a'] > lo)
                 lo = lastocc[S[i] - 'a'];
         slen.push_back(i - st);
-        if(i == n)
+        if (i == n)
             break;
         lo = lastocc[S[i] - 'a'];
     }
@@ -140,18 +146,18 @@ vector<int> partitionLabels(string S)
 
 // DAY 5 (Image Overlap)=============================================================
 
-int largestOverlap_(vector<vector<int>>& A, vector<vector<int>>& B) 
+int largestOverlap_(vector<vector<int>> &A, vector<vector<int>> &B)
 {
     int n = A.size();
     int maxcount = 0;
-    for(int x = 0; x < n; x++)
+    for (int x = 0; x < n; x++)
     {
-        for(int y = 0; y < n; y++)
+        for (int y = 0; y < n; y++)
         {
             int count = 0;
-            for(int i = x; i < n; i++)
-                for(int j = y; j < n; j++)
-                    if(A[i][j] == 1 && B[i-x][j-y] == 1)
+            for (int i = x; i < n; i++)
+                for (int j = y; j < n; j++)
+                    if (A[i][j] == 1 && B[i - x][j - y] == 1)
                         count++;
             maxcount = max(maxcount, count);
         }
@@ -160,37 +166,37 @@ int largestOverlap_(vector<vector<int>>& A, vector<vector<int>>& B)
 }
 
 public:
-int largestOverlap(vector<vector<int>>& A, vector<vector<int>>& B) 
+int largestOverlap(vector<vector<int>> &A, vector<vector<int>> &B)
 {
-    return max(largestOverlap_(A,B), largestOverlap_(B,A));
+    return max(largestOverlap_(A, B), largestOverlap_(B, A));
 }
 
 // DAY 7 (Word Pattern) ===========================================================================
 
-bool wordPattern(string pattern, string str) 
+bool wordPattern(string pattern, string str)
 {
     vector<string> map(26);
     stringstream ss(str);
     int count = 0;
     string word;
-    while(ss >> word)
+    while (ss >> word)
         count++;
-    if(pattern.size() != count)
+    if (pattern.size() != count)
         return false;
-    
+
     stringstream ss1(str);
     set<string> st;
     int i = 0;
-    while(ss1 >> word)
+    while (ss1 >> word)
     {
         char c = pattern[i++];
-    
-        if(map[c - 'a'] != "" && map[c - 'a'] != word)
+
+        if (map[c - 'a'] != "" && map[c - 'a'] != word)
             return false;
-        
-        if(map[c - 'a'] == "")
+
+        if (map[c - 'a'] == "")
         {
-            if(st.find(word) != st.end())
+            if (st.find(word) != st.end())
                 return false;
             map[c - 'a'] = word;
             st.insert(word);
@@ -202,19 +208,19 @@ bool wordPattern(string pattern, string str)
 // DAY 8 (Sum of Root To Leaf Binary Numbers)====================================================================
 
 // METHOD 1 (Using string of binary)
-void findsum(TreeNode* node, string bin, int &sum)
+void findsum(TreeNode *node, string bin, int &sum)
 {
-    if(!node)
+    if (!node)
         return;
-    
+
     bin += to_string(node->val);
-    
-    if(!node->left && !node->right)
+
+    if (!node->left && !node->right)
     {
         int num = 0, t = 1;
-        for(int i = bin.size()-1; i >= 0; i--)
+        for (int i = bin.size() - 1; i >= 0; i--)
         {
-            num += (bin[i]-'0') * t;
+            num += (bin[i] - '0') * t;
             t *= 2;
         }
         // cout<<bin<<" "<<num<<endl;
@@ -223,12 +229,12 @@ void findsum(TreeNode* node, string bin, int &sum)
     }
     findsum(node->left, bin, sum);
     findsum(node->right, bin, sum);
-    
-    bin[bin.size()-1] = NULL;
+
+    bin[bin.size() - 1] = NULL;
 }
 
 public:
-int sumRootToLeaf(TreeNode* root) 
+int sumRootToLeaf(TreeNode *root)
 {
     int sum = 0;
     findsum(root, "", sum);
@@ -238,12 +244,12 @@ int sumRootToLeaf(TreeNode* root)
 //////////////////////////OR//////////////////////
 
 // METHOD 2 (by multiplying 2 in existing sum and adding the present value)
-int sumRootToLeaf(TreeNode* root, int sum = 0) 
+int sumRootToLeaf(TreeNode *root, int sum = 0)
 {
-    if(!root)
+    if (!root)
         return 0;
-    sum = 2*sum + root->val;
-    if(!root->left && !root->right)
+    sum = 2 * sum + root->val;
+    if (!root->left && !root->right)
         return sum;
     return sumRootToLeaf(root->left, sum) + sumRootToLeaf(root->right, sum);
 }
@@ -296,4 +302,38 @@ int compareVersion(string version1, string version2)
             return -1;
 
     return 0;
+}
+
+// DAY 10 (Bulls and Cows)==================================================================
+
+// METHOD 1
+string getHint(string secret, string guess)
+{
+    map<char, int> mc;
+    for (char c : secret)
+        mc[c]++;
+
+    int A = 0, B = 0;
+    set<int> As;
+    for (int i = 0; i < guess.size(); i++)
+    {
+        if (secret[i] == guess[i])
+        {
+            A++;
+            mc[guess[i]]--;
+            As.insert(i);
+        }
+    }
+    for (int i = 0; i < guess.size(); i++)
+    {
+        char c = guess[i];
+        if (mc[c] > 0 && As.find(i) == As.end())
+        {
+            B++;
+            mc[c]--;
+        }
+    }
+    string res = to_string(A) + "A" + to_string(B) + "B";
+
+    return res;
 }
