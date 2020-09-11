@@ -303,3 +303,68 @@ int compareVersion(string version1, string version2)
 
     return 0;
 }
+
+// DAY 11 (Maximum Product Subarray)============================================================
+
+// METHOD 1 --> O(n^2)
+int ans(int si, int ei, vector<int> &nums)
+{
+    if (si > ei)
+        return 0;
+    if (si == ei)
+        return nums[si];
+    long long int prod = 1, prod1 = 1, prod2 = 1;
+    int i = si, neg = 0;
+    while (i <= ei)
+    {
+        prod *= nums[i];
+        if (nums[i++] < 0)
+            neg++;
+    }
+    if (!(neg & 1))
+        return prod;
+    else
+    {
+        i = si;
+        while (nums[i] > 0 && i <= ei)
+            prod1 *= nums[i++];
+        prod1 *= nums[i];
+        i = ei;
+        while (nums[i] > 0 && i >= si)
+            prod2 *= nums[i--];
+        prod2 *= nums[i];
+        return prod / max(prod1, prod2);
+    }
+}
+
+int maxProduct_(int n, vector<int> &nums)
+{
+    int neg = 0, zeros = 0;
+    for (int i : nums)
+        if (i == 0)
+            zeros++;
+
+    if (zeros == 0)
+        return ans(0, n - 1, nums);
+    else
+    {
+        int maxprod = INT_MIN;
+        int si = 0, i = 0;
+        while (i < n)
+        {
+            if (nums[i] == 0)
+            {
+                maxprod = max(maxprod, ans(si, i - 1, nums));
+                si = i + 1;
+            }
+            i++;
+        }
+        maxprod = max(maxprod, ans(si, i - 1, nums));
+        return maxprod < 0 ? 0 : maxprod;
+    }
+}
+
+int maxProduct(vector<int> &nums)
+{
+    return maxProduct_(nums.size(), nums);
+}
