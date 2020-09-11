@@ -304,6 +304,87 @@ int compareVersion(string version1, string version2)
     return 0;
 }
 
+// DAY 10 (Bulls and Cows)==================================================================
+
+// METHOD 1
+string getHint(string secret, string guess)
+{
+    map<char, int> mc;
+    for (char c : secret)
+        mc[c]++;
+
+    int A = 0, B = 0;
+    set<int> As;
+    for (int i = 0; i < guess.size(); i++)
+    {
+        if (secret[i] == guess[i])
+        {
+            A++;
+            mc[guess[i]]--;
+            As.insert(i);
+        }
+    }
+    for (int i = 0; i < guess.size(); i++)
+    {
+        char c = guess[i];
+        if (mc[c] > 0 && As.find(i) == As.end())
+        {
+            B++;
+            mc[c]--;
+        }
+    }
+    string res = to_string(A) + "A" + to_string(B) + "B";
+
+    return res;
+}
+
+/////////////////////////////////////////////OR/////////////////////////////////////
+
+// METHOD 2
+// Faster
+int countBulls(string &secret, string &guess, vector<vector<int>> &arr)
+{
+    int bulls = 0;
+    for (int i = 0; i < guess.size(); i++)
+    {
+        if (guess[i] == secret[i])
+        {
+            bulls++;
+            arr[guess[i] - '0'][3]++;
+        }
+    }
+    return bulls;
+}
+
+int countCows(string &secret, string &guess, vector<vector<int>> &arr)
+{
+    for (int i = 0; i < guess.size(); i++)
+    {
+        int sidx = secret[i] - '0';
+        int gidx = guess[i] - '0';
+        arr[sidx][0]++;
+        arr[gidx][1]++;
+    }
+
+    int cows = 0;
+    for (int i = 0; i < 10; i++)
+    {
+        arr[i][2] = min(arr[i][0], arr[i][1]) - arr[i][3];
+        cows += arr[i][2];
+    }
+
+    return cows;
+}
+
+string getHint(string secret, string guess)
+{
+    vector<vector<int>> arr(10, vector<int>(4, 0));
+    int A = countBulls(secret, guess, arr);
+    int B = countCows(secret, guess, arr);
+
+    return to_string(A) + "A" + to_string(B) + "B";
+}
+
 // DAY 11 (Maximum Product Subarray)============================================================
 
 // METHOD 1 --> O(n^2)
@@ -367,4 +448,31 @@ int maxProduct_(int n, vector<int> &nums)
 int maxProduct(vector<int> &nums)
 {
     return maxProduct_(nums.size(), nums);
+}
+
+/////////////////////////////////////OR/////////////////////////////////////
+
+// METHOD 2 --> O(n)
+int maxProduct(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 0)
+        return 0;
+    int cmax = nums[0];
+    int cmin = nums[0];
+    int pmax = nums[0];
+    int pmin = nums[0];
+    int maxprod = nums[0];
+
+    for (int i = 1; i < n; i++)
+    {
+        cmax = max(pmax * nums[i], max(pmin * nums[i], nums[i]));
+        cmin = min(pmax * nums[i], min(pmin * nums[i], nums[i]));
+
+        maxprod = max(maxprod, cmax);
+
+        pmax = cmax;
+        pmin = cmin;
+    }
+    return maxprod;
 }
