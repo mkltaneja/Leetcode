@@ -476,3 +476,30 @@ int maxProduct(vector<int> &nums)
     }
     return maxprod;
 }
+
+// DAY 12 (Combination Sum 3)============================================================================
+
+void combination(int idx, int k, int n, vector<int> nums, vector<vector<int>> &res)
+{
+    if (n == 0 && k == 0)
+    {
+        res.push_back(nums);
+        return;
+    }
+    for (int i = idx; i <= 9; i++)
+    {
+        if (n - i >= 0 && k - 1 >= 0)
+        {
+            nums.push_back(i);
+            combination(i + 1, k - 1, n - i, nums, res);
+            nums.pop_back();
+        }
+    }
+}
+
+vector<vector<int>> combinationSum3(int k, int n)
+{
+    vector<vector<int>> res;
+    combination(1, k, n, {}, res);
+    return res;
+}
