@@ -503,3 +503,43 @@ vector<vector<int>> combinationSum3(int k, int n)
     combination(1, k, n, {}, res);
     return res;
 }
+
+// DAY 13 (Insert Intervals)==================================================================
+
+// METHOD 1
+void insert_interval(vector<vector<int>> &res, vector<vector<int>> &intervals, int i, int st, int end)
+{
+    int s = min(intervals[i][0], st), e;
+    while(i < intervals.size() && intervals[i][1] < end)
+        i++;
+    if(i == intervals.size() || intervals[i][0] > end)
+        e = end;
+    else
+        e = intervals[i][1];
+    
+    res.push_back({s,e});
+}
+
+vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) 
+{
+    int n = intervals.size();
+    int st = newInterval[0], end = newInterval[1];
+    vector<vector<int>> res;
+    bool f = false;
+    for(int i=0; i<n; i++)
+    {
+        int s = intervals[i][0], e = intervals[i][1];
+        if(st <= e & !f)
+        {
+            f = true;
+            insert_interval(res, intervals, i, st, end);
+        }
+        else if(st > e)
+            res.push_back({s,e});
+        if(end < s)
+            res.push_back({s,e});
+    }
+    if(!f)
+        res.push_back({st,end});
+    return res;
+}
