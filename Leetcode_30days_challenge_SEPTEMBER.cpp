@@ -636,3 +636,20 @@ int rob(vector<int>& nums)
     return rob_rec(0, n, nums, money);
 }
 
+///////////////////////////////////////////////////////OR////////////////////////////////////////
+
+// METHOD 4 (FIBONACCI TYPE METHOD - Recursion) --> O(2^n)
+int rob_fib(int n, vector<int> &nums)
+{
+    if(n == 0)
+        return 0;
+    if(n == 1)
+        return nums[0];
+    return max(rob_fib(n-1, nums), rob_fib(n-2, nums) + nums[n-1]);
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    return rob_fib(n, nums);
+}
