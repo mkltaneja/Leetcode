@@ -571,7 +571,7 @@ vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInter
 
 // DAY 14 (House Robber)====================================================
 
-// METHOD 1 (recursion)
+// METHOD 1 (recursion) --> O(n^n)
 // TLE
 int rob_rec(int idx, int n, vector<int> &nums)
 {
@@ -593,7 +593,7 @@ int rob(vector<int>& nums)
 
 ////////////////////////////////////////////OR//////////////////////
 
-// METHOD 2 (Memoization)
+// METHOD 2 (Memoization) --> O(n^2)
 int rob_rec(int idx, int n, vector<int> &nums, vector<int> &money)
 {
     if(idx >= n)
@@ -613,3 +613,26 @@ int rob(vector<int>& nums)
     vector<int> money(n+2,-1);
     return rob_rec(0, n, nums, money);
 }
+
+/////////////////////////////////////////////////OR//////////////////////////////////
+
+// METHOD 3 (TABULATION) --> O(n^2)
+int rob_rec(int idx, int n, vector<int> &nums, vector<int> &money)
+{
+    for(int idx = n-1; idx >= 0; idx--)
+    {
+        int mon = 0;
+        for(int i=idx; i<n; i++)
+            mon = max(mon, money[i + 2] + nums[i]);
+        money[idx] = mon;
+    }
+    return money[0];
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<int> money(n+2,0);
+    return rob_rec(0, n, nums, money);
+}
+
