@@ -571,6 +571,7 @@ vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInter
 
 // DAY 14 (House Robber)====================================================
 
+// APPROACH 1
 // METHOD 1 (recursion) --> O(n^n)
 // TLE
 int rob_rec(int idx, int n, vector<int> &nums)
@@ -638,7 +639,9 @@ int rob(vector<int>& nums)
 
 ///////////////////////////////////////////////////////OR////////////////////////////////////////
 
+// APPROACH 2
 // METHOD 4 (FIBONACCI TYPE METHOD - Recursion) --> O(2^n)
+// TLE
 int rob_fib(int n, vector<int> &nums)
 {
     if(n == 0)
@@ -652,4 +655,25 @@ int rob(vector<int>& nums)
 {
     int n = nums.size();
     return rob_fib(n, nums);
+}
+
+//////////////////////////////////////////////OR////////////////////////////////////
+
+// METHOD 5 (memoization) --> O(n)
+int rob_fib(int n, vector<int> &nums, vector<int> &money)
+{
+    if(n == 0)
+        return money[n] = 0;
+    if(n == 1)
+        return money[n] = nums[0];
+    if(money[n] != -1)
+        return money[n];
+    return money[n] = max(rob_fib(n-1, nums, money), rob_fib(n-2, nums, money) + nums[n-1]);
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<int> money(n+1, -1);
+    return rob_fib(n, nums, money);
 }
