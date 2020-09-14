@@ -568,3 +568,25 @@ vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInter
     
     return res;
 }
+
+// DAY 14 (House Robber)====================================================
+
+// METHOD 1 (recursion)
+// TLE
+int rob_rec(int idx, int n, vector<int> &nums)
+{
+    if(idx >= n)
+        return 0;
+    int money = 0;
+    
+    for(int i=idx; i<n; i++)
+        money = max(money, rob_rec(i + 2, n, nums) + nums[i]);
+    // cout<<idx<<" "<<money<<endl;
+    return money;
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    return rob_rec(0, n, nums);
+}
