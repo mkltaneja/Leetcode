@@ -590,3 +590,26 @@ int rob(vector<int>& nums)
     int n = nums.size();
     return rob_rec(0, n, nums);
 }
+
+////////////////////////////////////////////OR//////////////////////
+
+// METHOD 2 (Memoization)
+int rob_rec(int idx, int n, vector<int> &nums, vector<int> &money)
+{
+    if(idx >= n)
+        return money[idx] = 0;
+    if(money[idx] != -1)
+        return money[idx];
+    
+    int mon = 0;
+    for(int i=idx; i<n; i++)
+        mon = max(mon, rob_rec(i + 2, n, nums, money) + nums[i]);
+    return money[idx] = mon;
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<int> money(n+2,-1);
+    return rob_rec(0, n, nums, money);
+}
