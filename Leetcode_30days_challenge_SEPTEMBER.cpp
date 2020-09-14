@@ -677,3 +677,52 @@ int rob(vector<int>& nums)
     vector<int> money(n+1, -1);
     return rob_fib(n, nums, money);
 }
+
+///////////////////////////////////////////////OR////////////////////////////
+
+// METHOD 6 (Tabulation) --> O(n)
+int rob_fibdp(int N, vector<int> &nums, vector<int> &money)
+{
+    for(int n=1; n<=N; n++)
+    {
+        if(n == 1)
+        {
+            money[n] = nums[0];
+            continue;
+        }
+        money[n] = max(money[n-1], money[n-2] + nums[n-1]);
+    }
+    return money[N];
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<int> money(n+1, 0);
+    return rob_fibdp(n, nums, money);
+}
+
+///////////////////////////////////////////OR////////////////////////////////////////
+
+// METHOD 7 (OPTIMIZED) --> O(n) time, O(1) space
+int rob_fibopt(int n, vector<int> &nums)
+{
+    if(n == 0)
+        return 0;
+    if(n == 1)
+        return nums[0];
+    int a = nums[0], b = max(nums[0], nums[1]);
+    for(int i = 2; i < n; i++)
+    {
+        int temp = b;
+        b = max(nums[i] + a, b);
+        a = temp;
+    }
+    return b;
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    return rob_fibopt(n, nums);
+}
