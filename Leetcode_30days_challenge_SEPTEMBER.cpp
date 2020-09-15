@@ -737,3 +737,22 @@ int lengthOfLastWord(string s)
     while(ss >> word){}
     return word.size();
 }
+
+// METHOD 2 (using pointers)
+
+int lengthOfLastWord(string s) 
+{
+    int n = s.size(), len = 0;
+    if(n == 0)
+        return 0;
+    while(n > 0 && isspace(s[--n]))
+    {}
+    for(int i=0; i<=n; i++)
+    {
+        if(isspace(s[i]))
+            len = 0;
+        else
+            len++;
+    }
+    return len;
+}
