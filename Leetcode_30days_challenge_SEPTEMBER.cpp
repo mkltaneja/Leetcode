@@ -726,3 +726,14 @@ int rob(vector<int>& nums)
     int n = nums.size();
     return rob_fibopt(n, nums);
 }
+
+// DAY 15 (Length Of Last Word)==================================================
+
+// METHOD 1 (stringstream)
+int lengthOfLastWord(string s) 
+{
+    stringstream ss(s);
+    string word;
+    while(ss >> word){}
+    return word.size();
+}
