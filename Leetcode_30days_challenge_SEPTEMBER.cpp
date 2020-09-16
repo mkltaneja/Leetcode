@@ -756,3 +756,16 @@ int lengthOfLastWord(string s)
     }
     return len;
 }
+
+// DAY  16 (mAX xOR===================================================
+
+// APPROACH 1 --> O(n^2)
+// TLE
+int findMaximumXOR(vector<int>& nums) 
+{
+    int n = nums.size(), maxxor = 0;
+    for(int i=0; i<n; i++)
+        for(int j=i+1; j<n; j++)
+            maxxor = max(maxxor,nums[i]^nums[j]);
+    return maxxor;
+}
