@@ -769,3 +769,32 @@ int findMaximumXOR(vector<int>& nums)
             maxxor = max(maxxor,nums[i]^nums[j]);
     return maxxor;
 }
+
+////////////////////////////////////////////////////////////OR//////////////////////////////\
+
+// APPROACH 2 --> O(nlogn)
+// AC
+int findMaximumXOR(vector<int>& nums) 
+{   
+    int mask = 0, maxxor = 0;
+    unordered_set<int> s;
+    for(int i = 31; i >= 0; i--)
+    {
+        mask |= (1 << i);
+        for(int num : nums)
+            if(s.find((num & mask)) == s.end())
+                s.insert((num & mask));
+        
+        int temp = (maxxor | (1 << i));
+        for(int num : s)
+        {
+            if(s.find((temp ^ num)) != s.end())
+            {
+                maxxor = temp; 
+                break;
+            }
+        }
+        s.clear();
+    }
+    return maxxor;
+}
