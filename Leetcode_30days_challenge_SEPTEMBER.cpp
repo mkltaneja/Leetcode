@@ -813,3 +813,31 @@ int findMaximumXOR(vector<int>& nums)
     }
     return maxxor;
 }
+
+// DAY 17 (Robot Bounded In Circle)===================================================================
+
+bool isRobotBounded(string instructions) 
+{
+    int x = 0, y = 0, idx = 0;
+    vector<vector<int>> dir = {{0,1}, {-1,0}, {0,-1}, {1,0}};
+    vector<int> d = dir[idx];
+    vector<int> sdir = d;
+    for(int i=0; i<4; i++)
+    {
+        for(char c : instructions)
+        {
+            if(c == 'G')
+                x += d[0], y += d[1];
+            else if(c == 'L')
+                idx = ++idx % 4;
+            else
+                idx = (--idx + 4) % 4;
+
+            d = dir[idx];
+        }
+        vector<int> edir = d;        
+        if((x == 0 && y == 0) && sdir == edir)
+            return true;
+    }
+    return false;
+}
