@@ -384,3 +384,16 @@ string getHint(string secret, string guess)
 
     return to_string(A) + "A" + to_string(B) + "B";
 }
+
+// DAY 18 (Best Time To Buy and Sell Stocks)====================================================
+
+int maxProfit(vector<int>& prices) 
+{
+    int minprice = INT_MAX, maxdiff = 0;
+    for(int i = 0; i < prices.size(); i++)
+    {
+        minprice = min(prices[i], minprice);
+        maxdiff = max(prices[i] - minprice, maxdiff);
+    }
+    return maxdiff;
+}
