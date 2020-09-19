@@ -841,3 +841,27 @@ bool isRobotBounded(string instructions)
     }
     return false;
 }
+
+// DAY 20 (Sequential Digits)========================================================================
+
+vector<int> sequentialDigits(int low, int high) 
+{
+    vector<int> seq;
+    for(int i = 1; i <= 8; i++)
+    {
+        int num = i;
+        while(num <= high)
+        {
+            if(num >= low)
+                seq.push_back(num);
+            int ld = num % 10;
+            if(ld == 9)
+                break;
+            num *= 10;
+            num += ld + 1;
+        }
+    }
+    sort(seq.begin(), seq.end());
+    
+    return seq;
+}
