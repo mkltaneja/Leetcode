@@ -757,7 +757,7 @@ int lengthOfLastWord(string s)
     return len;
 }
 
-// DAY  16 (mAX xOR===================================================
+// DAY  16 (Max XOR)===================================================
 
 // APPROACH 1 --> O(n^2)
 // TLE
@@ -842,7 +842,7 @@ bool isRobotBounded(string instructions)
     return false;
 }
 
-// DAY 20 (Sequential Digits)========================================================================
+// DAY 19 (Sequential Digits)========================================================================
 
 vector<int> sequentialDigits(int low, int high) 
 {
@@ -864,4 +864,48 @@ vector<int> sequentialDigits(int low, int high)
     sort(seq.begin(), seq.end());
     
     return seq;
+}
+
+// DAY 20 (Unique Paths 3)==============================================
+
+vector<vector<int>> dir = {{1,0}, {0,1}, {-1,0}, {0,-1}};
+
+int paths_dfs(int i, int j, int trvld, int zeros, int n, int m, vector<vector<int>> &grid)
+{
+    if(i == -1 || i == n || j == -1 || j == m || grid[i][j] == -1)
+        return 0;
+    if(grid[i][j] == 2)
+    {
+        if(trvld - 1 == zeros)
+            return 1;
+        return 0;
+    }
+    
+    int val = grid[i][j];
+    grid[i][j] = -1;
+    int count = 0;
+    for(int d = 0; d < 4; d++)
+        count += paths_dfs(i + dir[d][0], j + dir[d][1], trvld+1, zeros, n, m, grid);
+    grid[i][j] = val; 
+    return count;
+}
+
+int uniquePathsIII(vector<vector<int>>& grid) 
+{
+    int n = grid.size();
+    int m = grid[0].size();
+    int r = 0, c = 0;
+    bool f = false;
+    int z = 0;
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(grid[i][j] == 1)
+                r = i, c = j;
+            else if(grid[i][j] == 0)
+                z++;
+        }
+    }
+    return paths_dfs(r, c, 0, z, n, m, grid);
 }
