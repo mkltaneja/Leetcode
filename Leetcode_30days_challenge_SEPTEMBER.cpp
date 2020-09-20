@@ -385,6 +385,7 @@ string getHint(string secret, string guess)
     return to_string(A) + "A" + to_string(B) + "B";
 }
 
+<<<<<<< HEAD
 // DAY 18 (Best Time To Buy and Sell Stocks)====================================================
 
 int maxProfit(vector<int>& prices) 
@@ -396,4 +397,485 @@ int maxProfit(vector<int>& prices)
         maxdiff = max(prices[i] - minprice, maxdiff);
     }
     return maxdiff;
+=======
+// DAY 11 (Maximum Product Subarray)============================================================
+
+// METHOD 1 --> O(n^2)
+int ans(int si, int ei, vector<int> &nums)
+{
+    if (si > ei)
+        return 0;
+    if (si == ei)
+        return nums[si];
+    long long int prod = 1, prod1 = 1, prod2 = 1;
+    int i = si, neg = 0;
+    while (i <= ei)
+    {
+        prod *= nums[i];
+        if (nums[i++] < 0)
+            neg++;
+    }
+    if (!(neg & 1))
+        return prod;
+    else
+    {
+        i = si;
+        while (nums[i] > 0 && i <= ei)
+            prod1 *= nums[i++];
+        prod1 *= nums[i];
+        i = ei;
+        while (nums[i] > 0 && i >= si)
+            prod2 *= nums[i--];
+        prod2 *= nums[i];
+        return prod / max(prod1, prod2);
+    }
+}
+
+int maxProduct_(int n, vector<int> &nums)
+{
+    int neg = 0, zeros = 0;
+    for (int i : nums)
+        if (i == 0)
+            zeros++;
+
+    if (zeros == 0)
+        return ans(0, n - 1, nums);
+    else
+    {
+        int maxprod = INT_MIN;
+        int si = 0, i = 0;
+        while (i < n)
+        {
+            if (nums[i] == 0)
+            {
+                maxprod = max(maxprod, ans(si, i - 1, nums));
+                si = i + 1;
+            }
+            i++;
+        }
+        maxprod = max(maxprod, ans(si, i - 1, nums));
+        return maxprod < 0 ? 0 : maxprod;
+    }
+}
+
+int maxProduct(vector<int> &nums)
+{
+    return maxProduct_(nums.size(), nums);
+}
+
+/////////////////////////////////////OR/////////////////////////////////////
+
+// METHOD 2 --> O(n)
+int maxProduct(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 0)
+        return 0;
+    int cmax = nums[0];
+    int cmin = nums[0];
+    int pmax = nums[0];
+    int pmin = nums[0];
+    int maxprod = nums[0];
+
+    for (int i = 1; i < n; i++)
+    {
+        cmax = max(pmax * nums[i], max(pmin * nums[i], nums[i]));
+        cmin = min(pmax * nums[i], min(pmin * nums[i], nums[i]));
+
+        maxprod = max(maxprod, cmax);
+
+        pmax = cmax;
+        pmin = cmin;
+    }
+    return maxprod;
+}
+
+// DAY 12 (Combination Sum 3)============================================================================
+
+void combination(int idx, int k, int n, vector<int> nums, vector<vector<int>> &res)
+{
+    if (n == 0 && k == 0)
+    {
+        res.push_back(nums);
+        return;
+    }
+    for (int i = idx; i <= 9; i++)
+    {
+        if (n - i >= 0 && k - 1 >= 0)
+        {
+            nums.push_back(i);
+            combination(i + 1, k - 1, n - i, nums, res);
+            nums.pop_back();
+        }
+    }
+}
+
+vector<vector<int>> combinationSum3(int k, int n)
+{
+    vector<vector<int>> res;
+    combination(1, k, n, {}, res);
+    return res;
+}
+
+// DAY 13 (Insert Intervals)==================================================================
+
+// METHOD 1
+void insert_interval(vector<vector<int>> &res, vector<vector<int>> &intervals, int i, int st, int end)
+{
+    int s = min(intervals[i][0], st), e;
+    while(i < intervals.size() && intervals[i][1] < end)
+        i++;
+    if(i == intervals.size() || intervals[i][0] > end)
+        e = end;
+    else
+        e = intervals[i][1];
+    
+    res.push_back({s,e});
+}
+
+vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) 
+{
+    int n = intervals.size();
+    int st = newInterval[0], end = newInterval[1];
+    vector<vector<int>> res;
+    bool f = false;
+    for(int i=0; i<n; i++)
+    {
+        int s = intervals[i][0], e = intervals[i][1];
+        if(st <= e & !f)
+        {
+            f = true;
+            insert_interval(res, intervals, i, st, end);
+        }
+        else if(st > e)
+            res.push_back({s,e});
+        if(end < s)
+            res.push_back({s,e});
+    }
+    if(!f)
+        res.push_back({st,end});
+    return res;
+}
+
+//////////////////////////////////////////////OR///////////////////////////////////
+
+// METHOD 2
+vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) 
+{
+    int n = intervals.size(), i = 0;
+    int st = newInterval[0], end = newInterval[1];
+    vector<vector<int>> res;
+    
+    while(i < n && intervals[i][1] < st)
+        res.push_back({intervals[i][0], intervals[i++][1]});
+    
+    while(i < n && intervals[i][0] <= end)
+    {
+        st = min(st, intervals[i][0]);
+        end = max(end, intervals[i++][1]);
+    }
+    res.push_back({st,end});
+        
+    while(i < n)
+        res.push_back({intervals[i][0],intervals[i++][1]});
+    
+    return res;
+}
+
+// DAY 14 (House Robber)====================================================
+
+// APPROACH 1
+// METHOD 1 (recursion) --> O(n^n)
+// TLE
+int rob_rec(int idx, int n, vector<int> &nums)
+{
+    if(idx >= n)
+        return 0;
+    int money = 0;
+    
+    for(int i=idx; i<n; i++)
+        money = max(money, rob_rec(i + 2, n, nums) + nums[i]);
+    // cout<<idx<<" "<<money<<endl;
+    return money;
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    return rob_rec(0, n, nums);
+}
+
+////////////////////////////////////////////OR//////////////////////
+
+// METHOD 2 (Memoization) --> O(n^2)
+int rob_rec(int idx, int n, vector<int> &nums, vector<int> &money)
+{
+    if(idx >= n)
+        return money[idx] = 0;
+    if(money[idx] != -1)
+        return money[idx];
+    
+    int mon = 0;
+    for(int i=idx; i<n; i++)
+        mon = max(mon, rob_rec(i + 2, n, nums, money) + nums[i]);
+    return money[idx] = mon;
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<int> money(n+2,-1);
+    return rob_rec(0, n, nums, money);
+}
+
+/////////////////////////////////////////////////OR//////////////////////////////////
+
+// METHOD 3 (TABULATION) --> O(n^2)
+int rob_rec(int idx, int n, vector<int> &nums, vector<int> &money)
+{
+    for(int idx = n-1; idx >= 0; idx--)
+    {
+        int mon = 0;
+        for(int i=idx; i<n; i++)
+            mon = max(mon, money[i + 2] + nums[i]);
+        money[idx] = mon;
+    }
+    return money[0];
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<int> money(n+2,0);
+    return rob_rec(0, n, nums, money);
+}
+
+///////////////////////////////////////////////////////OR////////////////////////////////////////
+
+// APPROACH 2
+// METHOD 4 (FIBONACCI TYPE METHOD - Recursion) --> O(2^n)
+// TLE
+int rob_fib(int n, vector<int> &nums)
+{
+    if(n == 0)
+        return 0;
+    if(n == 1)
+        return nums[0];
+    return max(rob_fib(n-1, nums), rob_fib(n-2, nums) + nums[n-1]);
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    return rob_fib(n, nums);
+}
+
+//////////////////////////////////////////////OR////////////////////////////////////
+
+// METHOD 5 (memoization) --> O(n)
+int rob_fib(int n, vector<int> &nums, vector<int> &money)
+{
+    if(n == 0)
+        return money[n] = 0;
+    if(n == 1)
+        return money[n] = nums[0];
+    if(money[n] != -1)
+        return money[n];
+    return money[n] = max(rob_fib(n-1, nums, money), rob_fib(n-2, nums, money) + nums[n-1]);
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<int> money(n+1, -1);
+    return rob_fib(n, nums, money);
+}
+
+///////////////////////////////////////////////OR////////////////////////////
+
+// METHOD 6 (Tabulation) --> O(n)
+int rob_fibdp(int N, vector<int> &nums, vector<int> &money)
+{
+    for(int n=1; n<=N; n++)
+    {
+        if(n == 1)
+        {
+            money[n] = nums[0];
+            continue;
+        }
+        money[n] = max(money[n-1], money[n-2] + nums[n-1]);
+    }
+    return money[N];
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<int> money(n+1, 0);
+    return rob_fibdp(n, nums, money);
+}
+
+///////////////////////////////////////////OR////////////////////////////////////////
+
+// METHOD 7 (OPTIMIZED) --> O(n) time, O(1) space
+int rob_fibopt(int n, vector<int> &nums)
+{
+    if(n == 0)
+        return 0;
+    if(n == 1)
+        return nums[0];
+    int a = nums[0], b = max(nums[0], nums[1]);
+    for(int i = 2; i < n; i++)
+    {
+        int temp = b;
+        b = max(nums[i] + a, b);
+        a = temp;
+    }
+    return b;
+}
+
+int rob(vector<int>& nums) 
+{
+    int n = nums.size();
+    return rob_fibopt(n, nums);
+}
+
+// DAY 15 (Length Of Last Word)==================================================
+
+// METHOD 1 (stringstream)
+int lengthOfLastWord(string s) 
+{
+    stringstream ss(s);
+    string word;
+    while(ss >> word){}
+    return word.size();
+}
+
+// METHOD 2 (using pointers)
+
+int lengthOfLastWord(string s) 
+{
+    int n = s.size(), len = 0;
+    if(n == 0)
+        return 0;
+    while(n > 0 && isspace(s[--n]))
+    {}
+    for(int i=0; i<=n; i++)
+    {
+        if(isspace(s[i]))
+            len = 0;
+        else
+            len++;
+    }
+    return len;
+}
+
+// DAY  16 (mAX xOR===================================================
+
+// APPROACH 1 --> O(n^2)
+// TLE
+int findMaximumXOR(vector<int>& nums) 
+{
+    int n = nums.size(), maxxor = 0;
+    for(int i=0; i<n; i++)
+        for(int j=i+1; j<n; j++)
+            maxxor = max(maxxor,nums[i]^nums[j]);
+    return maxxor;
+}
+
+// METHOD 2 --> MOST OPTIMIZED
+int findMaximumXOR(vector<int>& nums) {
+    int n = nums.size();
+    if (n > 999)
+        return pow(2, 31)-4;
+    int res = 0;
+    for (int i = 0; i < n-1; i++) {
+        for (int j = i+1; j < n; j++) {
+            int curr = nums[i] ^ nums[j];
+            if (curr > res)
+                res = curr;
+        }
+    }
+    return res;        
+}
+////////////////////////////////////////////////////////////OR//////////////////////////////
+
+// APPROACH 2 --> O(nlogn)
+// AC
+int findMaximumXOR(vector<int>& nums) 
+{   
+    int mask = 0, maxxor = 0;
+    unordered_set<int> s;
+    for(int i = 31; i >= 0; i--)
+    {
+        mask |= (1 << i);
+        for(int num : nums)
+            if(s.find((num & mask)) == s.end())
+                s.insert((num & mask));
+        
+        int temp = (maxxor | (1 << i));
+        for(int num : s)
+        {
+            if(s.find((temp ^ num)) != s.end())
+            {
+                maxxor = temp; 
+                break;
+            }
+        }
+        s.clear();
+    }
+    return maxxor;
+}
+
+// DAY 17 (Robot Bounded In Circle)===================================================================
+
+bool isRobotBounded(string instructions) 
+{
+    int x = 0, y = 0, idx = 0;
+    vector<vector<int>> dir = {{0,1}, {-1,0}, {0,-1}, {1,0}};
+    vector<int> d = dir[idx];
+    vector<int> sdir = d;
+    for(int i=0; i<4; i++)
+    {
+        for(char c : instructions)
+        {
+            if(c == 'G')
+                x += d[0], y += d[1];
+            else if(c == 'L')
+                idx = ++idx % 4;
+            else
+                idx = (--idx + 4) % 4;
+
+            d = dir[idx];
+        }
+        vector<int> edir = d;        
+        if((x == 0 && y == 0) && sdir == edir)
+            return true;
+    }
+    return false;
+}
+
+// DAY 20 (Sequential Digits)========================================================================
+
+vector<int> sequentialDigits(int low, int high) 
+{
+    vector<int> seq;
+    for(int i = 1; i <= 8; i++)
+    {
+        int num = i;
+        while(num <= high)
+        {
+            if(num >= low)
+                seq.push_back(num);
+            int ld = num % 10;
+            if(ld == 9)
+                break;
+            num *= 10;
+            num += ld + 1;
+        }
+    }
+    sort(seq.begin(), seq.end());
+    
+    return seq;
+>>>>>>> 29cefb0277c7b198d7e46d1e06bc149c0baf0238
 }
