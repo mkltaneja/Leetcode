@@ -855,6 +855,19 @@ bool isRobotBounded(string instructions)
     return false;
 }
 
+// DAY 18 (Best Time to Buy and Sell Stock)====================================================
+
+int maxProfit(vector<int>& prices) 
+{
+    int minprice = INT_MAX, maxdiff = 0;
+    for(int i = 0; i < prices.size(); i++)
+    {
+        minprice = min(prices[i], minprice);
+        maxdiff = max(prices[i] - minprice, maxdiff);
+    }
+    return maxdiff;
+}
+
 // DAY 19 (Sequential Digits)========================================================================
 
 vector<int> sequentialDigits(int low, int high) 
@@ -877,7 +890,6 @@ vector<int> sequentialDigits(int low, int high)
     sort(seq.begin(), seq.end());
     
     return seq;
-<<<<<<< HEAD
 }
 
 // DAY 20 (Unique Paths 3)==============================================
@@ -922,7 +934,4 @@ int uniquePathsIII(vector<vector<int>>& grid)
         }
     }
     return paths_dfs(r, c, 0, z, n, m, grid);
-=======
->>>>>>> 29cefb0277c7b198d7e46d1e06bc149c0baf0238
->>>>>>> ada6455b8bf6a88a13c7b23720c7ae6441e2c7b7
 }
