@@ -969,3 +969,28 @@ bool carPooling(vector<vector<int>>& trips, int capacity)
     }
     return true;
 }
+
+/////////////////////////////////////////OR//////////////////////////////
+
+// APPROACH 2 --> O(n)
+
+int maxsize = 1001;
+
+bool carPooling(vector<vector<int>>& trips, int capacity) 
+{
+    vector<int> cpool(maxsize,0);
+    for(int i=0; i<trips.size(); i++)
+    {
+        cpool[trips[i][1]] += trips[i][0];
+        cpool[trips[i][2]] -= trips[i][0];
+    }
+
+    int passen = 0;
+    for(int i = 0; i < maxsize; i++)
+    {
+        passen += cpool[i];
+        if(passen > capacity)
+            return false;
+    }
+    return true;
+}
