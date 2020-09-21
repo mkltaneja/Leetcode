@@ -935,3 +935,37 @@ int uniquePathsIII(vector<vector<int>>& grid)
     }
     return paths_dfs(r, c, 0, z, n, m, grid);
 }
+
+// DAY 21 (Car Pooling)=========================================================
+
+// APPROACH 1 --> O(n*logn)
+
+#define f first
+#define s second
+bool carPooling(vector<vector<int>>& trips, int capacity) 
+{
+    sort(trips.begin(), trips.end(), [](const vector<int> &a, const vector<int> &b)
+            {
+                if(a[1] == b[1])
+                {
+                    if(a[2] == b[2])
+                        return a[0] < b[0];
+                    return a[2] < b[2];
+                }
+                return a[1] < b[1];
+            });
+    multiset<pair<int,int>> endloc;
+    for(int i = 0; i < trips.size(); i++)
+    {
+        while(!endloc.empty() && (*endloc.begin()).f <= trips[i][1])
+        {
+            capacity += (*endloc.begin()).s;
+            endloc.erase(endloc.begin());
+        }
+        if(capacity - trips[i][0] < 0)
+            return false;
+        capacity -= trips[i][0];
+        endloc.insert({trips[i][2], trips[i][0]});
+    }
+    return true;
+}
