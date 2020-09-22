@@ -994,3 +994,18 @@ bool carPooling(vector<vector<int>>& trips, int capacity)
     }
     return true;
 }
+
+// DAY 22 (Majority Element 2)=============================================
+
+// APPROACH 1 (using map of count) --> O(n*logn)
+vector<int> majorityElement(vector<int>& nums) 
+{
+    unordered_map<int,int> mc;
+    for(int i : nums)
+        mc[i]++;
+    vector<int> ans;
+    for(auto itr : mc)
+        if(itr.second > nums.size()/3)
+            ans.push_back(itr.first);
+    return ans;
+}
