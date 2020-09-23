@@ -1055,3 +1055,34 @@ vector<int> majorityElement(vector<int>& nums)
         ans.push_back(ele2);
     return ans;
 }
+
+// DAY 23 (Gas Station)=======================================================
+
+// APPROACH 1 --> O(n^2)
+bool checktrav(int idx, int n, vector<int> ngas)
+{
+    int j = 0;
+    int gas = 0;
+    for(int i = idx; j < n; j++, i = (i+1)%n)
+    {
+        gas += ngas[i];
+        if(gas < 0)
+            return false;
+    }
+    return true;
+}
+
+int canCompleteCircuit(vector<int>& gas, vector<int>& cost) 
+{
+    int n = gas.size();
+    vector<int> netgas(n,0);
+    for(int i=0; i<n; i++)
+        netgas[i] = gas[i] - cost[i];
+    for(int i = 0; i < n; i++)
+    {
+        if(netgas[i] >= 0)
+            if(checktrav(i, n, netgas))
+                return i;
+    }
+    return -1;
+}
