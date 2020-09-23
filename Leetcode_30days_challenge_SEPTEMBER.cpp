@@ -1086,3 +1086,25 @@ int canCompleteCircuit(vector<int>& gas, vector<int>& cost)
     }
     return -1;
 }
+
+//////////////////////////////////////////////OR/////////////////////////////////////
+
+// APPROACH 2 --> O(n)
+int canCompleteCircuit(vector<int>& gas, vector<int>& cost) 
+{
+    int n = gas.size();
+    
+    int ngas = 0, tgas = 0, tcost = 0, idx = 0;
+    for(int i = 0; i < n; i++)
+    {
+        tgas += gas[i];
+        tcost += cost[i];
+        ngas += gas[i] - cost[i];
+        if(ngas < 0)
+        {
+            ngas = 0;
+            idx = i + 1;
+        }
+    }
+    return (tgas - tcost < 0) ? -1 : idx;
+}
