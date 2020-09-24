@@ -1111,7 +1111,8 @@ int canCompleteCircuit(vector<int>& gas, vector<int>& cost)
 
 // DAY 24 (Find The Difference)==============================================
 
-// APPROACH 1 -- (using Map of count) --> O(n*logn)
+// APPROACH 1 
+// METHOD 1 -- (using Map of count) --> O(n*logn)
 char findTheDifference(string s, string t) 
 {
     unordered_map<char,int> mc;
@@ -1122,5 +1123,21 @@ char findTheDifference(string s, string t)
     for(auto i : mc)
         if(i.second == -1)
             return i.first;
+    return NULL;
+}
+
+// OR
+
+// METHOD 2 -- (vector of count) --> O(n)
+char findTheDifference(string s, string t) 
+{
+    vector<int> vc(26,0);
+    for(char c : s)
+        vc[c - 'a']++;
+    for(char c : t)
+        vc[c - 'a']--;
+    for(int i = 0; i < 26; i++)
+        if(vc[i] == -1)
+            return i + 'a';
     return NULL;
 }
