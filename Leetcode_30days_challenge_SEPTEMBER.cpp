@@ -1141,3 +1141,18 @@ char findTheDifference(string s, string t)
             return i + 'a';
     return NULL;
 }
+
+///////////////////////////////////////////////////OR/////////////////////////////////
+
+// APPROACH 2 -- (sorting the string) --> O((n+m)log(n+m))
+char findTheDifference(string s, string t) 
+{
+    string comb = s + t;
+    int n = comb.size();
+    sort(comb.begin(), comb.end());
+    cout<<comb<<endl;
+    for(int i = 0; i < n - 1; i+=2)
+        if(comb[i] != comb[i+1])
+            return comb[i];
+    return comb[n-1];
+}
