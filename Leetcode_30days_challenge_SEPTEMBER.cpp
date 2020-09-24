@@ -1156,3 +1156,17 @@ char findTheDifference(string s, string t)
             return comb[i];
     return comb[n-1];
 }
+
+/////////////////////////////////////////OR/////////////////////////////////////////////
+
+// APPROACH 3 -- (same as finding one non repeating in an array of all repeating twice (even no. of times))
+// O(n)
+char findTheDifference(string s, string t) 
+{
+    char ans = 0;
+    for(char c : s)
+        ans ^= c;
+    for(char c : t)
+        ans ^= c;
+    return ans;
+}
