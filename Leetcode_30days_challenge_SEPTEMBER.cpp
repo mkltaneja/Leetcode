@@ -1185,8 +1185,24 @@ string largestNumber(vector<int>& nums)
             });
     if(res[0] == "0")
         return "0";
-    string ans = "";
+    strng ans = "";
     for(string s : res)
         ans += s;
     return ans;
+}
+
+// DAY 26 (Teemo Attacking)======================================================
+
+int findPoisonedDuration(vector<int>& timeSeries, int duration) 
+{
+    int ttime = 0, pos = 0;
+    for(int num : timeSeries)
+    {
+        if(num >= pos)
+            ttime += duration;
+        else
+            ttime += duration - (pos - num);
+        pos = num + duration;
+    }
+    return ttime;
 }
