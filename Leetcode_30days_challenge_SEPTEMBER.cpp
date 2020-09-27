@@ -1206,3 +1206,75 @@ int findPoisonedDuration(vector<int>& timeSeries, int duration)
     }
     return ttime;
 }
+
+// DAY 27 (Evaluate Division)==================================================================================
+
+class Solution {
+    #define f first
+    #define s second
+public:
+    
+    void dfs(int src,int dest,vector<unordered_map<int,double>> &gp, vector<bool> &vis,double &ans,double temp)
+    {
+        if(src == dest)
+        {
+            ans = temp;
+            return;
+        }
+        vis[src] = true;
+        for(pair<int,double> itr : gp[src])
+            if(!vis[itr.f])
+                dfs(itr.f, dest, gp, vis, ans, temp * itr.s);
+    }
+    
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) 
+    {
+        unordered_map<string,int> mi;
+        int i = 0;
+        for(vector<string> v : equations)
+        {
+            if(mi.find(v[0]) == mi.end())
+                mi[v[0]] = i++;
+            if(mi.find(v[1]) == mi.end())
+                mi[v[1]] = i++;            
+        }
+        
+        // for(auto itr : mi)
+        //     cout<<itr.f<<" "<<itr.s<<endl;
+        // cout<<endl;
+        
+        vector<unordered_map<int,double>> gp(mi.size());
+        for(int i = 0; i < equations.size(); i++)
+        {
+            gp[mi[equations[i][0]]].insert({mi[equations[i][1]], values[i]});
+            gp[mi[equations[i][1]]].insert({mi[equations[i][0]], 1.0 * 1/values[i]});
+        }
+        // for(auto itr : gp)
+        // {
+        //     for(auto i : itr)
+        //         cout<<i.f<<" "<<i.s<<", ";
+        //     cout<<endl;
+        // }
+        
+        vector<double> ans(queries.size());
+        i = 0;
+        for(vector<string> v : queries)
+        {
+            if(mi.find(v[0]) == mi.end() || mi.find(v[1]) == mi.end())
+                ans[i] = -1;
+            else if(v[0] == v[1])
+                ans[i] = 1;
+            else
+            {
+                vector<bool> vis(gp.size(), 0);
+                double ansi = -1.0;
+                // cout<<mi[v[0]]<<"     "<<mi[v[1]]<<endl;
+                dfs(mi[v[0]], mi[v[1]], gp, vis, ansi, 1.0);
+                ans[i] = ansi;
+            }
+            i++;
+        }
+        
+        return ans;
+    }
+};
