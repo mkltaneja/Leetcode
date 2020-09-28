@@ -1278,3 +1278,21 @@ public:
         return ans;
     }
 };
+
+// DAY 28 (Subarray Product Less Than K)==========================================================================
+
+int numSubarrayProductLessThanK(vector<int>& nums, int k) 
+{
+    int ans = 0, prod = 1, si = 0;
+    
+    for(int i = 0; i < nums.size(); i++)
+    {
+        prod *= nums[i];
+
+        while(si <= i && prod >= k)
+            prod /= nums[si++];
+        
+        ans += i - si + 1;
+    }
+    return ans;
+}
