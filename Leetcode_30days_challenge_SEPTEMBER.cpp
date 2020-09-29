@@ -1298,6 +1298,10 @@ int numSubarrayProductLessThanK(vector<int>& nums, int k)
 }
 
 // DAY 29 (Word Break)================================================================
+
+// APPROACH 1 (Using Trie)  
+// METHOD 1 (recursion)
+// TLE
 class trie
 {
     public:
@@ -1346,4 +1350,60 @@ bool wordBreak(string s, vector<string>& wordDict)
     trie* curr = node;
     
     return check_wordbreak(0, node, node, s);
+}
+
+// METHOD 2 (Memoization)
+class trie
+{
+    public:
+    bool wordEnd;
+    vector<trie*> t;
+    trie()
+    {
+        this->t.assign(26,nullptr);
+        this->wordEnd = false;
+    }
+    
+    void insert(string word)
+    {
+        trie* curr = this;
+        for(char c : word)
+        {
+            if(!curr->t[c-  'a'])
+                curr->t[c - 'a'] = new trie();
+            curr = curr->t[c - 'a'];
+        }
+        curr->wordEnd = true;
+    }
+};
+trie* root = new trie();
+
+bool check_wordbreak(int idx, trie* curr, string &s, vector<int> &dp)
+{
+    if(idx >= s.size())
+        return true;
+    // char c = s[idx];
+    if(dp[idx] != -1)
+        return dp[idx];
+    // str += c;
+    for(int i = idx; i < s.size(); i++)
+    {
+        char c = s[i];
+        if(!curr->t[c - 'a'])
+            return dp[i] = false;
+        curr = curr->t[c - 'a'];
+        if(curr->wordEnd && check_wordbreak(i+1, root, s, dp))
+            return dp[i] = true;
+    }
+    return dp[idx] = false;
+}
+
+bool wordBreak(string s, vector<string>& wordDict) 
+{
+    for(string word : wordDict)
+        root->insert(word);
+    trie* curr = root;
+    
+    vector<int> dp(s.size()+1, -1);
+    return check_wordbreak(0, root, s, dp);
 }
