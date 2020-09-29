@@ -1296,3 +1296,54 @@ int numSubarrayProductLessThanK(vector<int>& nums, int k)
     }
     return ans;
 }
+
+// DAY 29 (Word Break)================================================================
+class trie
+{
+    public:
+    bool wordEnd;
+    vector<trie*> t;
+    trie()
+    {
+        this->t.assign(26,nullptr);
+        this->wordEnd = false;
+    }
+    
+    void insert(string word)
+    {
+        trie* curr = this;
+        for(char c : word)
+        {
+            if(!curr->t[c-  'a'])
+                curr->t[c - 'a'] = new trie();
+            curr = curr->t[c - 'a'];
+        }
+        curr->wordEnd = true;
+    }
+};
+
+bool check_wordbreak(int i, trie* curr, trie* node, string &s)
+{
+    if(i == s.size())
+        return curr->wordEnd;
+    char c = s[i];
+    if(!curr->t[c - 'a'])
+        return false;
+    // str += c;
+    curr = curr->t[c - 'a'];
+    if(curr->wordEnd)
+        return check_wordbreak(i+1, node, node, s) || check_wordbreak(i+1, curr, node, s);
+    else
+        return check_wordbreak(i+1, curr, node, s);
+}
+
+bool wordBreak(string s, vector<string>& wordDict) 
+{
+    trie* node = new trie();
+    
+    for(string word : wordDict)
+        node->insert(word);
+    trie* curr = node;
+    
+    return check_wordbreak(0, node, node, s);
+}
