@@ -1425,3 +1425,25 @@ int firstMissingPositive(vector<int>& nums)
     }
     return INT_MAX;
 }
+
+////////////////////////////////////////////////////////////OR///////////////////////////////////////////////////////////
+ 
+// APPROACH 2
+// METHOD 1  --> O(nlogn)
+int firstMissingPositive(vector<int>& nums) 
+{
+    int n = nums.size();
+    if(n == 0)
+        return 1;
+    sort(nums.begin(), nums.end());
+    int i = 0, num = 1;
+    while(i < n && nums[i] <= 0)
+        i++;
+    set<int> s;
+    for(; i < nums.size(); i++)
+        s.insert(nums[i]);
+    for(int ele : s)
+        if(ele != num++)
+            return --num;
+    return num;
+}
