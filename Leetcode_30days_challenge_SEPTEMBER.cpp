@@ -1407,3 +1407,21 @@ bool wordBreak(string s, vector<string>& wordDict)
     vector<int> dp(s.size()+1, -1);
     return check_wordbreak(0, root, s, dp);
 }
+    
+// DAY 30(First Missing Positive)===============================================================================
+
+// APPROACH 1 --> O(nlogn)
+    
+int firstMissingPositive(vector<int>& nums) 
+{
+    unordered_set<int> s;
+    for(int i : nums)
+        s.insert(i);
+    for(int i = 1; i<INT_MAX; i++)
+    {
+        if(s.find(i) == s.end())
+            return i;
+        s.erase(i);
+    }
+    return INT_MAX;
+}
