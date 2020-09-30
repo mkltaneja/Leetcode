@@ -1447,3 +1447,23 @@ int firstMissingPositive(vector<int>& nums)
             return --num;
     return num;
 }
+
+//////////////////////////////////////////////////////////OR///////////////////////////////////////////////////////////////////
+ 
+// METHOD 2  --> O(n)
+int firstMissingPositive(vector<int>& nums) 
+{
+    int n = nums.size();
+    if(n == 0)
+        return 1;
+    sort(nums.begin(), nums.end());
+    int i = 0;
+    while(i < n && nums[i] <= 0)
+        i++;
+
+    nums.insert(nums.begin() + i, 0);
+    for(; i < n; i++)
+        if(nums[i+1] > nums[i]+1)
+            return nums[i]+1;
+    return nums[n] + 1;
+}
