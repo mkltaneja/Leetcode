@@ -1407,4 +1407,67 @@ bool wordBreak(string s, vector<string>& wordDict)
     vector<int> dp(s.size()+1, -1);
     return check_wordbreak(0, root, s, dp);
 }
+<<<<<<< HEAD
 
+=======
+    
+// DAY 30(First Missing Positive)===============================================================================
+
+// APPROACH 1 --> O(nlogn)
+    
+int firstMissingPositive(vector<int>& nums) 
+{
+    unordered_set<int> s;
+    for(int i : nums)
+        s.insert(i);
+    for(int i = 1; i<INT_MAX; i++)
+    {
+        if(s.find(i) == s.end())
+            return i;
+        s.erase(i);
+    }
+    return INT_MAX;
+}
+
+////////////////////////////////////////////////////////////OR///////////////////////////////////////////////////////////
+ 
+// APPROACH 2
+// METHOD 1  --> O(nlogn)
+int firstMissingPositive(vector<int>& nums) 
+{
+    int n = nums.size();
+    if(n == 0)
+        return 1;
+    sort(nums.begin(), nums.end());
+    int i = 0, num = 1;
+    while(i < n && nums[i] <= 0)
+        i++;
+    set<int> s;
+    for(; i < nums.size(); i++)
+        s.insert(nums[i]);
+    for(int ele : s)
+        if(ele != num++)
+            return --num;
+    return num;
+}
+
+//////////////////////////////////////////////////////////OR///////////////////////////////////////////////////////////////////
+ 
+// METHOD 2  --> O(n)
+int firstMissingPositive(vector<int>& nums) 
+{
+    int n = nums.size();
+    if(n == 0)
+        return 1;
+    sort(nums.begin(), nums.end());
+    int i = 0;
+    while(i < n && nums[i] <= 0)
+        i++;
+
+    nums.insert(nums.begin() + i, 0);
+    for(; i < n; i++)
+        if(nums[i+1] > nums[i]+1)
+            return nums[i]+1;
+    return nums[n] + 1;
+}
+>>>>>>> 545e54328af0f2d1080c243caebf0b657597cbc6
