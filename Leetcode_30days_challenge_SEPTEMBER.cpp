@@ -1407,3 +1407,4 @@ bool wordBreak(string s, vector<string>& wordDict)
     vector<int> dp(s.size()+1, -1);
     return check_wordbreak(0, root, s, dp);
 }
+
