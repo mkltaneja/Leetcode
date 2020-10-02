@@ -61,3 +61,31 @@ public:
  * RecentCounter* obj = new RecentCounter();
  * int param_1 = obj->ping(t);
  */
+
+// $ DAY 2 (Combination Sum)=============================================================================
+
+// Method 1 (Recursion)
+void combisum_rec(int idx, vector<int> &arr, int tar, vector<int> coins, vector<vector<int>> &ans)
+{
+    if(tar == 0)
+    {
+        ans.push_back(coins);
+        return;
+    }
+    for(int i = idx; i < arr.size(); i++)
+    {
+        if(tar - arr[i] >= 0)
+        {
+            coins.push_back(arr[i]);
+            combisum_rec(i, arr, tar - arr[i], coins, ans);
+            coins.pop_back();
+        }
+    }
+}
+
+vector<vector<int>> combinationSum(vector<int>& candidates, int target) 
+{
+    vector<vector<int>> ans;
+    combisum_rec(0, candidates, target, {}, ans);
+    return ans;
+}
