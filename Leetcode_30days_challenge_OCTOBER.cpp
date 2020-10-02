@@ -64,7 +64,7 @@ public:
 
 // $ DAY 2 (Combination Sum)=============================================================================
 
-// Method 1 (Recursion)
+// Method 1 (Normal Method)
 void combisum_rec(int idx, vector<int> &arr, int tar, vector<int> coins, vector<vector<int>> &ans)
 {
     if(tar == 0)
@@ -87,5 +87,32 @@ vector<vector<int>> combinationSum(vector<int>& candidates, int target)
 {
     vector<vector<int>> ans;
     combisum_rec(0, candidates, target, {}, ans);
+    return ans;
+}
+
+// METHOD 2 (Subsequence)
+
+void combisum_subseq(int idx, vector<int> &arr, int tar, vector<int> coins, vector<vector<int>> &ans)
+{
+    if(idx == arr.size())
+    {
+        if(tar == 0)
+            ans.push_back(coins);
+        return;
+    }
+    if(tar - arr[idx] >= 0)
+    {
+        coins.push_back(arr[idx]);
+        combisum_subseq(idx, arr, tar - arr[idx], coins, ans);
+        coins.pop_back();
+    }
+    
+    combisum_subseq(idx+1, arr, tar, coins, ans);
+}
+
+vector<vector<int>> combinationSum(vector<int>& candidates, int target) 
+{
+    vector<vector<int>> ans;
+    combisum_subseq(0, candidates, target, {}, ans);
     return ans;
 }
