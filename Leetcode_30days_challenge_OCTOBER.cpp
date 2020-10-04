@@ -117,7 +117,7 @@ vector<vector<int>> combinationSum(vector<int> &candidates, int target)
     return ans;
 }
 
-// DAY 3 (K-diff Pairs in an Array)=============================================================================
+// $ DAY 3 (K-diff Pairs in an Array)=============================================================================
 
 int findPairs(vector<int> &nums, int k)
 {
@@ -140,4 +140,26 @@ int findPairs(vector<int> &nums, int k)
         if (m.find(i.first + k) != m.end())
             unique.insert({i.first, i.first + k});
     return unique.size();
+}
+
+// DAY 4 (Remove Covered Intervals)=====================================================================
+
+// METHOD 1 --> O(n^2)
+int removeCoveredIntervals(vector<vector<int>> &intervals)
+{
+    int n = intervals.size();
+    sort(intervals.begin(), intervals.end(), [](const vector<int> &a, const vector<int> &b) {
+        return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0];
+    });
+    // for(auto v : intervals)
+    //     cout<<v[0]<<" "<<v[1]<<", ";
+    // cout<<endl;
+    int i = 0, count = 0;
+    set<int> covered;
+
+    for (int i = 0; i < n - 1; i++)
+        for (int j = i + 1; j < n; j++)
+            if (intervals[j][1] <= intervals[i][1])
+                covered.insert(j);
+    return n - covered.size();
 }

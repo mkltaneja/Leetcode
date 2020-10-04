@@ -1407,9 +1407,6 @@ bool wordBreak(string s, vector<string>& wordDict)
     vector<int> dp(s.size()+1, -1);
     return check_wordbreak(0, root, s, dp);
 }
-<<<<<<< HEAD
-
-=======
     
 // DAY 30(First Missing Positive)===============================================================================
 
@@ -1470,4 +1467,3 @@ int firstMissingPositive(vector<int>& nums)
             return nums[i]+1;
     return nums[n] + 1;
 }
->>>>>>> 545e54328af0f2d1080c243caebf0b657597cbc6
