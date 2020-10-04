@@ -163,3 +163,32 @@ int removeCoveredIntervals(vector<vector<int>> &intervals)
                 covered.insert(j);
     return n - covered.size();
 }
+
+///////////////////////////////////////////////OR////////////////////////////////////
+
+// METHOD 2 --> O(n)
+
+int removeCoveredIntervals(vector<vector<int>> &intervals)
+{
+    int n = intervals.size();
+    sort(intervals.begin(), intervals.end(), [](const vector<int> &a, const vector<int> &b) {
+        return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0];
+    });
+    // for(auto v : intervals)
+    //     cout<<v[0]<<" "<<v[1]<<", ";
+    // cout<<endl;
+    int start = intervals[0][0], end = intervals[0][1];
+    int covered = 0;
+
+    for (int i = 1; i < n; i++)
+    {
+        if (intervals[i][0] >= start && intervals[i][1] <= end)
+            covered++;
+        else
+        {
+            start = intervals[i][0];
+            end = intervals[i][1];
+        }
+    }
+    return n - covered;
+}
