@@ -192,3 +192,27 @@ int removeCoveredIntervals(vector<vector<int>> &intervals)
     }
     return n - covered;
 }
+
+// DAY 5 (Complement of Base 10 Integer)====================================================
+
+int bitwiseComplement(int N) 
+{
+    if(N == 0)
+        return 1;
+    int bits = 0;
+    int n = N;
+    while(n)
+    {
+        n >>= 1;
+        bits++;
+    }
+    int i = 0, comp = 0;
+    while(i < bits)
+    {
+        int pol = !(N & (1 << i));
+        // cout<<pol<<" ";
+        comp |= (pol << i++);
+    }
+    // cout<<endl;
+    return comp;
+}
