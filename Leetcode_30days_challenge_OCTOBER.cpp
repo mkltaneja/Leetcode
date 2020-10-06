@@ -227,3 +227,19 @@ int bitwiseComplement(int N)
     }
     return N ^ mask;
 }
+
+// $ DAY 6 ()====================================================================
+
+TreeNode* insertIntoBST(TreeNode* root, int val) 
+{
+    if(root == nullptr)
+        return new TreeNode(val);
+    if(root->val == val)
+        return nullptr;
+    
+    if(root->val < val)
+        root->right = insertIntoBST(root->right, val);
+    else
+        root->left = insertIntoBST(root->left, val);
+    return root;
+}
