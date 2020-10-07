@@ -195,19 +195,19 @@ int removeCoveredIntervals(vector<vector<int>> &intervals)
 
 // DAY 5 (Complement of Base 10 Integer)====================================================
 
-int bitwiseComplement(int N) 
+int bitwiseComplement(int N)
 {
-    if(N == 0)
+    if (N == 0)
         return 1;
     int bits = 0;
     int n = N;
-    while(n)
+    while (n)
     {
         n >>= 1;
         bits++;
     }
     int i = 0, comp = 0;
-    while(i < bits)
+    while (i < bits)
     {
         int pol = !(N & (1 << i));
         // cout<<pol<<" ";
@@ -217,29 +217,60 @@ int bitwiseComplement(int N)
     return comp;
 }
 
-// Method 2 
-int bitwiseComplement(int N) 
+// Method 2
+int bitwiseComplement(int N)
 {
     int mask = 1;
-    while(mask < N)
+    while (mask < N)
     {
         mask = (mask << 1) + 1;
     }
     return N ^ mask;
 }
 
-// $ DAY 6 ()====================================================================
+// $ DAY 6 (Insert into a Binary Search Tree)====================================================================
 
-TreeNode* insertIntoBST(TreeNode* root, int val) 
+TreeNode *insertIntoBST(TreeNode *root, int val)
 {
-    if(root == nullptr)
+    if (root == nullptr)
         return new TreeNode(val);
-    if(root->val == val)
+    if (root->val == val)
         return nullptr;
-    
-    if(root->val < val)
+
+    if (root->val < val)
         root->right = insertIntoBST(root->right, val);
     else
         root->left = insertIntoBST(root->left, val);
     return root;
+}
+
+// $ DAY 7 (Rotate List)========================================================================
+
+ListNode *rotateRight(ListNode *head, int k)
+{
+    if (head == nullptr || head->next == nullptr)
+        return head;
+    int size = 0;
+    ListNode *temp = head, *last = head;
+    while (temp)
+    {
+        last = temp;
+        temp = temp->next;
+        size++;
+    }
+    k = k % size;
+    // cout<<size<<" "<<k;
+    if (k == 0)
+        return head;
+    ListNode *right = head, *prevright = head;
+    int lsize = size - k;
+    while (lsize--)
+    {
+        prevright = right;
+        right = right->next;
+    }
+    prevright->next = nullptr;
+    last->next = head;
+
+    return right;
 }
