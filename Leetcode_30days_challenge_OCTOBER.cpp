@@ -302,3 +302,13 @@ int search(vector<int> &nums, int target)
     }
     return -1;
 }
+
+// METHOD 3 --> O(n * logn) (using hashmap)
+
+int search(vector<int> &nums, int target)
+{
+    map<int, int> m;
+    for (int i = 0; i < nums.size(); i++)
+        m[nums[i]] = i;
+    return (m.find(target) != m.end()) ? m[target] : -1;
+}
