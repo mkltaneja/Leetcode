@@ -274,3 +274,14 @@ ListNode *rotateRight(ListNode *head, int k)
 
     return right;
 }
+
+// $ DAY 8 (Binary Search)==================================================
+
+// METHOD 1 --> O(n)
+int search(vector<int> &nums, int target)
+{
+    for (int i = 0; i < nums.size(); i++)
+        if (nums[i] == target)
+            return i;
+    return -1;
+}
