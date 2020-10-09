@@ -312,3 +312,76 @@ int search(vector<int> &nums, int target)
         m[nums[i]] = i;
     return (m.find(target) != m.end()) ? m[target] : -1;
 }
+
+// DAY 9 (Serialize and Deserialize BST)==================================================================
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec
+{
+public:
+    // Encodes a tree to a single string.
+    void preoderenc(string &s, TreeNode *node)
+    {
+        if (node == nullptr)
+            return;
+        s += to_string(node->val) + "-";
+        preoderenc(s, node->left);
+        preoderenc(s, node->right);
+    }
+    string serialize(TreeNode *root)
+    {
+        string enc = "";
+        preoderenc(enc, root);
+        return enc;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode *insertNode(int val, TreeNode *root, string &data)
+    {
+        if (root == nullptr)
+            return new TreeNode(val);
+        if (root->val < val)
+            root->right = insertNode(val, root->right, data);
+        else
+            root->left = insertNode(val, root->left, data);
+        return root;
+    }
+    int tonum(string &s)
+    {
+        int num = 0;
+        for (char c : s)
+        {
+            num *= 10;
+            num += c - '0';
+        }
+        return num;
+    }
+    TreeNode *deserialize(string data)
+    {
+        // cout<<data<<endl;
+        TreeNode *root = nullptr;
+        stringstream ss(data);
+        string temp;
+        while (getline(ss, temp, '-'))
+        {
+            // cout<<temp<<endl;
+            int num = tonum(temp);
+            root = insertNode(num, root, data);
+        }
+        return root;
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec* ser = new Codec();
+// Codec* deser = new Codec();
+// string tree = ser->serialize(root);
+// TreeNode* ans = deser->deserialize(tree);
+// return ans;
