@@ -385,3 +385,27 @@ public:
 // string tree = ser->serialize(root);
 // TreeNode* ans = deser->deserialize(tree);
 // return ans;
+
+// $ DAY 10 (Minimum Number of Arrows to Burst Balloons===========================================================================
+
+int findMinArrowShots(vector<vector<int>> &points)
+{
+    if (points.size() == 0)
+        return 0;
+    sort(points.begin(), points.end(), [](const vector<int> &a, const vector<int> &b) {
+        return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0];
+    });
+    int lastend = points[0][1];
+    int arrows = 0;
+    for (int i = 1; i < points.size(); i++)
+    {
+        if (points[i][0] < lastend && points[i][1] < lastend)
+            lastend = points[i][1];
+        else if (points[i][0] > lastend)
+        {
+            arrows++;
+            lastend = points[i][1];
+        }
+    }
+    return arrows + 1;
+}
