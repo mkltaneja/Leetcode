@@ -409,3 +409,28 @@ int findMinArrowShots(vector<vector<int>> &points)
     }
     return arrows + 1;
 }
+
+// $ DAY 11 (Remove Duplicate Letters)========================================================
+
+string removeDuplicateLetters(string s)
+{
+    vector<int> count(26);
+    for (int i = 0; i < s.size(); i++)
+        count[s[i] - 'a']++;
+    string res = "";
+    vector<bool> vis(26, false);
+    for (char c : s)
+    {
+        count[c - 'a']--;
+        if (vis[c - 'a'])
+            continue;
+        while (c < res.back() && count[res.back() - 'a'])
+        {
+            vis[res.back() - 'a'] = false;
+            res.pop_back();
+        }
+        res += c;
+        vis[c - 'a'] = true;
+    }
+    return res;
+}
