@@ -434,3 +434,38 @@ string removeDuplicateLetters(string s)
     }
     return res;
 }
+
+// $ DAY 12 (Buddy Strings)===================================================================
+
+bool buddyStrings(string A, string B)
+{
+    if (A.size() != B.size())
+        return false;
+    vector<int> a(26, 0);
+    vector<int> b(26, 0);
+    for (char c : A)
+        a[c - 'a']++;
+    for (char c : B)
+        b[c - 'a']++;
+    if (A == B)
+    {
+        for (int count : a)
+            if (count > 1)
+                return true;
+        return false;
+    }
+    int p1 = -1, p2 = -1;
+    for (int i = 0; i < A.size(); i++)
+    {
+        if (A[i] != B[i])
+        {
+            if (p1 == -1)
+                p1 = i;
+            else if (p2 == -1)
+                p2 = i;
+        }
+    }
+    if (p1 != -1 && p2 != -1)
+        swap(A[p1], A[p2]);
+    return A == B;
+}
