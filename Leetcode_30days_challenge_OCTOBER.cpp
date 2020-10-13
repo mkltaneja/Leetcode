@@ -469,3 +469,54 @@ bool buddyStrings(string A, string B)
         swap(A[p1], A[p2]);
     return A == B;
 }
+
+// $ DAY 13 (Sort List)=================================================================
+
+ListNode *merge(ListNode *h1, ListNode *h2)
+{
+    if (!h1)
+        return h2;
+    if (!h2)
+        return h1;
+    ListNode *sorted = nullptr;
+    if (h1->val < h2->val)
+    {
+        sorted = h1;
+        sorted->next = merge(h1->next, h2);
+    }
+    else
+    {
+        sorted = h2;
+        sorted->next = merge(h1, h2->next);
+    }
+    return sorted;
+}
+
+void mergesort(ListNode **headref)
+{
+    ListNode *head = *headref;
+    if (!head || !head->next)
+        return;
+    ListNode *slow = head;
+    ListNode *fast = head->next; // as it will give the previous of the mid to the "slow"
+    while (fast && fast->next && fast->next->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    ListNode *h1 = head, *h2 = slow->next;
+    slow->next = nullptr;
+
+    mergesort(&h1);
+    mergesort(&h2);
+    *headref = merge(h1, h2);
+}
+
+ListNode *sortList(ListNode *head)
+{
+    if (!head || !head->next)
+        return head;
+    mergesort(&head);
+    return head;
+}
