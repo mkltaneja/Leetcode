@@ -472,6 +472,7 @@ bool buddyStrings(string A, string B)
 
 // $ DAY 13 (Sort List)=================================================================
 
+// METHOD 1 (Using Double pointer - calling by reference)
 ListNode *merge(ListNode *h1, ListNode *h2)
 {
     if (!h1)
@@ -519,4 +520,52 @@ ListNode *sortList(ListNode *head)
         return head;
     mergesort(&head);
     return head;
+}
+
+// METHOD 2 (Using Single Pointer)
+
+ListNode *merge(ListNode *h1, ListNode *h2)
+{
+    if (!h1)
+        return h2;
+    if (!h2)
+        return h1;
+    ListNode *sorted = nullptr;
+    if (h1->val < h2->val)
+    {
+        sorted = h1;
+        sorted->next = merge(h1->next, h2);
+    }
+    else
+    {
+        sorted = h2;
+        sorted->next = merge(h1, h2->next);
+    }
+    return sorted;
+}
+
+ListNode *getMid(ListNode *head)
+{
+    ListNode *slow = head;
+    ListNode *fast = head->next; // as it will give the previous of the mid to the "slow"
+    while (fast && fast->next && fast->next->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+
+ListNode *sortList(ListNode *head)
+{
+    if (!head || !head->next)
+        return head;
+
+    ListNode *mid = getMid(head);
+    ListNode *h1 = head, *h2 = mid->next;
+    mid->next = nullptr;
+
+    ListNode *nh1 = sortList(h1);
+    ListNode *nh2 = sortList(h2);
+    return merge(nh1, nh2);
 }
