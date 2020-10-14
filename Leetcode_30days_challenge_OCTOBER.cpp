@@ -569,3 +569,28 @@ ListNode *sortList(ListNode *head)
     ListNode *nh2 = sortList(h2);
     return merge(nh1, nh2);
 }
+
+// $ DAY 14 (House Robber 2)==============================================================
+
+int maxrob(int si, int n, vector<int> &arr)
+{
+    int a = arr[si];
+    if (n - si == 1)
+        return a;
+    int b = max(arr[si], arr[si + 1]);
+    for (int i = si + 2; i < n; i++)
+    {
+        int temp = b;
+        b = max(b, arr[i] + a);
+        a = temp;
+    }
+    return b;
+}
+
+int rob(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 1)
+        return nums[0];
+    return max(maxrob(0, n - 1, nums), maxrob(1, n, nums));
+}
