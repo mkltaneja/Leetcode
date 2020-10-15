@@ -594,3 +594,17 @@ int rob(vector<int> &nums)
         return nums[0];
     return max(maxrob(0, n - 1, nums), maxrob(1, n, nums));
 }
+
+// $ DAY 15 (Rotate Array)====================================================================
+
+// METHOD 1 (Inserting in another array)
+void rotate(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    k = k % n;
+    vector<int> res;
+    res.insert(res.begin(), nums.begin() + (n - k), nums.end());
+    res.insert(res.begin() + k, nums.begin(), nums.begin() + (n - k));
+
+    nums = res;
+}
