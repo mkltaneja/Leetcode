@@ -649,3 +649,25 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
                 return true;
     return false;
 }
+
+// METHOD 3 (MOST OPTIMIZED) --> O(n+m)
+
+bool searchMatrix(vector<vector<int>> &matrix, int target)
+{
+    int n = matrix.size();
+    if (n == 0)
+        return false;
+    int m = matrix[0].size();
+
+    int r = 0, c = m - 1;
+    while (r < n && c >= 0)
+    {
+        if (matrix[r][c] == target)
+            return true;
+        if (matrix[r][c] < target)
+            r++;
+        else
+            c--;
+    }
+    return false;
+}
