@@ -671,3 +671,30 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
     }
     return false;
 }
+
+// $ DAY 17 ()===================================================================
+
+// APPROACH 1 --> O((n^2)*logn)
+vector<string> findRepeatedDnaSequences(string s)
+{
+    if (s.size() <= 10)
+        return {};
+    vector<string> ans;
+    unordered_set<string> vis;
+    for (int i = 0; i < s.size() - 10; i++)
+    {
+        string t = s.substr(i, 10);
+        if (vis.find(t) != vis.end())
+            continue;
+        for (int j = i + 1; j <= s.size() - 10; j++)
+        {
+            if (s.substr(j, 10) == t)
+            {
+                ans.push_back(t);
+                vis.insert(t);
+                break;
+            }
+        }
+    }
+    return ans;
+}
