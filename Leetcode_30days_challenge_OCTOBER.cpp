@@ -675,6 +675,7 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
 // $ DAY 17 ()===================================================================
 
 // APPROACH 1 --> O((n^2)*logn)
+// TLE
 vector<string> findRepeatedDnaSequences(string s)
 {
     if (s.size() <= 10)
@@ -695,6 +696,23 @@ vector<string> findRepeatedDnaSequences(string s)
                 break;
             }
         }
+    }
+    return ans;
+}
+
+// APPROACH 2 --> O(10*n)
+// AC
+vector<string> findRepeatedDnaSequences(string s)
+{
+    if (s.size() <= 10)
+        return {};
+    vector<string> ans;
+    unordered_map<string, int> mc;
+    for (int i = 0; i <= s.size() - 10; i++)
+    {
+        string t = s.substr(i, 10);
+        if (++mc[t] == 2)
+            ans.push_back(t);
     }
     return ans;
 }
