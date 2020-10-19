@@ -716,3 +716,42 @@ vector<string> findRepeatedDnaSequences(string s)
     }
     return ans;
 }
+
+// $ DAY 19 (Minimum Domino Rotations For Equal Row)===============================================================
+
+// METHOD 1 --> O(6*2n)
+int minDominoRotations(vector<int> &A, vector<int> &B)
+{
+    int n = A.size();
+    int minrot = 1e5;
+    for (int num = 1; num <= 6; num++)
+    {
+        int rota = 0, rotb = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (A[i] == num)
+                continue;
+            if (B[i] == num)
+                rota++;
+            else
+            {
+                rota = INT_MAX;
+                break;
+            }
+        }
+        for (int i = 0; i < n; i++)
+        {
+            if (B[i] == num)
+                continue;
+            if (A[i] == num)
+                rotb++;
+            else
+            {
+                rotb = INT_MAX;
+                break;
+            }
+        }
+        minrot = min(minrot, min(rota, rotb));
+    }
+    return minrot == 1e5 ? -1 : minrot;
+}
