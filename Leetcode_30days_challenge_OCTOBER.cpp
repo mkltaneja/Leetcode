@@ -755,3 +755,31 @@ int minDominoRotations(vector<int> &A, vector<int> &B)
     }
     return minrot == 1e5 ? -1 : minrot;
 }
+
+// METHOD 2 (OPTIMIZED) --> O(2*n)
+int minDominoRotations(vector<int> &A, vector<int> &B)
+{
+    int n = A.size();
+    int minrot = 1e5;
+    vector<int> p = {A[0], B[0]};
+    for (int num : p)
+    {
+        int rota = 0, rotb = 0;
+        bool f = true;
+        for (int i = 0; i < n; i++)
+        {
+            if (A[i] != num && B[i] != num)
+            {
+                f = false;
+                break;
+            }
+            if (A[i] != num)
+                rota++;
+            if (B[i] != num)
+                rotb++;
+        }
+        if (f)
+            minrot = min(minrot, min(rota, rotb));
+    }
+    return minrot == 1e5 ? -1 : minrot;
+}
