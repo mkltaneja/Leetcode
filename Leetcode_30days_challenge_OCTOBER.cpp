@@ -820,7 +820,6 @@ Node *cloneGraph(Node *node)
 
 // METHOD 2 (Using Map)================================================
 
-
 /*
 // Definition for a Node.
 class Node {
@@ -864,3 +863,32 @@ public:
         return clone;
     }
 };
+
+// $ DAY 22 (Asteroid Collision)=================================================
+
+vector<int> asteroidCollision(vector<int> &asteroids)
+{
+    stack<int> st;
+    for (int x : asteroids)
+    {
+        if (x > 0)
+            st.push(x);
+        else
+        {
+            while (!st.empty() && (st.top() < abs(x)) && st.top() > 0)
+                st.pop();
+            if (st.empty() || st.top() < 0)
+                st.push(x);
+            else if (st.top() == abs(x))
+                st.pop();
+        }
+    }
+    vector<int> ans;
+    while (!st.empty())
+    {
+        ans.push_back(st.top());
+        st.pop();
+    }
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
