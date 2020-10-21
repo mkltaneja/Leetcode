@@ -783,3 +783,36 @@ int minDominoRotations(vector<int> &A, vector<int> &B)
     }
     return minrot == 1e5 ? -1 : minrot;
 }
+
+// $ DAY 21 (Clone Graph)==========================================================
+
+Node *cloneGraph(Node *node, vector<Node *> &cloned)
+{
+    // Clone the current node
+    auto clone = new Node(node->val);
+
+    // Add current node to cloned nodes
+    cloned[node->val - 1] = clone;
+
+    // Copy the neighbors to the clone
+    for (auto adj : node->neighbors)
+    {
+        // If the neighbor is already cloned add it to the neighbors
+        if (Node *adj_clone = cloned[adj->val - 1])
+            clone->neighbors.push_back(adj_clone);
+        else
+            // Otherwise recursively clone the neighbor and add it to the neighbors
+            clone->neighbors.push_back(cloneGraph(adj, cloned));
+    }
+
+    return clone;
+}
+
+Node *cloneGraph(Node *node)
+{
+    if (!node)
+        return node;
+
+    vector<Node *> cloned(100);
+    return cloneGraph(node, cloned);
+}
