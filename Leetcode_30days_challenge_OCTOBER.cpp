@@ -866,6 +866,7 @@ public:
 
 // $ DAY 22 (Asteroid Collision)=================================================
 
+// METHOD 1 (Using Stack)
 vector<int> asteroidCollision(vector<int> &asteroids)
 {
     stack<int> st;
@@ -890,5 +891,26 @@ vector<int> asteroidCollision(vector<int> &asteroids)
         st.pop();
     }
     reverse(ans.begin(), ans.end());
+    return ans;
+}
+
+// METHOD 2 (Same Approach Using Vector (Without Stack))
+vector<int> asteroidCollision(vector<int> &asteroids)
+{
+    vector<int> ans;
+    for (int x : asteroids)
+    {
+        if (x > 0)
+            ans.push_back(x);
+        else
+        {
+            while (!ans.empty() && (ans.back() < abs(x)) && ans.back() > 0)
+                ans.pop_back();
+            if (ans.empty() || ans.back() < 0)
+                ans.push_back(x);
+            else if (ans.back() == abs(x))
+                ans.pop_back();
+        }
+    }
     return ans;
 }
