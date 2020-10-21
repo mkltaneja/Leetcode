@@ -786,6 +786,7 @@ int minDominoRotations(vector<int> &A, vector<int> &B)
 
 // $ DAY 21 (Clone Graph)==========================================================
 
+// METHOD 1 (Using array)
 Node *cloneGraph(Node *node, vector<Node *> &cloned)
 {
     // Clone the current node
@@ -816,3 +817,50 @@ Node *cloneGraph(Node *node)
     vector<Node *> cloned(100);
     return cloneGraph(node, cloned);
 }
+
+// METHOD 2 (Using Map)================================================
+
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+
+class Solution
+{
+public:
+    unordered_map<int, Node *> cloned;
+    Node *cloneGraph(Node *node)
+    {
+        // if(!node)
+        //     return node;
+        if (cloned.find(node->val) != cloned.end())
+            return cloned[node->val];
+
+        Node *clone = new Node(node->val);
+        cloned[clone->val] = clone;
+
+        for (Node *n : node->neighbors)
+            clone->neighbors.push_back(cloneGraph(n));
+        return clone;
+    }
+};
