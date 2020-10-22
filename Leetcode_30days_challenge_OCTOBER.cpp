@@ -946,3 +946,16 @@ int minDepth(TreeNode *root)
         return min(lh, rh) + 1;
     return max(lh, rh) + 1;
 }
+
+// METHOD 3=============================
+int minDepth(TreeNode *root)
+{
+    if (!root)
+        return 0;
+    if (!root->right)
+        return minDepth(root->left) + 1;
+    if (!root->left)
+        return minDepth(root->right) + 1;
+
+    return min(minDepth(root->left), minDepth(root->right)) + 1;
+}
