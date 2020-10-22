@@ -914,3 +914,22 @@ vector<int> asteroidCollision(vector<int> &asteroids)
     }
     return ans;
 }
+
+// $ DAY 22(Minimum Depth of Binary Tree)===================================================================
+
+// METHOD 1
+int mindepth(TreeNode *root)
+{
+    if (!root)
+        return 1e5;
+    if (!root->left && !root->right)
+        return 1;
+    return min(mindepth(root->left), mindepth(root->right)) + 1;
+}
+
+int minDepth(TreeNode *root)
+{
+    if (!root)
+        return 0;
+    return mindepth(root);
+}
