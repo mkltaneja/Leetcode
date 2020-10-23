@@ -963,6 +963,7 @@ int minDepth(TreeNode *root)
 // $ DAY 23 (132 Pattern)============================================================
 
 // METHOD 1 (Naive) --> O(n^3)-----------------------------------
+// TLE
 bool find132pattern(vector<int> &nums)
 {
     int n = nums.size();
@@ -971,6 +972,21 @@ bool find132pattern(vector<int> &nums)
             for (int k = j + 1; k < n; k++)
                 if (nums[k] > nums[i] && nums[k] < nums[j])
                     return true;
+    return false;
+}
+
+// METHOD 2 --> O(n^2)
+bool find132pattern(vector<int> &nums)
+{
+    int n = nums.size();
+    int one = INT_MAX;
+    for (int i = 0; i < n - 1; i++)
+    {
+        one = min(one, nums[i]);
+        for (int j = i + 1; j < n; j++)
+            if (nums[j] > one && nums[j] < nums[i])
+                return true;
+    }
     return false;
 }
 
