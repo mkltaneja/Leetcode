@@ -1008,3 +1008,30 @@ bool find132pattern(vector<int> &nums)
     }
     return false;
 }
+
+// $ DAY 24 (Bag of Tokens)==============================================================
+
+int bagOfTokensScore(vector<int> &tokens, int P)
+{
+    sort(tokens.begin(), tokens.end());
+    int i = 0, j = tokens.size() - 1;
+    int score = 0, maxscore = 0;
+
+    while (i <= j)
+    {
+        if (P >= tokens[i])
+        {
+            P -= tokens[i++];
+            score++;
+        }
+        else if (score > 0)
+        {
+            P += tokens[j--];
+            score--;
+        }
+        else
+            return maxscore;
+        maxscore = max(maxscore, score);
+    }
+    return maxscore;
+}
