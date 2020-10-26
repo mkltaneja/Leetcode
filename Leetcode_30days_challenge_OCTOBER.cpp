@@ -1072,3 +1072,33 @@ bool winnerSquareGame(int n)
     }
     return ans[n];
 }
+
+// $ DAY 26 ()=========================================================
+double champagneTower(int poured, int query_row, int query_glass)
+{
+    vector<vector<double>> glasses(100);
+    for (int i = 0; i < 100; i++)
+        glasses[i] = vector<double>(i + 1, 0);
+
+    glasses[0][0] = poured;
+    for (int i = 0; i < query_row; i++)
+    {
+        for (int j = 0; j <= i; j++)
+        {
+            double n = (glasses[i][j] - 1) / 2.0;
+            if (n <= 0)
+                continue;
+            glasses[i + 1][j] += n;
+            glasses[i + 1][j + 1] += n;
+        }
+    }
+
+    // for(int i=0; i<100; i++)
+    // {
+    //     for(int j=0; j<=i; j++)
+    //         cout<<glasses[i][j]<<" ";
+    //     cout<<endl;
+    // }
+
+    return min(1.0, glasses[query_row][query_glass]);
+}
