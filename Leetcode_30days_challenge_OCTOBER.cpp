@@ -1011,6 +1011,7 @@ bool find132pattern(vector<int> &nums)
 
 // $ DAY 24 (Bag of Tokens)==============================================================
 
+// --> O(n*logn)
 int bagOfTokensScore(vector<int> &tokens, int P)
 {
     sort(tokens.begin(), tokens.end());
@@ -1034,4 +1035,24 @@ int bagOfTokensScore(vector<int> &tokens, int P)
         maxscore = max(maxscore, score);
     }
     return maxscore;
+}
+
+// $ DAY 25 (Stone Game 4)==========================================================
+
+// METHOD 1 --> O(n*sqrt(n))
+bool winnerSquareGame(int n)
+{
+    vector<bool> ans(n + 1, false);
+    for (int i = 1; i <= n; i++)
+    {
+        for (int x = 1; x * x <= i; x++)
+        {
+            if (!ans[i - x * x])
+            {
+                ans[i] = true;
+                break;
+            }
+        }
+    }
+    return ans[n];
 }
