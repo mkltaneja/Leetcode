@@ -1056,3 +1056,19 @@ bool winnerSquareGame(int n)
     }
     return ans[n];
 }
+
+// METHOD 26 --> O(n*sqrt(sqrt(n)))
+bool winnerSquareGame(int n)
+{
+    vector<bool> ans(n + 1, false);
+    for (int i = 1; i <= n; i++)
+    {
+        int root = sqrt(i);
+        if (root * root == i)
+            ans[i] = true;
+        if (!ans[i])
+            for (int x = 1; i + x * x <= n; x++)
+                ans[i + x * x] = true;
+    }
+    return ans[n];
+}
