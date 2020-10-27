@@ -1073,7 +1073,7 @@ bool winnerSquareGame(int n)
     return ans[n];
 }
 
-// $ DAY 26 ()=========================================================
+// $ DAY 26 (Champagne Tower)=========================================================
 double champagneTower(int poured, int query_row, int query_glass)
 {
     vector<vector<double>> glasses(100);
@@ -1101,4 +1101,30 @@ double champagneTower(int poured, int query_row, int query_glass)
     // }
 
     return min(1.0, glasses[query_row][query_glass]);
+}
+
+// $ DAY 28 (Linked List Cycle 2)======================================================
+
+ListNode *detectCycle(ListNode *head)
+{
+    if (!head)
+        return nullptr;
+    ListNode *fast = head, *slow = head;
+    while (fast->next && fast->next->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+        if (fast == slow)
+            break;
+    }
+    if (!fast->next || !fast->next->next)
+        return nullptr;
+
+    slow = head;
+    while (fast != slow)
+    {
+        fast = fast->next;
+        slow = slow->next;
+    }
+    return slow;
 }
