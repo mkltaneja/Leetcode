@@ -1128,3 +1128,23 @@ ListNode *detectCycle(ListNode *head)
     }
     return slow;
 }
+
+// $ DAY 28 (Summary Ranges)==================================================
+
+vector<string> summaryRanges(vector<int> &nums)
+{
+    int i = 0, n = nums.size();
+    vector<string> ans;
+    while (i < n)
+    {
+        int st = nums[i], end = nums[i];
+        while (i + 1 != n && nums[i + 1] == end + 1)
+            end = nums[++i];
+        if (st == end)
+            ans.push_back(to_string(st));
+        else
+            ans.push_back(to_string(st) + "->" + to_string(end));
+        i++;
+    }
+    return ans;
+}
