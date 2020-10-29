@@ -1148,3 +1148,25 @@ vector<string> summaryRanges(vector<int> &nums)
     }
     return ans;
 }
+
+// $ DAY 29(Maximize Distance to Closest Person)================================================================
+
+int maxDistToClosest(vector<int> &seats)
+{
+    int lastmanloc = -1;
+    int maxdist = 0;
+    int i = 0;
+    for (; i < seats.size(); i++)
+    {
+        if (seats[i] == 1)
+        {
+            if (lastmanloc == -1)
+                maxdist = max(maxdist, i);
+            else
+                maxdist = max(maxdist, (i - lastmanloc) / 2);
+            lastmanloc = i;
+        }
+    }
+    maxdist = max(maxdist, (i - 1 - lastmanloc));
+    return maxdist;
+}
