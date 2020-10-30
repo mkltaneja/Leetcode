@@ -1170,3 +1170,47 @@ int maxDistToClosest(vector<int> &seats)
     maxdist = max(maxdist, (i - 1 - lastmanloc));
     return maxdist;
 }
+
+// $ DAY 30 ()======================================================================
+
+// METHOD 1 (using queue)
+// TLE
+#define f first
+#define s second
+
+int findNumberOfLIS(vector<int> &nums)
+{
+    int n = nums.size();
+    int maxlen = 1, count = 0;
+    vector<int> len(n, 1);
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i - 1; j >= 0; j--)
+        {
+            if (nums[j] < nums[i] && len[j] + 1 > len[i])
+                len[i] = len[j] + 1;
+        }
+        maxlen = max(maxlen, len[i]);
+    }
+
+    queue<pair<int, int>> que;
+    for (int i = 0; i < n; i++)
+        if (len[i] == maxlen)
+            que.push({i, maxlen});
+    while (!que.empty())
+    {
+        auto top = que.front();
+        que.pop();
+        // cout<<nums[top.f]<<" "<<top.s<<endl;
+
+        if (top.s == 1)
+        {
+            count++;
+            continue;
+        }
+        for (int j = 0; j < top.f; j++)
+            if (len[j] == top.s - 1 && nums[j] < nums[top.f])
+                que.push({j, top.s - 1});
+    }
+    return count;
+}
