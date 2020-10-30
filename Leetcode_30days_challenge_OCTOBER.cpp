@@ -1171,7 +1171,7 @@ int maxDistToClosest(vector<int> &seats)
     return maxdist;
 }
 
-// $ DAY 30 ()======================================================================
+// $ DAY 30 (Number of Longest Increasing Subsequence)======================================================================
 
 // METHOD 1 (using queue)
 // TLE
@@ -1213,4 +1213,36 @@ int findNumberOfLIS(vector<int> &nums)
                 que.push({j, top.s - 1});
     }
     return count;
+}
+
+// METHOD 2 (using array)
+// AC
+int findNumberOfLIS(vector<int> &nums)
+{
+    int n = nums.size();
+    int maxlen = 0;
+    vector<int> len(n, 1), count(n, 1);
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i - 1; j >= 0; j--)
+        {
+            if (nums[i] > nums[j])
+            {
+                if (len[j] + 1 > len[i])
+                {
+                    len[i] = len[j] + 1;
+                    count[i] = count[j];
+                }
+                else if (len[j] + 1 == len[i])
+                    count[i] += count[j];
+            }
+        }
+        maxlen = max(maxlen, len[i]);
+    }
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+        if (len[i] == maxlen)
+            ans += count[i];
+    return ans;
 }
