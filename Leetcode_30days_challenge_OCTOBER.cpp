@@ -1246,3 +1246,33 @@ int findNumberOfLIS(vector<int> &nums)
             ans += count[i];
     return ans;
 }
+
+// $ DAY 31 (Recover Binary Search Tree)=============================================================
+
+void swaprecover(TreeNode *root, TreeNode *left, TreeNode *right, bool &swapped)
+{
+    if (!root || swapped)
+        return;
+    if (left && left->val > root->val)
+    {
+        swapped = true;
+        swap(root->val, left->val);
+    }
+    else if (right && right->val < root->val)
+    {
+        swapped = true;
+        swap(root->val, right->val);
+    }
+    swaprecover(root->left, left, root, swapped);
+    swaprecover(root->right, root, right, swapped);
+}
+
+void recoverTree(TreeNode *root)
+{
+    bool swapped = true;
+    while (swapped)
+    {
+        swapped = false;
+        swaprecover(root, nullptr, nullptr, swapped);
+    }
+}
