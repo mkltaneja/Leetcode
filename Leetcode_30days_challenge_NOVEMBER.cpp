@@ -33,3 +33,25 @@ ListNode *insertionSortList(ListNode *head)
 
     return ans->next;
 }
+
+// $ DAY 4 (Consecutive Characters)============================================================
+
+// METHOD 1 (Using Hashmap)
+int maxPower(string s)
+{
+    unordered_map<char, int> m;
+    int maxlen = 0, j = 0;
+
+    for (int i = 0; i < s.size(); i++)
+    {
+        m[s[i]]++;
+        while (m.size() > 1)
+        {
+            if (--m[s[j]] == 0)
+                m.erase(s[j]);
+            j++;
+        }
+        maxlen = max(maxlen, i - j + 1);
+    }
+    return maxlen;
+}
