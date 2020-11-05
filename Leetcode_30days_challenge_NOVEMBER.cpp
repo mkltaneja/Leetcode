@@ -70,3 +70,48 @@ int maxPower(string s)
     }
     return maxlen;
 }
+
+// $ DAY 4(Minimum Height Trees)============================================================
+
+void getleaves(vector<int> &leaves, unordered_map<int, unordered_set<int>> &gp)
+{
+    leaves = vector<int>();
+    for (auto &e : gp)
+        if (e.second.size() <= 1)
+            leaves.push_back(e.first);
+}
+
+void removeleaves(vector<int> &leaves, unordered_map<int, unordered_set<int>> &gp)
+{
+    for (int &leaf : leaves)
+    {
+        for (auto &e : gp[leaf])
+            gp[e].erase(leaf);
+        gp.erase(leaf);
+    }
+}
+
+vector<int> findMinHeightTrees(int n, vector<vector<int>> &edges)
+{
+    unordered_map<int, unordered_set<int>> gp;
+    for (vector<int> &v : edges)
+    {
+        gp[v[0]].insert(v[1]);
+        gp[v[1]].insert(v[0]);
+    }
+
+    vector<int> leaves;
+    while (gp.size() > 2)
+    {
+        getleaves(leaves, gp);
+        for (int i : leaves)
+            cout << i << " ";
+        cout << endl;
+        removeleaves(leaves, gp);
+        // cout<<leaves.size()<<endl;
+        // leaves.clear();
+    }
+    getleaves(leaves, gp);
+
+    return leaves.empty() ? vector<int>{0} : leaves;
+}
