@@ -115,3 +115,17 @@ vector<int> findMinHeightTrees(int n, vector<vector<int>> &edges)
 
     return leaves.empty() ? vector<int>{0} : leaves;
 }
+
+// $ DAY 5 (Minimum Cost to Move Chips to The Same Position)===================================================================
+
+int minCostToMoveChips(vector<int> &position)
+{
+    int oddcount = 0, evencount = 0;
+
+    for (int pos : position)
+    {
+        oddcount += (pos & 1);
+        evencount += !(pos & 1);
+    }
+    return min(oddcount, evencount);
+}
