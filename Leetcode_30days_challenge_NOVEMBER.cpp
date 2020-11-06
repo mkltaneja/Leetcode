@@ -132,6 +132,8 @@ int minCostToMoveChips(vector<int> &position)
 
 // DAY 6()===========================================================================
 
+// METHOD 1 (Linearly) --> O(n)
+// TLE
 int issmaller(vector<int> &nums, int div, int threshold)
 {
     int sum = 0;
@@ -160,4 +162,37 @@ int smallestDivisor(vector<int>& nums, int threshold)
         ans--;
     }
     return ++ans;
+}
+
+// METHOD 2 (Binary Search) --> O(logn)
+// AC
+int issmaller(vector<int> &nums, int div, int threshold)
+{
+    int sum = 0;
+    // cout<<div<<": \n";
+    for(int i : nums)
+    {
+        sum += (ceil)( 1.0 * i / div);
+        // cout<<(ceil)( 1.0 * i / div)<<" ";
+    }
+    // cout<<endl;
+    return sum <= threshold;
+}
+
+int smallestDivisor(vector<int>& nums, int threshold) 
+{
+    int mini = 1;
+    int maxi = 0;
+    for(int i : nums)
+        maxi = max(maxi, i);
+    
+    while(maxi > mini)
+    {
+        int mid = (maxi + mini) / 2;
+        if(!issmaller(nums, mid, threshold))
+            mini = mid + 1;
+        else
+            maxi = mid;
+    }
+    return maxi;
 }
