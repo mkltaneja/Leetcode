@@ -129,3 +129,35 @@ int minCostToMoveChips(vector<int> &position)
     }
     return min(oddcount, evencount);
 }
+
+// DAY 6()===========================================================================
+
+int issmaller(vector<int> &nums, int div, int threshold)
+{
+    int sum = 0;
+    // cout<<div<<": \n";
+    for(int i : nums)
+    {
+        sum += (ceil)( 1.0 * i / div);
+        // cout<<(ceil)( 1.0 * i / div)<<" ";
+    }
+    // cout<<endl;
+    return sum <= threshold;
+}
+
+int smallestDivisor(vector<int>& nums, int threshold) 
+{
+    int mini = 1;
+    int maxi = 0;
+    for(int i : nums)
+        maxi = max(maxi, i);
+    int ans = maxi;
+    
+    while(ans >= mini)
+    {
+        if(!issmaller(nums, ans, threshold))
+            break;
+        ans--;
+    }
+    return ++ans;
+}
