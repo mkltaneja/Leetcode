@@ -196,3 +196,61 @@ int smallestDivisor(vector<int>& nums, int threshold)
     }
     return maxi;
 }
+
+// DAY 7 (Add Two Numbers II)=========================================================================
+
+ListNode* reverse(ListNode* l)
+{
+    ListNode* curr = l, *prev = nullptr, *forw = l;
+    while(curr)
+    {
+        forw = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = forw;
+    }
+    return prev;
+}
+
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) 
+{
+    l1 = reverse(l1);
+    l2 = reverse(l2);
+    
+    ListNode* ans = new ListNode(-1), *temp = ans;
+    int carry = 0;
+    while(l1 && l2)
+    {
+        int sum = (l1->val + l2->val + carry) % 10;
+        temp->next = new ListNode(sum);
+        temp = temp->next;
+        carry = (l1->val + l2->val + carry) / 10;
+        l1 = l1->next;
+        l2 = l2->next;
+    }
+    while(l1)
+    {
+        int sum = (l1->val + carry) % 10;
+        temp->next = new ListNode(sum);
+        temp = temp->next;
+        carry = (l1->val + carry) / 10;
+        l1 = l1->next;
+    }
+    while(l2)
+    {
+        int sum = (l2->val + carry) % 10;
+        temp->next = new ListNode(sum);
+        temp = temp->next;
+        carry = (l2->val + carry) / 10;
+        l2 = l2->next;
+    }
+    if(carry > 0)
+    {
+        temp->next = new ListNode(carry);
+        temp = temp->next;
+    }
+    
+    ans = reverse(ans->next);
+    
+    return ans;
+}
