@@ -254,3 +254,22 @@ ListNode* addTwoNumbers(ListNode* l1, ListNode* l2)
     
     return ans;
 }
+
+// DAY 8 (Binary Tree Tilt)========================================================
+
+int findtilt(TreeNode* node, int &tilt)
+{
+    if(node == nullptr)
+        return 0;
+    int lval = findtilt(node->left, tilt);
+    int rval = findtilt(node->right, tilt);
+    tilt += abs(lval - rval);
+    return node->val + lval + rval;
+}
+
+int findTilt(TreeNode* root) 
+{
+    int tilt = 0;
+    findtilt(root, tilt);
+    return tilt;
+}
