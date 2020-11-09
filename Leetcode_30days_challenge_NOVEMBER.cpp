@@ -273,3 +273,31 @@ int findTilt(TreeNode* root)
     findtilt(root, tilt);
     return tilt;
 }
+
+// DAY 9 ()=========================================================================
+
+// METHOD 1 --> O(n^2)
+void maxdiff(TreeNode* node, int rootval, int &maxans)
+{
+    if(!node)
+        return;
+    maxans = max(maxans, abs(node->val - rootval));
+    maxdiff(node->left, rootval, maxans);
+    maxdiff(node->right, rootval, maxans);
+}
+
+void dfs(TreeNode* node, int &maxans)
+{
+    if(node == nullptr)
+        return;
+    maxdiff(node, node->val, maxans);
+    dfs(node->left, maxans);
+    dfs(node->right, maxans);
+}
+
+int maxAncestorDiff(TreeNode* root) 
+{
+    int maxans = 0;
+    dfs(root, maxans);
+    return maxans;
+}
