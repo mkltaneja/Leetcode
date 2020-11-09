@@ -300,4 +300,25 @@ int maxAncestorDiff(TreeNode* root)
     int maxans = 0;
     dfs(root, maxans);
     return maxans;
+
+// METHOD 2 -> O(n)
+void dfs(TreeNode* node, int maxval, int minval, int &maxdiff)
+{
+    if(!node)
+        return;
+    minval = min(minval, node->val);
+    maxval = max(maxval, node->val);
+    maxdiff = max(maxdiff, (maxval - minval));
+    
+    dfs(node->left, maxval, minval, maxdiff);
+    dfs(node->right, maxval, minval, maxdiff);
+}
+
+int maxAncestorDiff(TreeNode* root) 
+{
+    int maxdiff = 0;
+    
+    dfs(root, INT_MIN, INT_MAX, maxdiff);
+    
+    return maxdiff;
 }
