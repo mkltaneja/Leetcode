@@ -323,9 +323,9 @@ int maxAncestorDiff(TreeNode* root)
     return maxdiff;
 }
 
-// DAY 10 ()=====================================================================
+// DAY 10 (Flipping an Image)=====================================================================
 
-// METHOD 1 
+// METHOD 1 --> O(2*n)
 vector<vector<int>> flipAndInvertImage(vector<vector<int>>& A) 
 {
     for(int i = 0; i < A.size(); i++)
@@ -338,5 +338,28 @@ vector<vector<int>> flipAndInvertImage(vector<vector<int>>& A)
     for(int i = 0; i < A.size(); i++)
         for(int j = 0; j < A[i].size(); j++)
             A[i][j] = (A[i][j] == 0) ? 1 : 0;
+    return A;
+}
+
+// METHOD 2 --> O(n)
+vector<vector<int>> flipAndInvertImage(vector<vector<int>>& A) 
+{
+    int n = A.size(), m = A[0].size();
+    for(int i = 0; i < n; i++)
+    {
+        int j = 0, k = A[i].size()-1;
+        while(j < k)
+        {
+            if(A[i][j] == A[i][k])
+            {
+                A[i][j] ^= 1;
+                A[i][k] ^= 1;
+            }
+            j++, k--;
+        }
+        if(m & 1)
+            A[i][m/2] ^= 1;
+    }
+    
     return A;
 }
