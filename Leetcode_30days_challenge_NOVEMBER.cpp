@@ -363,3 +363,28 @@ vector<vector<int>> flipAndInvertImage(vector<vector<int>>& A)
     
     return A;
 }
+
+// DAY 11 (Valid Square)=====================================================
+
+int distance(vector<int> p, vector<int> q)
+{
+    return ((p[0]-q[0])*(p[0]-q[0]) + (p[1]-q[1])*(p[1]-q[1]));
+}
+
+bool validSquare(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>& p4) 
+{
+    set<int> dists;
+    dists.insert(distance(p1, p2));
+    dists.insert(distance(p1, p3));
+    dists.insert(distance(p1, p4));
+    dists.insert(distance(p2, p3));
+    dists.insert(distance(p2, p4));
+    dists.insert(distance(p3, p4));
+    
+    // cout<<dists.size()<<endl;
+    // for(int i : dists)
+    //     cout<<i<<" ";
+    // cout<<endl;
+    
+    return dists.size() == 2 && dists.find(0) == dists.end();
+}
