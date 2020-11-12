@@ -388,3 +388,18 @@ bool validSquare(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>&
     
     return dists.size() == 2 && dists.find(0) == dists.end();
 }
+
+// DAY 12 (Permutations 2)===================================================================
+
+vector<vector<int>> permuteUnique(vector<int>& nums) 
+{
+    vector<vector<int>> ans;
+    sort(nums.begin(), nums.end());
+    do
+    {
+        ans.push_back(nums);
+    }
+    while(next_permutation(nums.begin(), nums.end()));
+    
+    return ans;
+}
