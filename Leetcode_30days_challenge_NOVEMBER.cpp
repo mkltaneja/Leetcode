@@ -406,7 +406,7 @@ vector<vector<int>> permuteUnique(vector<int>& nums)
 
 // DAY 13 (Populating Next Right Pointers in Each Node)===============================================================
 
-// METHOD 1 (Using queue)
+// METHOD 1 (Without Using queue)
 Node* connect(Node* root) 
 {
     if(!root || !root->left)
@@ -419,5 +419,34 @@ Node* connect(Node* root)
     connect(root->left);
     connect(root->right);
     
+    return root;
+}
+
+// METHOD 2 (Using Queue)==============================================================
+Node* connect(Node* root) 
+{
+    if(!root)
+        return root;
+    queue<Node*> que;
+    que.push(root);
+    
+    while(!que.empty())
+    {
+        int n = que.size();
+        for(int i = 0; i < n; i++)
+        {
+            Node* top = que.front();
+            que.pop();
+            if(i == n-1)
+                top->next = nullptr;
+            else
+                top->next = que.front();
+            
+            if(top->left)
+                que.push(top->left);
+            if(top->right)
+                que.push(top->right);
+        }
+    }
     return root;
 }
