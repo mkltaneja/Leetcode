@@ -471,7 +471,7 @@ int rangeSumBST(TreeNode* root, int low, int high)
     return sum;
 }
 
-// METHOD 2 -->  < O(n)
+// METHOD 2 -->  <= O(n)
 int rangeSumBST(TreeNode* root, int low, int high) 
 {
     if(!root)
@@ -485,4 +485,32 @@ int rangeSumBST(TreeNode* root, int low, int high)
         sum += rangeSumBST(root->right, low, high);
     
     return sum;
+}
+
+// DAY 16 (Longest Mountain In Array)=========================================================
+
+int longestMountain(vector<int>& A) 
+{
+    int i = 0, ans = 0, n = A.size();
+    
+    while(i < n)
+    {
+        int left = 0, right = 0;
+        while(i+1 < n && A[i+1] > A[i])
+        {
+            left++;
+            i++;
+        }
+        while(left > 0 && i+1 < n && A[i+1] < A[i])
+        {
+            right++;
+            i++;
+        }
+        if(left > 0 && right > 0)
+            ans = max(ans, left+right+1);
+        else if(left == 0)
+            i++;
+    }
+    
+    return ans;
 }
