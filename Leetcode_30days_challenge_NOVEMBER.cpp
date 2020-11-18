@@ -514,3 +514,29 @@ int longestMountain(vector<int>& A)
     
     return ans;
 }
+
+// DAY 18 (Merge Intervals)=====================================================
+
+vector<vector<int>> merge(vector<vector<int>>& intervals) 
+{
+    sort(intervals.begin(), intervals.end(), [](const vector<int> &a, const vector<int> &b){
+        return (a[0] == b[0]) ? (a[1] < b[1]) : (a[0] < b[0]);
+    });
+    
+    int st = intervals[0][0], end = intervals[0][1];
+    vector<vector<int>> ans;
+    
+    for(int i = 0; i < intervals.size(); i++)
+    {
+        if(intervals[i][0] <= end)
+            end = max(end, intervals[i][1]);
+        else
+        {
+            ans.push_back({st,end});
+            st = intervals[i][0];
+            end = intervals[i][1];
+        }
+    }
+    ans.push_back({st,end});
+    return ans;
+}
