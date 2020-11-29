@@ -540,3 +540,29 @@ vector<vector<int>> merge(vector<vector<int>>& intervals)
     ans.push_back({st,end});
     return ans;
 }
+
+// DAY 29 (Jump Game 3)=============================================================
+
+bool canreach(int i, int n, vector<int> &arr, vector<bool> &vis)
+{
+    if(i < 0 || i >= n || vis[i])
+        return false;
+    if(arr[i] == 0)
+        return true;
+    
+    bool res = false;
+    
+    vis[i] = true;
+    res |= canreach(i + arr[i], n, arr, vis);
+    res |= canreach(i - arr[i], n, arr, vis);
+    
+    return res;
+}
+
+bool canReach(vector<int>& arr, int start) 
+{
+    int n = arr.size();
+    vector<bool> vis(n, false);
+    
+    return canreach(start, n, arr, vis);
+}
