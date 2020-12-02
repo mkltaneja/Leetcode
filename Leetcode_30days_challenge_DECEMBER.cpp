@@ -16,3 +16,17 @@ int maxDepth(TreeNode* root)
     maxdepth(root, 1, depth);
     return depth;
 }
+
+// METHOD 2 (int type)
+   
+int maxdepth(TreeNode* node, int depth)
+{
+    if(node == nullptr)
+        return depth;
+    return max(maxdepth(node->left, depth), maxdepth(node->right, depth)) + 1;
+}
+
+int maxDepth(TreeNode* root) 
+{
+    return maxdepth(root, 0);
+}
