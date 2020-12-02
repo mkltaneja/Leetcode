@@ -30,3 +30,21 @@ int maxDepth(TreeNode* root)
 {
     return maxdepth(root, 0);
 }
+
+// DAY 2 (Linked List Random Node)=========================================================
+
+vector<int> vals;
+Solution(ListNode* head) 
+{
+    while(head)
+    {
+        vals.push_back(head->val);
+        head = head->next;
+    }
+}
+
+/** Returns a random node's value. */
+int getRandom() 
+{
+    return vals[rand() % vals.size()];
+}
