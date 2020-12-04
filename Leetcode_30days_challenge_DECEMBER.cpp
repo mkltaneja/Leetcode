@@ -1,4 +1,4 @@
-// DAY 1 ()==============================================================
+// DAY 1 (Maximum Depth of Binary Tree)==============================================================
 
 // METHOD 1 (void type)
 void maxdepth(TreeNode *node, int depth, int &maxans)
@@ -68,4 +68,18 @@ TreeNode *increasingBST(TreeNode *root)
 {
     inorder(root);
     return head->right;
+}
+
+// DAY 4 (The kth Factor of n)===========================================================
+
+int kthFactor(int n, int k)
+{
+    for (int i = 1; i <= n; i++)
+    {
+        if (n % i == 0)
+            k--;
+        if (k == 0)
+            return i;
+    }
+    return -1;
 }
