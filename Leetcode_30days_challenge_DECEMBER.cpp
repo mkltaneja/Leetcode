@@ -117,3 +117,29 @@ bool canPlaceFlowers(vector<int> &flowerbed, int n)
 
     return available >= n;
 }
+
+// METHOD 2
+
+bool canPlaceFlowers(vector<int> &flowerbed, int n)
+{
+    if (n == 0)
+        return true;
+    int m = flowerbed.size();
+    int available = 0;
+    for (int i = 0; i < m; i++)
+    {
+        if (flowerbed[i] == 1)
+            continue;
+        bool front = (i == 0 || flowerbed[i - 1] == 0);
+        bool behind = (i == m - 1 || flowerbed[i + 1] == 0);
+
+        if (front && behind)
+        {
+            flowerbed[i] = 1;
+            available++;
+        }
+        if (available >= n)
+            return true;
+    }
+    return false;
+}
