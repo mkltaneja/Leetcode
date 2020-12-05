@@ -83,3 +83,37 @@ int kthFactor(int n, int k)
     }
     return -1;
 }
+
+// DAY 5 (Can Place Flowers)========================================================
+
+// METHOD 1
+bool canPlaceFlowers(vector<int> &flowerbed, int n)
+{
+    int m = flowerbed.size();
+    vector<bool> isplaced(m, false);
+    for (int i = 0; i < m; i++)
+        if (flowerbed[i])
+            isplaced[i] = true;
+
+    int available = 0;
+    if (!isplaced[0] && !isplaced[1])
+    {
+        isplaced[0] = true;
+        available++;
+    }
+    if (!isplaced[m - 1] && !isplaced[m - 2])
+    {
+        isplaced[m - 1] = true;
+        available++;
+    }
+    for (int i = 1; i < m - 1; i++)
+    {
+        if (!isplaced[i] && !isplaced[i - 1] && !isplaced[i + 1])
+        {
+            isplaced[i++] = true;
+            available++;
+        }
+    }
+
+    return available >= n;
+}
