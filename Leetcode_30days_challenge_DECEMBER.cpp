@@ -143,3 +143,37 @@ bool canPlaceFlowers(vector<int> &flowerbed, int n)
     }
     return false;
 }
+
+// DAY 6 (Populating Next Right Pointers in Each Node II)====================================================================
+
+void leveloder(Node *node)
+{
+    if (node == nullptr)
+        return;
+    queue<Node *> que;
+    que.push(node);
+
+    while (!que.empty())
+    {
+        int size = que.size();
+        while (size--)
+        {
+            Node *prev = que.front();
+            que.pop();
+            if (size > 0)
+                prev->next = que.front();
+            else
+                prev->next = nullptr;
+            if (prev->left)
+                que.push(prev->left);
+            if (prev->right)
+                que.push(prev->right);
+        }
+    }
+}
+
+Node *connect(Node *root)
+{
+    leveloder(root);
+    return root;
+}
