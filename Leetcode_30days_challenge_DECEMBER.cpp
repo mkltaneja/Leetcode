@@ -180,6 +180,7 @@ Node *connect(Node *root)
 
 // DAY 7 (Spiral Matrix 2)======================================================================
 
+// METHOD 1
 vector<vector<int>> generateMatrix(int n)
 {
     int d = 0;
@@ -232,6 +233,31 @@ vector<vector<int>> generateMatrix(int n)
                 sm++;
             }
         }
+    }
+    return mat;
+}
+
+// METHOD 2 (CONCISE)
+vector<vector<int>> generateMatrix(int n)
+{
+    int sn = 0, sm = 0, en = n - 1, em = n - 1;
+    int x = 1;
+    vector<vector<int>> mat(n, vector<int>(n));
+
+    while (x <= n * n)
+    {
+        for (int j = sm; j <= em; j++)
+            mat[sn][j] = x++;
+        sn++;
+        for (int i = sn; i <= en; i++)
+            mat[i][em] = x++;
+        em--;
+        for (int j = em; j >= sm; j--)
+            mat[en][j] = x++;
+        en--;
+        for (int i = en; i >= sn; i--)
+            mat[i][sm] = x++;
+        sm++;
     }
     return mat;
 }
