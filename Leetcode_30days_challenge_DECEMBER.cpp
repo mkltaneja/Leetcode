@@ -177,3 +177,61 @@ Node *connect(Node *root)
     leveloder(root);
     return root;
 }
+
+// DAY 7 (Spiral Matrix 2)======================================================================
+
+vector<vector<int>> generateMatrix(int n)
+{
+    int d = 0;
+    int sn = 0, sm = 0, en = n - 1, em = n - 1;
+    int x = 1;
+    int i = 0, j = 0;
+    vector<vector<int>> mat(n, vector<int>(n));
+
+    while (x <= n * n)
+    {
+        mat[i][j] = x;
+        // cout<<x<<" ";
+        if (d == 0)
+        {
+            x++;
+            j++;
+            if (j == em)
+            {
+                d = (d + 1) % 4;
+                sn++;
+            }
+        }
+        else if (d == 1)
+        {
+            x++;
+            i++;
+            if (i == en)
+            {
+                d = (d + 1) % 4;
+                em--;
+            }
+        }
+        else if (d == 2)
+        {
+            x++;
+            j--;
+            if (j == sm)
+            {
+                d = (d + 1) % 4;
+                en--;
+            }
+        }
+        else if (d == 3)
+        {
+            x++;
+            i--;
+            if (i == sn)
+            {
+                d = (d + 1) % 4;
+                sm++;
+            }
+        }
+    }
+    return mat;
+}
