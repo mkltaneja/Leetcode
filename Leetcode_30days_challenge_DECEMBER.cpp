@@ -281,3 +281,21 @@ int numPairsDivisibleBy60(vector<int> &time)
 
     return pairs;
 }
+
+// METHOD 2 (using vector)
+int numPairsDivisibleBy60(vector<int> &time)
+{
+    vector<int> v(60, 0);
+    int pairs = 0;
+    for (int i = 0; i < time.size(); i++)
+    {
+        int x = 60 - (time[i] % 60);
+        if (x == 60)
+            pairs += v[0];
+        else
+            pairs += v[x];
+        v[time[i] % 60]++;
+    }
+
+    return pairs;
+}
