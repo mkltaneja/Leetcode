@@ -261,3 +261,23 @@ vector<vector<int>> generateMatrix(int n)
     }
     return mat;
 }
+
+// DAY 8 (Pairs of Songs With Total Durations Divisible by 60)=================================================================
+
+// METHOD 1 (using unordered_map)
+int numPairsDivisibleBy60(vector<int> &time)
+{
+    unordered_map<int, int> m;
+    int pairs = 0;
+    for (int i = 0; i < time.size(); i++)
+    {
+        int x = 60 - (time[i] % 60);
+        if (x == 60)
+            pairs += m[0];
+        if (m.find(x) != m.end())
+            pairs += m[x];
+        m[time[i] % 60]++;
+    }
+
+    return pairs;
+}
