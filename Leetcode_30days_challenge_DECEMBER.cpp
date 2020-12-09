@@ -356,3 +356,33 @@ bool hasNext()
 {
     return vals.size() > 0;
 }
+
+// METHOD 3 (Using stack)
+stack<TreeNode *> vals;
+
+void lefts(TreeNode *node)
+{
+    while (node)
+    {
+        vals.push(node);
+        node = node->left;
+    }
+}
+BSTIterator(TreeNode *root)
+{
+    lefts(root);
+}
+
+int next()
+{
+    TreeNode *front = vals.top();
+    vals.pop();
+    if (front->right)
+        lefts(front->right);
+    return front->val;
+}
+
+bool hasNext()
+{
+    return vals.size() > 0;
+}
