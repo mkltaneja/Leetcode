@@ -299,3 +299,32 @@ int numPairsDivisibleBy60(vector<int> &time)
 
     return pairs;
 }
+
+// DAY 9 (Binary Search Tree Iterator)=========================================================
+
+// METHOD 1 (Using vector)
+vector<int> vals;
+int i = 0;
+
+void inoder(TreeNode *node)
+{
+    if (!node)
+        return;
+    inoder(node->left);
+    vals.push_back(node->val);
+    inoder(node->right);
+}
+BSTIterator(TreeNode *root)
+{
+    inoder(root);
+}
+
+int next()
+{
+    return vals[i++];
+}
+
+bool hasNext()
+{
+    return i < vals.size();
+}
