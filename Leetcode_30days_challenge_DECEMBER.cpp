@@ -328,3 +328,31 @@ bool hasNext()
 {
     return i < vals.size();
 }
+
+// METHOD 2 (Using queue)===============================================
+queue<int> vals;
+
+void inoder(TreeNode *node)
+{
+    if (!node)
+        return;
+    inoder(node->left);
+    vals.push(node->val);
+    inoder(node->right);
+}
+BSTIterator(TreeNode *root)
+{
+    inoder(root);
+}
+
+int next()
+{
+    int top = vals.front();
+    vals.pop();
+    return top;
+}
+
+bool hasNext()
+{
+    return vals.size() > 0;
+}
