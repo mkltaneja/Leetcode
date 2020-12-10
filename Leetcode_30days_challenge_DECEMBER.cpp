@@ -389,6 +389,7 @@ bool hasNext()
 
 // DAY 10 (Valid Mountain Array)======================================
 
+// METHOD 1
 bool validMountainArray(vector<int> &arr)
 {
     int n = arr.size();
@@ -414,4 +415,34 @@ bool validMountainArray(vector<int> &arr)
             return false;
 
     return true;
+}
+
+// METHOD 2 (OPTIMIZED)
+bool validMountainArray(vector<int> &arr)
+{
+    int n = arr.size();
+    if (n < 3)
+        return false;
+    bool up = false, down = false;
+    for (int i = 0; i < n - 1; i++)
+    {
+        if (arr[i] == arr[i + 1])
+            return false;
+        if (arr[i] < arr[i + 1])
+        {
+            if (!down)
+                up = true;
+            else
+                return false;
+        }
+        else
+        {
+            if (up)
+                down = true;
+            else
+                return false;
+        }
+    }
+
+    return up && down;
 }
