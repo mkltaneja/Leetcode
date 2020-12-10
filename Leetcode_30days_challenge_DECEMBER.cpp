@@ -357,7 +357,7 @@ bool hasNext()
     return vals.size() > 0;
 }
 
-// METHOD 3 (Using stack)
+// METHOD 3 (Using stack) --> Space OPTIMIZED (O(height of tree))
 stack<TreeNode *> vals;
 
 void lefts(TreeNode *node)
@@ -385,4 +385,33 @@ int next()
 bool hasNext()
 {
     return vals.size() > 0;
+}
+
+// DAY 10 (Valid Mountain Array)======================================
+
+bool validMountainArray(vector<int> &arr)
+{
+    int n = arr.size();
+    if (n < 3)
+        return false;
+    int peakx = INT_MIN;
+    int peaki = -1;
+    for (int i = 0; i < n; i++)
+    {
+        if (arr[i] > peakx)
+        {
+            peakx = arr[i];
+            peaki = i;
+        }
+    }
+    if (peaki == 0 || peaki == n - 1)
+        return false;
+    for (int i = peaki - 1; i >= 0; i--)
+        if (arr[i + 1] - arr[i] <= 0)
+            return false;
+    for (int i = peaki + 1; i < n; i++)
+        if (arr[i - 1] - arr[i] <= 0)
+            return false;
+
+    return true;
 }
