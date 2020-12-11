@@ -446,3 +446,19 @@ bool validMountainArray(vector<int> &arr)
 
     return up && down;
 }
+
+// DAY 11 (Remove Duplicates from Sorted Array II)========================================================
+
+int removeDuplicates(vector<int> &nums)
+{
+    if (nums.size() <= 2)
+        return nums.size();
+    int slow = 2, fast = 2;
+    while (fast < nums.size())
+    {
+        if (nums[slow - 2] != nums[fast])
+            nums[slow++] = nums[fast];
+        fast++;
+    }
+    return slow;
+}
