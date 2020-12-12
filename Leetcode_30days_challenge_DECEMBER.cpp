@@ -462,3 +462,80 @@ int removeDuplicates(vector<int> &nums)
     }
     return slow;
 }
+
+// DAY 12 (Smallest Subtree with all the Deepest Nodes)================================================
+
+// METHOD 1 (by finding LCA of two most farthest and deepest nodes)
+unordered_map<int, TreeNode *> mf, ml;
+
+int levelorder(TreeNode *node)
+{
+    queue<TreeNode *> que;
+    que.push(node);
+    int level = 0;
+
+    while (!que.empty())
+    {
+        int size = que.size();
+        while (size--)
+        {
+            TreeNode *top = que.front();
+            que.pop();
+            if (mf.find(level) == mf.end())
+                mf[level] = top;
+            ml[level] = top;
+            if (top->left)
+                que.push(top->left);
+            if (top->right)
+                que.push(top->right);
+        }
+        level++;
+    }
+    return --level;
+}
+
+vector<TreeNode *> RootToNodePath(TreeNode *node, TreeNode *tar)
+{
+    if (!node)
+        return {};
+
+    if (node->val == tar->val)
+        return {node};
+
+    vector<TreeNode *> left = RootToNodePath(node->left, tar);
+    if (left.size() > 0)
+    {
+        left.push_back(node);
+        return left;
+    }
+
+    vector<TreeNode *> right = RootToNodePath(node->right, tar);
+    if (right.size() > 0)
+    {
+        right.push_back(node);
+        return right;
+    }
+
+    return {};
+}
+
+TreeNode *subtreeWithAllDeepest(TreeNode *root)
+{
+    int maxdepth = levelorder(root);
+    TreeNode *leftmost = mf[maxdepth];
+    TreeNode *rightmost = ml[maxdepth];
+    cout << leftmost->val << ", " << rightmost->val << endl;
+
+    vector<TreeNode *> lmp = RootToNodePath(root, leftmost);
+    vector<TreeNode *> rmp = RootToNodePath(root, rightmost);
+    for (int i = 0; i < lmp.size(); i++)
+        cout << lmp[i]->val << " ";
+    cout << endl;
+    for (int i = 0; i < rmp.size(); i++)
+        cout << rmp[i]->val << " ";
+
+    int i = 0, j = 0;
+    while (lmp[i]->val != rmp[j]->val)
+        i++, j++;
+    return lmp[i];
+}
