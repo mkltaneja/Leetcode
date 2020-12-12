@@ -539,3 +539,27 @@ TreeNode *subtreeWithAllDeepest(TreeNode *root)
         i++, j++;
     return lmp[i];
 }
+
+// METHOD 2 (Concise and OPTIMIZED(space and time BOTH))===============================================
+
+int getHeight(TreeNode *node)
+{
+    if (!node)
+        return 0;
+    return max(getHeight(node->left), getHeight(node->right)) + 1;
+}
+
+TreeNode *subtreeWithAllDeepest(TreeNode *root)
+{
+    // if(!node)
+    //     return null;
+    int leftheight = getHeight(root->left);
+    int rightheight = getHeight(root->right);
+
+    if (leftheight == rightheight)
+        return root;
+    else if (leftheight > rightheight)
+        return subtreeWithAllDeepest(root->left);
+    else
+        return subtreeWithAllDeepest(root->right);
+}
