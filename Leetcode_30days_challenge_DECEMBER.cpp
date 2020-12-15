@@ -564,7 +564,7 @@ TreeNode *subtreeWithAllDeepest(TreeNode *root)
         return subtreeWithAllDeepest(root->right);
 }
 
-// DAY 15 ()=====================================================
+// DAY 15 (Squares of a Sorted Array)=====================================================
 
 // METHOD 1 --> O(n*logn)
 vector<int> sortedSquares(vector<int> &nums)
@@ -574,5 +574,18 @@ vector<int> sortedSquares(vector<int> &nums)
     for (int i = 0; i < n; i++)
         squares[i] = nums[i] * nums[i];
     sort(squares.begin(), squares.end());
+    return squares;
+}
+
+// METHOD 2 (n*logn)
+vector<int> sortedSquares(vector<int> &nums)
+{
+    int n = nums.size();
+    sort(nums.begin(), nums.end(), [](const int a, const int b) {
+        return abs(a) < abs(b);
+    });
+    vector<int> squares(n);
+    for (int i = 0; i < n; i++)
+        squares[i] = nums[i] * nums[i];
     return squares;
 }
