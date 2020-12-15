@@ -604,6 +604,90 @@ vector<vector<string>> partition(string s)
     return res;
 }
 
+// METHOD 2 (Backtracking using Dynamic Programming) --> <O(n * 2^n)
+
+void palindromes(int n, string &s, vector<vector<bool>> &ispal)
+{
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; i++, j++)
+        {
+            if (gap == 0)
+                ispal[i][j] = true;
+            else if (s[i] == s[j] && (gap == 1 || ispal[i + 1][j - 1]))
+                ispal[i][j] = true;
+        }
+    }
+}
+
+void palPartition(int i, int n, string &s, vector<string> temp, vector<vector<string>> &res, vector<vector<bool>> &ispal)
+{
+    if (i == n)
+    {
+        res.push_back(temp);
+        return;
+    }
+
+    for (int j = i; j < n; j++)
+    {
+        if (ispal[i][j])
+        {
+            temp.push_back(s.substr(i, j - i + 1));
+            palPartition(j + 1, n, s, temp, res, ispal);
+            temp.pop_back();
+        }
+    }
+}
+
+vector<vector<string>> partition(string s)
+{
+    int n = s.size();
+    vector<vector<bool>> ispal(n, vector<bool>(n, false));
+    palindromes(n, s, ispal);
+    // for(int i = 0; i < n; i++)
+    // {
+    //     for(int j = 0; j < n; j++)
+    //         cout<<ispal[i][j]<<" ";
+    //     cout<<endl;
+    // }
+    vector<vector<string>> res;
+    palPartition(0, s.size(), s, {}, res, ispal);
+
+    return res;
+}
+
+// METHOD 3 (Same as METHOD 2, just more CONCISE)
+
+void palPartition(int i, int n, string &s, vector<string> temp, vector<vector<string>> &res, vector<vector<bool>> &ispal)
+{
+    if (i == n)
+    {
+        res.push_back(temp);
+        return;
+    }
+
+    for (int j = i; j < n; j++)
+    {
+        if (s[i] == s[j] && (j - i <= 2 || ispal[i + 1][j - 1]))
+        {
+            ispal[i][j] = true;
+            temp.push_back(s.substr(i, j - i + 1));
+            palPartition(j + 1, n, s, temp, res, ispal);
+            temp.pop_back();
+        }
+    }
+}
+
+vector<vector<string>> partition(string s)
+{
+    int n = s.size();
+    vector<vector<bool>> ispal(n, vector<bool>(n, false));
+    vector<vector<string>> res;
+    palPartition(0, s.size(), s, {}, res, ispal);
+
+    return res;
+}
+
 // DAY 15 (Squares of a Sorted Array)=====================================================
 
 // METHOD 1 --> O(n*logn)
@@ -655,56 +739,4 @@ vector<int> sortedSquares(vector<int> &nums)
         squares[k++] = nums[i] * nums[i++];
 
     return squares;
-}
-
-// METHOD 2 (Backtracking using Dynamic Programming) --> <O(n * 2^n)
-
-void palindromes(int n, string &s, vector<vector<bool>> &ispal)
-{
-    for (int gap = 0; gap < n; gap++)
-    {
-        for (int i = 0, j = gap; j < n; i++, j++)
-        {
-            if (gap == 0)
-                ispal[i][j] = true;
-            else if (s[i] == s[j] && (gap == 1 || ispal[i + 1][j - 1]))
-                ispal[i][j] = true;
-        }
-    }
-}
-
-void palPartition(int i, int n, string &s, vector<string> temp, vector<vector<string>> &res, vector<vector<bool>> &ispal)
-{
-    if (i == n)
-    {
-        res.push_back(temp);
-        return;
-    }
-
-    for (int j = i; j < n; j++)
-    {
-        if (ispal[i][j])
-        {
-            temp.push_back(s.substr(i, j - i + 1));
-            palPartition(j + 1, n, s, temp, res, ispal);
-            temp.pop_back();
-        }
-    }
-}
-
-vector<vector<string>> partition(string s)
-{
-    int n = s.size();
-    vector<vector<bool>> ispal(n, vector<bool>(n, false));
-    palindromes(n, s, ispal);
-    // for(int i = 0; i < n; i++)
-    // {
-    //     for(int j = 0; j < n; j++)
-    //         cout<<ispal[i][j]<<" ";
-    //     cout<<endl;
-    // }
-    vector<vector<string>> res;
-    palPartition(0, s.size(), s, {}, res, ispal);
-
-    return res;
 }
