@@ -577,7 +577,7 @@ vector<int> sortedSquares(vector<int> &nums)
     return squares;
 }
 
-// METHOD 2 (n*logn)
+// METHOD 2 --> (n*logn)
 vector<int> sortedSquares(vector<int> &nums)
 {
     int n = nums.size();
@@ -587,5 +587,32 @@ vector<int> sortedSquares(vector<int> &nums)
     vector<int> squares(n);
     for (int i = 0; i < n; i++)
         squares[i] = nums[i] * nums[i];
+    return squares;
+}
+
+// METHOD 3 --> O(n)
+vector<int> sortedSquares(vector<int> &nums)
+{
+    int n = nums.size();
+
+    int i = 0;
+    while (i < n && nums[i] < 0)
+        i++;
+    int j = i - 1, k = 0;
+
+    vector<int> squares(n);
+
+    while (j >= 0 && i < n)
+    {
+        if (nums[i] < abs(nums[j]))
+            squares[k++] = nums[i] * nums[i++];
+        else
+            squares[k++] = nums[j] * nums[j--];
+    }
+    while (j >= 0)
+        squares[k++] = nums[j] * nums[j--];
+    while (i < n)
+        squares[k++] = nums[i] * nums[i++];
+
     return squares;
 }
