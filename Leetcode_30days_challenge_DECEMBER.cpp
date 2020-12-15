@@ -564,6 +564,46 @@ TreeNode *subtreeWithAllDeepest(TreeNode *root)
         return subtreeWithAllDeepest(root->right);
 }
 
+// DAY 14 (Palindrome Partitioning)==============================================================
+
+// METHOD 1 (Backtracking) --> O(n * 2^n)
+bool ispal(string &s)
+{
+    int n = s.size();
+    for (int i = 0; i < n / 2; i++)
+        if (s[i] != s[n - i - 1])
+            return false;
+    return true;
+}
+
+void palPartition(int idx, int n, string &que, vector<string> temp, vector<vector<string>> &res)
+{
+    if (idx == n)
+    {
+        res.push_back(temp);
+        return;
+    }
+    string ans = "";
+    for (int i = idx; i < n; i++)
+    {
+        ans += que[i];
+        if (ispal(ans))
+        {
+            temp.push_back(ans);
+            palPartition(i + 1, n, que, temp, res);
+            temp.pop_back();
+        }
+    }
+}
+
+vector<vector<string>> partition(string s)
+{
+    vector<vector<string>> res;
+    palPartition(0, s.size(), s, {}, res);
+
+    return res;
+}
+
 // DAY 15 (Squares of a Sorted Array)=====================================================
 
 // METHOD 1 --> O(n*logn)
