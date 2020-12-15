@@ -563,3 +563,16 @@ TreeNode *subtreeWithAllDeepest(TreeNode *root)
     else
         return subtreeWithAllDeepest(root->right);
 }
+
+// DAY 15 ()=====================================================
+
+// METHOD 1 --> O(n*logn)
+vector<int> sortedSquares(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<int> squares(n);
+    for (int i = 0; i < n; i++)
+        squares[i] = nums[i] * nums[i];
+    sort(squares.begin(), squares.end());
+    return squares;
+}
