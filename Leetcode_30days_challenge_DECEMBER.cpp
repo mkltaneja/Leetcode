@@ -884,3 +884,25 @@ bool isValidBST(TreeNode *root)
 
     return res;
 }
+
+// METHOD 2 (Using inoder array(should be sorted))
+
+void inorder(TreeNode *node, vector<int> &tree)
+{
+    if (!node)
+        return;
+    inorder(node->left, tree);
+    tree.push_back(node->val);
+    inorder(node->right, tree);
+}
+
+bool isValidBST(TreeNode *root)
+{
+    vector<int> tree;
+    inorder(root, tree);
+
+    for (int i = 1; i < tree.size(); i++)
+        if (tree[i] <= tree[i - 1])
+            return false;
+    return true;
+}
