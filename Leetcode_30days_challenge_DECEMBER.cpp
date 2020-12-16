@@ -835,3 +835,52 @@ vector<int> sortedSquares(vector<int> &nums)
 
     return squares;
 }
+
+// DAY 16 (Validate Binary Search Tree)======================================================
+
+// METHOD 1 --> O(n^2)
+bool checkBSTright(int val, TreeNode *node)
+{
+    if (node->val <= val)
+        return false;
+
+    bool res = true;
+
+    if (node->left)
+        res &= checkBSTright(val, node->left);
+    if (res && node->right)
+        res &= checkBSTright(val, node->right);
+
+    return res;
+}
+bool checkBSTleft(int val, TreeNode *node)
+{
+    if (node->val >= val)
+        return false;
+
+    bool res = true;
+
+    if (node->left)
+        res &= checkBSTleft(val, node->left);
+    if (res && node->right)
+        res &= checkBSTleft(val, node->right);
+
+    return res;
+}
+
+bool isValidBST(TreeNode *root)
+{
+    bool res = true;
+
+    if (root->left)
+        res &= checkBSTleft(root->val, root->left);
+    if (res && root->right)
+        res &= checkBSTright(root->val, root->right);
+
+    if (res && root->left)
+        res &= isValidBST(root->left);
+    if (res && root->right)
+        res &= isValidBST(root->right);
+
+    return res;
+}
