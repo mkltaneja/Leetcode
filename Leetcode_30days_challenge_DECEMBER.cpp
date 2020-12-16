@@ -564,6 +564,34 @@ TreeNode *subtreeWithAllDeepest(TreeNode *root)
         return subtreeWithAllDeepest(root->right);
 }
 
+// DAY 13 (Burst Baloons)===================================================================
+
+// METHOD 1 (Recursion)
+// TLE
+
+int BurstBaloons(int st, int end, vector<int> &arr)
+{
+    int leftcost = (st == 0) ? 1 : arr[st - 1];
+    int rightcost = (end == arr.size() - 1) ? 1 : arr[end + 1];
+
+    int maxans = 0;
+    for (int cut = st; cut <= end; cut++)
+    {
+        int leftans = (cut == st) ? 0 : BurstBaloons(st, cut - 1, arr);
+        int rightans = (cut == end) ? 0 : BurstBaloons(cut + 1, end, arr);
+
+        int myans = leftans + leftcost * arr[cut] * rightcost + rightans;
+        maxans = max(maxans, myans);
+    }
+
+    return maxans;
+}
+
+int maxCoins(vector<int> &nums)
+{
+    return BurstBaloons(0, nums.size() - 1, nums);
+}
+
 // DAY 14 (Palindrome Partitioning)==============================================================
 
 // METHOD 1 (Backtracking) --> O(n * 2^n)
