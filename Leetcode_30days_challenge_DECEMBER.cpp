@@ -592,6 +592,39 @@ int maxCoins(vector<int> &nums)
     return BurstBaloons(0, nums.size() - 1, nums);
 }
 
+// METHOD 2 (Memoized)
+
+int BurstBaloons(int st, int end, vector<int> &arr, vector<vector<int>> &dp)
+{
+    if (dp[st][end] != -1)
+        return dp[st][end];
+
+    int leftcost = (st == 0) ? 1 : arr[st - 1];
+    int rightcost = (end == arr.size() - 1) ? 1 : arr[end + 1];
+
+    int maxans = 0;
+    for (int cut = st; cut <= end; cut++)
+    {
+        int leftans = (cut == st) ? 0 : BurstBaloons(st, cut - 1, arr, dp);
+        int rightans = (cut == end) ? 0 : BurstBaloons(cut + 1, end, arr, dp);
+
+        int myans = leftans + leftcost * arr[cut] * rightcost + rightans;
+        maxans = max(maxans, myans);
+    }
+
+    return dp[st][end] = maxans;
+}
+
+int maxCoins(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 0)
+        return 0;
+    vector<vector<int>> dp(n, vector<int>(n, -1));
+    return BurstBaloons(0, n - 1, nums, dp);
+}
+
+
 // DAY 14 (Palindrome Partitioning)==============================================================
 
 // METHOD 1 (Backtracking) --> O(n * 2^n)
