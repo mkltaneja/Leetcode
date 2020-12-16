@@ -906,3 +906,27 @@ bool isValidBST(TreeNode *root)
             return false;
     return true;
 }
+
+// METHOD 3 (Same as METHOD 2 --> Space OPTIMIZED)
+
+TreeNode *prev = nullptr;
+
+bool check_sorted(TreeNode *node)
+{
+    if (!prev)
+    {
+        prev = node;
+        return true;
+    }
+    if (prev->val >= node->val)
+        return false;
+    prev = node;
+    return true;
+}
+
+bool isValidBST(TreeNode *root)
+{
+    if (!root)
+        return true;
+    return isValidBST(root->left) && check_sorted(root) && isValidBST(root->right);
+}
