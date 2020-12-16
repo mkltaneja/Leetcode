@@ -624,6 +624,40 @@ int maxCoins(vector<int> &nums)
     return BurstBaloons(0, n - 1, nums, dp);
 }
 
+// METHOD 3 (Tabulated)
+
+int BurstBaloons(int n, vector<int> &arr, vector<vector<int>> &dp)
+{
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int st = 0, end = gap; end < n; st++, end++)
+        {
+            int leftcost = (st == 0) ? 1 : arr[st - 1];
+            int rightcost = (end == n - 1) ? 1 : arr[end + 1];
+
+            int maxans = 0;
+            for (int cut = st; cut <= end; cut++)
+            {
+                int leftans = (cut == st) ? 0 : dp[st][cut - 1];
+                int rightans = (cut == end) ? 0 : dp[cut + 1][end];
+
+                int myans = leftans + leftcost * arr[cut] * rightcost + rightans;
+                maxans = max(maxans, myans);
+            }
+            dp[st][end] = maxans;
+        }
+    }
+    return dp[0][n - 1];
+}
+
+int maxCoins(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n == 0)
+        return 0;
+    vector<vector<int>> dp(n, vector<int>(n, -1));
+    return BurstBaloons(n, nums, dp);
+}
 
 // DAY 14 (Palindrome Partitioning)==============================================================
 
