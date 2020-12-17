@@ -930,3 +930,20 @@ bool isValidBST(TreeNode *root)
         return true;
     return isValidBST(root->left) && check_sorted(root) && isValidBST(root->right);
 }
+
+// DAY 17 (4 Sum II)=====================================================================
+
+// METHOD 1 (Brute Force) --> O(n^3)
+int fourSumCount(vector<int> &A, vector<int> &B, vector<int> &C, vector<int> &D)
+{
+    unordered_map<int, int> m;
+    for (int i : D)
+        m[i]++;
+
+    int count = 0;
+    for (int i : A)
+        for (int j : B)
+            for (int k : C)
+                count += m[-1 * (i + j + k)];
+    return count;
+}
