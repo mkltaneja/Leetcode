@@ -948,7 +948,7 @@ int fourSumCount(vector<int> &A, vector<int> &B, vector<int> &C, vector<int> &D)
     return count;
 }
 
-// METHOD 2 (Optimized Brute Force) --> O(n^2)
+// METHOD 2 --> O(n^2)
 
 int fourSumCount(vector<int> &A, vector<int> &B, vector<int> &C, vector<int> &D)
 {
@@ -961,5 +961,33 @@ int fourSumCount(vector<int> &A, vector<int> &B, vector<int> &C, vector<int> &D)
     for (int i : A)
         for (int j : B)
             count += m[-1 * (i + j)];
+    return count;
+}
+
+// METHOD 3 -->  <=O(n^2)
+
+#define f first
+#define s second
+
+int fourSumCount(vector<int> &A, vector<int> &B, vector<int> &C, vector<int> &D)
+{
+    unordered_map<int, int> a, b, c, d, ab;
+    for (int i : A)
+        a[i]++;
+    for (int i : B)
+        b[i]++;
+    for (int i : C)
+        c[i]++;
+    for (int i : D)
+        d[i]++;
+    for (auto i : a)
+        for (auto j : b)
+            ab[i.f + j.f] += i.s * j.s;
+
+    int count = 0;
+    for (auto i : c)
+        for (auto j : d)
+            count += i.s * j.s * ab[-(i.f + j.f)];
+
     return count;
 }
