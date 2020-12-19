@@ -991,3 +991,21 @@ int fourSumCount(vector<int> &A, vector<int> &B, vector<int> &C, vector<int> &D)
 
     return count;
 }
+
+// DAY 18 (Increasing Triplet Sum)====================================================
+
+bool increasingTriplet(vector<int> &nums)
+{
+    int a = INT_MAX, b = INT_MAX;
+
+    for (int x : nums)
+    {
+        if (x <= a)
+            a = x;
+        else if (x <= b)
+            b = x;
+        else
+            return true;
+    }
+    return false;
+}
