@@ -1041,3 +1041,22 @@ string decodeAtIndex(string S, int K)
     }
     return S.substr(K, 1);
 }
+
+// DAY 21 (Smallest Range 2)==============================================================
+
+int smallestRangeII(vector<int> &A, int K)
+{
+    int n = A.size();
+    sort(A.begin(), A.end());
+
+    int mindiff = A[n - 1] - A[0];
+    for (int i = 0; i < n - 1; i++)
+    {
+        int x = A[i], y = A[i + 1];
+        int mini = min(A[0] + K, y - K);
+        int maxi = max(A[n - 1] - K, x + K);
+        mindiff = min(mindiff, maxi - mini);
+    }
+
+    return mindiff;
+}
