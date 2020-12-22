@@ -1060,3 +1060,32 @@ int smallestRangeII(vector<int> &A, int K)
 
     return mindiff;
 }
+
+// DAY 22 (Balanced Binary Tree)================================================================
+
+// METHOD 1 --> O(n^2)
+int height(TreeNode *node)
+{
+    if (!node)
+        return 0;
+    return max(height(node->left), height(node->right)) + 1;
+}
+
+bool isBalanced(TreeNode *root)
+{
+    if (!root)
+        return true;
+
+    int lefth = height(root->left);
+    int righth = height(root->right);
+
+    if (abs(righth - lefth) > 1)
+        return false;
+
+    bool res = true;
+    res &= isBalanced(root->left);
+    if (res)
+        res &= isBalanced(root->right);
+
+    return res;
+}
