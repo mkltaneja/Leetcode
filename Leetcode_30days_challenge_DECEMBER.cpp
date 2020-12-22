@@ -1089,3 +1089,26 @@ bool isBalanced(TreeNode *root)
 
     return res;
 }
+
+// METHOD 2 --> O(n)
+
+int height(TreeNode *node)
+{
+    if (!node)
+        return 0;
+
+    int lefth = height(node->left);
+    int righth = height(node->right);
+
+    if (lefth == -1 || righth == -1 || abs(lefth - righth) > 1)
+        return -1;
+
+    return max(height(node->left), height(node->right)) + 1;
+}
+
+bool isBalanced(TreeNode *root)
+{
+    if (!root)
+        return true;
+    return height(root) != -1;
+}
