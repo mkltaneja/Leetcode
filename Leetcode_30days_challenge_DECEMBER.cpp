@@ -1128,3 +1128,45 @@ int nextGreaterElement(int n)
     else
         return -1;
 }
+
+// METHOD 2 (Actual Method)
+int nextGreaterElement(int n)
+{
+    vector<int> num;
+    int temp = n;
+    while (temp)
+    {
+        num.push_back(temp % 10);
+        temp /= 10;
+    }
+    reverse(num.begin(), num.end());
+
+    int ptr1 = -1;
+    for (int i = num.size() - 1; i > 0; i--)
+    {
+        if (num[i - 1] < num[i])
+        {
+            ptr1 = i - 1;
+            break;
+        }
+    }
+    if (ptr1 == -1)
+        return -1;
+
+    int ptr2 = ptr1 + 1;
+    for (int i = ptr2; i < num.size(); i++)
+        if (num[i] > num[ptr1])
+            ptr2 = i;
+    swap(num[ptr1], num[ptr2]);
+
+    reverse(num.begin() + ptr1 + 1, num.end());
+
+    long nn = 0;
+    for (int x : num)
+    {
+        nn *= 10;
+        nn += x;
+    }
+
+    return nn > INT_MAX ? -1 : nn;
+}
