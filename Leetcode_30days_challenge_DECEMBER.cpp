@@ -1112,3 +1112,19 @@ bool isBalanced(TreeNode *root)
         return true;
     return height(root) != -1;
 }
+
+// DAY 23 (Next Greater Element)============================================================
+
+// METHOD 1 (short)
+int nextGreaterElement(int n)
+{
+    string s = to_string(n);
+
+    if (next_permutation(s.begin(), s.end()))
+    {
+        long nn = stol(s);
+        return nn > INT_MAX ? -1 : nn;
+    }
+    else
+        return -1;
+}
