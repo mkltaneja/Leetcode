@@ -1170,3 +1170,33 @@ int nextGreaterElement(int n)
 
     return nn > INT_MAX ? -1 : nn;
 }
+
+// DAY 24 (Swap Nodes in Pair)=========================================================
+
+ListNode *swapPairs(ListNode *head)
+{
+    ListNode *prev = nullptr, *next, *itr = head;
+    int swap = 1;
+
+    while (itr && itr->next)
+    {
+        cout << itr->val << " -> ";
+        ListNode *a = itr, *b = itr->next;
+        // a->next = nullptr;
+        a->next = b->next;
+        // b->next = nullptr;
+        b->next = a;
+        if (prev != nullptr)
+            prev->next = b;
+        else
+            head = b;
+
+        prev = itr;
+        cout << itr->val << ", ";
+        itr = itr->next;
+        swap = (swap + 1) % 2;
+    }
+    cout << endl;
+
+    return head;
+}
