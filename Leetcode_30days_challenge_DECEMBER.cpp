@@ -1200,3 +1200,35 @@ ListNode *swapPairs(ListNode *head)
 
     return head;
 }
+
+// DAY 25 (Diagonal Traverse)======================================================
+
+vector<int> findDiagonalOrder(vector<vector<int>> &matrix)
+{
+    int n = matrix.size();
+    if (n == 0)
+        return {};
+    int m = matrix[0].size();
+    int sum = 0;
+    int down = 1;
+    vector<int> ans(n * m);
+    int k = 0;
+    while (sum < (m + n - 1))
+    {
+        if (down == 1)
+        {
+            int i = min(sum, n - 1), j = sum - i;
+            while (j <= min(sum, m - 1))
+                ans[k++] = matrix[i--][j++];
+        }
+        else
+        {
+            int j = min(sum, m - 1), i = sum - j;
+            while (i <= min(sum, n - 1))
+                ans[k++] = matrix[i++][j--];
+        }
+        sum++;
+        down = (down + 1) % 2;
+    }
+    return ans;
+}
