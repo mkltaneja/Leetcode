@@ -1232,3 +1232,34 @@ vector<int> findDiagonalOrder(vector<vector<int>> &matrix)
     }
     return ans;
 }
+
+// DAY 26 (Decode Ways)===================================================
+
+// METHOD 1 (Recursion)
+// TLE
+int countways(int i, string &s)
+{
+    if (i >= s.size())
+        return 1;
+    if (s[i] == '0')
+        return 0;
+
+    int count = 0;
+
+    count += countways(i + 1, s);
+
+    if (i < s.size() - 1)
+    {
+        int num = s[i] - '0';
+        num *= 10;
+        num += s[i + 1] - '0';
+        if (num >= 10 && num <= 26)
+            count += countways(i + 2, s);
+    }
+    return count;
+}
+
+int numDecodings(string s)
+{
+    return countways(0, s);
+}
