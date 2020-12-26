@@ -1294,3 +1294,25 @@ int numDecodings(string s)
     vector<int> dp(s.size(), -1);
     return countways(0, s, dp);
 }
+
+// METHOD 3 (Tabulation)
+
+int countways(int i, string &s, vector<int> &dp)
+{
+    dp[0] = 1;
+    for (int i = 1; i <= s.size(); i++)
+    {
+        if (s[i - 1] != '0')
+            dp[i] = dp[i - 1];
+        if (i > 1 && (s[i - 2] - '0') * 10 + (s[i - 1] - '0') >= 10 && (s[i - 2] - '0') * 10 + (s[i - 1] - '0') <= 26)
+            dp[i] += dp[i - 2];
+    }
+
+    return dp[s.size()];
+}
+
+int numDecodings(string s)
+{
+    vector<int> dp(s.size() + 1, 0);
+    return countways(0, s, dp);
+}
