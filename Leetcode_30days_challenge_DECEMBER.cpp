@@ -1365,3 +1365,47 @@ int minJumps(vector<int> &arr)
 
     return dfs(0, m, vis, arr);
 }
+
+// METHOD 2 (DFS)
+// TLE
+int dfs(int src, int dest, vector<bool> &vis, vector<vector<int>> &gp)
+{
+    if (src == dest)
+        return 0;
+
+    int moves = 5e5;
+    for (int i : gp[src])
+    {
+        if (!vis[i])
+        {
+            vis[i] = true;
+            moves = min(moves, dfs(i, dest, vis, gp));
+            vis[i] = false;
+        }
+    }
+    return moves + 1;
+}
+
+int minJumps(vector<int> &arr)
+{
+    int n = arr.size();
+
+    unordered_map<int, vector<int>> m;
+    for (int i = 0; i < n; i++)
+        m[arr[i]].push_back(i);
+    vector<vector<int>> gp(n, vector<int>());
+    for (int i = 0; i < n; i++)
+    {
+        if (i != 0)
+            gp[i].push_back(i - 1);
+        if (i != n - 1)
+            gp[i].push_back(i + 1);
+        for (int j : m[arr[i]])
+            gp[i].push_back(j);
+    }
+
+    vector<bool> vis(n, false);
+    vis[0] = true;
+
+    return dfs(0, n - 1, vis, gp);
+}
