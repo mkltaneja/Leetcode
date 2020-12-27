@@ -1316,3 +1316,52 @@ int numDecodings(string s)
     vector<int> dp(s.size() + 1, 0);
     return countways(0, s, dp);
 }
+
+// DAY 27 (Jump Game 4)==========================================================
+
+// METHOD 1 (Using Recursion and Backtracking)
+// TLE
+int dfs(int i, unordered_map<int, vector<int>> &m, vector<bool> &vis, vector<int> &arr)
+{
+    if (i == arr.size() - 1)
+        return 0;
+
+    int moves = 5e5;
+    int forw = 5e5, back = 5e5, tele = 5e5;
+    if (vis[i + 1] == false)
+    {
+        vis[i + 1] = true;
+        forw = dfs(i + 1, m, vis, arr);
+        vis[i + 1] = false;
+    }
+    if (i - 1 >= 0 && vis[i - 1] == false)
+    {
+        vis[i - 1] = true;
+        back = dfs(i - 1, m, vis, arr);
+        vis[i - 1] = false;
+    }
+    for (int j : m[arr[i]])
+    {
+        if (vis[j] == false)
+        {
+            vis[j] = true;
+            tele = dfs(j, m, vis, arr);
+            vis[j] = false;
+        }
+    }
+    moves = min(moves, min(forw, min(back, tele)));
+
+    return moves + 1;
+}
+
+int minJumps(vector<int> &arr)
+{
+    int n = arr.size();
+    unordered_map<int, vector<int>> m;
+    for (int i = 0; i < n; i++)
+        m[arr[i]].push_back(i);
+    vector<bool> vis(n, false);
+    vis[0] = true;
+
+    return dfs(0, m, vis, arr);
+}
