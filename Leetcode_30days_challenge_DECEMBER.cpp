@@ -1533,3 +1533,37 @@ int minJumps(vector<int> &arr)
 
     return bfs(0, n - 1, arr, gp);
 }
+
+// DAY 28 (Reach a Number)===================================================
+
+// METHOD 1 (BFS)
+// TLE
+#define f first
+#define s second
+int reachNumber(int target)
+{
+    queue<pair<int, int>> que;
+    que.push({0, 1});
+    int jump = 1;
+
+    while (!que.empty())
+    {
+        auto top = que.front();
+        que.pop();
+        if (top.f == target)
+            return top.s - 1;
+        if (top.f - top.s >= -1e9)
+        {
+            if (top.f - top.s == target)
+                return top.s;
+            que.push({top.f - top.s, top.s + 1});
+        }
+        if (top.f + top.s <= 1e9)
+        {
+            if (top.f + top.s == target)
+                return top.s;
+            que.push({top.f + top.s, top.s + 1});
+        }
+    }
+    return 0;
+}
