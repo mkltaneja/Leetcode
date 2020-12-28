@@ -1468,3 +1468,68 @@ int minJumps(vector<int> &arr)
 
     return bfs(0, n - 1, vis, gp);
 }
+
+// OPTIMIZED BFS
+
+int bfs(int src, int dest, vector<int> &arr, unordered_map<int, vector<int>> &gp)
+{
+    deque<int> que;
+    que.push_back(0);
+    vector<bool> vis(arr.size(), false);
+    vis[0] = true;
+    int moves = 0;
+    while (!que.empty())
+    {
+        int sz = que.size();
+        // cout<<moves<<": \n";
+        while (sz--)
+        {
+            int src = que.front();
+            que.pop_front();
+            // cout<<src<<", ";
+
+            if (src == dest)
+                return moves;
+            // cout<<arr[src]<<" --> ";
+
+            for (int i : gp[arr[src]])
+            {
+                if (i != src && !vis[i])
+                {
+                    // cout<<i<<", ";
+                    vis[i] = true;
+                    if (i == dest)
+                        return moves + 1;
+                    que.push_back(i);
+                }
+            }
+
+            for (int d : {-1, 1})
+            {
+                if (src + d >= 0 && src + d <= dest && !vis[src + d])
+                {
+                    // cout<<src+d<<", ";
+                    vis[src + d] = true;
+                    if (src + d == dest)
+                        return moves + 1;
+                    que.push_back(src + d);
+                }
+            }
+            // cout<<endl;
+        }
+        moves++;
+    }
+    return moves;
+}
+
+int minJumps(vector<int> &arr)
+{
+    int n = arr.size();
+    // cout<<n<<endl;
+
+    unordered_map<int, vector<int>> gp;
+    for (int i = 0; i < n; i++)
+        gp[arr[i]].push_back(i);
+
+    return bfs(0, n - 1, arr, gp);
+}
