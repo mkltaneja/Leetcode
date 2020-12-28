@@ -1567,3 +1567,18 @@ int reachNumber(int target)
     }
     return 0;
 }
+
+// METHOD 2 (Math) --> O(sqrt(target))
+// AC
+int reachNumber(int target)
+{
+    int t = abs(target);
+
+    for (int n = 0; n <= 1e5; n++)
+    {
+        long x = (n * (n + 1)) / 2;
+        if (x - t >= 0 && (x - t) % 2 == 0)
+            return n;
+    }
+    return -1;
+}
