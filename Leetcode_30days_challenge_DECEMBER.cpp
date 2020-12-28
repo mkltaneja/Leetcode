@@ -1366,7 +1366,7 @@ int minJumps(vector<int> &arr)
     return dfs(0, m, vis, arr);
 }
 
-// METHOD 2 (DFS)
+// METHOD 2 (DFS using graph)
 // TLE
 int dfs(int src, int dest, vector<bool> &vis, vector<vector<int>> &gp)
 {
@@ -1408,4 +1408,63 @@ int minJumps(vector<int> &arr)
     vis[0] = true;
 
     return dfs(0, n - 1, vis, gp);
+}
+
+// METHOD 3 (BFS)
+// TLE
+
+int bfs(int src, int dest, vector<bool> &vis, vector<vector<int>> &gp)
+{
+    queue<int> que;
+    que.push(0);
+    int moves = 0;
+    while (!que.empty())
+    {
+        int sz = que.size();
+        while (sz--)
+        {
+            int src = que.front();
+            que.pop();
+            vis[src] = true;
+
+            if (src == dest)
+                return moves;
+
+            for (int i : gp[src])
+            {
+                if (!vis[i])
+                {
+                    if (i == dest)
+                        return moves + 1;
+                    que.push(i);
+                }
+            }
+        }
+        moves++;
+    }
+    return moves;
+}
+
+int minJumps(vector<int> &arr)
+{
+    int n = arr.size();
+
+    unordered_map<int, vector<int>> m;
+    for (int i = 0; i < n; i++)
+        m[arr[i]].push_back(i);
+    vector<vector<int>> gp(n, vector<int>());
+    for (int i = 0; i < n; i++)
+    {
+        if (i != 0)
+            gp[i].push_back(i - 1);
+        if (i != n - 1)
+            gp[i].push_back(i + 1);
+        for (int j : m[arr[i]])
+            gp[i].push_back(j);
+    }
+
+    vector<bool> vis(n, false);
+    vis[0] = true;
+
+    return bfs(0, n - 1, vis, gp);
 }
