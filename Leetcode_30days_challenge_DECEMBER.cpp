@@ -1629,3 +1629,23 @@ int pseudoPalindromicPaths(TreeNode *root)
     unordered_map<int, int> m;
     return preorder(m, root);
 }
+
+// METHOD 2 (Without map, using bitwise operation) --> OPTIMIZED
+int count = 0;
+void preorder(TreeNode *node, int odds)
+{
+    if (!node)
+        return;
+
+    odds ^= (1 << node->val);
+    if (!node->left && !node->right && __builtin_popcount(odds) <= 1)
+        count++;
+    preorder(node->left, odds);
+    preorder(node->right, odds);
+}
+
+int pseudoPalindromicPaths(TreeNode *root)
+{
+    preorder(root, 0);
+    return count;
+}
