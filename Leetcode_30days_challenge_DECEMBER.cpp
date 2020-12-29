@@ -1536,7 +1536,7 @@ int minJumps(vector<int> &arr)
 
 // DAY 28 (Reach a Number)===================================================
 
-// METHOD 1 (BFS)
+// METHOD 1 (BFS) --> O(2^n)
 // TLE
 #define f first
 #define s second
@@ -1581,4 +1581,51 @@ int reachNumber(int target)
             return n;
     }
     return -1;
+}
+
+// DAY 29 (Pseudo-Palindromic Paths in a Binary Tree)============================================================
+
+// METHOD 1 (Using Haspmap)
+bool isvalidPath(unordered_map<int, int> &m)
+{
+    int odds = 0;
+    for (auto itr : m)
+        if (itr.second % 2 != 0)
+            odds++;
+    if (odds > 1)
+        return false;
+    return true;
+}
+
+int preorder(unordered_map<int, int> &m, TreeNode *node)
+{
+    if (!node)
+        return 0;
+    m[node->val]++;
+    if (!node->left && !node->right)
+    {
+        if (isvalidPath(m))
+        {
+            if (--m[node->val] == 0)
+                m.erase(node->val);
+            return 1;
+        }
+        if (--m[node->val] == 0)
+            m.erase(node->val);
+        return 0;
+    }
+    int count = 0;
+
+    count += preorder(m, node->left);
+    count += preorder(m, node->right);
+    // --m[node->val];
+    if (--m[node->val] == 0)
+        m.erase(node->val);
+    return count;
+}
+
+int pseudoPalindromicPaths(TreeNode *root)
+{
+    unordered_map<int, int> m;
+    return preorder(m, root);
 }
