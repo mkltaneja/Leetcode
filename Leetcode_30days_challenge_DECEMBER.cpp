@@ -1649,3 +1649,43 @@ int pseudoPalindromicPaths(TreeNode *root)
     preorder(root, 0);
     return count;
 }
+
+// DAY 30 (Game of Life)======================================================
+
+int liveOrdead(int i, int j, int n, int m, vector<vector<int>> &arr)
+{
+    int live = 0;
+    if (i - 1 >= 0 && arr[i - 1][j] == 1)
+        live++;
+    if (j - 1 >= 0 && arr[i][j - 1] == 1)
+        live++;
+    if (i + 1 < n && arr[i + 1][j] == 1)
+        live++;
+    if (j + 1 < m && arr[i][j + 1] == 1)
+        live++;
+    if (i - 1 >= 0 && j - 1 >= 0 && arr[i - 1][j - 1] == 1)
+        live++;
+    if (i - 1 >= 0 && j + 1 < m && arr[i - 1][j + 1] == 1)
+        live++;
+    if (i + 1 < n && j - 1 >= 0 && arr[i + 1][j - 1] == 1)
+        live++;
+    if (i + 1 < n && j + 1 < m && arr[i + 1][j + 1] == 1)
+        live++;
+
+    if (live < 2 || live > 3)
+        return 0;
+    if (live == 3)
+        return 1;
+    return arr[i][j];
+}
+
+void gameOfLife(vector<vector<int>> &board)
+{
+    int n = board.size();
+    int m = board[0].size();
+    vector<vector<int>> ans(board);
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            ans[i][j] = liveOrdead(i, j, n, m, board);
+    board = ans;
+}
