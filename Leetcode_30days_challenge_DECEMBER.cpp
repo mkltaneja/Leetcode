@@ -1692,6 +1692,8 @@ void gameOfLife(vector<vector<int>> &board)
 
 // DAY 31 (Largest Rectangle in Histogram)==========================================================
 
+// METHOD 1 --> O(n^2)
+// TLE
 int largestRectangleArea(vector<int> &heights)
 {
     int maxarea = 0, n = heights.size();
@@ -1705,6 +1707,36 @@ int largestRectangleArea(vector<int> &heights)
         while (k < n && heights[k] >= ht)
             k++, count++;
         maxarea = max(maxarea, ht * count);
+    }
+    return maxarea;
+}
+
+// METHOD 2 (Using Stack) --> O(n)
+// AC
+
+int largestRectangleArea(vector<int> &heights)
+{
+    int maxarea = 0, n = heights.size();
+    stack<int> st;
+    int i = 0;
+    for (; i < n; i++)
+    {
+        while (!st.empty() && heights[st.top()] > heights[i])
+        {
+            int tp = st.top();
+            st.pop();
+            int area = heights[tp] * (st.empty() ? i : i - st.top() - 1);
+            maxarea = max(maxarea, area);
+        }
+        st.push(i);
+    }
+
+    while (!st.empty())
+    {
+        int tp = st.top();
+        st.pop();
+        int area = heights[tp] * (st.empty() ? i : i - st.top() - 1);
+        maxarea = max(maxarea, area);
     }
     return maxarea;
 }
