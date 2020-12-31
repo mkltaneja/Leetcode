@@ -1689,3 +1689,22 @@ void gameOfLife(vector<vector<int>> &board)
             ans[i][j] = liveOrdead(i, j, n, m, board);
     board = ans;
 }
+
+// DAY 31 (Largest Rectangle in Histogram)==========================================================
+
+int largestRectangleArea(vector<int> &heights)
+{
+    int maxarea = 0, n = heights.size();
+    for (int i = 0; i < n; i++)
+    {
+        int ht = heights[i];
+        int j = i - 1, k = i + 1;
+        int count = 1;
+        while (j >= 0 && heights[j] >= ht)
+            j--, count++;
+        while (k < n && heights[k] >= ht)
+            k++, count++;
+        maxarea = max(maxarea, ht * count);
+    }
+    return maxarea;
+}
