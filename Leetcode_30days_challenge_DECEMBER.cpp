@@ -1713,7 +1713,6 @@ int largestRectangleArea(vector<int> &heights)
 
 // METHOD 2 (Using Stack) --> O(n)
 // AC
-
 int largestRectangleArea(vector<int> &heights)
 {
     int maxarea = 0, n = heights.size();
