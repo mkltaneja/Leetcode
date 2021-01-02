@@ -27,24 +27,18 @@ bool canFormArray(vector<int> &arr, vector<vector<int>> &pieces)
 
 // DAY 2 (Find a Corresponding Node of a Binary Tree in a Clone of That Tree)===========================================================
 
-TreeNode *reference(TreeNode *node, int tar)
+TreeNode *getTargetCopy(TreeNode *original, TreeNode *cloned, TreeNode *target)
 {
-    if (!node)
+    if (!cloned)
         return nullptr;
-    if (node->val == tar)
-        return node;
-    TreeNode *left = reference(node->left, tar);
-    if (left != nullptr)
+    if (cloned->val == target->val)
+        return cloned;
+    TreeNode *left = getTargetCopy(original, cloned->left, target);
+    if (left)
         return left;
-    TreeNode *right = reference(node->right, tar);
-    if (right != nullptr)
+    TreeNode *right = getTargetCopy(original, cloned->right, target);
+    if (right)
         return right;
 
     return nullptr;
-}
-
-TreeNode *getTargetCopy(TreeNode *original, TreeNode *cloned, TreeNode *target)
-{
-    TreeNode *node = cloned;
-    return reference(cloned, target->val);
 }
