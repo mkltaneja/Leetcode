@@ -69,3 +69,30 @@ int countArrangement(int n)
         arr[i - 1] = i;
     return permutations(0, arr);
 }
+
+// METHOD 2 (Recursion from end of array -- MUCH faster than METHOD 1)
+// OPTIMIZED
+
+int permutations(int n, vector<int> &arr)
+{
+    if (n <= 0)
+        return 1;
+
+    int count = 0;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        swap(arr[i], arr[n - 1]);
+        if (n % arr[n - 1] == 0 || arr[n - 1] % n == 0)
+            count += permutations(n - 1, arr);
+        swap(arr[i], arr[n - 1]);
+    }
+    return count;
+}
+
+int countArrangement(int n)
+{
+    vector<int> arr(n);
+    for (int i = 1; i <= n; i++)
+        arr[i - 1] = i;
+    return permutations(n, arr);
+}
