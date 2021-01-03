@@ -42,3 +42,30 @@ TreeNode *getTargetCopy(TreeNode *original, TreeNode *cloned, TreeNode *target)
 
     return nullptr;
 }
+
+// DAY 3 (Beautiful Arrangement)==============================================================================
+
+// METHOD 1 (Recursion from start of array -- Takes more time)
+int permutations(int idx, vector<int> &arr)
+{
+    if (idx == arr.size())
+        return 1;
+
+    int count = 0;
+    for (int i = idx; i < arr.size(); i++)
+    {
+        swap(arr[i], arr[idx]);
+        if (max(arr[idx], idx + 1) % min(arr[idx], idx + 1) == 0)
+            count += permutations(idx + 1, arr);
+        swap(arr[i], arr[idx]);
+    }
+    return count;
+}
+
+int countArrangement(int n)
+{
+    vector<int> arr(n);
+    for (int i = 1; i <= n; i++)
+        arr[i - 1] = i;
+    return permutations(0, arr);
+}
