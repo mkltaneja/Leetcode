@@ -70,12 +70,13 @@ int countArrangement(int n)
     return permutations(0, arr);
 }
 
-// METHOD 2 (Recursion from end of array -- MUCH faster than METHOD 1)
+// METHOD 2 (Recursion from end of array -- MUCH faster than METHOD 1 because geater elements pose more constraints
+//                                                                            on what arr[i] can fit and thus remove invalid cases
 // OPTIMIZED
 
 int permutations(int n, vector<int> &arr)
 {
-    if (n <= 0)
+    if (n == 0)
         return 1;
 
     int count = 0;
@@ -95,4 +96,31 @@ int countArrangement(int n)
     for (int i = 1; i <= n; i++)
         arr[i - 1] = i;
     return permutations(n, arr);
+}
+
+// DAY 4 (Merge 2 Sorted Lists)============================================================
+
+// METHOD 1 
+ListNode *mergeTwoLists(ListNode *l1, ListNode *l2)
+{
+    ListNode *ans = new ListNode(-101), *head = ans;
+    while (l1 && l2)
+    {
+        if (l1->val < l2->val)
+        {
+            ans->next = l1;
+            l1 = l1->next;
+        }
+        else
+        {
+            ans->next = l2;
+            l2 = l2->next;
+        }
+        ans = ans->next;
+    }
+    if (l1)
+        ans->next = l1;
+    if (l2)
+        ans->next = l2;
+    return head->next;
 }
