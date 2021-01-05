@@ -143,3 +143,27 @@ ListNode *mergeTwoLists(ListNode *l1, ListNode *l2)
         return l2;
     }
 }
+
+// DAY 4 (Remove Duplicates from Sorted List II)===============================================================
+
+// METHOD 1 (Using map)
+ListNode *deleteDuplicates(ListNode *head)
+{
+    map<int, int> m;
+    ListNode *itr = head;
+    while (itr)
+    {
+        m[itr->val]++;
+        itr = itr->next;
+    }
+    ListNode *ans = new ListNode(), *temp = ans;
+    for (auto p : m)
+    {
+        if (p.second == 1)
+        {
+            temp->next = new ListNode(p.first);
+            temp = temp->next;
+        }
+    }
+    return ans->next;
+}
