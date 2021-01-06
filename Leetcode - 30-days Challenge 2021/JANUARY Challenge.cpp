@@ -223,3 +223,19 @@ int findKthPositive(vector<int> &arr, int k)
     // cout<<last<<endl;
     return last + (k - missing);
 }
+
+// METHOD 3 --> O(log n)
+// MOST OPTIMIZED
+int findKthPositive(vector<int> &arr, int k)
+{
+    int lo = 0, hi = arr.size();
+    while (lo < hi)
+    {
+        int mid = (lo + hi) >> 1;
+        if (arr[mid] - 1 - mid < k)
+            lo = mid + 1;
+        else
+            hi = mid;
+    }
+    return lo + k;
+}
