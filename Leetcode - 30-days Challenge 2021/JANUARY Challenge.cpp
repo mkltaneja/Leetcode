@@ -167,3 +167,42 @@ ListNode *deleteDuplicates(ListNode *head)
     }
     return ans->next;
 }
+
+// METHOD 2 (Without map)
+// OPTIMIZED
+
+ListNode *deleteDuplicates(ListNode *head)
+{
+    ListNode *itr = head, *ans = new ListNode(), *temp = ans;
+    while (itr)
+    {
+        bool flag = false;
+        while (itr->next && itr->next->val == itr->val)
+        {
+            itr = itr->next;
+            flag = true;
+        }
+        if (!flag)
+        {
+            temp->next = new ListNode(itr->val);
+            temp = temp->next;
+        }
+        itr = itr->next;
+    }
+    return ans->next;
+}
+
+// DAY 6 (Kth missing positive number)===============================================
+
+// METHOD 1 --> O(k)
+int findKthPositive(vector<int> &arr, int k)
+{
+    unordered_set<int> s;
+    for (int x : arr)
+        s.insert(x);
+    int i = 1;
+    for (; k != 0; i++)
+        if (s.find(i) == s.end())
+            k--;
+    return --i;
+}
