@@ -194,7 +194,7 @@ ListNode *deleteDuplicates(ListNode *head)
 
 // DAY 6 (Kth missing positive number)===============================================
 
-// METHOD 1 --> O(k)
+// METHOD 1 (Using set) --> O(k)
 int findKthPositive(vector<int> &arr, int k)
 {
     unordered_set<int> s;
@@ -205,4 +205,21 @@ int findKthPositive(vector<int> &arr, int k)
         if (s.find(i) == s.end())
             k--;
     return --i;
+}
+
+// METHOD 2 (Without set) --> O(n)
+
+int findKthPositive(vector<int> &arr, int k)
+{
+    int missing = 0, last = 0;
+    for (int i = 0; i < arr.size(); i++)
+    {
+        int gap = arr[i] - last - 1;
+        missing += gap;
+        if (missing >= k)
+            return last + gap - (missing - k);
+        last = arr[i];
+    }
+    // cout<<last<<endl;
+    return last + (k - missing);
 }
