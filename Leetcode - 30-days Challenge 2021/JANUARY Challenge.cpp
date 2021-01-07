@@ -239,3 +239,27 @@ int findKthPositive(vector<int> &arr, int k)
     }
     return lo + k;
 }
+
+// DAY 7 ()=====================================================
+
+// METHOD 1 (Using Map)
+int lengthOfLongestSubstring(string s)
+{
+    unordered_map<char, int> m;
+    int maxlen = 0, len = 0, idx = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        char c = s[i];
+        while (m.find(c) != m.end())
+        {
+            m.erase(s[idx++]);
+            len--;
+        }
+        m[c] = i;
+        len++;
+        maxlen = max(maxlen, len);
+        // cout<<c<<" --> "<<len<<endl;
+    }
+    // cout<<endl;
+    return maxlen;
+}
