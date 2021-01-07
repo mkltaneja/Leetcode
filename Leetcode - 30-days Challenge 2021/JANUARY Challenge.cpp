@@ -244,7 +244,7 @@ int findKthPositive(vector<int> &arr, int k)
 
 // APPROACH 1 -- (Acquire and Release)
 
-// METHOD 1 (Using Set)
+// METHOD 1 (Using Set)  --> <O(2*n)
 int lengthOfLongestSubstring(string s)
 {
     unordered_set<char> st;
@@ -266,7 +266,7 @@ int lengthOfLongestSubstring(string s)
     return maxlen;
 }
 
-// METHOD 2 (Using vector)
+// METHOD 2 (Using vector) --> O(2*n)
 int lengthOfLongestSubstring(string s)
 {
     vector<bool> vis(256, false);
@@ -285,5 +285,21 @@ int lengthOfLongestSubstring(string s)
         // cout<<c<<" --> "<<len<<endl;
     }
     // cout<<endl;
+    return maxlen;
+}
+
+// APPROACH 2 (Using last index of every number) --> O(n)
+
+int lengthOfLongestSubstring(string s)
+{
+    vector<int> lastidx(256, -1);
+    int maxlen = 0, idx = -1;
+    for (int i = 0; i < s.size(); i++)
+    {
+        int j = lastidx[s[i] - ' '];
+        idx = max(j, idx);
+        maxlen = max(maxlen, i - idx);
+        lastidx[s[i] - ' '] = i;
+    }
     return maxlen;
 }
