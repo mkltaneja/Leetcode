@@ -240,22 +240,46 @@ int findKthPositive(vector<int> &arr, int k)
     return lo + k;
 }
 
-// DAY 7 ()=====================================================
+// DAY 7 (Longest Substring Without Repeating Characters)=====================================================
 
-// METHOD 1 (Using Map)
+// APPROACH 1 -- (Acquire and Release)
+
+// METHOD 1 (Using Set)
 int lengthOfLongestSubstring(string s)
 {
-    unordered_map<char, int> m;
+    unordered_set<char> st;
     int maxlen = 0, len = 0, idx = 0;
     for (int i = 0; i < s.size(); i++)
     {
         char c = s[i];
-        while (m.find(c) != m.end())
+        while (st.find(c) != st.end())
         {
-            m.erase(s[idx++]);
+            st.erase(s[idx++]);
             len--;
         }
-        m[c] = i;
+        st.insert(c);
+        len++;
+        maxlen = max(maxlen, len);
+        // cout<<c<<" --> "<<len<<endl;
+    }
+    // cout<<endl;
+    return maxlen;
+}
+
+// METHOD 2 (Using vector)
+int lengthOfLongestSubstring(string s)
+{
+    vector<bool> vis(256, false);
+    int maxlen = 0, len = 0, idx = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        char c = s[i];
+        while (vis[c - ' '] == true)
+        {
+            vis[s[idx++] - ' '] = false;
+            len--;
+        }
+        vis[c - ' '] = true;
         len++;
         maxlen = max(maxlen, len);
         // cout<<c<<" --> "<<len<<endl;
