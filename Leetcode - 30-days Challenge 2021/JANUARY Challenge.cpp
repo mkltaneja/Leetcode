@@ -315,3 +315,72 @@ bool arrayStringsAreEqual(vector<string> &word1, vector<string> &word2)
         b += s;
     return a == b;
 }
+
+// DAY 9 (Word Ladder)========================================================
+
+int ladderLength(string beginWord, string endWord, vector<string> &wordList)
+{
+    queue<string> que;
+    unordered_set<string> s;
+    for (string a : wordList)
+        s.insert(a);
+    if (s.count(endWord) > 0)
+    {
+        que.push(endWord);
+        s.erase(endWord);
+    }
+
+    int level = 0;
+    while (!que.empty())
+    {
+        int sz = que.size();
+        level++;
+        while (sz--)
+        {
+            for (int i = 0; i < beginWord.size(); i++)
+            {
+                string tp = que.front();
+                for (char c = 'a'; c <= 'z'; c++)
+                {
+                    tp[i] = c;
+                    if (tp == beginWord)
+                        return level + 1;
+                    if (s.count(tp) > 0)
+                    {
+                        que.push(tp);
+                        s.erase(tp);
+                    }
+                }
+            }
+            que.pop();
+        }
+    }
+    return 0;
+}
+
+// DAY 11 (Merge Sorted Array)=========================================================
+
+void merge(vector<int> &nums1, int m, vector<int> &nums2, int n)
+{
+    int i = 0, j = 0;
+    while (i < m && j < n)
+    {
+        // cout<<i<<" "<<j<<endl;
+        if (nums1[i] < nums2[j])
+            i++;
+        else
+        {
+            int k = m;
+            while (k > i)
+            {
+                nums1[k] = nums1[k - 1];
+                k--;
+            }
+            nums1[i] = nums2[j];
+            i++, j++;
+            m++;
+        }
+    }
+    while (j < n)
+        nums1[i++] = nums2[j++];
+}
