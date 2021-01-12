@@ -384,3 +384,46 @@ void merge(vector<int> &nums1, int m, vector<int> &nums2, int n)
     while (j < n)
         nums1[i++] = nums2[j++];
 }
+
+// DAY 12 (Add 2 Numbers)=======================================================
+
+ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
+{
+    ListNode *ans = new ListNode(-1), *temp = ans;
+    int carry = 0;
+    while (l1 && l2)
+    {
+        int sum = l1->val + l2->val + carry;
+        // cout<<sum<<" ";
+        temp->next = new ListNode(sum % 10);
+        carry = sum / 10;
+        l1 = l1->next;
+        l2 = l2->next;
+        temp = temp->next;
+    }
+    // cout<<endl;
+    while (l1)
+    {
+        int sum = l1->val + carry;
+        // cout<<sum<<" ";
+        temp->next = new ListNode(sum % 10);
+        carry = sum / 10;
+        l1 = l1->next;
+        temp = temp->next;
+    }
+    // cout<<endl;
+    while (l2)
+    {
+        int sum = l2->val + carry;
+        // cout<<sum<<" ";
+        temp->next = new ListNode(sum % 10);
+        carry = sum / 10;
+        l2 = l2->next;
+        temp = temp->next;
+    }
+    // cout<<endl;
+    if (carry > 0)
+        temp->next = new ListNode(carry);
+
+    return ans->next;
+}
