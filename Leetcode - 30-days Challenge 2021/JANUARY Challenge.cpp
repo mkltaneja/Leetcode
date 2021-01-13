@@ -427,3 +427,37 @@ ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
 
     return ans->next;
 }
+
+// DAY 14 (Boats to Save people)========================================================================
+
+// METHOD 1 --> O((n*logn) + (n*min(people)))
+int numRescueBoats(vector<int> &people, int limit)
+{
+    sort(people.begin(), people.end(), greater<int>());
+
+    unordered_map<int, int> m;
+    for (int x : people)
+        m[x]++;
+
+    int boats = 0, wt = 0, count = 0;
+    int n = people.size();
+    for (int i = 0; i < n; i++)
+    {
+        if (m[people[i]] == 0)
+            continue;
+        m[people[i]]--;
+        int other = limit - people[i];
+        while (other > 0)
+        {
+            if (m[other] > 0)
+            {
+                m[other]--;
+                break;
+            }
+            other--;
+        }
+        boats++;
+    }
+
+    return boats;
+}
