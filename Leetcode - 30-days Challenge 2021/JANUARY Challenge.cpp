@@ -461,3 +461,47 @@ int numRescueBoats(vector<int> &people, int limit)
 
     return boats;
 }
+
+// DAY 14 (Minimum Operations to Reduce X to Zero)====================================================================
+
+// METHOD 1 (BFS)
+// TLE
+#define f first
+#define s second
+int minOperations(vector<int> &nums, int x)
+{
+    int n = nums.size();
+    cout << n << endl;
+    queue<pair<pair<int, int>, int>> que;
+    que.push({{0, n - 1}, x});
+
+    int level = 0;
+    while (!que.empty())
+    {
+        int sz = que.size();
+        while (sz--)
+        {
+            auto p = que.front();
+            cout << p.f.f << ", " << p.f.s << " --> " << p.s << endl;
+            que.pop();
+            if (p.s == 0)
+                return level;
+            if (p.s - nums[p.f.f] >= 0)
+            {
+                if (p.s - nums[p.f.f] == 0)
+                    return level + 1;
+                if (p.f.f + 1 <= p.f.s)
+                    que.push({{p.f.f + 1, p.f.s}, p.s - nums[p.f.f]});
+            }
+            if (p.s - nums[p.f.s] >= 0)
+            {
+                if (p.s - nums[p.f.s] == 0)
+                    return level + 1;
+                if (p.f.s - 1 >= p.f.f)
+                    que.push({{p.f.f, p.f.s - 1}, p.s - nums[p.f.s]});
+            }
+        }
+        level++;
+    }
+    return -1;
+}
