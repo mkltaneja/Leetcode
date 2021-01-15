@@ -464,7 +464,7 @@ int numRescueBoats(vector<int> &people, int limit)
 
 // DAY 14 (Minimum Operations to Reduce X to Zero)====================================================================
 
-// METHOD 1 (BFS)
+// APPROACH (BFS)
 // TLE
 #define f first
 #define s second
@@ -503,5 +503,48 @@ int minOperations(vector<int> &nums, int x)
         }
         level++;
     }
+    return -1;
+}
+
+// APPROACH 2 (Sliding Window) --> O(2*n)
+// AC
+
+int minOperations(vector<int> &nums, int x)
+{
+    int l = 0, r = 0;
+    int n = nums.size();
+    int total = 0;
+    for (int x : nums)
+        total += x;
+    int goal = total - x;
+    if (goal < 0)
+        return -1;
+
+    int sum = 0;
+    int minops = INT_MAX;
+    bool flag = false;
+    while (l < n)
+    {
+        if (sum == goal)
+        {
+            flag = true;
+            minops = min(minops, n - (r - l));
+            if (r < n)
+                sum += nums[r++];
+            else
+                break;
+        }
+
+        else if (sum < goal && r < n)
+            sum += nums[r++];
+
+        else if (sum > goal)
+            sum -= nums[l++];
+
+        else
+            break;
+    }
+    if (flag)
+        return minops;
     return -1;
 }
