@@ -571,3 +571,20 @@ int getMaximumGenerated(int n)
     }
     return maxi;
 }
+
+// DAY 16 (Kth Largest Element in an Array)=========================================================
+
+// APPROACH 1 (Sorting in decreasing order)
+int findKthLargest(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    if (n == 0)
+        return -1;
+    sort(nums.begin(), nums.end(), greater<int>());
+    int i = 0;
+    for (; k > 1; k--)
+        i++;
+    if (i >= n)
+        return -1;
+    return nums[i];
+}
