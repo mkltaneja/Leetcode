@@ -604,3 +604,19 @@ int findKthLargest(vector<int> &nums, int k)
         pq.pop();
     return pq.size() > 0 ? pq.top() : -1;
 }
+
+// METHOD 2 (Min Priority Queue) --> (Space OPTIMIZED --> O(k))
+int findKthLargest(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    if (n == 0 || k > n)
+        return -1;
+    priority_queue<int, vector<int>, greater<int>> pq;
+    for (int x : nums)
+    {
+        pq.push(x);
+        if (pq.size() > k)
+            pq.pop();
+    }
+    return pq.top();
+}
