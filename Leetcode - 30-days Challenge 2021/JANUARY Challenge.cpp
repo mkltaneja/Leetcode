@@ -574,7 +574,7 @@ int getMaximumGenerated(int n)
 
 // DAY 16 (Kth Largest Element in an Array)=========================================================
 
-// APPROACH 1 (Sorting in decreasing order)
+// APPROACH 1 (Sorting in decreasing order) --> O(n*logn)
 int findKthLargest(vector<int> &nums, int k)
 {
     int n = nums.size();
@@ -587,4 +587,20 @@ int findKthLargest(vector<int> &nums, int k)
     if (i >= n)
         return -1;
     return nums[i];
+}
+
+// APPROACH 2 (Using Priority Queue) --> O(n*logn)
+
+// METHOD 1 (Max priority queue)
+int findKthLargest(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    if (n == 0)
+        return -1;
+    priority_queue<int> pq;
+    for (int x : nums)
+        pq.push(x);
+    while (--k)
+        pq.pop();
+    return pq.size() > 0 ? pq.top() : -1;
 }
