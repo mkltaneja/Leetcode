@@ -620,3 +620,20 @@ int findKthLargest(vector<int> &nums, int k)
     }
     return pq.top();
 }
+
+// DAY 17 (Count Sorted Vowel Strings)=====================================================================
+
+int rec(int n, int idx)
+{
+    if (n == 1)
+        return idx;
+    int count = 0;
+    for (int i = idx; i >= 1; i--)
+        count += rec(n - 1, i);
+    return count;
+}
+
+int countVowelStrings(int n)
+{
+    return rec(n, 5);
+}
