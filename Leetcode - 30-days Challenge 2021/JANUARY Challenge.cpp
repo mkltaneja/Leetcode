@@ -623,6 +623,7 @@ int findKthLargest(vector<int> &nums, int k)
 
 // DAY 17 (Count Sorted Vowel Strings)=====================================================================
 
+// METHOD 1 (Recursion)
 int rec(int n, int idx)
 {
     if (n == 1)
@@ -636,4 +637,24 @@ int rec(int n, int idx)
 int countVowelStrings(int n)
 {
     return rec(n, 5);
+}
+
+// METHOD 2 (DP)
+
+int rec(int n, int idx, vector<vector<int>> &dp)
+{
+    if (n == 1)
+        return dp[n][idx] = idx;
+    if (dp[n][idx] != -1)
+        return dp[n][idx];
+    int count = 0;
+    for (int i = idx; i >= 1; i--)
+        count += rec(n - 1, i, dp);
+    return dp[n][idx] = count;
+}
+
+int countVowelStrings(int n)
+{
+    vector<vector<int>> dp(n + 1, vector<int>(6, -1));
+    return rec(n, 5, dp);
 }
