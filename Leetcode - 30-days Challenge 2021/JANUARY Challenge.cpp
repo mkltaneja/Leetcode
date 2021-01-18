@@ -623,7 +623,8 @@ int findKthLargest(vector<int> &nums, int k)
 
 // DAY 17 (Count Sorted Vowel Strings)=====================================================================
 
-// METHOD 1 (Recursion)
+// APPROACH 1 (Naive)
+// METHOD 1 (Recursion) --> O(5^n)
 int rec(int n, int idx)
 {
     if (n == 1)
@@ -639,7 +640,7 @@ int countVowelStrings(int n)
     return rec(n, 5);
 }
 
-// METHOD 2 (DP)
+// METHOD 2 (DP) --> O(5*n)
 
 int rec(int n, int idx, vector<vector<int>> &dp)
 {
@@ -657,4 +658,40 @@ int countVowelStrings(int n)
 {
     vector<vector<int>> dp(n + 1, vector<int>(6, -1));
     return rec(n, 5, dp);
+}
+
+// APPROACH 2 (Pentalope Number -- It is a no. which in the 5th cell of every row(starting from 6th) in Pascal's triangle)
+
+int countVowelStrings(int n)
+{
+    n++;
+    return (n * (n + 1) * (n + 2) * (n + 3)) / 24;
+}
+
+// DAY 18 (Max Number of K-Sum Pairs)============================================================
+
+// APPROACH 1 (Naive) --> O(n^2)
+int maxOperations(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    int count = 0;
+    vector<bool> vis(n, false);
+    for (int i = 0; i < n; i++)
+    {
+        if (vis[i])
+            continue;
+        for (int j = i + 1; j < n; j++)
+        {
+            if (vis[j])
+                continue;
+            if (nums[i] + nums[j] == k)
+            {
+                vis[i] = true;
+                vis[j] = true;
+                count++;
+                break;
+            }
+        }
+    }
+    return count;
 }
