@@ -697,7 +697,6 @@ int maxOperations(vector<int> &nums, int k)
 }
 
 // APPROACH 2 (Using unordered_map) --> >O(n)
-
 int maxOperations(vector<int> &nums, int k)
 {
     int n = nums.size();
@@ -713,6 +712,31 @@ int maxOperations(vector<int> &nums, int k)
         }
         else
             m[nums[i]]++;
+    }
+    return count;
+}
+
+// APPROACH 3 (Sorting -- 2 pointer approach) --> O(nlogn + n) -- (Space and Time OPTIMIZED)
+int maxOperations(vector<int> &nums, int k)
+{
+    sort(nums.begin(), nums.end());
+    int n = nums.size();
+    int count = 0;
+    int st = 0, end = n - 1;
+
+    while (st < end)
+    {
+        int sum = nums[st] + nums[end];
+        if (sum == k)
+        {
+            count++;
+            st++;
+            end--;
+        }
+        else if (sum < k)
+            st++;
+        else
+            end--;
     }
     return count;
 }
