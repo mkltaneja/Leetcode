@@ -695,3 +695,24 @@ int maxOperations(vector<int> &nums, int k)
     }
     return count;
 }
+
+// APPROACH 2 (Using unordered_map) --> >O(n)
+
+int maxOperations(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    int count = 0;
+    unordered_map<int, int> m;
+    for (int i = 0; i < n; i++)
+    {
+        if (m.count(k - nums[i]) > 0)
+        {
+            if (--m[k - nums[i]] == 0)
+                m.erase(k - nums[i]);
+            count++;
+        }
+        else
+            m[nums[i]]++;
+    }
+    return count;
+}
