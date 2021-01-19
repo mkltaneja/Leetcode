@@ -799,3 +799,31 @@ string longestPalindrome(string s)
 
 //         return dp[i][j] = s[i] == s[j] ? count + 1 : count;
 //     }
+
+
+
+// APPROACH 2 (Sliding Window) --> <O(n^2)    [OPTIMIZED]
+string longestPalindrome(string s)
+{
+    int n = s.size();
+    int st = 0, end = -1;
+
+    int i = 0;
+    while (i < n)
+    {
+        int left = i, right = i; // Starting window from i
+
+        while (i + 1 < n && s[i + 1] == s[i])
+            i++; // duplicate characters
+        right = i;
+
+        while (left - 1 >= 0 && right + 1 < n && s[left - 1] == s[right + 1])
+            left--, right++; // expanding window
+
+        if (right - left + 1 > end - st + 1)
+            st = left, end = right; // maximizing ans;
+
+        i++;
+    }
+    return s.substr(st, end - st + 1);
+}
