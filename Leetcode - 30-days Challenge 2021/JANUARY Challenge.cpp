@@ -740,3 +740,62 @@ int maxOperations(vector<int> &nums, int k)
     }
     return count;
 }
+
+// DAY 19 (Longest Palindromic Substring)=================================================
+
+// APPROACH 1 (DP) --> O(n^2)
+string longestPalindrome(string s)
+{
+    int n = s.size();
+    vector<vector<bool>> dp(n, vector<bool>(n, 0));
+    // cout<<fill_palindromes(0, n-1, s, dp)<<endl;
+
+    int st = -1, end = n + 1;
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; i++, j++)
+        {
+            if (gap == 0)
+                dp[i][j] = true;
+            else if (gap == 1)
+            {
+                if (s[i] == s[j])
+                    dp[i][j] = true;
+            }
+            else if (gap > 1 && s[i] == s[j] && dp[i + 1][j - 1])
+                dp[i][j] = true;
+
+            if (dp[i][j] && end != gap + 1)
+                st = i, end = gap + 1;
+        }
+    }
+    // for(int i = 0; i < n; i++)
+    // {
+    //     for(int j = 0; j < n; j++)
+    //         cout<<dp[i][j]<<" ";
+    //     cout<<endl;
+    // }
+    // cout<<st<<", "<<end<<endl;
+    // cout<<endl;
+    return s.substr(st, end);
+}
+
+// FOR COUNTING THE NUMBER OF PALINDROMES RECURSIVELY :--
+
+//     int fill_palindromes(int i, int j, string &s, vector<vector<int>> &dp)
+//     {
+//         if(i > j)
+//             return 0;
+//         if(i == j)
+//             return dp[i][j] = 1;
+//         if(dp[i][j] != 0)
+//             return dp[i][j];
+
+//         int p_middle = fill_palindromes(i+1, j, s, dp);
+//         int middle_s = fill_palindromes(i, j-1, s, dp);
+//         int middle = fill_palindromes(i+1, j-1, s, dp);
+
+//         int count = p_middle + middle_s - middle;
+
+//         return dp[i][j] = s[i] == s[j] ? count + 1 : count;
+//     }
