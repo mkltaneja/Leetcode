@@ -800,9 +800,7 @@ string longestPalindrome(string s)
 //         return dp[i][j] = s[i] == s[j] ? count + 1 : count;
 //     }
 
-
-
-// APPROACH 2 (Sliding Window) --> <O(n^2)    [OPTIMIZED]
+// APPROACH 2 (Sliding Window) --> <O(n^2)    [OPTIMIZED -- in terms of time and space BOTH]
 string longestPalindrome(string s)
 {
     int n = s.size();
@@ -826,4 +824,43 @@ string longestPalindrome(string s)
         i++;
     }
     return s.substr(st, end - st + 1);
+}
+
+// DAY 20 (Valid Parenthesis)===========================================================
+
+bool isValid(string s)
+{
+    stack<char> st;
+    for (char c : s)
+    {
+        if (c == '(' || c == '[' || c == '{')
+            st.push(c);
+        else
+        {
+            if (st.empty())
+                return false;
+            if (c == ')')
+            {
+                if (st.top() == '(')
+                    st.pop();
+                else
+                    return false;
+            }
+            if (c == ']')
+            {
+                if (st.top() == '[')
+                    st.pop();
+                else
+                    return false;
+            }
+            if (c == '}')
+            {
+                if (st.top() == '{')
+                    st.pop();
+                else
+                    return false;
+            }
+        }
+    }
+    return st.empty();
 }
