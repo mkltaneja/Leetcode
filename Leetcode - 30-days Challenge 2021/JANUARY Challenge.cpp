@@ -894,6 +894,7 @@ vector<int> mostCompetitive(vector<int> &nums, int k)
 }
 
 // APPROACH 2 (Using priority_queue) --> O(n*logn)
+// AC
 vector<int> mostCompetitive(vector<int> &nums, int k)
 {
     int n = nums.size();
@@ -916,6 +917,25 @@ vector<int> mostCompetitive(vector<int> &nums, int k)
         }
         else
             pq.pop();
+    }
+    return ans;
+}
+
+// APPROACH 3 (Stack) --> O(2*n)
+// AC
+vector<int> mostCompetitive(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    if (n == k)
+        return nums;
+
+    vector<int> ans;
+    for (int i = 0; i < n; i++)
+    {
+        while (!ans.empty() && nums[i] < ans.back() && ans.size() + (n - i) > k)
+            ans.pop_back();
+        if (ans.size() < k)
+            ans.push_back(nums[i]);
     }
     return ans;
 }
