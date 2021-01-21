@@ -868,6 +868,7 @@ bool isValid(string s)
 // DAY 21 (Find the Most Competitive Subsequence)============================================================================
 
 // APPROACH 1 (Brute force) --> O(n*k)
+// TLE
 int findmin_inrange(int st, int end, vector<int> &nums)
 {
     int minidx = st;
@@ -888,6 +889,33 @@ vector<int> mostCompetitive(vector<int> &nums, int k)
     {
         idx = findmin_inrange(idx + 1, nums.size() - 1 - (k - i - 1), nums);
         ans[i++] = nums[idx];
+    }
+    return ans;
+}
+
+// APPROACH 2 (Using priority_queue) --> O(n*logn)
+vector<int> mostCompetitive(vector<int> &nums, int k)
+{
+    int n = nums.size();
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    for (int i = 0; i <= n - k; i++)
+        pq.push({nums[i], i});
+
+    vector<int> ans(k);
+    int lastidx = -1;
+    for (int i = 0; i < k;)
+    {
+        if (pq.top().second > lastidx)
+        {
+            ans[i++] = pq.top().first;
+            lastidx = pq.top().second;
+            pq.pop();
+            if (i != k)
+                pq.push({nums[n - k + i], n - k + i});
+        }
+        else
+            pq.pop();
     }
     return ans;
 }
