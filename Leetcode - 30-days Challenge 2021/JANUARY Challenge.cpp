@@ -864,3 +864,30 @@ bool isValid(string s)
     }
     return st.empty();
 }
+
+// DAY 21 (Find the Most Competitive Subsequence)============================================================================
+
+// APPROACH 1 (Brute force) --> O(n*k)
+int findmin_inrange(int st, int end, vector<int> &nums)
+{
+    int minidx = st;
+    while (st <= end)
+    {
+        if (nums[st] < nums[minidx])
+            minidx = st;
+        st++;
+    }
+    return minidx;
+}
+
+vector<int> mostCompetitive(vector<int> &nums, int k)
+{
+    int idx = -1, i = 0;
+    vector<int> ans(k);
+    while (i < k)
+    {
+        idx = findmin_inrange(idx + 1, nums.size() - 1 - (k - i - 1), nums);
+        ans[i++] = nums[idx];
+    }
+    return ans;
+}
