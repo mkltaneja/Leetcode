@@ -939,3 +939,48 @@ vector<int> mostCompetitive(vector<int> &nums, int k)
     }
     return ans;
 }
+
+// DAY 22 (Determine if Two Strings Are Close)==========================================================================
+
+bool closeStrings(string word1, string word2)
+{
+    // cout<<word1<<" "<<word2<<endl;
+    int n = word1.size(), m = word2.size();
+    if (n != m)
+        return false;
+
+    vector<int> m1(26, 0), m2(26, 0);
+    for (char c : word1)
+        m1[c - 'a']++;
+    for (char c : word2)
+        m2[c - 'a']++;
+
+    // int diff = 0;
+    for (char c = 'a'; c < 'z'; c++)
+    {
+        // if(m1[c-'a'] != m2[c-'a'])
+        //     diff++;
+        if (m1[c - 'a'] != 0 && m2[c - 'a'] == 0)
+            return false;
+        if (m2[c - 'a'] != 0 && m1[c - 'a'] == 0)
+            return false;
+    }
+    // if(diff & 1)
+    //     return false;
+    vector<int> c1, c2;
+    for (int x : m1)
+        if (x)
+            c1.push_back(x);
+    for (int x : m2)
+        if (x)
+            c2.push_back(x);
+    // for(int i : c1)
+    //    cout<<i<<" ";
+    // cout<<endl;
+    // for(int i : c2)
+    //    cout<<i<<" ";
+    // cout<<endl<<endl;
+    sort(c1.begin(), c1.end());
+    sort(c2.begin(), c2.end());
+    return c1 == c2;
+}
