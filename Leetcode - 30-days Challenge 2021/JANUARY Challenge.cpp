@@ -984,3 +984,30 @@ bool closeStrings(string word1, string word2)
     sort(c2.begin(), c2.end());
     return c1 == c2;
 }
+
+// DAY 23 (Sort the Matrix Diagonally)=======================================================================================
+
+// METHOD 1 (Using the property of right diagonals)
+vector<vector<int>> diagonalSort(vector<vector<int>> &mat)
+{
+    int n = mat.size(), m = mat[0].size();
+    for (int d = 0; d < m + n - 1; d++)
+    {
+        int i, j, ii, jj;
+        if (d - (m - 1) < 0)
+            j = (m - 1) - d;
+        else
+            j = 0;
+        i = j + (d - (m - 1));
+        ii = i, jj = j;
+
+        vector<int> tmp;
+        for (; i < n && j < m; i++, j++)
+            tmp.push_back(mat[i][j]);
+        sort(tmp.begin(), tmp.end());
+        int k = 0;
+        for (; ii < n && jj < m; ii++, jj++)
+            mat[ii][jj] = tmp[k++];
+    }
+    return mat;
+}
