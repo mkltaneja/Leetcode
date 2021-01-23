@@ -1011,3 +1011,27 @@ vector<vector<int>> diagonalSort(vector<vector<int>> &mat)
     }
     return mat;
 }
+
+// METHOD 2 (Simpler Version)
+vector<vector<int>> diagonalSort(vector<vector<int>> &mat)
+{
+    int n = mat.size(), m = mat[0].size();
+
+    int r = n - 1, c = 0;
+    while (c < m)
+    {
+        vector<int> tmp;
+        for (int i = r, j = c; i < n && j < m; i++, j++)
+            tmp.push_back(mat[i][j]);
+        sort(tmp.begin(), tmp.end());
+        int k = 0;
+        for (int i = r, j = c; i < n && j < m; i++, j++)
+            mat[i][j] = tmp[k++];
+
+        if (r == 0)
+            c++;
+        else
+            r--;
+    }
+    return mat;
+}
