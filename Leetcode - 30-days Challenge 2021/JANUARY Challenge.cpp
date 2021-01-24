@@ -1099,3 +1099,42 @@ ListNode *mergeKLists(vector<ListNode *> &lists)
     }
     return ans->next;
 }
+
+// METHOD 3(Divide and Conquer)
+
+ListNode *merge2lists(ListNode *&l1, ListNode *&l2)
+{
+    if (!l1 || !l2)
+        return l1 ? l1 : l2;
+    if (l1->val < l2->val)
+    {
+        l1->next = merge2lists(l1->next, l2);
+        return l1;
+    }
+    else
+    {
+        l2->next = merge2lists(l1, l2->next);
+        return l2;
+    }
+}
+
+ListNode *merge(int st, int end, vector<ListNode *> &lists)
+{
+    if (st > end)
+        return nullptr;
+    if (st == end)
+        return lists[st];
+    if (st == end - 1)
+        return merge2lists(lists[st], lists[end]);
+
+    int mid = (st + end) >> 1;
+    ListNode *left = merge(st, mid, lists);
+    ListNode *right = merge(mid + 1, end, lists);
+
+    return merge2lists(left, right);
+}
+
+ListNode *mergeKLists(vector<ListNode *> &lists)
+{
+    return merge(0, lists.size() - 1, lists);
+}
