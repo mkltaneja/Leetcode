@@ -1068,3 +1068,34 @@ ListNode *mergeKLists(vector<ListNode *> &lists)
     }
     return ans->next;
 }
+
+// METHOD 2 (Using Priority Queue)
+struct comp
+{
+    bool operator()(ListNode *a, ListNode *b)
+    {
+        return a->val > b->val;
+    }
+};
+
+ListNode *mergeKLists(vector<ListNode *> &lists)
+{
+    int k = lists.size();
+    priority_queue<ListNode *, vector<ListNode *>, comp> pq;
+    for (int i = 0; i < k; i++)
+        if (lists[i])
+            pq.push(lists[i]);
+    ListNode *ans = new ListNode(), *temp = ans;
+
+    while (!pq.empty())
+    {
+        ListNode *node = pq.top();
+        pq.pop();
+        temp->next = node;
+        temp = temp->next;
+        node = node->next;
+        if (node)
+            pq.push(node);
+    }
+    return ans->next;
+}
