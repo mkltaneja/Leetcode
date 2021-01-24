@@ -1035,3 +1035,36 @@ vector<vector<int>> diagonalSort(vector<vector<int>> &mat)
     }
     return mat;
 }
+
+// DAY 24 (Merge K Sorted Lists)===========================================================
+
+// METHOD 1 (Iterating over all nodes)
+ListNode *mergeKLists(vector<ListNode *> &lists)
+{
+    int k = lists.size();
+    vector<int> ptrs(k, 0);
+    ListNode *ans = new ListNode(), *temp = ans;
+
+    while (true)
+    {
+        int minval = INT_MAX, minidx = -1;
+        for (int i = 0; i < k; i++)
+        {
+            int val = INT_MAX;
+            if (lists[i])
+                val = lists[i]->val;
+            if (val < minval)
+            {
+                minval = val;
+                minidx = i;
+            }
+        }
+        // cout<<minval<<endl;
+        if (minval == INT_MAX)
+            break;
+        temp->next = new ListNode(minval);
+        temp = temp->next;
+        lists[minidx] = lists[minidx]->next;
+    }
+    return ans->next;
+}
