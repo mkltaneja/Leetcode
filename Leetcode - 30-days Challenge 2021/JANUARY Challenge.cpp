@@ -1155,3 +1155,60 @@ bool kLengthApart(vector<int> &nums, int k)
     }
     return true;
 }
+
+// DAY 26 (Path with Minimum Effort)=================================================
+
+bool bfs(int n, int m, vector<vector<int>> &arr, int maxdiff)
+{
+    queue<pair<int, int>> que;
+    que.push({0, 0});
+    vector<vector<bool>> vis(n, vector<bool>(m, false));
+    vis[0][0] = true;
+    while (!que.empty())
+    {
+        auto tp = que.front();
+        que.pop();
+        int i = tp.first;
+        int j = tp.second;
+
+        if (i == n - 1 && j == m - 1)
+            return true;
+
+        if (i + 1 != n && !vis[i + 1][j] && abs(arr[i + 1][j] - arr[i][j]) <= maxdiff)
+        {
+            vis[i + 1][j] = true;
+            que.push({i + 1, j});
+        }
+        if (j + 1 != m && !vis[i][j + 1] && abs(arr[i][j + 1] - arr[i][j]) <= maxdiff)
+        {
+            vis[i][j + 1] = true;
+            que.push({i, j + 1});
+        }
+        if (i - 1 >= 0 && !vis[i - 1][j] && abs(arr[i - 1][j] - arr[i][j]) <= maxdiff)
+        {
+            vis[i - 1][j] = true;
+            que.push({i - 1, j});
+        }
+        if (j - 1 >= 0 && !vis[i][j - 1] && abs(arr[i][j - 1] - arr[i][j]) <= maxdiff)
+        {
+            vis[i][j - 1] = true;
+            que.push({i, j - 1});
+        }
+    }
+    return false;
+}
+
+int minimumEffortPath(vector<vector<int>> &heights)
+{
+    int n = heights.size(), m = heights[0].size();
+    int l = 0, r = 1e6;
+    while (l < r)
+    {
+        int mid = (l + r) >> 1;
+        if (bfs(n, m, heights, mid))
+            r = mid;
+        else
+            l = mid + 1;
+    }
+    return r;
+}
