@@ -1257,8 +1257,9 @@ int concatenatedBinary(int n)
     return decimal(bin);
 }
 
-// APPROACH 2 (Optimized using logarithmic power function
-//          and finding binary to decimal along with traversing from 1 to n) --> O(n)
+// APPROACH 2
+// METHOD 1 (Optimized using logarithmic power function
+//          and finding binary to decimal along with traversing from 1 to n) --> >O(n*logn)
 
 // AC
 
@@ -1286,4 +1287,22 @@ int concatenatedBinary(int n)
         ans = ((ans * powerlog(2, shifts)) % mod + i) % mod;
     }
     return (int)ans;
+}
+
+// APPROACH 2
+// METHOD 2 -- [MOST OPTIMIZED] (Using DP to store previous answer) --> O(n*logn)
+
+int mod = 1e9 + 7;
+
+int concatenatedBinary(int n)
+{
+    vector<long> dp(n + 1);
+    dp[1] = 1;
+    for (long i = 2; i <= n; i++)
+    {
+        int shifts = log2(i) + 1;
+        long pow2 = (1l << shifts) % mod;
+        dp[i] = ((dp[i - 1] * pow2) % mod + i) % mod;
+    }
+    return (int)dp[n];
 }
