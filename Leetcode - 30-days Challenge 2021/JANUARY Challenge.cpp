@@ -1139,7 +1139,7 @@ ListNode *mergeKLists(vector<ListNode *> &lists)
     return merge(0, lists.size() - 1, lists);
 }
 
-// DAY 25 ()===============================================================
+// DAY 25 (Check If All 1's Are at Least Length K Places Away)===============================================================
 
 bool kLengthApart(vector<int> &nums, int k)
 {
@@ -1211,4 +1211,48 @@ int minimumEffortPath(vector<vector<int>> &heights)
             l = mid + 1;
     }
     return r;
+}
+
+// DAY 27 ()===================================================================
+
+// APPROACH 1 (Brute force) --> >O(32*n)
+// TLE
+
+int mod = 1e9 + 7;
+// string binvals[100005] = {""};
+
+string binary(int n)
+{
+    string bin = "";
+    int x = n;
+    while (x)
+    {
+        // if(binvals[x] != "")
+        // {
+        //     bin += binvals[x];
+        //     break;
+        // }
+        bin += x % 2 + '0';
+        x /= 2;
+    }
+    // binvals[n] = bin;
+    reverse(bin.begin(), bin.end());
+    return bin;
+}
+
+int decimal(string bin)
+{
+    int dec = 0;
+    for (int i = 0; i < bin.size(); i++)
+        dec = ((dec * 2) % mod + bin[i] - '0') % mod;
+    return dec % mod;
+}
+
+int concatenatedBinary(int n)
+{
+    string bin = "";
+    for (int i = 1; i <= n; i++)
+        bin += binary(i);
+    cout << bin.size() << endl;
+    return decimal(bin);
 }
