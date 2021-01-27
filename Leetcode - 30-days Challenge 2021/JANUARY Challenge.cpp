@@ -1213,7 +1213,7 @@ int minimumEffortPath(vector<vector<int>> &heights)
     return r;
 }
 
-// DAY 27 ()===================================================================
+// DAY 27 (Concatenation of Consecutive Binary Numbers)===================================================================
 
 // APPROACH 1 (Brute force) --> >O(32*n)
 // TLE
@@ -1255,4 +1255,35 @@ int concatenatedBinary(int n)
         bin += binary(i);
     cout << bin.size() << endl;
     return decimal(bin);
+}
+
+// APPROACH 2 (Optimized using logarithmic power function
+//          and finding binary to decimal along with traversing from 1 to n) --> O(n)
+
+// AC
+
+int mod = 1e9 + 7;
+
+long powerlog(long a, int b)
+{
+    long ans = 1;
+    while (b)
+    {
+        if (b & 1)
+            ans = (ans * a) % mod;
+        a = (a * a) % mod;
+        b >>= 1;
+    }
+    return ans % mod;
+}
+
+int concatenatedBinary(int n)
+{
+    long ans = 0;
+    for (long i = 1; i <= n; i++)
+    {
+        int shifts = log2(i) + 1;
+        ans = ((ans * powerlog(2, shifts)) % mod + i) % mod;
+    }
+    return (int)ans;
 }
