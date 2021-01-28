@@ -1306,3 +1306,35 @@ int concatenatedBinary(int n)
     }
     return (int)dp[n];
 }
+
+// DAY 28 (Smallest String With A Given Numeric Value)================================================================
+
+// string ans = "zzzzzzzzzzzzzzzzzzzzzzzzzz";
+bool recurs(int n, int k, string &s)
+{
+    if(26*n < k)
+        return false;
+    if(n == 0)
+    {
+        // ans = s;
+        return true;
+    
+    }
+    bool res = false;
+    for(char c = 'a'; c <= 'z'; c++)
+    {
+        s += c;
+        res |= recurs(n-1, k-(c-'a'+1), s);
+        if(res)
+            return res;
+        s.pop_back();
+    }
+    return res;
+}
+
+string getSmallestString(int n, int k) 
+{
+    string ans = "";
+    recurs(n, k, ans);
+    return ans;
+}
