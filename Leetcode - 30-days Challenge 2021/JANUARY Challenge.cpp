@@ -1362,3 +1362,19 @@ string getSmallestString(int n, int k)
     // cout<<endl;
     return ans;
 }
+
+// APPROACH 3 (Greedy) --> O(k/26)
+
+string getSmallestString(int n, int k)
+{
+    string ans(n, 'a');
+    int i = n - 1;
+    k -= n;
+    while (k)
+    {
+        int ch = min(25, k);
+        ans[i] += ch;
+        k -= ch;
+    }
+    return ans;
+}
