@@ -1309,32 +1309,56 @@ int concatenatedBinary(int n)
 
 // DAY 28 (Smallest String With A Given Numeric Value)================================================================
 
+// APPROACH 1 (Recursion and Backtracking) --> <<O(26^n)
 // string ans = "zzzzzzzzzzzzzzzzzzzzzzzzzz";
 bool recurs(int n, int k, string &s)
 {
-    if(26*n < k)
+    if (26 * n < k)
         return false;
-    if(n == 0)
+    if (n == 0)
     {
         // ans = s;
         return true;
-    
     }
     bool res = false;
-    for(char c = 'a'; c <= 'z'; c++)
+    for (char c = 'a'; c <= 'z'; c++)
     {
         s += c;
-        res |= recurs(n-1, k-(c-'a'+1), s);
-        if(res)
-            return res;
+        res |= recurs(n - 1, k - (c - 'a' + 1), s);
+        if (res)
+            return res; // OPTIMIZATION STEP
         s.pop_back();
     }
     return res;
 }
 
-string getSmallestString(int n, int k) 
+string getSmallestString(int n, int k)
 {
     string ans = "";
     recurs(n, k, ans);
+    return ans;
+}
+
+// APPROACH 2 (Add 'a' then 'other character' then 'z') --> O(n)
+
+string getSmallestString(int n, int k)
+{
+    string ans = "";
+    while (n)
+    {
+        if (26 * (n - 1) - (k - 1) >= 0)
+        {
+            ans += "a";
+            k--;
+        }
+        else
+        {
+            ans += (char)((k - 26 * (n - 1)) + 'a' - 1);
+            // cout<<k - 26*(n-1)<<" ";
+            k = 26 * (n - 1);
+        }
+        n--;
+    }
+    // cout<<endl;
     return ans;
 }
