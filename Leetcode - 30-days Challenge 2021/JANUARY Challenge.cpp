@@ -1433,3 +1433,31 @@ vector<vector<int>> verticalTraversal(TreeNode *root)
     bfs(root, ans, leftmost, rightmost);
     return ans;
 }
+
+// DAY 30 (Minimize Deviation in Array)================================================
+
+int minimumDeviation(vector<int> &nums)
+{
+    int mini = INT_MAX;
+    priority_queue<int> pq;
+    for (int i = 0; i < nums.size(); i++)
+    {
+        while (nums[i] & 1)
+            nums[i] *= 2;
+        pq.push(nums[i]);
+        mini = min(mini, nums[i]);
+    }
+
+    int mindev = pq.top() - mini;
+    while (pq.top() % 2 == 0)
+    {
+        int x = pq.top();
+        pq.pop();
+        x /= 2;
+        mini = min(mini, x);
+        pq.push(x);
+        mindev = min(mindev, pq.top() - mini);
+    }
+
+    return mindev;
+}
