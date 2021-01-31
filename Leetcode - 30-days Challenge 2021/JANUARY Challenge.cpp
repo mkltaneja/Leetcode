@@ -1461,3 +1461,13 @@ int minimumDeviation(vector<int> &nums)
 
     return mindev;
 }
+
+//  DAY 31 (Next Permutation)=========================================================
+
+// APPROACH 1   :)
+void nextPermutation(vector<int>& nums) 
+{
+    next_permutation(nums.begin(), nums.end());
+}
+
+
