@@ -1465,9 +1465,39 @@ int minimumDeviation(vector<int> &nums)
 //  DAY 31 (Next Permutation)=========================================================
 
 // APPROACH 1   :)
-void nextPermutation(vector<int>& nums) 
+void nextPermutation(vector<int> &nums)
 {
     next_permutation(nums.begin(), nums.end());
 }
 
-
+// APPROACH 2
+void nextPermutation(vector<int> &nums)
+{
+    int n = nums.size();
+    int idx;
+    bool f = false;
+    for (int i = n - 2; i >= 0; i--)
+    {
+        if (nums[i] < nums[i + 1])
+        {
+            idx = i;
+            f = true;
+            break;
+        }
+    }
+    if (!f)
+        reverse(nums.begin(), nums.end());
+    else
+    {
+        for (int i = n - 1; i > idx; i--)
+        {
+            if (nums[i] > nums[idx])
+            {
+                swap(nums[i], nums[idx]);
+                break;
+            }
+        }
+        cout << idx << endl;
+        reverse(nums.begin() + idx + 1, nums.end());
+    }
+}
