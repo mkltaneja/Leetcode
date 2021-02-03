@@ -52,3 +52,18 @@ TreeNode *trimBST(TreeNode *root, int low, int high)
     root->right = trimBST(root->right, low, high);
     return root;
 }
+
+// DAY 3 (Linked List Cycle)===================================================================
+
+bool hasCycle(ListNode *head)
+{
+    ListNode *slow = head, *fast = head;
+    while (fast && fast->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+        if (slow == fast)
+            return true;
+    }
+    return false;
+}
