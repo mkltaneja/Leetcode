@@ -71,6 +71,7 @@ bool hasCycle(ListNode *head)
 // DAY 4 (Longest Harmonious Subsequence)===============================================================
 
 // APPROACH 1 (taking record of maximum and minimum) --> O(n^2)
+// TLE
 int findLHS(vector<int> &nums)
 {
     int n = nums.size();
@@ -93,6 +94,35 @@ int findLHS(vector<int> &nums)
             if (cc != 0)
                 maxlen = max(maxlen, ca + cc);
         }
+    }
+    return maxlen;
+}
+
+// APPROACH 2 (By Sorting) --> O(nlogn + n)
+// AC
+
+int findLHS(vector<int> &nums)
+{
+    int n = nums.size();
+    sort(nums.begin(), nums.end());
+
+    long maxlen = 0;
+    int i = 0;
+    long prev = INT_MIN, curr = nums[i];
+    long prevcnt = 0, currcnt = 0;
+    while (i < n)
+    {
+        while (i < n && nums[i] == curr)
+        {
+            currcnt++;
+            i++;
+        }
+        maxlen = (curr - prev == 1) ? max(maxlen, prevcnt + currcnt) : maxlen;
+        prev = curr;
+        prevcnt = currcnt;
+        currcnt = 0;
+        if (i < n)
+            curr = nums[i];
     }
     return maxlen;
 }
