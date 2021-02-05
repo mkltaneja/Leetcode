@@ -126,3 +126,32 @@ int findLHS(vector<int> &nums)
     }
     return maxlen;
 }
+
+// DAY 5 (Simply Path)=============================================
+
+string simplifyPath(string path)
+{
+    string ans = "";
+    deque<string> que;
+    stringstream ss(path);
+    string file;
+    while (getline(ss, file, '/'))
+    {
+        if (file == "." || file == "")
+            continue;
+        if (file == "..")
+        {
+            if (!que.empty())
+                que.pop_back();
+        }
+        else
+            que.push_back(file);
+    }
+    while (!que.empty())
+    {
+        ans += "/";
+        ans += que.front();
+        que.pop_front();
+    }
+    return ans.empty() ? "/" : ans;
+}
