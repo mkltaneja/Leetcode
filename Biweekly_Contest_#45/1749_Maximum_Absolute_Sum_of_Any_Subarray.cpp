@@ -32,3 +32,5 @@ int maxAbsoluteSum(vector<int> &nums)
 {
     return max(kedanes(nums), abs(reverse_kedanes(nums)));
 }
+
+// METHOD 2 ()
