@@ -155,3 +155,29 @@ string simplifyPath(string path)
     }
     return ans.empty() ? "/" : ans;
 }
+
+// DAY 6 (Binary Tree Right Side View)
+vector<int> rightSideView(TreeNode *root)
+{
+    if (!root)
+        return {};
+    vector<int> ans;
+    queue<TreeNode *> que;
+    que.push(root);
+    while (!que.empty())
+    {
+        int sz = que.size();
+        while (sz--)
+        {
+            TreeNode *node = que.front();
+            que.pop();
+            if (sz == 0 && node)
+                ans.push_back(node->val);
+            if (node->left)
+                que.push(node->left);
+            if (node->right)
+                que.push(node->right);
+        }
+    }
+    return ans;
+}
