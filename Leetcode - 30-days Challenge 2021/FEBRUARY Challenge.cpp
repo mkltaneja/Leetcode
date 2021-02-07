@@ -184,7 +184,7 @@ vector<int> rightSideView(TreeNode *root)
 
 // DAY 7 (Shortest Distance to a Character)==================================================================
 
-// METHOD 1 (BFS)
+// APPROACH 1 (BFS) --> O(2*n)
 // AC
 
 #define f first
@@ -222,4 +222,32 @@ vector<int> shortestToChar(string s, char c)
     }
     // cout<<endl;
     return dists;
+}
+
+// APPROACH 2 (Min Array)
+// AC
+
+vector<int> shortestToChar(string s, char c)
+{
+    int n = s.size();
+    vector<int> a(n), b(n);
+    int count = n;
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] != c)
+            a[i] = ++count;
+        else
+            a[i] = count = 0;
+    }
+    count = n;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        if (s[i] != c)
+            b[i] = ++count;
+        else
+            b[i] = count = 0;
+    }
+    for (int i = 0; i < n; i++)
+        a[i] = min(a[i], b[i]);
+    return a;
 }
