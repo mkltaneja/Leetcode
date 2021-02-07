@@ -181,3 +181,45 @@ vector<int> rightSideView(TreeNode *root)
     }
     return ans;
 }
+
+// DAY 7 (Shortest Distance to a Character)==================================================================
+
+// METHOD 1 (BFS)
+// AC
+
+#define f first
+#define s second
+vector<int> shortestToChar(string s, char c)
+{
+    int n = s.size();
+    queue<pair<int, int>> que;
+    vector<int> dists(n, -1);
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == c)
+        {
+            que.push({i, 0});
+            dists[i] = 0;
+        }
+    }
+
+    while (!que.empty())
+    {
+        auto p = que.front();
+        que.pop();
+        // dists[p.f] = p.s;
+        // cout<<p.f<<" "<<dists[p.f]<<endl;
+        if (p.f > 0 && dists[p.f - 1] == -1 && s[p.f - 1] != c)
+        {
+            que.push({p.f - 1, p.s + 1});
+            dists[p.f - 1] = p.s + 1;
+        }
+        if (p.f < n - 1 && dists[p.f + 1] == -1 && s[p.f + 1] != c)
+        {
+            que.push({p.f + 1, p.s + 1});
+            dists[p.f + 1] = p.s + 1;
+        }
+    }
+    // cout<<endl;
+    return dists;
+}
