@@ -271,34 +271,64 @@ vector<int> shortestToChar(string s, char c)
  *	};
  */
 
-class PeekingIterator : public Iterator {
+class PeekingIterator : public Iterator
+{
 public:
     int nxt;
     bool hasnxt;
-	PeekingIterator(const vector<int>& nums) : Iterator(nums) {
-	    // Initialize any member here.
-	    // **DO NOT** save a copy of nums and manipulate it directly.
-	    // You should only use the Iterator interface methods.
-	    nxt = Iterator::next();
+    PeekingIterator(const vector<int> &nums) : Iterator(nums)
+    {
+        // Initialize any member here.
+        // **DO NOT** save a copy of nums and manipulate it directly.
+        // You should only use the Iterator interface methods.
+        nxt = Iterator::next();
         hasnxt = Iterator::hasNext();
-	}
-	
+    }
+
     // Returns the next element in the iteration without advancing the iterator.
-	int peek() {
+    int peek()
+    {
         return nxt;
-	}
-	
-	// hasNext() and next() should behave the same as in the Iterator interface.
-	// Override them if needed.
-	int next() {
-	    int ans = nxt;
+    }
+
+    // hasNext() and next() should behave the same as in the Iterator interface.
+    // Override them if needed.
+    int next()
+    {
+        int ans = nxt;
         hasnxt = Iterator::hasNext();
-        if(hasnxt)
+        if (hasnxt)
             nxt = Iterator::next();
         return ans;
-	}
-	
-	bool hasNext() const {
-	    return hasnxt;
-	}
+    }
+
+    bool hasNext() const
+    {
+        return hasnxt;
+    }
 };
+
+// DAY 9 (Convert BST to Greater Tree)============================================================
+
+// Method 1 --> O(2n)
+
+void convertBST(TreeNode *node, int rootval)
+{
+    if (!node)
+        return;
+    convertBST(node->right, rootval);
+    TreeNode *temp = node->right;
+    while (temp && temp->left)
+        temp = temp->left;
+    node->val += (!node->right ? rootval : 0) + (temp ? temp->val : 0);
+    cout << node->val << " " << rootval << endl;
+    convertBST(node->left, node->val);
+
+    return;
+}
+
+TreeNode *convertBST(TreeNode *root)
+{
+    convertBST(root, 0);
+    return root;
+}
