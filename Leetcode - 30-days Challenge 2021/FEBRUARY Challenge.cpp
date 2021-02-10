@@ -348,3 +348,43 @@ TreeNode *convertBST(TreeNode *root)
 
     return root;
 }
+
+// DAY 10 (Copy List with Random Pointer)===============================================================
+
+// METHOD 1 (By Changing the origninal values of head node to count of their position from start)
+
+Node *copyRandomList(Node *head)
+{
+    if (!head)
+        return nullptr;
+    Node *node = new Node(-1), *ans = node;
+    Node *temp = head;
+    int count = 0;
+    while (temp)
+    {
+        // node->random = temp->random;
+        node->next = new Node(temp->val);
+        temp->val = count++;
+        node = node->next;
+        temp = temp->next;
+    }
+    ans = ans->next;
+    temp = head;
+    node = ans;
+    while (temp)
+    {
+        Node *t = ans;
+        if (!temp->random)
+            t = nullptr;
+        else
+        {
+            int cnt = temp->random->val;
+            while (cnt--)
+                t = t->next;
+        }
+        node->random = t;
+        node = node->next;
+        temp = temp->next;
+    }
+    return ans;
+}
