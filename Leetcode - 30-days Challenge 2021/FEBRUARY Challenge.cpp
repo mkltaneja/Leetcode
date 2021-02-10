@@ -388,3 +388,31 @@ Node *copyRandomList(Node *head)
     }
     return ans;
 }
+
+// METHOD 2 (Using Map to store the head nodes)
+
+Node *copyRandomList(Node *head)
+{
+    unordered_map<Node *, Node *> m;
+    Node *node = head, *ans = nullptr, *prev = nullptr;
+    while (node)
+    {
+        Node *nnode = new Node(node->val);
+        m[node] = nnode;
+        if (!ans)
+            ans = nnode;
+        else
+            prev->next = nnode;
+        prev = nnode;
+        node = node->next;
+    }
+    node = head;
+    Node *temp = ans;
+    while (node)
+    {
+        temp->random = m[node->random];
+        node = node->next;
+        temp = temp->next;
+    }
+    return ans;
+}
