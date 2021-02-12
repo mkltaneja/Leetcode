@@ -419,17 +419,39 @@ Node *copyRandomList(Node *head)
 
 // DAY 11 (Valid Anagram)======================================================
 
-bool isAnagram(string s, string t) 
+bool isAnagram(string s, string t)
 {
-    if(s.size() != t.size())
+    if (s.size() != t.size())
         return false;
-    vector<int> m(26,0);
-    for(char c : s) m[c-'a']++;
-    for(char c : t) m[c-'a']--;
-    
-    for(int x : m)
-        if(x != 0)
+    vector<int> m(26, 0);
+    for (char c : s)
+        m[c - 'a']++;
+    for (char c : t)
+        m[c - 'a']--;
+
+    for (int x : m)
+        if (x != 0)
             return false;
-    
+
     return true;
+}
+
+// DAY 12 (Number of Steps to Reduce a Number to Zero)===========================================================
+
+int numberOfSteps(int num)
+{
+    queue<pair<int, int>> que;
+    que.push({num, 0});
+    while (!que.empty())
+    {
+        auto p = que.front();
+        que.pop();
+        if (p.first == 0)
+            return p.second;
+        if (p.first & 1)
+            que.push({p.first - 1, p.second + 1});
+        else
+            que.push({p.first / 2, p.second + 1});
+    }
+    return 0;
 }
