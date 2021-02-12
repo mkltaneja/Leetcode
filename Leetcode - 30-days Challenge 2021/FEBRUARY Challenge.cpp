@@ -438,6 +438,8 @@ bool isAnagram(string s, string t)
 
 // DAY 12 (Number of Steps to Reduce a Number to Zero)===========================================================
 
+// METHOD 1 (BFS) --> O(2*log(num))
+
 int numberOfSteps(int num)
 {
     queue<pair<int, int>> que;
@@ -454,4 +456,16 @@ int numberOfSteps(int num)
             que.push({p.first / 2, p.second + 1});
     }
     return 0;
+}
+
+// METHOD 2 (Recursion) --> O(2*log(num))
+
+int numberOfSteps(int num)
+{
+    if (num == 0)
+        return 0;
+    if (num & 1)
+        return numberOfSteps(num - 1) + 1;
+    else
+        return numberOfSteps(num / 2) + 1;
 }
