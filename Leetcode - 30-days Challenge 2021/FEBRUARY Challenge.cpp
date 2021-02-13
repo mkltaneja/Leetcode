@@ -469,3 +469,39 @@ int numberOfSteps(int num)
     else
         return numberOfSteps(num / 2) + 1;
 }
+
+// DAY 13 (Shortest Path in Binary Matrix)============================================================================
+
+#define f first
+#define s second
+int shortestPathBinaryMatrix(vector<vector<int>> &grid)
+{
+    int n = grid.size();
+    if (grid[0][0] == 1 || grid[n - 1][n - 1] == 1)
+        return -1;
+    queue<pair<int, int>> que;
+    que.push({0, 1}); // coordinate,count
+    grid[0][0] = 1;
+
+    vector<vector<int>> dir = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+
+    while (!que.empty())
+    {
+        auto p = que.front();
+        que.pop();
+        int i = p.f / n;
+        int j = p.f % n;
+        if (i == n - 1 && j == n - 1)
+            return p.s;
+        for (int d = 0; d < 8; d++)
+        {
+            int x = i + dir[d][0], y = j + dir[d][1];
+            if (x < n && x >= 0 && y < n && y >= 0 && grid[x][y] == 0)
+            {
+                grid[x][y] = 1;
+                que.push({x * n + y, p.s + 1});
+            }
+        }
+    }
+    return -1;
+}
