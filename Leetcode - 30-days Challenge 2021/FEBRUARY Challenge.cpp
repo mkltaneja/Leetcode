@@ -505,3 +505,40 @@ int shortestPathBinaryMatrix(vector<vector<int>> &grid)
     }
     return -1;
 }
+
+// DAY 14 (Is Graph Bipartite?)============================================================
+
+// APPROACH 1 (BFS) --> O(2n)
+bool isBipartite(int src, vector<int> &code, vector<vector<int>> &gp)
+{
+    queue<int> que;
+    que.push(src);
+    code[src] = 0;
+    while (!que.empty())
+    {
+        int x = que.front();
+        que.pop();
+        for (int y : gp[x])
+        {
+            if (code[y] == -1)
+            {
+                code[y] = (code[x] + 1) % 2;
+                que.push(y);
+            }
+            else if (code[y] == code[x])
+                return false;
+        }
+    }
+    return true;
+}
+
+bool isBipartite(vector<vector<int>> &graph)
+{
+    int n = graph.size();
+    vector<int> code(n, -1);
+    for (int i = 0; i < n; i++)
+        if (code[i] == -1)
+            if (!isBipartite(i, code, graph))
+                return false;
+    return true;
+}
