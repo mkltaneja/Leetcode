@@ -36,3 +36,16 @@ int minOperations(string s)
 {
     return min(lh(s), hl(s));
 }
+
+// METHOD 2 (CONCISE) --> O(n)
+
+int minOperations(string s)
+{
+    int hl = 0, lh = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        lh += s[i] ^ '0' ^ (i & 1);
+        hl += s[i] ^ '1' ^ (i & 1);
+    }
+    return min(lh, hl);
+}
