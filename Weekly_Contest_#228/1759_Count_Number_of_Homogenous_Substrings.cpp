@@ -19,3 +19,26 @@ int countHomogenous(string s)
 
     return cnt;
 }
+
+// METHOD 2 (Single loop) --> O(n)
+
+int mod = 1e9 + 7;
+int countHomogenous(string s)
+{
+    long long cnt = 0, ans = 0;
+    char prev = NULL;
+    for (char c : s)
+    {
+        if (c == prev)
+            cnt++;
+        else
+        {
+            ans += (cnt * (cnt + 1)) / 2;
+            cnt = 1;
+            prev = c;
+        }
+    }
+    ans += (cnt * (cnt + 1)) / 2;
+
+    return ans % mod;
+}
