@@ -576,3 +576,41 @@ bool isBipartite(vector<vector<int>> &graph)
     }
     return true;
 }
+
+// DAY 15 (The K weakest Rows in a Matrix)============================
+
+#define f first
+#define s second
+
+class comp
+{
+public:
+    bool operator()(pair<int, int> &a, pair<int, int> &b)
+    {
+        return (a.f == b.f) ? (a.s > b.s) : (a.f > b.f);
+    }
+};
+
+vector<int> kWeakestRows(vector<vector<int>> &mat, int k)
+{
+    int n = mat.size(), m = mat[0].size();
+    priority_queue<pair<int, int>, vector<pair<int, int>>, comp> pq;
+    for (int i = 0; i < n; i++)
+    {
+        int count = 0;
+        while (count < m && mat[i][count] == 1)
+            count++;
+        pq.push({count, i});
+        // if(pq.size() > k)
+        //     pq.pop();
+    }
+    vector<int> ans;
+    while (k--)
+    {
+        cout << pq.top().f << " " << pq.top().s << endl;
+        ans.push_back(pq.top().s);
+        pq.pop();
+    }
+    cout << endl;
+    return ans;
+}
