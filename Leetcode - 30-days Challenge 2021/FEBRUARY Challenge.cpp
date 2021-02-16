@@ -614,3 +614,30 @@ vector<int> kWeakestRows(vector<vector<int>> &mat, int k)
     cout << endl;
     return ans;
 }
+
+// DAY 16 (Letter Case Permutation)================================================================
+
+void dfs(int i, int n, string &s, vector<string> &ans)
+{
+    if (i == n)
+    {
+        ans.push_back(s);
+        return;
+    }
+    if ((s[i] - 'a' >= 0 && s[i] - 'a' < 26) || (s[i] - 'A' >= 0 && s[i] - 'A' < 26))
+    {
+        s[i] = tolower(s[i]);
+        dfs(i + 1, n, s, ans);
+        s[i] = toupper(s[i]);
+        dfs(i + 1, n, s, ans);
+    }
+    else
+        dfs(i + 1, n, s, ans);
+}
+
+vector<string> letterCasePermutation(string S)
+{
+    vector<string> ans;
+    dfs(0, S.size(), S, ans);
+    return ans;
+}
