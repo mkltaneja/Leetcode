@@ -641,3 +641,24 @@ vector<string> letterCasePermutation(string S)
     dfs(0, S.size(), S, ans);
     return ans;
 }
+
+// DAY 17 (Container with Most water)==================================================================
+
+// APPROACH 1 (finding exponentially) --> O(2^(n/2))
+// TLE
+void findmaxarea(int st, int end, vector<int> &arr, int &maxarea)
+{
+    if (st == end)
+        return;
+
+    maxarea = max(maxarea, min(arr[end], arr[st]) * (end - st));
+    findmaxarea(st + 1, end, arr, maxarea);
+    findmaxarea(st, end - 1, arr, maxarea);
+}
+
+int maxArea(vector<int> &height)
+{
+    int maxarea = 0;
+    findmaxarea(0, height.size() - 1, height, maxarea);
+    return maxarea;
+}
