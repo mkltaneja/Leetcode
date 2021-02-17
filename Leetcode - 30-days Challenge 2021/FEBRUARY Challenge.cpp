@@ -662,3 +662,20 @@ int maxArea(vector<int> &height)
     findmaxarea(0, height.size() - 1, height, maxarea);
     return maxarea;
 }
+
+// APPROACH 2 --> O(n^2)
+// TLE
+
+void findmaxarea(int n, vector<int> &arr, int &maxarea)
+{
+    for (int i = 0; i < n; i++)
+        for (int j = i + 1; j < n; j++)
+            maxarea = max(maxarea, min(arr[i], arr[j]) * (j - i));
+}
+
+int maxArea(vector<int> &height)
+{
+    int maxarea = 0;
+    findmaxarea(height.size(), height, maxarea);
+    return maxarea;
+}
