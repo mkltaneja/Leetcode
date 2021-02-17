@@ -679,3 +679,25 @@ int maxArea(vector<int> &height)
     findmaxarea(height.size(), height, maxarea);
     return maxarea;
 }
+
+// APPROACH 3 (Greedy) --> O(n)
+// AC
+
+void findmaxarea(int st, int end, vector<int> &arr, int &maxarea)
+{
+    if (st == end)
+        return;
+
+    maxarea = max(maxarea, min(arr[end], arr[st]) * (end - st));
+    if (arr[st] < arr[end])
+        findmaxarea(st + 1, end, arr, maxarea);
+    else
+        findmaxarea(st, end - 1, arr, maxarea);
+}
+
+int maxArea(vector<int> &height)
+{
+    int maxarea = 0;
+    findmaxarea(0, height.size() - 1, height, maxarea);
+    return maxarea;
+}
