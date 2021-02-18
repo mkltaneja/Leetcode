@@ -701,3 +701,18 @@ int maxArea(vector<int> &height)
     findmaxarea(0, height.size() - 1, height, maxarea);
     return maxarea;
 }
+
+// DAY 18 (Arithmetic Slices)====================================================================
+
+int numberOfArithmeticSlices(vector<int> &A)
+{
+    int pi = 0, count = 0;
+    for (int i = 0; i + 2 < A.size(); i++)
+    {
+        if (A[i + 1] - A[i] == A[i + 2] - A[i + 1])
+            count += i - pi + 1;
+        else
+            pi = i + 1;
+    }
+    return count;
+}
