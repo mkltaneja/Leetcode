@@ -716,3 +716,40 @@ int numberOfArithmeticSlices(vector<int> &A)
     }
     return count;
 }
+
+// DAY 19 (Minimum Remove to Make Valid Parenthesis)====================================================================
+
+// APPROACH 1 (Using Deque)
+
+#define f first
+#define s second
+
+string minRemoveToMakeValid(string s)
+{
+    int n = s.size();
+    deque<pair<char, int>> st;
+    for (int i = 0; i < n; i++)
+    {
+        char c = s[i];
+        if (isalpha(c))
+            continue;
+        if (st.empty() || st.front().f == ')' || c == '(')
+            st.push_front({c, i});
+        else if (c == ')')
+            st.pop_front();
+    }
+    // cout<<st.size()<<endl;
+    // cout<<st.front()<<endl;
+    string ans = "";
+    for (int i = 0; i < n; i++)
+    {
+        char c = s[i];
+        if (st.empty())
+            ans += c;
+        else if (i == st.back().s)
+            st.pop_back();
+        else
+            ans += c;
+    }
+    return ans;
+}
