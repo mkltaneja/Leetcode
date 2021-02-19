@@ -753,3 +753,33 @@ string minRemoveToMakeValid(string s)
     }
     return ans;
 }
+
+// APPROACH 2 (Keeping Count of Opening and Closing Brackets -- Space OPTIMIZED)
+
+string minRemoveToMakeValid(string s)
+{
+    int n = s.size();
+    int open = 0;
+    int close = count(s.begin(), s.end(), ')');
+    // cout<<close<<endl;
+
+    string ans = "";
+    for (char c : s)
+    {
+        if (c == '(')
+        {
+            if (open == close)
+                continue;
+            open++;
+        }
+        else if (c == ')')
+        {
+            close--;
+            if (open == 0)
+                continue;
+            open--;
+        }
+        ans += c;
+    }
+    return ans;
+}
