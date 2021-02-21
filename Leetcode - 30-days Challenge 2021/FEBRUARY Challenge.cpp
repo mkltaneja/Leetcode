@@ -804,3 +804,30 @@ int romanToInt(string s)
     }
     return ans;
 }
+
+// DAY 22 (Broken Calculator)===========================================================================
+
+// APPROACH 1 (BFS) --> <O(2^(Y-X)) ~= O(n^2)
+#define f first
+#define s second
+int brokenCalc(int X, int Y)
+{
+    if (X >= Y)
+        return X - Y;
+    queue<pair<int, int>> que;
+    que.push({X, 0});
+    while (!que.empty())
+    {
+        auto p = que.front();
+        que.pop();
+        // cout<<p.f<<" "<<p.s<<endl;
+        if (p.f == Y)
+            return p.s;
+        if (p.f - 1 > 1)
+            que.push({p.f - 1, p.s + 1});
+        if (p.f < Y)
+            que.push({2 * p.f, p.s + 1});
+    }
+    cout << endl;
+    return 0;
+}
