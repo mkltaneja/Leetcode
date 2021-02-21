@@ -831,3 +831,19 @@ int brokenCalc(int X, int Y)
     cout << endl;
     return 0;
 }
+
+// APPROACH 2 (Moving Backwards) --> O(log(Y-X))
+
+int brokenCalc(int X, int Y)
+{
+    int count = 0;
+    while (X < Y)
+    {
+        if (Y & 1)
+            Y++;
+        else
+            Y /= 2;
+        count++;
+    }
+    return X - Y + count;
+}
