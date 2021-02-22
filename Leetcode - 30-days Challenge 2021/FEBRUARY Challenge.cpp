@@ -847,3 +847,38 @@ int brokenCalc(int X, int Y)
     }
     return X - Y + count;
 }
+
+// DAY 22 ()================================================================
+
+// METHOD 1 (Naive Approach) --> O(n^2)
+
+int countsame(int i, int j, string &s, string &a)
+{
+    if (j == a.size())
+        return a.size();
+    if (i == s.size())
+        return 0;
+    if (s[i] == a[j])
+        return countsame(i + 1, j + 1, s, a);
+    else
+        return countsame(i + 1, j, s, a);
+}
+
+string findLongestWord(string s, vector<string> &d)
+{
+    string ans = "";
+
+    int maxsimi = 0;
+    for (string a : d)
+    {
+        int simi = countsame(0, 0, s, a);
+        if (simi >= maxsimi)
+        {
+            if (simi == maxsimi && a > ans)
+                continue;
+            maxsimi = simi;
+            ans = a;
+        }
+    }
+    return ans;
+}
