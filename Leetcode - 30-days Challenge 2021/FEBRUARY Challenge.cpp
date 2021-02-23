@@ -928,3 +928,36 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
                 return true;
     return false;
 }
+
+// APPROACH 2 (Binary Search in every row) --> O(n*logm)
+
+pair<bool, int> binarysearch(int i, int st, int end, vector<vector<int>> &matrix, int target)
+{
+    while (st <= end)
+    {
+        int mid = (st + end) >> 1;
+        if (matrix[i][mid] == target)
+            return {true, end};
+        if (matrix[i][mid] > target)
+            end = mid - 1;
+        else
+            st = mid + 1;
+    }
+    return {false, end};
+}
+
+bool searchMatrix(vector<vector<int>> &matrix, int target)
+{
+    int n = matrix.size(), m = matrix[0].size();
+    int j = m - 1;
+    for (int i = 0; i < n; i++)
+    {
+        pair<bool, int> p = binarysearch(i, 0, j, matrix, target);
+        if (p.first)
+            return true;
+        j = p.second;
+        if (j == -1)
+            return false;
+    }
+    return false;
+}
