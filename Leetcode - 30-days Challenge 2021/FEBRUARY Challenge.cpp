@@ -913,3 +913,18 @@ string findLongestWord(string s, vector<string> &d)
     }
     return "";
 }
+
+// DAY 23 (Search a 2D Matrix)===========================================================
+
+// APPROACH 1 (Naive) --> O(n*m)
+// TLE
+bool searchMatrix(vector<vector<int>> &matrix, int target)
+{
+    int n = matrix.size(), m = matrix[0].size();
+    cout << n << " " << m << endl;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            if (matrix[i][j] == target)
+                return true;
+    return false;
+}
