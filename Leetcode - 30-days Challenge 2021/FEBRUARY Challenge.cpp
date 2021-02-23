@@ -930,6 +930,7 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
 }
 
 // APPROACH 2 (Binary Search in every row) --> O(n*logm)
+// AC
 
 pair<bool, int> binarysearch(int i, int st, int end, vector<vector<int>> &matrix, int target)
 {
@@ -958,6 +959,25 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
         j = p.second;
         if (j == -1)
             return false;
+    }
+    return false;
+}
+
+// APPROACH 3 (Using the giver Sorting property fully by considering height and width in the matrix) --> O(max(n,m))
+// AC
+
+bool searchMatrix(vector<vector<int>> &matrix, int target)
+{
+    int n = matrix.size(), m = matrix[0].size();
+    int h = 0, w = m;
+    while (h < n && w > 0)
+    {
+        if (matrix[h][w - 1] == target)
+            return true;
+        if (matrix[h][w - 1] < target)
+            h++;
+        else
+            w--;
     }
     return false;
 }
