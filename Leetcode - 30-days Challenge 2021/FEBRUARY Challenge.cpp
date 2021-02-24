@@ -981,3 +981,22 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
     }
     return false;
 }
+
+// DAY 24 (Score of Parenthesis)============================================================
+
+int scoreOfParentheses(string s)
+{
+    int ans = 0, p = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (s[i] == '(')
+            p++;
+        else
+        {
+            p--;
+            if (s[i - 1] == '(')
+                ans += (1 << p);
+        }
+    }
+    return ans;
+}
