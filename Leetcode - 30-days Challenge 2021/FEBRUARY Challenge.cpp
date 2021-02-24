@@ -984,6 +984,34 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
 
 // DAY 24 (Score of Parenthesis)============================================================
 
+// APPROACH 1 (Using Stack)
+
+int scoreOfParentheses(string s)
+{
+    int ans = 0;
+    stack<int> st;
+    st.push(0);
+    for (char c : s)
+    {
+        if (c == '(')
+            st.push(0);
+        else
+        {
+            int top = st.top();
+            st.pop();
+            int val = 0;
+            if (top > 0)
+                val = top * 2;
+            else
+                val = 1;
+            st.top() += val;
+        }
+    }
+    return st.top();
+}
+
+// APPROACH 2 (Mathematically)===============================================
+
 int scoreOfParentheses(string s)
 {
     int ans = 0, p = 0;
