@@ -1028,3 +1028,31 @@ int scoreOfParentheses(string s)
     }
     return ans;
 }
+
+// DAY 25 (Shortest Unsorted Continuous Subarray)=================================================================
+
+int setst(vector<int> &nums, int end, int st)
+{
+    while (st >= 0 && nums[st] > nums[end])
+        st--;
+    return ++st;
+}
+
+int findUnsortedSubarray(vector<int> &nums)
+{
+    int st = -1, end = -1;
+    int maxi = INT_MIN;
+    for (int i = 0; i < nums.size() - 1; i++)
+    {
+        if (nums[i + 1] < nums[i] || nums[i + 1] < maxi)
+        {
+            if (st == -1)
+                st = i;
+            end = i + 1;
+            st = min(st, setst(nums, end, st));
+        }
+        maxi = max(maxi, nums[i]);
+    }
+    // cout<<st<<" "<<end<<endl;
+    return (st == -1) ? 0 : (end - st + 1);
+}
