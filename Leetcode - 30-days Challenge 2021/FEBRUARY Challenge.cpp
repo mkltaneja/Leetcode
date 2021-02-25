@@ -1031,6 +1031,29 @@ int scoreOfParentheses(string s)
 
 // DAY 25 (Shortest Unsorted Continuous Subarray)=================================================================
 
+// APPROACH 1 (Sort and check for different values at same position) --> O(n*logn)
+
+int findUnsortedSubarray(vector<int> &nums)
+{
+    int n = nums.size();
+
+    vector<int> a(nums);
+    sort(a.begin(), a.end());
+
+    int st = 0, end = n - 1;
+    for (; st < n; st++)
+        if (nums[st] != a[st])
+            break;
+    if (st == n)
+        return 0;
+    for (; end >= 0; end--)
+        if (nums[end] != a[end])
+            break;
+    return end - st + 1;
+}
+
+// APPROACH 2 (Visualize with a graph of values and set the start and end pointers)
+
 int setst(vector<int> &nums, int end, int st)
 {
     while (st >= 0 && nums[st] > nums[end])
