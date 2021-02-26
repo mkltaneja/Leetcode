@@ -14,7 +14,8 @@ int hammingWeight(uint32_t n)
 
 // in Java
 // you need to treat n as an unsigned value
-public int hammingWeight(int n)
+public
+int hammingWeight(int n)
 {
     int cnt = 0;
     if ((n & (1 << 31)) != 0)
@@ -31,7 +32,8 @@ public int hammingWeight(int n)
     return cnt;
 }
 // OR
-public int hammingWeight(int n)
+public
+int hammingWeight(int n)
 {
     return Integer.bitCount(n);
 }
@@ -1076,4 +1078,23 @@ int findUnsortedSubarray(vector<int> &nums)
     }
     // cout<<st<<" "<<end<<endl;
     return (st == -1) ? 0 : (end - st + 1);
+}
+
+// DAY 26 (Validate Stack Sequences)==============================================================
+
+bool validateStackSequences(vector<int> &pushed, vector<int> &popped)
+{
+    int n = pushed.size();
+    stack<int> st;
+    int j = 0;
+    for (int i = 0; i < n; i++)
+    {
+        st.push(pushed[i]);
+        while (!st.empty() && j < n && st.top() == popped[j])
+        {
+            st.pop();
+            j++;
+        }
+    }
+    return st.empty();
 }
