@@ -14,8 +14,7 @@ int hammingWeight(uint32_t n)
 
 // in Java
 // you need to treat n as an unsigned value
-public
-int hammingWeight(int n)
+public int hammingWeight(int n)
 {
     int cnt = 0;
     if ((n & (1 << 31)) != 0)
@@ -32,8 +31,7 @@ int hammingWeight(int n)
     return cnt;
 }
 // OR
-public
-int hammingWeight(int n)
+public int hammingWeight(int n)
 {
     return Integer.bitCount(n);
 }
