@@ -1098,3 +1098,22 @@ bool validateStackSequences(vector<int> &pushed, vector<int> &popped)
     }
     return st.empty();
 }
+
+// DAY 27 (Divide 2 Integers)======================================================
+
+int divide(int dividend, int divisor)
+{
+    if (divisor == 0)
+        return INT_MAX;
+    if (dividend == 0)
+        return 0;
+    if (fabs(divisor) > fabs(dividend))
+        return 0;
+    // cout<<abs(dividend)<<endl;
+    // cout<<fabs(dividend)<<endl;
+    long ans = (double)exp(log(fabs(dividend)) - log(fabs(divisor)));
+    if ((dividend > 0) ^ (divisor > 0))
+        ans = -ans;
+    // cout<<ans<<endl;
+    return ans > INT_MAX ? INT_MAX : ans;
+}
