@@ -1119,6 +1119,8 @@ int divide(int dividend, int divisor)
 }
 
 // DAY 28 (Maximum Frequency Stack)================================================================
+
+// APPROACH 1 (Using priority queue and frequency map)
 class FreqStack
 {
 #define f first
@@ -1153,5 +1155,38 @@ public:
         pq.pop();
         --cnt[tp];
         return tp;
+    }
+};
+
+// APPROACH 2 (Using stack map and frequency map)
+class FreqStack
+{
+private:
+    unordered_map<int, int> freqmap;
+    unordered_map<int, vector<int>> stmap;
+    int maxfreq;
+
+public:
+    FreqStack()
+    {
+        this->maxfreq = 0;
+    }
+
+    void push(int x)
+    {
+        int freq = ++freqmap[x];
+        maxfreq = max(maxfreq, freq);
+        stmap[freq].push_back(x);
+    }
+
+    int pop()
+    {
+        vector<int> &st = stmap[maxfreq];
+        int x = st.back();
+        st.pop_back();
+        --freqmap[x];
+        if (st.empty())
+            maxfreq--;
+        return x;
     }
 };
