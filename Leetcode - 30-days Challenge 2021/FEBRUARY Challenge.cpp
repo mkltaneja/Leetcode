@@ -1117,3 +1117,41 @@ int divide(int dividend, int divisor)
     // cout<<ans<<endl;
     return ans > INT_MAX ? INT_MAX : ans;
 }
+
+// DAY 28 (Maximum Frequency Stack)================================================================
+class FreqStack
+{
+#define f first
+#define s second
+private:
+    struct comp
+    {
+        bool operator()(pair<int, pair<int, int>> &a, pair<int, pair<int, int>> &b)
+        {
+            return (a.s.f == b.s.f) ? (a.s.s < b.s.s) : (a.s.f < b.s.f);
+        }
+    };
+
+    priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, comp> pq;
+    unordered_map<int, int> cnt;
+    int i;
+
+public:
+    FreqStack()
+    {
+        i = 0;
+    }
+
+    void push(int x)
+    {
+        pq.push({x, {++cnt[x], i++}});
+    }
+
+    int pop()
+    {
+        int tp = pq.top().f;
+        pq.pop();
+        --cnt[tp];
+        return tp;
+    }
+};
