@@ -22,3 +22,19 @@ int distributeCandies(vector<int> &candyType)
     // cout<<count<<endl;
     return (count < n / 2) ? count : n / 2;
 }
+
+// DAY 2 (Set Mismatch)===============================================================
+
+vector<int> findErrorNums(vector<int> &nums)
+{
+    vector<int> cnt(nums.size(), 0);
+    for (int x : nums)
+        cnt[x - 1]++;
+    vector<int> ans(2);
+    for (int i = 0; i < cnt.size(); i++)
+        if (cnt[i] == 2)
+            ans[0] = i + 1;
+        else if (cnt[i] == 0)
+            ans[1] = i + 1;
+    return ans;
+}
