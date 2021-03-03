@@ -38,3 +38,17 @@ vector<int> findErrorNums(vector<int> &nums)
             ans[1] = i + 1;
     return ans;
 }
+
+// DAY 3 (Missing Number)===========================================================
+
+int missingNumber(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<int> a(n + 1, 0);
+    for (int x : nums)
+        a[x] = 1;
+    for (int i = 0; i <= n; i++)
+        if (!a[i])
+            return i;
+    return -1;
+}
