@@ -41,6 +41,7 @@ vector<int> findErrorNums(vector<int> &nums)
 
 // DAY 3 (Missing Number)===========================================================
 
+// METHOD 1 (Using Array)
 int missingNumber(vector<int> &nums)
 {
     int n = nums.size();
@@ -51,4 +52,15 @@ int missingNumber(vector<int> &nums)
         if (!a[i])
             return i;
     return -1;
+}
+
+// METHOD 2 (Without Extra space)
+
+int missingNumber(vector<int> &nums)
+{
+    int n = nums.size();
+    int sum = 0;
+    for (int x : nums)
+        sum += x;
+    return (n * (n + 1)) / 2 - sum;
 }
