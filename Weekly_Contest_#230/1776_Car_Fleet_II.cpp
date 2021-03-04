@@ -1,4 +1,5 @@
 
+// APPROACH 1 (Using Priority queue) --> >O(n*logn)
 #define f first
 #define s second
 vector<double> getCollisionTimes(vector<vector<int>> &cars)
@@ -39,5 +40,34 @@ vector<double> getCollisionTimes(vector<vector<int>> &cars)
         }
     }
     cout << endl;
+    return ans;
+}
+
+// APPROACH 2 (OPTIMIZED Brute Force) --> <<O(n^2) ~= O(n)
+
+vector<double> getCollisionTimes(vector<vector<int>> &cars)
+{
+    int n = cars.size();
+    vector<double> ans(n, -1);
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        int p1 = cars[i][0];
+        int s1 = cars[i][1];
+        // cout<<i<<": ";
+        for (int j = i - 1; j >= 0; j--)
+        {
+            int p2 = cars[j][0];
+            int s2 = cars[j][1];
+            if (s2 <= s1)
+                break;
+            double t = 1.0 * (p1 - p2) / (s2 - s1);
+            if (ans[j] == -1 || t < ans[j])
+                ans[j] = t;
+            else
+                break;
+            // cout<<j<<"   "<<t<<endl;
+        }
+    }
     return ans;
 }
