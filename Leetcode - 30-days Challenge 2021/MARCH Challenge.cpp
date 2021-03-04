@@ -64,3 +64,39 @@ int missingNumber(vector<int> &nums)
         sum += x;
     return (n * (n + 1)) / 2 - sum;
 }
+
+// DAY 4 (Intersection of 2 Linked Lists)=============================================================================
+
+// APPROACH 1 (Using Cycle property of Linked list) --> O(n)
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
+{
+    ListNode *t1 = headA;
+    if (!headA || !headB)
+        return nullptr;
+
+    while (t1->next)
+        t1 = t1->next;
+    t1->next = headB;
+    ListNode *s = headA, *f = headA;
+    while (f->next && f->next->next)
+    {
+        s = s->next;
+        f = f->next->next;
+        if (s == f)
+            break;
+    }
+    if (!f->next || !f->next->next)
+    {
+        t1->next = nullptr;
+        return nullptr;
+    }
+    s = headA;
+    while (f != s)
+    {
+        f = f->next;
+        s = s->next;
+    }
+    // cout<<s->val<<" "<<f->val<<endl;
+    t1->next = nullptr;
+    return f;
+}
