@@ -100,3 +100,16 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
     t1->next = nullptr;
     return f;
 }
+
+// APPROACH 2 (Using 2 pointer approach) --> >O(n)
+
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
+{
+    ListNode *t1 = headA, *t2 = headB;
+    while (t1 != t2)
+    {
+        t1 = t1 ? t1->next : headB;
+        t2 = t2 ? t2->next : headA;
+    }
+    return t1;
+}
