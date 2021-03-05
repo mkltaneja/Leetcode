@@ -113,3 +113,30 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
     }
     return t1;
 }
+
+// DAY 5 (Average of Levles in Binary Tree)===========================================================
+
+vector<double> averageOfLevels(TreeNode *root)
+{
+    queue<TreeNode *> que;
+    que.push(root);
+    vector<double> ans;
+    while (!que.empty())
+    {
+        int sz = que.size();
+        int count = sz;
+        long long int sum = 0;
+        while (sz--)
+        {
+            TreeNode *node = que.front();
+            que.pop();
+            sum += node->val;
+            if (node->left)
+                que.push(node->left);
+            if (node->right)
+                que.push(node->right);
+        }
+        ans.push_back(1.0 * sum / count);
+    }
+    return ans;
+}
