@@ -140,3 +140,25 @@ vector<double> averageOfLevels(TreeNode *root)
     }
     return ans;
 }
+
+// DAY 6 (Short Encoding of Words)========================================================
+
+int minimumLengthEncoding(vector<string> &words)
+{
+    for (string &word : words)
+        reverse(word.begin(), word.end());
+    sort(words.begin(), words.end());
+    // for(string word : words)
+    //     cout<<word<<" ";
+    // cout<<endl;
+
+    int len = 0;
+    int i = 0, n = words.size();
+    while (i < n)
+    {
+        while (i + 1 < n && words[i + 1].substr(0, words[i].size()) == words[i])
+            i++;
+        len += words[i++].size() + 1;
+    }
+    return len;
+}
