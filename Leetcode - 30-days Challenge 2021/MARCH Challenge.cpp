@@ -162,3 +162,80 @@ int minimumLengthEncoding(vector<string> &words)
     }
     return len;
 }
+
+// DAY 7 (Design HashMap)===========================================================================
+
+// METHOD 1 (Hashing Style 1 -> making array of array of pairs, and sorting the 2nd dimension array everytime) --> O(n*logm) (n = no. of different (key%n) ans m = no. of same (key%n))
+// AC
+class MyHashMap
+{
+private:
+    int n;
+    vector<vector<pair<int, int>>> bucket;
+    // bool count = true;
+public:
+    /** Initialize your data structure here. */
+    MyHashMap()
+    {
+        // cout<<(boolalpha)<<count<<endl;
+        this->n = 1000;
+        this->bucket.assign(n, vector<pair<int, int>>());
+    }
+
+    int find(vector<pair<int, int>> &arr, int val)
+    {
+        int si = 0, ei = arr.size() - 1;
+        while (si <= ei)
+        {
+            int mid = (si + ei) >> 1;
+            if (arr[mid].first == val)
+                return mid;
+            if (arr[mid].first < val)
+                si = mid + 1;
+            else
+                ei = mid - 1;
+        }
+        return -1;
+    }
+
+    /** value will always be non-negative. */
+    void put(int key, int value)
+    {
+        int idx = key % n;
+        int foundi = find(bucket[idx], key);
+        // cout<<foundi<<endl;
+        if (foundi == -1)
+        {
+            bucket[idx].push_back({key, value});
+            sort(bucket[idx].begin(), bucket[idx].end());
+            // cout<<bucket[idx].size()<<endl;
+        }
+        else
+            bucket[idx][foundi].second = value;
+    }
+
+    /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+    int get(int key)
+    {
+        int idx = key % n;
+        int foundi = find(bucket[idx], key);
+        return foundi == -1 ? -1 : bucket[idx][foundi].second;
+    }
+
+    /** Removes the mapping of the specified value key if this map contains a mapping for the key */
+    void remove(int key)
+    {
+        int idx = key % n;
+        int foundi = find(bucket[idx], key);
+        if (foundi != -1)
+            bucket[idx].erase(bucket[idx].begin() + foundi);
+    }
+};
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap* obj = new MyHashMap();
+ * obj->put(key,value);
+ * int param_2 = obj->get(key);
+ * obj->remove(key);
+ */
