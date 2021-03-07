@@ -165,7 +165,7 @@ int minimumLengthEncoding(vector<string> &words)
 
 // DAY 7 (Design HashMap)===========================================================================
 
-// METHOD 1 (Hashing Style 1 -> making array of array of pairs, and sorting the 2nd dimension array everytime) --> O(n*logm) (n = no. of different (key%n) ans m = no. of same (key%n))
+// METHOD 1 (Hashing Style 1 -> making array of array of pairs, and sorting the 2nd dimension array everytime) --> O(m*logm) (m = no. of same (key%n))
 // AC
 class MyHashMap
 {
@@ -229,6 +229,55 @@ public:
         int foundi = find(bucket[idx], key);
         if (foundi != -1)
             bucket[idx].erase(bucket[idx].begin() + foundi);
+    }
+};
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap* obj = new MyHashMap();
+ * obj->put(key,value);
+ * int param_2 = obj->get(key);
+ * obj->remove(key);
+ */
+
+// METHOD 2 (Actual Implementation) (Allocating the space in a normal 2D array according to the given maximum size of key) --> O(1)
+// AC
+
+class MyHashMap
+{
+private:
+    int n;
+    vector<vector<int>> bucket;
+
+public:
+    /** Initialize your data structure here. */
+    MyHashMap()
+    {
+        this->n = 1000;
+        this->bucket.assign(n, vector<int>());
+    }
+
+    /** value will always be non-negative. */
+    void put(int key, int value)
+    {
+        if (bucket[key / n].empty())
+            bucket[key / n].resize(n, -1);
+        bucket[key / n][key % n] = value;
+    }
+
+    /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+    int get(int key)
+    {
+        if (bucket[key / n].empty() || bucket[key / n][key % n] == -1)
+            return -1;
+        return bucket[key / n][key % n];
+    }
+
+    /** Removes the mapping of the specified value key if this map contains a mapping for the key */
+    void remove(int key)
+    {
+        if (!bucket[key / n].empty() && bucket[key / n][key % n] != -1)
+            bucket[key / n][key % n] = -1;
     }
 };
 
