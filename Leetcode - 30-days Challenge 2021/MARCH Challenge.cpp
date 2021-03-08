@@ -288,3 +288,82 @@ public:
  * int param_2 = obj->get(key);
  * obj->remove(key);
  */
+
+// DAY 8 (Remove Palindromic Subsequences)============================================================================
+
+// APPROACH 1 (In General Approach - for any no. of distinct characters)
+// TLE
+#define f first
+#define s second
+
+vector<int> longest_ps(string &s)
+{
+    int n = s.size();
+    vector<vector<pair<int, vector<int>>>> dp(n, vector<pair<int, vector<int>>>(n, {0, vector<int>()}));
+
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; i++, j++)
+        {
+            if (gap == 0)
+            {
+                dp[i][j].f = 1;
+                dp[i][j].s.push_back(i);
+                continue;
+            }
+            int pre = dp[i + 1][j].f;
+            int suf = dp[i][j - 1].f;
+            int mid = dp[i + 1][j - 1].f + ((s[i] == s[j]) ? 2 : 0);
+            int maxi = 0;
+            if (mid > maxi)
+            {
+                maxi = mid;
+                dp[i][j].f = mid;
+                dp[i][j].s = dp[i + 1][j - 1].s;
+                if (s[i] != s[j])
+                    continue;
+                dp[i][j].s.push_back(i);
+                dp[i][j].s.push_back(j);
+            }
+            if (pre > maxi)
+            {
+                maxi = pre;
+                dp[i][j].f = pre;
+                dp[i][j].s = dp[i + 1][j].s;
+            }
+            if (suf > maxi)
+            {
+                maxi = suf;
+                dp[i][j].f = suf;
+                dp[i][j].s = dp[i][j - 1].s;
+            }
+        }
+    }
+    return dp[0][n - 1].s;
+}
+
+int removePalindromeSub(string s)
+{
+    int count = 0;
+    while (!s.empty())
+    {
+        auto v = longest_ps(s);
+        sort(v.begin(), v.end());
+        // for(int x : v)
+        //     cout<<x<<" ";
+        string temp = "";
+        int k = 0;
+        for (int i = 0; i < s.size(); i++)
+        {
+            if (k < v.size() && i == v[k])
+                k++;
+            else
+                temp += s[i];
+        }
+        // cout<<s<<" - "<<temp<<endl;
+        s = temp;
+        count++;
+    }
+    // cout<<endl;
+    return count > 2 ? 2 : count;
+}
