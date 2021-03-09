@@ -386,3 +386,33 @@ int removePalindromeSub(string s)
         return 1;
     return 2;
 }
+
+// DAY 9 (Add One Row to Tree)===============================================================================
+
+void addRow(TreeNode *node, int v, int d)
+{
+    if (!node)
+        return;
+    if (d == 2)
+    {
+        TreeNode *l = new TreeNode(v, node->left, nullptr);
+        TreeNode *r = new TreeNode(v, nullptr, node->right);
+        node->left = nullptr;
+        node->right = nullptr;
+        node->left = l;
+        node->right = r;
+        return;
+    }
+    addRow(node->left, v, d - 1);
+    addRow(node->right, v, d - 1);
+}
+
+TreeNode *addOneRow(TreeNode *root, int v, int d)
+{
+    TreeNode *nnode = new TreeNode(v);
+    if (d == 1)
+        return new TreeNode(v, root, nullptr);
+
+    addRow(root, v, d);
+    return root;
+}
