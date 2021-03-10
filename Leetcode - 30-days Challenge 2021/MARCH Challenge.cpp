@@ -419,6 +419,7 @@ TreeNode *addOneRow(TreeNode *root, int v, int d)
 
 // DAY 10 (Integer to Roman)=====================================================
 
+// APPROACH 1 (Using extra space)
 string intToRoman(int num)
 {
     unordered_map<int, string> m;
@@ -446,4 +447,80 @@ string intToRoman(int num)
     for (string s : ans)
         res += s;
     return res;
+}
+
+// APPROACH 2 (Space and time optimized)
+
+string intToRoman(int num)
+{
+    string ans = "";
+    while (num)
+    {
+        if (num >= 1000)
+        {
+            num -= 1000;
+            ans += "M";
+        }
+        else if (num >= 900)
+        {
+            num -= 900;
+            ans += "CM";
+        }
+        else if (num >= 500)
+        {
+            num -= 500;
+            ans += "D";
+        }
+        else if (num >= 400)
+        {
+            num -= 400;
+            ans += "CD";
+        }
+        else if (num >= 100)
+        {
+            num -= 100;
+            ans += "C";
+        }
+        else if (num >= 90)
+        {
+            num -= 90;
+            ans += "XC";
+        }
+        else if (num >= 50)
+        {
+            num -= 50;
+            ans += "L";
+        }
+        else if (num >= 40)
+        {
+            num -= 40;
+            ans += "XL";
+        }
+        else if (num >= 10)
+        {
+            num -= 10;
+            ans += "X";
+        }
+        else if (num >= 9)
+        {
+            num -= 9;
+            ans += "IX";
+        }
+        else if (num >= 5)
+        {
+            num -= 5;
+            ans += "V";
+        }
+        else if (num >= 4)
+        {
+            num -= 4;
+            ans += "IV";
+        }
+        else if (num >= 1)
+        {
+            num -= 1;
+            ans += "I";
+        }
+    }
+    return ans;
 }
