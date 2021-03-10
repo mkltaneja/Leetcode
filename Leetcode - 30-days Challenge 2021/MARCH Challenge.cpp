@@ -416,3 +416,34 @@ TreeNode *addOneRow(TreeNode *root, int v, int d)
     addRow(root, v, d);
     return root;
 }
+
+// DAY 10 (Integer to Roman)=====================================================
+
+string intToRoman(int num)
+{
+    unordered_map<int, string> m;
+    m[1] = "I", m[5] = "V", m[10] = "X", m[50] = "L", m[100] = "C", m[500] = "D", m[1000] = "M";
+    vector<string> ans(4);
+    int i = 3;
+    int p = 1;
+    while (num)
+    {
+        int x = (num % 10);
+        if (x == 4 || x == 9)
+            ans[i] = m[p] + m[(x * p) + p];
+        else
+        {
+            if (x >= 5)
+                ans[i] = m[x * p - (x % 5) * p];
+            while (x-- % 5)
+                ans[i] += m[p];
+        }
+        i--;
+        p *= 10;
+        num /= 10;
+    }
+    string res = "";
+    for (string s : ans)
+        res += s;
+    return res;
+}
