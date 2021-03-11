@@ -524,3 +524,25 @@ string intToRoman(int num)
     }
     return ans;
 }
+
+// DAY 11 (Coin Change)==============================================================================
+
+// APPROACH 1 (DP) --> o(amount*n)
+int coinChange(vector<int> &coins, int amount)
+{
+    int n = coins.size();
+    vector<vector<int>> dp(amount + 1, vector<int>(n + 1, INT_MAX));
+    for (int i = 0; i <= amount; i++)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            if (i == 0)
+            {
+                dp[i][j] = 0;
+                continue;
+            }
+            dp[i][j] = ((i - coins[j - 1]) >= 0 && dp[i - coins[j - 1]][j] != INT_MAX) ? min(dp[i][j - 1], dp[i - coins[j - 1]][j] + 1) : dp[i][j - 1];
+        }
+    }
+    return (dp[amount][n] == INT_MAX) ? -1 : dp[amount][n];
+}
