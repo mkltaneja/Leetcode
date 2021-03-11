@@ -546,3 +546,26 @@ int coinChange(vector<int> &coins, int amount)
     }
     return (dp[amount][n] == INT_MAX) ? -1 : dp[amount][n];
 }
+
+// APPROACH 2 (Sorting the array initially to make Pro-active calls during recursion) --> <<O(amount*n)
+
+void dfs(int idx, int amount, int cnt, vector<int> &coins, int &ans)
+{
+    if (amount == 0)
+    {
+        ans = cnt;
+        return;
+    }
+    if (idx == coins.size())
+        return;
+    for (int i = amount / coins[idx]; i >= 0 && cnt + i < ans; i--)
+        dfs(idx + 1, amount - (i * coins[idx]), cnt + i, coins, ans);
+}
+
+int coinChange(vector<int> &coins, int amount)
+{
+    sort(coins.rbegin(), coins.rend());
+    int ans = amount + 1;
+    dfs(0, amount, 0, coins, ans);
+    return (ans == amount + 1) ? -1 : ans;
+}
