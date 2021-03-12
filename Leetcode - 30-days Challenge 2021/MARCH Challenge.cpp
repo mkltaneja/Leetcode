@@ -569,3 +569,25 @@ int coinChange(vector<int> &coins, int amount)
     dfs(0, amount, 0, coins, ans);
     return (ans == amount + 1) ? -1 : ans;
 }
+
+// DAY 12 (Check If a String Contains All Binary Codes of Size K)=========================================================================
+
+// APPROACH 1 (Using bitset<>)
+bool hasAllCodes(string s, int k)
+{
+    int n = s.size();
+    bitset<10000000> f;
+    int num = 0, p = (1 << k);
+    for (int i = 0; i < n; i++)
+    {
+        num = num * 2 + (s[i] - '0');
+        if (i >= k)
+            num -= (s[i - k] - '0') * p;
+        if (i >= k - 1)
+            f.set(num);
+    }
+    for (int i = 0; i < p; i++)
+        if (!f.test(i))
+            return false;
+    return true;
+}
