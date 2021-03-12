@@ -572,7 +572,7 @@ int coinChange(vector<int> &coins, int amount)
 
 // DAY 12 (Check If a String Contains All Binary Codes of Size K)=========================================================================
 
-// APPROACH 1 (Using bitset<>)
+// METHOD 1 (Using bitset<>)
 bool hasAllCodes(string s, int k)
 {
     int n = s.size();
@@ -590,4 +590,25 @@ bool hasAllCodes(string s, int k)
         if (!f.test(i))
             return false;
     return true;
+}
+
+// METHOD 2 (Different way) --> OPTIMIZED
+
+bool hasAllCodes(string s, int k)
+{
+    int n = s.size();
+    int num = stoi(s.substr(0, k), 0, 2);
+    vector<bool> set((1 << k), false);
+    int count = 0;
+    for (int i = k; i <= n; i++)
+    {
+        count += 1 - set[num];
+        set[num] = true;
+        if (i == n)
+            break;
+        num &= ~(1 << (k - 1));
+        num = (num << 1) | (s[i] - '0');
+    }
+    // cout<<count<<endl;
+    return count == (1 << k);
 }
