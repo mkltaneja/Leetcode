@@ -640,3 +640,26 @@ int numFactoredBinaryTrees(vector<int> &arr)
 
     return ans;
 }
+
+// DAY 14 (Swapping Nodes in a Linked List)===============================================================================
+
+ListNode *swapNodes(ListNode *head, int k)
+{
+    int n = 0;
+    ListNode *itr = head;
+    while (itr)
+    {
+        itr = itr->next;
+        n++;
+    }
+    k %= (n + 1);
+    int kk = n - k + 1;
+    // cout<<k<<" "<<kk<<endl;
+    ListNode *a = head, *b = head;
+    while (--k)
+        a = a->next;
+    while (--kk)
+        b = b->next;
+    swap(a->val, b->val);
+    return head;
+}
