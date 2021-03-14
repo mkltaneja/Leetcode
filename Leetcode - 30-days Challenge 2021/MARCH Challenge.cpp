@@ -612,3 +612,31 @@ bool hasAllCodes(string s, int k)
     // cout<<count<<endl;
     return count == (1 << k);
 }
+
+// DAY 13 (Binary Tres with Factors)==================================================================================
+
+int mod = 1000000007;
+#define ll long long int
+int numFactoredBinaryTrees(vector<int> &arr)
+{
+    ll ans = 0;
+    int n = arr.size();
+    unordered_map<int, ll> m;
+    sort(arr.begin(), arr.end());
+
+    for (int x : arr)
+    {
+        double maxi = sqrt(x);
+        ll ways = 1;
+        for (int i = 0; arr[i] <= maxi; i++)
+        {
+            if (x % arr[i] != 0)
+                continue;
+            ways += m[arr[i]] * m[x / arr[i]] * (arr[i] == x / arr[i] ? 1 : 2);
+        }
+        m[x] = ways;
+        ans = (ans + ways) % mod;
+    }
+
+    return ans;
+}
