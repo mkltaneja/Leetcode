@@ -663,3 +663,41 @@ ListNode *swapNodes(ListNode *head, int k)
     swap(a->val, b->val);
     return head;
 }
+
+// DAY 15 (Encode and Decode TinyURL)======================================================================
+class Solution
+{
+private:
+    unordered_map<string, string> long_to_short;
+    unordered_map<string, string> short_to_long;
+
+public:
+    // Encodes a URL to a shortened URL.
+    string encode(string longUrl)
+    {
+        if (long_to_short.count(longUrl))
+            return long_to_short[longUrl];
+        string dict = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+        string res = "";
+        while (res.empty())
+        {
+            for (int i = 0; i < 6; i++)
+                res += dict[rand() % 62];
+            if (short_to_long.count(res))
+                res.clear();
+        }
+        long_to_short[longUrl] = res;
+        short_to_long[res] = longUrl;
+        return long_to_short[longUrl];
+    }
+
+    // Decodes a shortened URL to its original URL.
+    string decode(string shortUrl)
+    {
+        return short_to_long[shortUrl];
+    }
+};
+
+// Your Solution object will be instantiated and called as such:
+// Solution solution;
+// solution.decode(solution.encode(url));
