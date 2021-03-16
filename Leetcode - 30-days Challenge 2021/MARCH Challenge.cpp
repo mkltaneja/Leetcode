@@ -717,3 +717,17 @@ int maxProfit(vector<int> &prices, int fee)
     }
     return sell[n - 1];
 }
+
+// METHOD 2 (Space OPTIMIZED)
+
+int maxProfit(vector<int> &prices, int fee)
+{
+    int n = prices.size();
+    int buy = -prices[0], sell = 0;
+    for (int i = 1; i < n; i++)
+    {
+        buy = max(buy, sell - prices[i]);
+        sell = max(sell, buy + (prices[i] - fee));
+    }
+    return sell;
+}
