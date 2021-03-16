@@ -701,3 +701,19 @@ public:
 // Your Solution object will be instantiated and called as such:
 // Solution solution;
 // solution.decode(solution.encode(url));
+
+// DAY 16 (Best Time to Buy and Sell Stock with Transaction Fee)===========================================================================
+
+// METHOD 1 (DP --> Keeping the maximum profit for buy and sell stored)
+int maxProfit(vector<int> &prices, int fee)
+{
+    int n = prices.size();
+    vector<int> buy(n), sell(n);
+    buy[0] = -prices[0], sell[0] = 0;
+    for (int i = 1; i < n; i++)
+    {
+        buy[i] = max(buy[i - 1], sell[i - 1] - prices[i]);
+        sell[i] = max(sell[i - 1], buy[i - 1] + (prices[i] - fee));
+    }
+    return sell[n - 1];
+}
