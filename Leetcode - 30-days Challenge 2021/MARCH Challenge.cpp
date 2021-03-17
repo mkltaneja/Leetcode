@@ -731,3 +731,37 @@ int maxProfit(vector<int> &prices, int fee)
     }
     return sell;
 }
+
+// DAY 17 (Generate Random Points in a Circle)==========================================================
+class Solution
+{
+public:
+    double R, X, Y;
+    Solution(double radius, double x_center, double y_center)
+    {
+        srand(time(0));
+        this->R = radius;
+        this->X = x_center;
+        this->Y = y_center;
+    }
+
+    double random()
+    {
+        return (double)rand() / RAND_MAX;
+    }
+
+    vector<double> randPoint()
+    {
+        // cout<<random()<<endl;
+        double r = sqrt(random()) * R;
+        double deg = random() * 2 * M_PI;
+        vector<double> ans = {X + r * cos(deg), Y + r * sin(deg)};
+        return ans;
+    }
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(radius, x_center, y_center);
+ * vector<double> param_1 = obj->randPoint();
+ */
