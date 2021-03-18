@@ -795,3 +795,28 @@ int wiggleMaxLength(vector<int> &nums)
     }
     return max(up[n - 1], down[n - 1]);
 }
+
+// METHOD 2 (Space OPTIMIZED)
+
+int wiggleMaxLength(vector<int> &nums)
+{
+    int n = nums.size();
+    bool up = true, down = true;
+    int ans = 1;
+    for (int i = 1; i < n; i++)
+    {
+        if (nums[i] > nums[i - 1] && up)
+        {
+            ans++;
+            down = true;
+            up = false;
+        }
+        else if (nums[i] < nums[i - 1] && down)
+        {
+            ans++;
+            down = false;
+            up = true;
+        }
+    }
+    return ans;
+}
