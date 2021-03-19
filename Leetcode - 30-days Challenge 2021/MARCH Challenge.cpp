@@ -820,3 +820,24 @@ int wiggleMaxLength(vector<int> &nums)
     }
     return ans;
 }
+
+// DAY 19 (Keys and Rooms)====================================================================================
+
+void dfs(int i, vector<vector<int>> &rooms, vector<bool> &vis)
+{
+    vis[i] = true;
+    for (int j : rooms[i])
+        if (!vis[j])
+            dfs(j, rooms, vis);
+}
+
+bool canVisitAllRooms(vector<vector<int>> &rooms)
+{
+    int n = rooms.size();
+    vector<bool> vis(n, false);
+    dfs(0, rooms, vis);
+    for (bool f : vis)
+        if (!f)
+            return false;
+    return true;
+}
