@@ -841,3 +841,43 @@ bool canVisitAllRooms(vector<vector<int>> &rooms)
             return false;
     return true;
 }
+
+// DAY 20 (Design Underground System)============================================================
+
+class UndergroundSystem
+{
+private:
+    unordered_map<int, pair<string, int>> chin;
+    unordered_map<string, pair<int, int>> time;
+
+public:
+    UndergroundSystem()
+    {
+    }
+
+    void checkIn(int id, string stationName, int t)
+    {
+        chin[id] = {stationName, t};
+    }
+
+    void checkOut(int id, string stationName, int t)
+    {
+        string stats = chin[id].first + " " + stationName;
+        time[stats].first += t - chin[id].second;
+        time[stats].second++;
+    }
+
+    double getAverageTime(string startStation, string endStation)
+    {
+        auto ttime = time[startStation + " " + endStation];
+        return 1.0 * ttime.first / ttime.second;
+    }
+};
+
+/**
+ * Your UndergroundSystem object will be instantiated and called as such:
+ * UndergroundSystem* obj = new UndergroundSystem();
+ * obj->checkIn(id,stationName,t);
+ * obj->checkOut(id,stationName,t);
+ * double param_3 = obj->getAverageTime(startStation,endStation);
+ */
