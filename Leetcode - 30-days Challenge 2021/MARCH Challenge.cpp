@@ -884,6 +884,8 @@ public:
 
 // DAY 21 (Rordered Power of 2)============================================================================
 
+// APPROACH 1 (By making all permutations of the given number and checking if it's the pow of 2) --> O(n^n) [n = N.size()]
+
 bool pow2(int n)
 {
     return n && !(n & (n - 1));
@@ -924,4 +926,38 @@ bool reorderedPowerOf2(int N)
     }
     vector<bool> vis(dig.size(), false);
     return checkdigs(0, 0, dig, vis);
+}
+
+// APPROACH 2 (starting i from 1 till n increasing by factor of 2 and checking if map of N and i are same) --> O(logN)
+
+void count(int n, unordered_map<int, int> &m)
+{
+    while (n)
+    {
+        m[n % 10]++;
+        n /= 10;
+    }
+}
+
+bool reorderedPowerOf2(int N)
+{
+    string s = to_string(N);
+    unordered_map<int, int> mn;
+    count(N, mn);
+    int pow2 = 1;
+    for (int i = 0; i < 31; i++)
+    {
+        string t = to_string(pow2);
+        if (t.size() > s.size())
+            break;
+        if (t.size() == s.size())
+        {
+            unordered_map<int, int> mi;
+            count(pow2, mi);
+            if (mn == mi)
+                return true;
+        }
+        pow2 <<= 1;
+    }
+    return false;
 }
