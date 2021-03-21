@@ -881,3 +881,47 @@ public:
  * obj->checkOut(id,stationName,t);
  * double param_3 = obj->getAverageTime(startStation,endStation);
  */
+
+// DAY 21 (Rordered Power of 2)============================================================================
+
+bool pow2(int n)
+{
+    return n && !(n & (n - 1));
+}
+
+bool checkdigs(int idx, int n, vector<int> &dig, vector<bool> &vis)
+{
+    // cout<<dig[0]<<endl;
+    if (idx == dig.size())
+    {
+        // cout<<n<<endl;
+        if (pow2(n))
+            return true;
+        return false;
+    }
+    for (int i = 0; i < dig.size(); i++)
+    {
+        if (!vis[i] && (n > 0 || dig[i] != 0))
+        {
+            vis[i] = true;
+            if (checkdigs(idx + 1, n * 10 + dig[i], dig, vis))
+                return true;
+            vis[i] = false;
+        }
+    }
+
+    return false;
+}
+
+bool reorderedPowerOf2(int N)
+{
+    vector<int> dig;
+    int nn = N;
+    while (nn)
+    {
+        dig.push_back(nn % 10);
+        nn /= 10;
+    }
+    vector<bool> vis(dig.size(), false);
+    return checkdigs(0, 0, dig, vis);
+}
