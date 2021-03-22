@@ -961,3 +961,68 @@ bool reorderedPowerOf2(int N)
     }
     return false;
 }
+
+// DAY 22 (Vowel Spellchecker)======================================================================
+
+bool isvowel(char c)
+{
+    c = tolower(c);
+    if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
+        return true;
+    return false;
+}
+
+vector<string> spellchecker(vector<string> &wordlist, vector<string> &queries)
+{
+    unordered_map<string, int> mcap;
+    unordered_map<string, int> mvow;
+    unordered_set<string> ss;
+    for (int i = 0; i < wordlist.size(); i++)
+    {
+        string s = wordlist[i];
+        ss.insert(s);
+        string tmp1 = "";
+        string tmp2 = "";
+        for (char c : s)
+        {
+            tmp1 += tolower(c);
+            if (isvowel(c))
+                tmp2 += "a";
+            else
+                tmp2 += tolower(c);
+        }
+        if (mcap.count(tmp1) == 0)
+            mcap[tmp1] = i;
+        if (mvow.count(tmp2) == 0)
+            mvow[tmp2] = i;
+    }
+
+    vector<string> ans(queries.size());
+    for (int i = 0; i < queries.size(); i++)
+    {
+        string s = queries[i];
+        if (ss.count(s))
+        {
+            ans[i] = s;
+            continue;
+        }
+        string tmp1 = "";
+        string tmp2 = "";
+        for (char c : s)
+        {
+            tmp1 += tolower(c);
+            if (isvowel(c))
+                tmp2 += "a";
+            else
+                tmp2 += tolower(c);
+        }
+        if (mcap.count(tmp1))
+            ans[i] = wordlist[mcap[tmp1]];
+        else if (mvow.count(tmp2))
+            ans[i] = wordlist[mvow[tmp2]];
+        else
+            ans[i] = "";
+    }
+
+    return ans;
+}
