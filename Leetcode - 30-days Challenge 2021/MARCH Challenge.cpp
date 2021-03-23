@@ -1026,3 +1026,32 @@ vector<string> spellchecker(vector<string> &wordlist, vector<string> &queries)
 
     return ans;
 }
+
+// DAY 23 (3 Sum with Multiplicity)===============================================================================
+
+int mod = (1e9 + 7);
+#define f first
+#define s second
+int threeSumMulti(vector<int> &arr, int target)
+{
+    unordered_map<char, long> m;
+    for (int x : arr)
+        m[x]++;
+    long ans = 0;
+    for (auto p1 : m)
+    {
+        for (auto p2 : m)
+        {
+            int x = target - p1.f - p2.f;
+            if (!m.count(x))
+                continue;
+            if (p1.f == p2.f && p1.f == x)
+                ans += (p1.s * (p1.s - 1) * (p1.s - 2)) / 6;
+            else if (p1.f == p2.f)
+                ans += (m[x] * p1.s * (p1.s - 1)) / 2;
+            else if (p1.f < p2.f && p2.f < x)
+                ans += m[x] * p1.s * p2.s;
+        }
+    }
+    return ans % mod;
+}
