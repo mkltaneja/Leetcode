@@ -25,7 +25,9 @@ int minPathSum(vector<vector<int>> &grid)
     return minsum;
 }
 
-// APPROACH 2 (DP --> Memoized)
+// APPROACH 2 (int type - DP)
+// METHOD 1 (Memoization)
+// AC
 
 int dfs(int i, int j, int n, int m, vector<vector<int>> &grid, vector<vector<int>> &dp)
 {
@@ -46,4 +48,26 @@ int minPathSum(vector<vector<int>> &grid)
     int n = grid.size(), m = grid[0].size();
     vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
     return dfs(0, 0, n, m, grid, dp);
+}
+
+// METHOD 2 (Tabulation)
+
+int minPathSum(vector<vector<int>> &grid)
+{
+    int n = grid.size(), m = grid[0].size();
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, INT_MAX));
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        for (int j = m - 1; j >= 0; j--)
+        {
+            if (i == n - 1 && j == m - 1)
+            {
+                dp[i][j] = grid[i][j];
+                continue;
+            }
+            dp[i][j] = min(dp[i + 1][j], dp[i][j + 1]) + grid[i][j];
+        }
+    }
+    return dp[0][0];
 }
