@@ -1055,3 +1055,36 @@ int threeSumMulti(vector<int> &arr, int target)
     }
     return ans % mod;
 }
+
+// DAY 24 (Advantage Shuffle)=============================================================
+
+#define f first
+#define s second
+vector<int> advantageCount(vector<int> &A, vector<int> &B)
+{
+    int n = A.size();
+    vector<pair<int, int>> a(n), b(n);
+    for (int i = 0; i < n; i++)
+    {
+        a[i] = {A[i], i};
+        b[i] = {B[i], i};
+    }
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+
+    vector<int> ans(n, -1);
+    vector<int> tmp;
+    int j = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (a[i].f > b[j].f)
+            ans[b[j++].s] = a[i].f;
+        else
+            tmp.push_back(a[i].f);
+    }
+    int i = 0;
+    while (j < n)
+        ans[b[j++].s] = tmp[i++];
+
+    return ans;
+}
