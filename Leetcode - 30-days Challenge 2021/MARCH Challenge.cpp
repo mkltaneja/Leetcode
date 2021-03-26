@@ -1088,3 +1088,42 @@ vector<int> advantageCount(vector<int> &A, vector<int> &B)
 
     return ans;
 }
+
+// DAY 26 (Word Subsets)=====================================================================================
+
+vector<string> wordSubsets(vector<string> &A, vector<string> &B)
+{
+    int mb[26] = {0};
+    for (string s : B)
+    {
+        int m[26] = {0};
+        for (char c : s)
+            m[c - 'a']++;
+        for (int i = 0; i < 26; i++)
+            mb[i] = max(mb[i], m[i]);
+    }
+
+    vector<string> ans;
+    for (string s : A)
+    {
+        int ma[26] = {0};
+        for (char c : s)
+            ma[c - 'a']++;
+        bool flag = true;
+        // cout<<s<<": \n";
+        for (int i = 0; i < 26; i++)
+        {
+            // cout<<(char)(i+'a')<<" -  "<<ma[i]<<" "<<mb[i]<<endl;
+            if (ma[i] < mb[i])
+            {
+                flag = false;
+                break;
+            }
+        }
+        // cout<<endl;
+        if (flag)
+            ans.push_back(s);
+    }
+
+    return ans;
+}
