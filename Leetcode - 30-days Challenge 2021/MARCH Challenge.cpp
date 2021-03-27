@@ -1127,3 +1127,22 @@ vector<string> wordSubsets(vector<string> &A, vector<string> &B)
 
     return ans;
 }
+
+// DAY 27 (Palindromic Substrings)======================================================================
+
+int countSubstrings(string s)
+{
+    int n = s.size();
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+
+    int ans = 0;
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; j++, i++)
+        {
+            dp[i][j] = ((gap == 0) || ((s[i] == s[j]) && ((gap == 1) || dp[i + 1][j - 1]))) ? 1 : 0;
+            ans += dp[i][j];
+        }
+    }
+    return ans;
+}
