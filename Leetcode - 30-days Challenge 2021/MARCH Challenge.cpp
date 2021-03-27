@@ -1130,6 +1130,7 @@ vector<string> wordSubsets(vector<string> &A, vector<string> &B)
 
 // DAY 27 (Palindromic Substrings)======================================================================
 
+// METHOD 1 (Space - O(n^2))
 int countSubstrings(string s)
 {
     int n = s.size();
@@ -1143,6 +1144,22 @@ int countSubstrings(string s)
             dp[i][j] = ((gap == 0) || ((s[i] == s[j]) && ((gap == 1) || dp[i + 1][j - 1]))) ? 1 : 0;
             ans += dp[i][j];
         }
+    }
+    return ans;
+}
+
+// METHOD 2 (Space OPTIMIZED --> O(1))
+
+int countSubstrings(string s)
+{
+    int n = s.size();
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int x = 0; i + x < n && i - x >= 0 && s[i - x] == s[i + x]; x++)
+            ans++;
+        for (int x = 0; i + x + 1 < n && i - x >= 0 && s[i - x] == s[i + x + 1]; x++)
+            ans++;
     }
     return ans;
 }
