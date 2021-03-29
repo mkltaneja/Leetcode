@@ -1191,3 +1191,68 @@ string originalDigits(string s)
             ans += (char)(i + '0');
     return ans;
 }
+
+// DAY 19 (Flip Binary Tree To Match Preorder Traversal)===========================================================================
+
+bool check(TreeNode *node, int &i, vector<int> &voyage, int n, vector<int> &ans)
+{
+    if (!node)
+        return true;
+    if (i == n)
+        return false;
+    if (node->val != voyage[i])
+        return false;
+    if (!node->left && !node->right)
+        return true;
+    if (i + 1 == n)
+        return false;
+
+    bool res = true;
+
+    if ((node->left && node->left->val == voyage[i + 1]) || (node->right && node->right->val == voyage[i + 1]))
+    {
+        if (node->left && node->left->val == voyage[i + 1])
+        {
+            i++;
+            res &= check(node->left, i, voyage, n, ans);
+            if (i + 1 == n && node->right)
+                return false;
+            if (node->right && node->right->val == voyage[i + 1])
+            {
+                i++;
+                res &= check(node->right, i, voyage, n, ans);
+            }
+            else if (node->right)
+                return false;
+        }
+        else if (node->right && node->right->val == voyage[i + 1])
+        {
+            if (node->left)
+                ans.push_back(node->val);
+            i++;
+            res &= check(node->right, i, voyage, n, ans);
+            if (i + 1 == n && node->left)
+                return false;
+            if (node->left && node->left->val == voyage[i + 1])
+            {
+                i++;
+                res &= check(node->left, i, voyage, n, ans);
+            }
+            else if (node->left)
+                return false;
+        }
+    }
+    else
+        return false;
+
+    return res;
+}
+
+vector<int> flipMatchVoyage(TreeNode *root, vector<int> &voyage)
+{
+    vector<int> ans;
+    int i = 0;
+    if (!check(root, i, voyage, voyage.size(), ans))
+        return {-1};
+    return ans;
+}
