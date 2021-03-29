@@ -1163,3 +1163,31 @@ int countSubstrings(string s)
     }
     return ans;
 }
+
+// DAY 28 (Reconstruct Original Digits from English)===============================================================
+
+string originalDigits(string s)
+{
+    cout << s << ": \n";
+    int cnt[26] = {0};
+    for (char c : s)
+        cnt[c - 'a']++;
+    int digs[10] = {0, 2, 4, 6, 8, 1, 3, 5, 7, 9};
+    char uni[10] = {'z', 'w', 'u', 'x', 'g', 'o', 't', 'f', 's', 'i'};
+    vector<vector<char>> nonuni = {{'o'}, {'t', 'o'}, {'f', 'o'}, {'s', 'i'}, {'i', 't'}, {}, {}, {'i'}, {}, {}};
+
+    int tot[10];
+    for (int i = 0; i < 10; i++)
+    {
+        tot[digs[i]] = cnt[uni[i] - 'a'];
+        // cout<<tot[digs[i]]<<endl;
+        for (char c : nonuni[i])
+            cnt[c - 'a'] -= tot[digs[i]];
+    }
+    // cout<<endl;
+    string ans = "";
+    for (int i = 0; i < 10; i++)
+        while (tot[i]--)
+            ans += (char)(i + '0');
+    return ans;
+}
