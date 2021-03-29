@@ -1194,6 +1194,8 @@ string originalDigits(string s)
 
 // DAY 19 (Flip Binary Tree To Match Preorder Traversal)===========================================================================
 
+// METHOD 1 (Preorder)
+
 bool check(TreeNode *node, int &i, vector<int> &voyage, int n, vector<int> &ans)
 {
     if (!node)
@@ -1246,6 +1248,33 @@ bool check(TreeNode *node, int &i, vector<int> &voyage, int n, vector<int> &ans)
         return false;
 
     return res;
+}
+
+vector<int> flipMatchVoyage(TreeNode *root, vector<int> &voyage)
+{
+    vector<int> ans;
+    int i = 0;
+    if (!check(root, i, voyage, voyage.size(), ans))
+        return {-1};
+    return ans;
+}
+
+// METHOD 2 (Compact and Concise Code)
+
+bool check(TreeNode *node, int &i, vector<int> &voyage, int n, vector<int> &ans)
+{
+    if (!node)
+        return true;
+    if (node->val != voyage[i++])
+        return false;
+
+    if (node->left && node->right && voyage[i] == node->right->val)
+    {
+        ans.push_back(node->val);
+        swap(node->left, node->right);
+    }
+
+    return check(node->left, i, voyage, n, ans) && check(node->right, i, voyage, n, ans);
 }
 
 vector<int> flipMatchVoyage(TreeNode *root, vector<int> &voyage)
