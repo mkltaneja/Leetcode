@@ -1285,3 +1285,24 @@ vector<int> flipMatchVoyage(TreeNode *root, vector<int> &voyage)
         return {-1};
     return ans;
 }
+
+// DAY 30 (Russian Doll Envelopes)================================================================
+
+int maxEnvelopes(vector<vector<int>> &envelopes)
+{
+    int n = envelopes.size();
+    sort(envelopes.begin(), envelopes.end(), [](const auto &a, const auto &b) {
+        return (a[0] == b[0]) ? (a[1] < b[1]) : (a[0] < b[0]);
+    });
+    int maxlen = 1;
+    vector<int> dp(n, 1);
+    for (int i = 1; i < n; i++)
+    {
+        int len = 1;
+        for (int j = 0; j < i; j++)
+            if (envelopes[j][0] < envelopes[i][0] && envelopes[j][1] < envelopes[i][1] && dp[j] + 1 > dp[i])
+                dp[i] = dp[j] + 1;
+        maxlen = max(maxlen, dp[i]);
+    }
+    return maxlen;
+}
