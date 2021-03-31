@@ -1326,3 +1326,58 @@ int maxEnvelopes(vector<vector<int>> &envelopes)
     }
     return dp.size();
 }
+
+// ****NOTE(for Bit manipulation)****  -->     [n & (-n)]  denotes the difference between "n" AND "the power of two, just smaller or equal to n"  so we can get the power of two, just smallr than n by subtracting this term from n.
+
+// int n = 28;
+// while(n > 0)
+// {
+//     n -= (n & (-n));
+//     cout<<n<<endl;
+// }
+
+// DAY 31 (Stamping the Sequence)============================================================================================
+
+int reverse_stamp(int n, int m, string &stamp, string &s)
+{
+    for (int i = 0; i < m; i++)
+    {
+        int j = i, k = 0;
+        bool f = false;
+        while (j < m && k < n && (s[j] == '*' || s[j] == stamp[k]))
+        {
+            if (s[j] == stamp[k])
+                f = true;
+            j++, k++;
+        }
+        if (k == n && f)
+        {
+            k = 0;
+            while (k < n)
+                s[i + k++] = '*';
+            return i;
+        }
+    }
+    return m;
+}
+
+vector<int> movesToStamp(string stamp, string target)
+{
+    vector<int> ans, res;
+    int n = stamp.size(), m = target.size();
+    string s = target;
+    string str(m, '*');
+
+    // cout<<s<<": \n";
+    while (s != str)
+    {
+        int i = reverse_stamp(n, m, stamp, s);
+        // cout<<s<<", "<<i<<endl;
+        if (i == m)
+            return res;
+        ans.push_back(i);
+    }
+    for (int i = ans.size() - 1; i >= 0; i--)
+        res.push_back(ans[i]);
+    return res;
+}
