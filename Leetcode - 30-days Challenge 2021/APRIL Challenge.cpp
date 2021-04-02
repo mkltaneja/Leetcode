@@ -69,3 +69,41 @@ bool isPalindrome(ListNode *head)
     }
     return (!tmp && !tmp1);
 }
+
+// DAY 2 (Ones and Zeros)====================================================================
+
+// APPROACH 1 (Subsequence Method) --> O(2^n)
+// TLE
+int subseq(int i, vector<pair<int, int>> &v01, int n, int m)
+{
+    if (i == v01.size())
+        return 0;
+
+    int ans = 0;
+    if (n - v01[i].first >= 0 && m - v01[i].second >= 0)
+        ans = subseq(i + 1, v01, n - v01[i].first, m - v01[i].second) + 1;
+    ans = max(ans, subseq(i + 1, v01, n, m));
+
+    return ans;
+}
+
+int findMaxForm(vector<string> &strs, int m, int n)
+{
+    int sz = strs.size();
+    cout << sz << endl;
+    vector<pair<int, int>> v01(sz);
+    for (int i = 0; i < sz; i++)
+    {
+        int c0 = 0, c1 = 0;
+        for (char c : strs[i])
+        {
+            if (c == '0')
+                c0++;
+            else
+                c1++;
+        }
+        v01[i] = {c0, c1};
+    }
+
+    return subseq(0, v01, m, n);
+}
