@@ -107,3 +107,42 @@ int findMaxForm(vector<string> &strs, int m, int n)
 
     return subseq(0, v01, m, n);
 }
+
+// METHOD 2 (3D - DP)
+// AC
+
+int subseq(int i, vector<pair<int, int>> &v01, int m, int n, vector<vector<vector<int>>> &dp)
+{
+    if (i == v01.size())
+        return dp[i][m][n] = 0;
+    if (dp[i][m][n] != -1)
+        return dp[i][m][n];
+    int ans = 0;
+    if (m - v01[i].first >= 0 && n - v01[i].second >= 0)
+        ans = subseq(i + 1, v01, m - v01[i].first, n - v01[i].second, dp) + 1;
+    ans = max(ans, subseq(i + 1, v01, m, n, dp));
+
+    return dp[i][m][n] = ans;
+}
+
+int findMaxForm(vector<string> &strs, int m, int n)
+{
+    int sz = strs.size();
+    // cout<<sz<<endl;
+    vector<pair<int, int>> v01(sz);
+    for (int i = 0; i < sz; i++)
+    {
+        int c0 = 0, c1 = 0;
+        for (char c : strs[i])
+        {
+            if (c == '0')
+                c0++;
+            else
+                c1++;
+        }
+        v01[i] = {c0, c1};
+    }
+
+    vector<vector<vector<int>>> dp(sz + 1, (vector<vector<int>>(m + 1, vector<int>(n + 1, -1))));
+    return subseq(0, v01, m, n, dp);
+}
