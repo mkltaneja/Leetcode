@@ -149,6 +149,7 @@ int findMaxForm(vector<string> &strs, int m, int n)
 
 // DAY 3 (Longest Valid Parenthesis)===================================================================================
 
+// METHOD 1 (Using Stack of pair)
 int longestValidParentheses(string s)
 {
     stack<pair<int, int>> st;
@@ -171,6 +172,30 @@ int longestValidParentheses(string s)
             ans = max(ans, len);
             plen = len;
             st.pop();
+        }
+    }
+    return ans;
+}
+
+// METHOD 2 (SHORTER, CONCISE AND OPTIMIZED WAY)
+
+int longestValidParentheses(string s)
+{
+    stack<int> st;
+    st.push(-1);
+    int ans = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (s[i] == '(')
+            st.push(i);
+        else
+        {
+            if (!st.empty())
+                st.pop();
+            if (st.empty())
+                st.push(i);
+            else
+                ans = max(ans, i - st.top());
         }
     }
     return ans;
