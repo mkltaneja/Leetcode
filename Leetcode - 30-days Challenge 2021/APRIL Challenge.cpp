@@ -200,3 +200,71 @@ int longestValidParentheses(string s)
     }
     return ans;
 }
+
+// DAY 4 (Design Circular Queue)========================================================
+class MyCircularQueue
+{
+public:
+    vector<int> arr;
+    int n;
+    int si, ei;
+    MyCircularQueue(int k)
+    {
+        arr.reserve(k);
+        si = -1, ei = -1;
+        n = k;
+    }
+
+    bool enQueue(int value)
+    {
+        if ((ei + 1) % n == si)
+            return false;
+        if (si == -1)
+            si++;
+        ei = (ei + 1) % n;
+        arr[ei] = value;
+        return true;
+    }
+
+    bool deQueue()
+    {
+        if (si == -1)
+            return false;
+        if (si == ei)
+            si = -1, ei = -1;
+        else
+            si = (si + 1) % n;
+        return true;
+    }
+
+    int Front()
+    {
+        return (si == -1) ? -1 : arr[si];
+    }
+
+    int Rear()
+    {
+        return (ei == -1) ? -1 : arr[ei];
+    }
+
+    bool isEmpty()
+    {
+        return (si == -1);
+    }
+
+    bool isFull()
+    {
+        return ((ei + 1) % n == si);
+    }
+};
+
+/**
+ * Your MyCircularQueue object will be instantiated and called as such:
+ * MyCircularQueue* obj = new MyCircularQueue(k);
+ * bool param_1 = obj->enQueue(value);
+ * bool param_2 = obj->deQueue();
+ * int param_3 = obj->Front();
+ * int param_4 = obj->Rear();
+ * bool param_5 = obj->isEmpty();
+ * bool param_6 = obj->isFull();
+ */
