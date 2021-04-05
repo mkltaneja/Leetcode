@@ -271,16 +271,27 @@ public:
 
 // DAY 5 (Global and Local Inversions)=====================================================
 
-// APPROACH 1 (Brute Force)
+// APPROACH 1 (Brute Force) --> O(n^2)
 // TLE
 
 bool isIdealPermutation(vector<int> &A)
 {
     int n = A.size();
-    int a = A[0], b = A[1];
     for (int i = 0; i < n - 2; i++)
         for (int j = i + 2; j < n; j++)
             if (A[j] < A[i])
                 return false;
+    return true;
+}
+
+// APPROACH 2 (Ideal Permutation) --> O(n)
+
+bool isIdealPermutation(vector<int> &A)
+{
+    int n = A.size();
+    int a = 0, b = 1;
+    for (int i = 0; i < n; i++)
+        if (A[i] != i - 1 && A[i] != i && A[i] != i + 1)
+            return false;
     return true;
 }
