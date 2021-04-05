@@ -63,3 +63,28 @@ int minCost(vector<vector<int>> &costs)
     return mincost(n, costs, dp);
     // write your code here
 }
+
+// METHOD 3 (Tabulation)
+
+int mincost(int n, vector<vector<int>> &costs, vector<vector<int>> &dp)
+{
+    for (int i = n - 1; i >= 0; i--)
+        for (int j = 0; j < costs[i].size(); j++)
+            for (int k = 0; k < costs[i].size(); i++)
+                if (k != j)
+                    dp[i][j] = costs[i][j] + min(dp[i + 1][k], dp[i + 1][k]);
+    int mini = INT_MAX;
+    for (int i = 0; i < n; i++)
+        mini = min(mini, dp[0][i]);
+    return mini;
+}
+
+int minCostII(vector<vector<int>> &costs)
+{
+    int n = costs.size();
+    if (n == 0)
+        return 0;
+    vector<vector<int>> dp(n + 1, vector<int>(costs[0].size(), 0));
+    return mincost(n, costs, dp);
+    // write your code here
+}
