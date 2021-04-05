@@ -289,9 +289,8 @@ bool isIdealPermutation(vector<int> &A)
 bool isIdealPermutation(vector<int> &A)
 {
     int n = A.size();
-    int a = 0, b = 1;
     for (int i = 0; i < n; i++)
-        if (A[i] != i - 1 && A[i] != i && A[i] != i + 1)
+        if (abs(A[i] - i) > 1)
             return false;
     return true;
 }
