@@ -268,3 +268,19 @@ public:
  * bool param_5 = obj->isEmpty();
  * bool param_6 = obj->isFull();
  */
+
+// DAY 5 (Global and Local Inversions)=====================================================
+
+// APPROACH 1 (Brute Force)
+// TLE
+
+bool isIdealPermutation(vector<int> &A)
+{
+    int n = A.size();
+    int a = A[0], b = A[1];
+    for (int i = 0; i < n - 2; i++)
+        for (int j = i + 2; j < n; j++)
+            if (A[j] < A[i])
+                return false;
+    return true;
+}
