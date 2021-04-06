@@ -294,3 +294,14 @@ bool isIdealPermutation(vector<int> &A)
             return false;
     return true;
 }
+
+// DAY 6 (Minimum operation to Make Array Equal)==================================================================
+
+int minOperations(int n)
+{
+    int ans = 0;
+    int x = 1, i = 0;
+    for (int i = 0; i < n / 2; i++)
+        ans += n - x, x += 2;
+    return ans;
+}
