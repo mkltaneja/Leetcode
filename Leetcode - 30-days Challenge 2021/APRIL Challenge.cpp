@@ -305,3 +305,23 @@ int minOperations(int n)
         ans += n - x, x += 2;
     return ans;
 }
+
+// DAY 7 (Determine if String Halves are Alike)=========================================================================
+
+bool isalpha(char c)
+{
+    return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
+}
+
+bool halvesAreAlike(string s)
+{
+    int n = s.size(), cnt = 0;
+    for (int i = 0, j = n / 2; i < n / 2 && j < n; i++, j++)
+    {
+        if (isalpha(tolower(s[i])))
+            cnt++;
+        if (isalpha(tolower(s[j])))
+            cnt--;
+    }
+    return cnt == 0;
+}
