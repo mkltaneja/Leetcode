@@ -325,3 +325,25 @@ bool halvesAreAlike(string s)
     }
     return cnt == 0;
 }
+
+// DAY 8 (Letter Combinations of a Phone Number)=============================================================================
+
+void combinations(int i, string ans, string &digits, vector<string> &keypad, vector<string> &combs)
+{
+    if (i == digits.size())
+    {
+        if (!ans.empty())
+            combs.push_back(ans);
+        return;
+    }
+    for (int j = 0; j < keypad[digits[i] - '0'].size(); j++)
+        combinations(i + 1, ans + keypad[digits[i] - '0'][j], digits, keypad, combs);
+}
+
+vector<string> letterCombinations(string digits)
+{
+    vector<string> keypad = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    vector<string> combs;
+    combinations(0, "", digits, keypad, combs);
+    return combs;
+}
