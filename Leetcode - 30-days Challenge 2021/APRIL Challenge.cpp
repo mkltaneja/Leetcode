@@ -347,3 +347,37 @@ vector<string> letterCombinations(string digits)
     combinations(0, "", digits, keypad, combs);
     return combs;
 }
+
+// DAY 9 (Verifying an Alien Dictionary)===========================================================================================
+
+bool compare(string &a, string &b, unordered_map<char, int> m)
+{
+    int i = 0, j = 0;
+    while (i < a.size() || j < b.size())
+    {
+        // cout<<a[i]<<" "<<b[j]<<": "<<endl;
+        if (i == a.size())
+            return true;
+        if (j == b.size())
+            return false;
+        if (m[b[j]] < m[a[i]])
+            return false;
+        if (m[b[j++]] > m[a[i++]])
+            return true;
+    }
+    return true;
+}
+
+bool isAlienSorted(vector<string> &words, string order)
+{
+    unordered_map<char, int> m;
+    for (int i = 0; i < order.size(); i++)
+        m[order[i]] = i;
+    for (int i = 0; i < words.size() - 1; i++)
+    {
+        // cout<<words[i]<<" "<<words[i+1]<<endl;
+        if (!compare(words[i], words[i + 1], m))
+            return false;
+    }
+    return true;
+}
