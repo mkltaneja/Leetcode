@@ -467,3 +467,29 @@ int deepestLeavesSum(TreeNode *root)
     dfs(0, maxlevel, sum, root);
     return sum;
 }
+
+// APPROACH 2 (BFS)
+
+int deepestLeavesSum(TreeNode *root)
+{
+    queue<TreeNode *> que;
+    que.push(root);
+    int ans = 0;
+    while (!que.empty())
+    {
+        int sz = que.size();
+        int sum = 0;
+        while (sz--)
+        {
+            TreeNode *top = que.front();
+            sum += top->val;
+            que.pop();
+            if (top->left)
+                que.push(top->left);
+            if (top->right)
+                que.push(top->right);
+        }
+        ans = sum;
+    }
+    return ans;
+}
