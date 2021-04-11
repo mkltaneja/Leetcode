@@ -441,3 +441,29 @@ int longestIncreasingPath(vector<vector<int>> &matrix)
             maxlen = max(maxlen, dfs(i, j, -1, n, m, matrix, dp));
     return maxlen;
 }
+
+// DAY 11 (Deepest Leaves Sum)==========================================================
+
+// APPROACH 1 (DFS)
+
+void dfs(int level, int &maxlevel, int &sum, TreeNode *node)
+{
+    if (!node)
+        return;
+    if (level > maxlevel)
+    {
+        maxlevel = level;
+        sum = node->val;
+    }
+    else if (level == maxlevel)
+        sum += node->val;
+    dfs(level + 1, maxlevel, sum, node->left);
+    dfs(level + 1, maxlevel, sum, node->right);
+}
+
+int deepestLeavesSum(TreeNode *root)
+{
+    int sum = 0, maxlevel = -1;
+    dfs(0, maxlevel, sum, root);
+    return sum;
+}
