@@ -413,3 +413,31 @@ int longestIncreasingPath(vector<vector<int>> &matrix)
     }
     return maxlen;
 }
+
+// APPROACH 2 (DP)
+// AC
+
+int dfs(int i, int j, int prev, int n, int m, vector<vector<int>> &arr, vector<vector<int>> &dp)
+{
+    if (i == n || j == m || i == -1 || j == -1 || arr[i][j] <= prev)
+        return 0;
+    if (dp[i][j] != -1)
+        return dp[i][j];
+    int maxi = max({dfs(i + 1, j, arr[i][j], n, m, arr, dp),
+                    dfs(i, j + 1, arr[i][j], n, m, arr, dp),
+                    dfs(i - 1, j, arr[i][j], n, m, arr, dp),
+                    dfs(i, j - 1, arr[i][j], n, m, arr, dp)});
+    return dp[i][j] = maxi + 1;
+}
+
+int longestIncreasingPath(vector<vector<int>> &matrix)
+{
+    int maxlen = 1;
+    int n = matrix.size();
+    int m = matrix[0].size();
+    vector<vector<int>> dp(n, vector<int>(m, -1));
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            maxlen = max(maxlen, dfs(i, j, -1, n, m, matrix, dp));
+    return maxlen;
+}
