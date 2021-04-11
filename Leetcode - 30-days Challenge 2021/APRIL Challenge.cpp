@@ -350,7 +350,7 @@ vector<string> letterCombinations(string digits)
 
 // DAY 9 (Verifying an Alien Dictionary)===========================================================================================
 
-bool compare(string &a, string &b, unordered_map<char, int> m)
+bool compare(string &a, string &b, vector<int> &m)
 {
     int i = 0, j = 0;
     while (i < a.size() || j < b.size())
@@ -360,9 +360,9 @@ bool compare(string &a, string &b, unordered_map<char, int> m)
             return true;
         if (j == b.size())
             return false;
-        if (m[b[j]] < m[a[i]])
+        if (m[b[j] - 'a'] < m[a[i] - 'a'])
             return false;
-        if (m[b[j++]] > m[a[i++]])
+        if (m[b[j++] - 'a'] > m[a[i++] - 'a'])
             return true;
     }
     return true;
@@ -370,14 +370,46 @@ bool compare(string &a, string &b, unordered_map<char, int> m)
 
 bool isAlienSorted(vector<string> &words, string order)
 {
-    unordered_map<char, int> m;
+    vector<int> m(26, 26);
     for (int i = 0; i < order.size(); i++)
-        m[order[i]] = i;
+        m[order[i] - 'a'] = i;
     for (int i = 0; i < words.size() - 1; i++)
-    {
-        // cout<<words[i]<<" "<<words[i+1]<<endl;
         if (!compare(words[i], words[i + 1], m))
             return false;
-    }
     return true;
+}
+
+// DAY 10 (Longest Increasing Path in a Matrix)=========================================================================================
+
+// APPROACH 1 (Void Type)
+// TLE
+void dfs(int i, int j, int len, int &maxlen, int n, int m, vector<vector<int>> &arr)
+{
+    maxlen = max(maxlen, len);
+    // cout<<len<<", ";
+    // cout<<maxlen<<endl;
+    if ((i + 1 != n) && (arr[i + 1][j] > arr[i][j]))
+        dfs(i + 1, j, len + 1, maxlen, n, m, arr);
+    if ((j + 1 != m) && (arr[i][j + 1] > arr[i][j]))
+        dfs(i, j + 1, len + 1, maxlen, n, m, arr);
+    if ((i - 1 != -1) && (arr[i - 1][j] > arr[i][j]))
+        dfs(i - 1, j, len + 1, maxlen, n, m, arr);
+    if ((j - 1 != -1) && (arr[i][j - 1] > arr[i][j]))
+        dfs(i, j - 1, len + 1, maxlen, n, m, arr);
+}
+
+int longestIncreasingPath(vector<vector<int>> &matrix)
+{
+    int maxlen = 1;
+    int n = matrix.size();
+    int m = matrix[0].size();
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            dfs(i, j, 1, maxlen, n, m, matrix);
+            // cout<<endl;
+        }
+    }
+    return maxlen;
 }
