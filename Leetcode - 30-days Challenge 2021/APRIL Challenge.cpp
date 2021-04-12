@@ -496,6 +496,7 @@ int deepestLeavesSum(TreeNode *root)
 
 // DAY 12 (Beautiful Arrangement 2)=========================================================================
 
+// METHOD 1 (By Keeping difference variable)
 vector<int> constructArray(int n, int k)
 {
     vector<int> ans(n);
@@ -512,5 +513,16 @@ vector<int> constructArray(int n, int k)
     d = (d < 0) ? -1 : 1;
     while (i < n)
         ans[i] = ans[i - 1] + d, i++;
+    return ans;
+}
+
+// METHOD 2 (Using 2 Pointers)
+
+vector<int> constructArray(int n, int k)
+{
+    vector<int> ans(n);
+    int a = 1, b = n;
+    for (int i = 0; i < n; i++)
+        ans[i] = (k > 1) ? ((k-- % 2) ? a++ : b--) : a++;
     return ans;
 }
