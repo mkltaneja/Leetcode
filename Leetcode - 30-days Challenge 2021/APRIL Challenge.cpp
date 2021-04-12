@@ -493,3 +493,24 @@ int deepestLeavesSum(TreeNode *root)
     }
     return ans;
 }
+
+// DAY 12 (Beautiful Arrangement 2)=========================================================================
+
+vector<int> constructArray(int n, int k)
+{
+    vector<int> ans(n);
+    int d = n - 1, x = 1;
+    ans[0] = 1;
+    int i = 1;
+    while (i < n && --k)
+    {
+        ans[i] = ans[i - 1] + d;
+        // cout<<ans[i]<<" "<<d<<endl;
+        i++;
+        d = d < 0 ? -(d + 1) : -(d - 1);
+    }
+    d = (d < 0) ? -1 : 1;
+    while (i < n)
+        ans[i] = ans[i - 1] + d, i++;
+    return ans;
+}
