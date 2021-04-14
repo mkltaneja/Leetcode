@@ -529,7 +529,6 @@ vector<int> constructArray(int n, int k)
 
 // DAY 13 (Flatten Nested List Iterator)===============================================
 
-
 /**
  * // This is the interface that allows for creating nested lists.
  * // You should not implement it, or speculate about its implementation
@@ -548,36 +547,37 @@ vector<int> constructArray(int n, int k)
  * };
  */
 
-class NestedIterator {
+class NestedIterator
+{
 public:
     vector<int> ans;
     int idx;
-    
+
     void flatten(vector<NestedInteger> list)
     {
-        for(int i = 0; i < list.size(); i++)
+        for (int i = 0; i < list.size(); i++)
         {
-            if(list[i].isInteger())
+            if (list[i].isInteger())
                 ans.push_back(list[i].getInteger());
             else
                 flatten(list[i].getList());
         }
     }
-    
-    NestedIterator(vector<NestedInteger> &nestedList) 
+
+    NestedIterator(vector<NestedInteger> &nestedList)
     {
         flatten(nestedList);
         idx = 0;
     }
-    
+
     int next()
     {
         return ans[idx++];
     }
-    
-    bool hasNext() 
+
+    bool hasNext()
     {
-        return idx<ans.size();
+        return idx < ans.size();
     }
 };
 
@@ -586,3 +586,31 @@ public:
  * NestedIterator i(nestedList);
  * while (i.hasNext()) cout << i.next();
  */
+
+// DAY 14 (Partition List)========================================================================
+
+ListNode *partition(ListNode *head, int x)
+{
+    ListNode *l = new ListNode(INT_MIN), *li = l;
+    ListNode *r = new ListNode(INT_MIN), *ri = r;
+    ListNode *itr = head;
+    while (itr)
+    {
+        // cout<<itr->val<<endl;
+        if (itr->val < x)
+        {
+            li->next = new ListNode(itr->val);
+            li = li->next;
+        }
+        else
+        {
+            ri->next = new ListNode(itr->val);
+            ri = ri->next;
+        }
+        itr = itr->next;
+    }
+    l = l->next;
+    r = r->next;
+    li->next = r;
+    return l ? l : r;
+}
