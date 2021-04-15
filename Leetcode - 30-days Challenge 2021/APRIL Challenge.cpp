@@ -649,3 +649,40 @@ int fib(int n)
     int bf = round((pow((1 + sqrt(5)) / 2, n)) / sqrt(5));
     return bf;
 }
+
+// APPROACH 4 (Matrix Exponentiation)  --> O(logn)
+
+vector<vector<int>> mult(vector<vector<int>> &A, vector<vector<int>> &B)
+{
+    int a = A[0][0] * B[0][0] + A[0][1] * B[1][0];
+    int b = A[0][0] * B[0][1] + A[0][1] * B[1][1];
+    int c = A[1][0] * B[0][0] + A[1][1] * B[1][0];
+    int d = A[1][0] * B[0][1] + A[1][1] * B[1][1];
+
+    A = {{a, b}, {c, d}};
+    return A;
+}
+
+int binpow(vector<vector<int>> &A, int n)
+{
+    vector<vector<int>> ans = {{1, 0}, {0, 1}}; // Identity Matrix
+    while (n)                                   // Binary Exponentiation
+    {
+        if (n & 1)
+            ans = mult(ans, A);
+        A = mult(A, A);
+        n >>= 1;
+    }
+    // cout<<ans[0][0]<<" "<<ans[0][1]<<endl;
+    // cout<<ans[1][0]<<" "<<ans[1][1]<<endl;
+    // cout<<endl;
+    return ans[0][0];
+}
+
+int fib(int n)
+{
+    if (n <= 1)
+        return n;
+    vector<vector<int>> A = {{1, 1}, {1, 0}};
+    return binpow(A, n - 1);
+}
