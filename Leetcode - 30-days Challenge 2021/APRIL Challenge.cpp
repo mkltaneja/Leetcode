@@ -614,3 +614,21 @@ ListNode *partition(ListNode *head, int x)
     li->next = r;
     return l ? l : r;
 }
+
+// DAY 15 (Fibonacci Numbers)===============================================================================
+
+// APPROACH 1 --> O(n)
+
+int fib(int n)
+{
+    if (n == 0 || n == 1)
+        return n;
+    int a = 0, b = 1, ans = 0;
+    while (--n)
+    {
+        ans = a + b;
+        a = b;
+        b = ans;
+    }
+    return ans;
+}
