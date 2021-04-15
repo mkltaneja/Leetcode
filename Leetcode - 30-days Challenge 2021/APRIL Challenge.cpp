@@ -617,7 +617,16 @@ ListNode *partition(ListNode *head, int x)
 
 // DAY 15 (Fibonacci Numbers)===============================================================================
 
-// APPROACH 1 --> O(n)
+// APPROACH 1 (Recursive) --> O(2^n)
+
+int fib(int n)
+{
+    if (n <= 1)
+        return n;
+    return fib(n - 1) + fib(n - 2);
+}
+
+// APPROACH 2 (2 pointers) --> O(n)
 
 int fib(int n)
 {
@@ -631,4 +640,12 @@ int fib(int n)
         b = ans;
     }
     return ans;
+}
+
+// APPROACH 3 (Using Benit's Formula) --> O(1)  (Not right for large values of n)
+
+int fib(int n)
+{
+    int bf = round((pow((1 + sqrt(5)) / 2, n)) / sqrt(5));
+    return bf;
 }
