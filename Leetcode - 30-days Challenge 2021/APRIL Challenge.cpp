@@ -686,3 +686,29 @@ int fib(int n)
     vector<vector<int>> A = {{1, 1}, {1, 0}};
     return binpow(A, n - 1);
 }
+
+// DAY 16 (Remove all Adjacent Duplicates in String 2)============================================================
+
+string removeDuplicates(string s, int k)
+{
+    int n = s.size();
+    stack<pair<char, int>> st;
+    for (int i = 0; i < n; i++)
+    {
+        st.push({s[i], (st.empty() || (st.top().first != s[i])) ? 1 : st.top().second + 1});
+        if (st.top().second == k)
+        {
+            for (int j = 0; j < k; j++)
+                st.pop();
+        }
+    }
+    string ans = "";
+    while (!st.empty())
+    {
+        ans += st.top().first;
+        st.pop();
+    }
+    reverse(ans.begin(), ans.end());
+
+    return ans;
+}
