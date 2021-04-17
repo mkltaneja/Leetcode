@@ -689,6 +689,8 @@ int fib(int n)
 
 // DAY 16 (Remove all Adjacent Duplicates in String 2)============================================================
 
+// APPROACH 1 (Using Stack)
+
 string removeDuplicates(string s, int k)
 {
     int n = s.size();
@@ -710,5 +712,36 @@ string removeDuplicates(string s, int k)
     }
     reverse(ans.begin(), ans.end());
 
+    return ans;
+}
+
+// APPROACH 2 ()
+
+// DAY 17(Number of Matrices that sum to n)====================================================================================
+
+// APPROACH --> (Similar to 1D array problem whih was of O(n)) --> O(n^2)
+int numSubmatrixSumTarget(vector<vector<int>> &matrix, int target)
+{
+    int n = matrix.size(), m = matrix[0].size();
+    for (int i = 0; i < n; i++)
+        for (int j = 1; j < m; j++)
+            matrix[i][j] += matrix[i][j - 1];
+    unordered_map<int, int> sums;
+    int ans = 0;
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = i; j < m; j++)
+        {
+            int csum = 0;
+            sums[0] = 1;
+            for (int k = 0; k < n; k++)
+            {
+                csum += matrix[k][j] - (i ? matrix[k][i - 1] : 0);
+                ans += sums[csum - target];
+                sums[csum]++;
+            }
+            sums.clear();
+        }
+    }
     return ans;
 }
