@@ -689,7 +689,7 @@ int fib(int n)
 
 // DAY 16 (Remove all Adjacent Duplicates in String 2)============================================================
 
-// APPROACH 1 (Using Stack)
+// APPROACH 1 (Using Stack) --> O(n*k)
 
 string removeDuplicates(string s, int k)
 {
@@ -715,7 +715,32 @@ string removeDuplicates(string s, int k)
     return ans;
 }
 
-// APPROACH 2 ()
+// APPROACH 2 (Without Stack -- Naive Approach) --> >O(n^2)
+
+string removeDuplicates(string s, int k)
+{
+    int n = s.size();
+    bool f = true;
+    while (f)
+    {
+        f = false;
+        int x = 1;
+        for (int i = 1; i < s.size(); i++)
+        {
+            if (s[i] == s[i - 1])
+            {
+                if (++x == k)
+                {
+                    f = true;
+                    s = s.substr(0, i - (k - 1)) + s.substr(i + 1);
+                }
+            }
+            else
+                x = 1;
+        }
+    }
+    return s;
+}
 
 // DAY 17(Number of Matrices that sum to n)====================================================================================
 
