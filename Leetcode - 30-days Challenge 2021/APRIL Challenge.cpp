@@ -770,3 +770,29 @@ int numSubmatrixSumTarget(vector<vector<int>> &matrix, int target)
     }
     return ans;
 }
+
+// DAY 18 (Remove nth Node from End of the List)========================================================================
+
+ListNode *removeNthFromEnd(ListNode *head, int n)
+{
+    int sz = 0;
+    ListNode *itr = head;
+    while (itr)
+    {
+        sz++;
+        itr = itr->next;
+    }
+    int x = sz - n;
+    ListNode *curr = head, *prev = nullptr;
+    while (x--)
+    {
+        prev = curr;
+        curr = curr->next;
+    }
+    if (prev)
+        prev->next = curr->next;
+    else
+        head = head->next;
+
+    return head;
+}
