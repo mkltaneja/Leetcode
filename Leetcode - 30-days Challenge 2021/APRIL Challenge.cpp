@@ -825,3 +825,21 @@ int combinationSum4(vector<int> &nums, int target)
                 dp[tar] += dp[tar - nums[i]];
     return dp[target];
 }
+
+// DAY 20 (N-ary Tree Preorder Traversal)===========================================================
+
+void preorder_(Node *node, vector<int> &ans)
+{
+    if (!node)
+        return;
+    ans.push_back(node->val);
+    for (Node *n : node->children)
+        preorder_(n, ans);
+}
+
+vector<int> preorder(Node *root)
+{
+    vector<int> ans;
+    preorder_(root, ans);
+    return ans;
+}
