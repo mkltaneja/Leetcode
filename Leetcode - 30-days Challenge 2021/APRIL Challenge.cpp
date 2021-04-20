@@ -796,3 +796,19 @@ ListNode *removeNthFromEnd(ListNode *head, int n)
 
     return head;
 }
+
+// DAY 19 (Combination Sum 4)====================================================================
+
+// METHOD 1 (Bottom-Up -- Coin change - Permutation of infinite coins) --> O(n^n)
+// TLE
+
+int combinationSum4(vector<int> &nums, int target)
+{
+    if (target == 0)
+        return 1;
+    int count = 0;
+    for (int i = 0; i < nums.size(); i++)
+        if (target - nums[i] >= 0)
+            count += combinationSum4(nums, target - nums[i]);
+    return count;
+}
