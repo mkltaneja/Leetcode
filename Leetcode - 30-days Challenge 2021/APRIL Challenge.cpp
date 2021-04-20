@@ -812,3 +812,16 @@ int combinationSum4(vector<int> &nums, int target)
             count += combinationSum4(nums, target - nums[i]);
     return count;
 }
+
+// METHOD 2 (Top-Down) --> O(n*target)
+
+int combinationSum4(vector<int> &nums, int target)
+{
+    vector<unsigned int> dp(target + 1, 0);
+    dp[0] = 1;
+    for (int tar = 1; tar <= target; tar++)
+        for (int i = 0; i < nums.size(); i++)
+            if (tar - nums[i] >= 0)
+                dp[tar] += dp[tar - nums[i]];
+    return dp[target];
+}
