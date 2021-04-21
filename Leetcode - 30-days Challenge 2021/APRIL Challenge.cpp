@@ -911,3 +911,20 @@ int minimumTotal(vector<vector<int>> &triangle)
     vector<vector<int>> dp(n, vector<int>(n, -1));
     return dfs(0, 0, triangle, dp);
 }
+
+// APPROACH 2 (1D DP)
+
+int dfs(int i, int j, int n, vector<vector<int>> &cost, vector<int> &dp)
+{
+    for (int i = n - 1; i >= 0; i--)
+        for (int j = 0; j <= i; j++)
+            dp[j] = cost[i][j] + min(dp[j], dp[j + 1]);
+    return dp[0];
+}
+
+int minimumTotal(vector<vector<int>> &triangle)
+{
+    int n = triangle.size();
+    vector<int> dp(n + 1, 0);
+    return dfs(0, 0, n, triangle, dp);
+}
