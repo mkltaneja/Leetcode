@@ -888,3 +888,25 @@ public:
         return ans;
     }
 }
+
+// DAY 21 (Triangle)=====================================================================================
+
+void dfs(int i, int j, int cost, int &mincost, vector<vector<int>> &arr)
+{
+    if (i == arr.size())
+    {
+        mincost = min(mincost, cost);
+        return;
+    }
+    cost += arr[i][j];
+
+    dfs(i + 1, j, cost, mincost, arr);
+    dfs(i + 1, j + 1, cost, mincost, arr);
+}
+
+int minimumTotal(vector<vector<int>> &triangle)
+{
+    int mincost = INT_MAX;
+    dfs(0, 0, 0, mincost, triangle);
+    return mincost;
+}
