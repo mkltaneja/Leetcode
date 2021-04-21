@@ -887,26 +887,27 @@ public:
         }
         return ans;
     }
-}
+};
 
 // DAY 21 (Triangle)=====================================================================================
 
-void dfs(int i, int j, int cost, int &mincost, vector<vector<int>> &arr)
-{
-    if (i == arr.size())
-    {
-        mincost = min(mincost, cost);
-        return;
-    }
-    cost += arr[i][j];
+// APPROACH 1 (2D DP)
 
-    dfs(i + 1, j, cost, mincost, arr);
-    dfs(i + 1, j + 1, cost, mincost, arr);
+int dfs(int i, int j, vector<vector<int>> &cost, vector<vector<int>> &dp)
+{
+    if (i == cost.size())
+        return 0;
+    if (dp[i][j] != -1)
+        return dp[i][j];
+    int l = dfs(i + 1, j, cost, dp);
+    int r = dfs(i + 1, j + 1, cost, dp);
+
+    return dp[i][j] = cost[i][j] + min(l, r);
 }
 
 int minimumTotal(vector<vector<int>> &triangle)
 {
-    int mincost = INT_MAX;
-    dfs(0, 0, 0, mincost, triangle);
-    return mincost;
+    int n = triangle.size();
+    vector<vector<int>> dp(n, vector<int>(n, -1));
+    return dfs(0, 0, triangle, dp);
 }
