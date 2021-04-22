@@ -928,3 +928,22 @@ int minimumTotal(vector<vector<int>> &triangle)
     vector<int> dp(n + 1, 0);
     return dfs(0, 0, n, triangle, dp);
 }
+
+// DAY 22 (Brikc Wall)=========================================================================
+
+int leastBricks(vector<vector<int>> &wall)
+{
+    int n = wall.size();
+    int nocross = 0;
+    unordered_map<int, int> m;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < wall[i].size() - 1; j++)
+        {
+            wall[i][j] += (j == 0) ? 0 : wall[i][j - 1];
+            m[wall[i][j]]++;
+            nocross = max(nocross, m[wall[i][j]]);
+        }
+    }
+    return n - nocross;
+}
