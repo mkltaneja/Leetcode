@@ -947,3 +947,26 @@ int leastBricks(vector<vector<int>> &wall)
     }
     return n - nocross;
 }
+
+// DAY 23 (Count Binary Strings)========================================================================
+
+int countBinarySubstrings(string s)
+{
+    int ans = 0;
+    int i = 0, n = s.size();
+    char c = s[0];
+    int cnt[2] = {0, 0};
+    while (i < n)
+    {
+        cnt[c - '0'] = 0;
+
+        while (i < n && s[i] == c)
+            cnt[c - '0']++, i++;
+        c = (((c - '0') + 1) % 2) + '0';
+        ans += min(cnt[0], cnt[1]);
+
+        // cout<<cnt[0]<<", "<<cnt[1]<<": "<<endl;
+    }
+    // cout<<endl;
+    return ans;
+}
