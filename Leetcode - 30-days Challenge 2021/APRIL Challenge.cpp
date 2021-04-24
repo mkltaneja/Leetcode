@@ -970,3 +970,48 @@ int countBinarySubstrings(string s)
     // cout<<endl;
     return ans;
 }
+
+// DAY 24 (critical Connections in a Network)======================================================================
+
+vector<vector<int>> gp;
+vector<int> disc;
+vector<int> low;
+vector<int> par;
+vector<vector<int>> ans;
+void tarjan(int u)
+{
+    static int time = 0;
+    disc[u] = low[u] = time++;
+
+    for (int v : gp[u])
+    {
+        if (disc[v] == -1)
+        {
+            par[v] = u;
+            tarjan(v);
+            low[u] = min(low[u], low[v]);
+            if (disc[u] < low[v])
+                ans.push_back({u, v});
+        }
+        else if (par[u] != v)
+            low[u] = min(low[u], disc[v]);
+    }
+}
+
+vector<vector<int>> criticalConnections(int n, vector<vector<int>> &connections)
+{
+    gp.resize(n);
+    disc.resize(n, -1);
+    low.resize(n);
+    par.resize(n);
+    for (vector<int> v : connections)
+    {
+        gp[v[0]].push_back(v[1]);
+        gp[v[1]].push_back(v[0]);
+    }
+    vector<int> disc(n, -1), low(n), par(n);
+    for (int i = 0; i < n; i++)
+        if (disc[i] == -1)
+            tarjan(i);
+    return ans;
+}
