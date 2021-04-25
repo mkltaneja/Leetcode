@@ -1018,6 +1018,8 @@ vector<vector<int>> criticalConnections(int n, vector<vector<int>> &connections)
 
 // DAY 25 (Rotate Image)========================================================================
 
+// APPROACH 1 (Taking Strips for every level)
+
 void rotate(vector<vector<int>> &matrix)
 {
     int n = matrix.size();
@@ -1061,4 +1063,16 @@ void rotate(vector<vector<int>> &matrix)
         x -= 2;
         sr++, sc++, er--, ec--;
     }
+}
+
+// APPROAH 2 (OPTIMIZED and COMPACT)
+
+void rotate(vector<vector<int>> &matrix)
+{
+    int n = matrix.size();
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < i; j++)
+            swap(matrix[i][j], matrix[j][i]);
+    for (int i = 0; i < n; i++)
+        reverse(matrix[i].begin(), matrix[i].end());
 }
