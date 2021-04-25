@@ -1015,3 +1015,50 @@ vector<vector<int>> criticalConnections(int n, vector<vector<int>> &connections)
             tarjan(i);
     return ans;
 }
+
+// DAY 25 (Rotate Image)========================================================================
+
+void rotate(vector<vector<int>> &matrix)
+{
+    int n = matrix.size();
+    int sr = 0, sc = 0, er = n - 1, ec = n - 1;
+    int x = n;
+    while (x > 1)
+    {
+        int m = 4 * x - 4;
+        vector<int> strip(m);
+        int i = sr, j = sc, k = 0;
+        while (j <= ec)
+            strip[k++] = matrix[i][j++];
+        i++, j--;
+        while (i <= er)
+            strip[k++] = matrix[i++][j];
+        j--, i--;
+        while (j >= sc)
+            strip[k++] = matrix[i][j--];
+        i--, j++;
+        while (i > sr)
+            strip[k++] = matrix[i--][j];
+        i++;
+
+        // for(int x : strip) cout<<x<<" ";
+        // cout<<endl;
+
+        i = sr, j = sc, k = m - (x - 1);
+        while (j <= ec)
+            matrix[i][j++] = strip[k++ % m];
+        i++, j--;
+        while (i <= er)
+            matrix[i++][j] = strip[k++ % m];
+        j--, i--;
+        while (j >= sc)
+            matrix[i][j--] = strip[k++ % m];
+        i--, j++;
+        while (i > sr)
+            matrix[i--][j] = strip[k++ % m];
+        i++;
+
+        x -= 2;
+        sr++, sc++, er--, ec--;
+    }
+}
