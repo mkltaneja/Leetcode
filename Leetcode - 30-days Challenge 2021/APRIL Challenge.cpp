@@ -1079,7 +1079,7 @@ void rotate(vector<vector<int>> &matrix)
 
 // DAY 26 (Furthest building you can reach)====================================================
 
-// METHOD 1 (Subsequence)
+// APPROACH 1 (Subsequence) --> O(2^n)
 // TLE
 
 int subseq(int i, vector<int> &heights, int bricks, int ladders)
@@ -1108,4 +1108,35 @@ int subseq(int i, vector<int> &heights, int bricks, int ladders)
 int furthestBuilding(vector<int> &heights, int bricks, int ladders)
 {
     return subseq(0, heights, bricks, ladders);
+}
+
+// APPROACH 2 (Using Min heap) --> <O(n*logn)
+// AC
+
+int furthestBuilding(vector<int> &heights, int bricks, int ladders)
+{
+    int n = heights.size();
+    priority_queue<int, vector<int>, greater<int>> pq;
+    for (int i = 0; i < n - 1; i++)
+    {
+        int diff = heights[i + 1] - heights[i];
+        if (diff <= 0)
+            continue;
+        if (ladders)
+        {
+            pq.push(diff);
+            ladders--;
+        }
+        else if (!pq.empty() && diff > pq.top())
+        {
+            bricks -= pq.top();
+            pq.pop();
+            pq.push(diff);
+        }
+        else
+            bricks -= diff;
+        if (bricks < 0)
+            return i;
+    }
+    return n - 1;
 }
