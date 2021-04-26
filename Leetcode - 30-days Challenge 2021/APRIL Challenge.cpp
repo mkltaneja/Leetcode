@@ -1076,3 +1076,36 @@ void rotate(vector<vector<int>> &matrix)
     for (int i = 0; i < n; i++)
         reverse(matrix[i].begin(), matrix[i].end());
 }
+
+// DAY 26 (Furthest building you can reach)====================================================
+
+// METHOD 1 (Subsequence)
+// TLE
+
+int subseq(int i, vector<int> &heights, int bricks, int ladders)
+{
+    if (i == heights.size() - 1)
+        return i;
+    int diff = heights[i + 1] - heights[i];
+    // cout<<bricks<<" "<<ladders<<endl;
+    // cout<<i<<" -> "<<diff<<endl;
+
+    int exc = i;
+    int inclad = i, incbrick = i;
+    if (diff <= 0)
+        exc = subseq(i + 1, heights, bricks, ladders);
+    else
+    {
+        if (ladders - 1 >= 0)
+            inclad = subseq(i + 1, heights, bricks, ladders - 1);
+        if (bricks - diff >= 0)
+            incbrick = subseq(i + 1, heights, bricks - diff, ladders);
+    }
+
+    return max(exc, max(inclad, incbrick));
+}
+
+int furthestBuilding(vector<int> &heights, int bricks, int ladders)
+{
+    return subseq(0, heights, bricks, ladders);
+}
