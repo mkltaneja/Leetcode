@@ -1143,6 +1143,7 @@ int furthestBuilding(vector<int> &heights, int bricks, int ladders)
 
 // DAY 27 (Power of Three)=====================================================================
 
+// APPROACH 1 (Using loops)
 bool isPowerOfThree(int n)
 {
     if (n <= 0)
@@ -1150,4 +1151,14 @@ bool isPowerOfThree(int n)
     while (n % 3 == 0)
         n /= 3;
     return (n == 1);
+}
+
+// APPROACH 2 (Without loops, checking multiplicity of n with th largest value of power of 3, possible with n)
+
+bool isPowerOfThree(int n)
+{
+    if (n <= 0)
+        return false;
+    int maxi = pow(3, 19);
+    return (maxi % n == 0);
 }
