@@ -1188,3 +1188,29 @@ int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid)
     vector<vector<int>> dp(n, vector<int>(m, -1));
     return dfs(0, 0, n, m, obstacleGrid, dp);
 }
+
+// METHOD 2 (Tabulated)
+
+int dfs(int n, int m, vector<vector<int>> &arr, vector<vector<int>> &dp)
+{
+    dp[n - 1][m - 1] = 1;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        for (int j = m - 1; j >= 0; j--)
+        {
+            if (arr[i][j] == 1)
+                dp[i][j] = 0;
+            else
+                dp[i][j] += (long)((i + 1 < n) ? dp[i + 1][j] : 0) + ((j + 1 < m) ? dp[i][j + 1] : 0);
+        }
+    }
+    return dp[0][0];
+}
+
+int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid)
+{
+    int n = obstacleGrid.size();
+    int m = obstacleGrid[0].size();
+    vector<vector<int>> dp(n, vector<int>(m, 0));
+    return dfs(n, m, obstacleGrid, dp);
+}
