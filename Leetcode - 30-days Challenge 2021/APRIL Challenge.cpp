@@ -1162,3 +1162,20 @@ bool isPowerOfThree(int n)
     int maxi = pow(3, 19);
     return (maxi % n == 0);
 }
+
+// DAY 29 (Find First and Last Position of Element in Sorted Array)=============================================================================
+
+vector<int> searchRange(vector<int> &nums, int target)
+{
+    int si = -1, ei = -1;
+    for (int i = 0; i < nums.size(); i++)
+    {
+        if (nums[i] == target)
+        {
+            if (si == -1)
+                si = i;
+            ei = i;
+        }
+    }
+    return {si, ei};
+}
