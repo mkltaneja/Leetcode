@@ -1275,3 +1275,26 @@ vector<int> searchRange(vector<int> &nums, int target)
     int ei = findei(nums, target);
     return {si, ei};
 }
+
+// DAY 30 (Powerul Integers)=================================================================
+
+vector<int> powerfulIntegers(int x, int y, int bound)
+{
+    unordered_set<int> ans;
+    long i = 1, j = 1;
+    while (i + 1 <= bound)
+    {
+        j = 1;
+        while (i + j <= bound)
+        {
+            ans.insert(i + j);
+            j *= y;
+            if (j == 1)
+                break;
+        }
+        i *= x;
+        if (i == 1)
+            break;
+    }
+    return vector<int>(ans.begin(), ans.end());
+}
