@@ -25,6 +25,7 @@ int scheduleCourse(vector<vector<int>> &courses)
 }
 
 // APPROACH 2 (Greedy -- Taking the minimum durations to maximize course count) --> O(n*logn)
+// METHOD 1
 // AC
 
 int scheduleCourse(vector<vector<int>> &courses)
@@ -48,6 +49,30 @@ int scheduleCourse(vector<vector<int>> &courses)
             day += dur - pq.top();
             pq.pop();
             pq.push(dur);
+        }
+    }
+    return pq.size();
+}
+
+// METHOD 2 (Shorter version of METHOD 1)
+
+int scheduleCourse(vector<vector<int>> &courses)
+{
+    sort(courses.begin(), courses.end(), [](auto const &a, auto const &b) {
+        return (a[1] == b[1]) ? a[0] < b[0] : a[1] < b[1];
+    });
+
+    priority_queue<int> pq;
+    int day = 0;
+    for (vector<int> v : courses)
+    {
+        int dur = v[0], lim = v[1];
+        day += dur;
+        pq.push(dur);
+        if (day > lim)
+        {
+            day -= pq.top();
+            pq.pop();
         }
     }
     return pq.size();
