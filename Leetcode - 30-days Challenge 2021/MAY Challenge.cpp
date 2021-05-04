@@ -86,3 +86,27 @@ vector<int> runningSum(vector<int> &nums)
         nums[i] += nums[i - 1];
     return nums;
 }
+
+// DAY 4 (Non - Decreasing Array)=====================================================
+
+// METHOD 1 (Comparing with Previous) --> O(n)
+bool checkPossibility(vector<int> &nums)
+{
+    int n = nums.size();
+    bool changed = false;
+    int prev = nums[0];
+    for (int i = 1; i < n; i++)
+    {
+        if (nums[i] >= prev)
+        {
+            prev = nums[i];
+            continue;
+        }
+        if (changed)
+            return false;
+        changed = true;
+        if (i - 2 == -1 || nums[i] >= nums[i - 2])
+            prev = nums[i];
+    }
+    return true;
+}
