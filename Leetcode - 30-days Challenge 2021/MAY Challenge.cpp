@@ -125,3 +125,23 @@ int jump(vector<int>& nums)
             jumps[i] = min(jumps[i], jumps[j]+1);
     return jumps[0];
 }
+
+// APPROACH 2 (Storing max jumps at every "i" and updating total "jumps" whenever moves become 0) --> O(n)
+
+int jump(vector<int>& nums) 
+{
+    int n = nums.size();
+    int jumps = 1;
+    int jumplen = nums[0], moves = jumplen;
+    for(int i = 1; i < n; i++)
+    {
+        if(i == n-1) return jumps;
+        jumplen = max(jumplen, i+nums[i]);
+        if(--moves == 0)
+        {
+            moves = jumplen - i;
+            jumps++;
+        }
+    }
+    return 0;
+}
