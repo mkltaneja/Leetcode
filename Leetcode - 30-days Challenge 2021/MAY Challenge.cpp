@@ -110,3 +110,18 @@ bool checkPossibility(vector<int> &nums)
     }
     return true;
 }
+
+// DAY 5 (Jump Game 2)==================================================================
+
+// APPROACH 1 (Using DP) --> O(n^2)
+
+int jump(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<int> jumps(n, n);
+    jumps[n-1] = 0;
+    for(int i = n-2; i >= 0; i--)
+        for(int j = i+1; j <= i+nums[i] && j < n; j++)
+            jumps[i] = min(jumps[i], jumps[j]+1);
+    return jumps[0];
+}
