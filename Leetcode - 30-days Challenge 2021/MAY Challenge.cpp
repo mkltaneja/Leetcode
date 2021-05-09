@@ -217,3 +217,52 @@ int minDistance(string word1, string word2)
     int len = dp[n - 1][m - 1];
     return (n - len) + (m - len);
 }
+
+// DAY 8 (Super Palindromes)========================================================================
+
+#define ll long long
+
+bool ispal(string s)
+{
+    for (int i = 0; i < s.size() / 2; i++)
+        if (s[i] != s[s.size() - i - 1])
+            return false;
+    return true;
+}
+
+void add_pals(vector<ll> &pals)
+{
+    for (ll i = 1; i <= 9; i++)
+        pals.push_back(i);
+
+    for (ll i = 1; i <= 1e4; i++)
+    {
+        string s1 = to_string(i);
+        string s2 = s1;
+        reverse(s2.begin(), s2.end());
+        pals.push_back(stoll(s1 + s2));
+        for (int x = 0; x <= 9; x++)
+            pals.push_back(stoll(s1 + to_string(x) + s2));
+    }
+}
+
+int superpalindromesInRange(string left, string right)
+{
+    int ans = 0;
+    ll l = stoll(left), r = stoll(right);
+
+    vector<ll> pals;
+    add_pals(pals);
+
+    for (ll x : pals)
+    {
+        if (x > 1e9)
+            continue;
+        ll n = x * x;
+        // string s = to_string(n);
+        if (n >= l && n <= r && ispal(to_string(n)))
+            ans++;
+    }
+
+    return ans;
+}
