@@ -266,3 +266,31 @@ int superpalindromesInRange(string left, string right)
 
     return ans;
 }
+
+// DAY 9 (Construct Target Array with Mutiple Sums)=============================================
+
+bool isPossible(vector<int>& target) 
+{
+    long sum = 0;
+    priority_queue<int> pq;
+    for(int x : target)
+    {
+        if(x > 1)
+            pq.push(x);
+        sum += x;
+    }
+    
+    while(!pq.empty())
+    {
+        int mx = pq.top();
+        sum -= mx;
+        pq.pop();
+        
+        if(sum <= 0 || mx-sum <= 0) return false;
+        
+        int n = mx % sum;
+        sum += n;
+        if(n > 1) pq.push(n);
+    }
+    return true;
+}
