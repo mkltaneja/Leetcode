@@ -299,6 +299,9 @@ bool isPossible(vector<int> &target)
 
 // DAY 10 (Count Primes)=============================================================
 
+// APPROACH 1 (Checking for prime for every number) --> O(n*sqrt(n))
+// TLE
+
 int countPrimes(int n)
 {
     int ans = 0;
@@ -316,5 +319,26 @@ int countPrimes(int n)
         if (isprime)
             ans++;
     }
+    return ans;
+}
+
+// APPROACH 2 (Prime Seive) --> O(n*log(log(n)))========================================
+
+int countPrimes(int n)
+{
+    int ans = 0;
+    vector<bool> prime(n, true);
+    for (int i = 2; i * i < n; i++)
+    {
+        if (!prime[i])
+            continue;
+        for (int j = i * i; j < n; j += i)
+            prime[j] = false;
+    }
+
+    for (int i = 2; i < n; i++)
+        if (prime[i])
+            ans++;
+
     return ans;
 }
