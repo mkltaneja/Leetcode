@@ -1,3 +1,78 @@
+
+// DAY 1 (Prefix and Suffix Search)======================================================================
+class WordFilter
+{
+public:
+    class trie
+    {
+    public:
+        vector<trie *> v;
+        bool wordEnd;
+
+        trie()
+        {
+            this->v.assign(26, nullptr);
+            this->wordEnd = false;
+        }
+
+        void insert(string &word, trie *t)
+        {
+            trie *temp = t;
+            for (char c : word)
+            {
+                if (!temp->v[c - 'a'])
+                    temp->v[c - 'a'] = new trie();
+                temp = temp->v[c - 'a'];
+            }
+            temp->wordEnd = true;
+        }
+    };
+
+    void allwords(trie *curr, string word, vector<string> &words)
+    {
+        if (curr->wordEnd)
+            words.push_back(word);
+        for (int i = 0; i < 26; i++)
+            if (curr->v[i])
+                allwords(curr->v[i], word + (char)(i + 'a'), words);
+    }
+
+    trie *t;
+    unordered_map<string, int> pos;
+    WordFilter(vector<string> &words)
+    {
+        this->t = new trie();
+        for (int i = 0; i < words.size(); i++)
+        {
+            string word = words[i];
+            t->insert(word, t);
+            pos[word] = i;
+        }
+    }
+
+    int f(string prefix, string suffix)
+    {
+        trie *temp = t;
+        vector<string> words;
+        for (char c : prefix)
+        {
+            if (temp->v[c - 'a'] == nullptr)
+                return -1;
+            temp = temp->v[c - 'a'];
+        }
+        allwords(temp, prefix, words);
+
+        int ansi = -1;
+        for (string word : words)
+        {
+            int n = word.size(), m = suffix.size();
+            if ((n >= m) && (word.substr(n - m) == suffix) && (pos[word] > ansi))
+                ansi = pos[word];
+        }
+        return ansi;
+    }
+};
+
 // DAY 2 (Course Schedule 3)======================================================================
 
 // APPROACH 1 (Subsequence) --> <O(2^n)
