@@ -230,43 +230,51 @@ bool ispal(string s)
     return true;
 }
 
-void add_pals(vector<ll> &pals)
+int superpalindromesInRange(string left, string right)
 {
-    for (ll i = 1; i <= 9; i++)
-        pals.push_back(i);
+    int ans = 0;
+    ll l = stoll(left), r = stoll(right);
+
+    if (l <= 1 && 1 <= r)
+        ans++;
+    if (l <= 4 && 4 <= r)
+        ans++;
+    if (l <= 9 && 9 <= r)
+        ans++;
 
     for (ll i = 1; i <= 1e4; i++)
     {
         string s1 = to_string(i);
         string s2 = s1;
         reverse(s2.begin(), s2.end());
-        pals.push_back(stoll(s1 + s2));
+        ll n = stoll(s1 + s2);
+        n *= n;
+        if (n > r)
+            break;
+        if (ispal(to_string(n)))
+        {
+            if (n >= l)
+            {
+                // cout<<"even = "<<n<<endl;
+                ans++;
+            }
+        }
         for (int x = 0; x <= 9; x++)
-            pals.push_back(stoll(s1 + to_string(x) + s2));
-    }
-}
-
-int superpalindromesInRange(string left, string right)
-{
-    int ans = 0;
-    ll l = stoll(left), r = stoll(right);
-
-    vector<ll> pals;
-    add_pals(pals);
-
-    for (ll x : pals)
-    {
-        if (x > 1e9)
-            continue;
-        ll n = x * x;
-        // string s = to_string(n);
-        if (n >= l && n <= r && ispal(to_string(n)))
-            ans++;
+        {
+            ll m = stoll(s1 + to_string(x) + s2);
+            m *= m;
+            if (m > r)
+                break;
+            if (m >= l && ispal(to_string(m)))
+            {
+                // cout<<"odd = "<<m<<endl;
+                ans++;
+            }
+        }
     }
 
     return ans;
 }
-
 // DAY 9 (Construct Target Array with Mutiple Sums)=============================================
 
 bool isPossible(vector<int> &target)
