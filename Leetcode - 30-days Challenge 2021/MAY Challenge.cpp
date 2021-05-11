@@ -93,9 +93,8 @@ int subseq(int i, int day, vector<vector<int>> &v)
 
 int scheduleCourse(vector<vector<int>> &courses)
 {
-    sort(courses.begin(), courses.end(), [](auto const &a, auto const &b) {
-        return (a[1] == b[1]) ? a[0] < b[0] : a[1] < b[1];
-    });
+    sort(courses.begin(), courses.end(), [](auto const &a, auto const &b)
+         { return (a[1] == b[1]) ? a[0] < b[0] : a[1] < b[1]; });
     return subseq(0, 0, courses);
 }
 
@@ -105,9 +104,8 @@ int scheduleCourse(vector<vector<int>> &courses)
 
 int scheduleCourse(vector<vector<int>> &courses)
 {
-    sort(courses.begin(), courses.end(), [](auto const &a, auto const &b) {
-        return (a[1] == b[1]) ? a[0] < b[0] : a[1] < b[1];
-    });
+    sort(courses.begin(), courses.end(), [](auto const &a, auto const &b)
+         { return (a[1] == b[1]) ? a[0] < b[0] : a[1] < b[1]; });
 
     priority_queue<int> pq;
     int day = 0;
@@ -133,9 +131,8 @@ int scheduleCourse(vector<vector<int>> &courses)
 
 int scheduleCourse(vector<vector<int>> &courses)
 {
-    sort(courses.begin(), courses.end(), [](auto const &a, auto const &b) {
-        return (a[1] == b[1]) ? a[0] < b[0] : a[1] < b[1];
-    });
+    sort(courses.begin(), courses.end(), [](auto const &a, auto const &b)
+         { return (a[1] == b[1]) ? a[0] < b[0] : a[1] < b[1]; });
 
     priority_queue<int> pq;
     int day = 0;
@@ -424,4 +421,26 @@ int countPrimes(int n)
             ans++;
 
     return ans;
+}
+
+// DAY 11 (Maximum Points You can Obtain drom Cards)============================================================
+
+int dfs(int st, int end, int k, vector<int> &points, vector<vector<int>> &dp)
+{
+    if (k == 0)
+        return 0;
+    if (dp[st][end] != -1)
+        return dp[st][end];
+
+    int left = dfs(st + 1, end, k - 1, points, dp) + points[st];
+    int right = dfs(st, end - 1, k - 1, points, dp) + points[end];
+
+    return dp[st][end] = max(left, right);
+}
+
+int maxScore(vector<int> &cardPoints, int k)
+{
+    int n = cardPoints.size();
+    vector<vector<int>> dp(n, vector<int>(n, -1));
+    return dfs(0, n - 1, k, cardPoints, dp);
 }
