@@ -425,6 +425,8 @@ int countPrimes(int n)
 
 // DAY 11 (Maximum Points You can Obtain drom Cards)============================================================
 
+// APPROACH 1 (DP) --> O(n^2)
+// TLE
 int dfs(int st, int end, int k, vector<int> &points, vector<vector<int>> &dp)
 {
     if (k == 0)
@@ -443,4 +445,26 @@ int maxScore(vector<int> &cardPoints, int k)
     int n = cardPoints.size();
     vector<vector<int>> dp(n, vector<int>(n, -1));
     return dfs(0, n - 1, k, cardPoints, dp);
+}
+
+// APPROACH 2 (Sliding Window -- to see the min sum of subarray of size (n-k)) --> O(n)
+// AC
+
+int maxScore(vector<int> &cardPoints, int k)
+{
+    int n = cardPoints.size(), m = n - k;
+    int totsum = 0;
+    for (int x : cardPoints)
+        totsum += x;
+
+    int sum = 0, minsum = totsum;
+    for (int i = 0; i < n; i++)
+    {
+        sum += cardPoints[i];
+        if (i >= m)
+            sum -= cardPoints[i - m];
+        if (i >= m - 1)
+            minsum = min(minsum, sum);
+    }
+    return totsum - minsum;
 }
