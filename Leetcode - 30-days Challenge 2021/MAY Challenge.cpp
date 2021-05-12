@@ -468,3 +468,37 @@ int maxScore(vector<int> &cardPoints, int k)
     }
     return totsum - minsum;
 }
+
+// DAY 12 (Range Sum Query 2D Immutable)=============================================================
+
+// APPROACH 1 (Precalculating Prefix sum) --> O(max(n*(no. of calls), n*m))
+// AC
+class NumMatrix
+{
+public:
+    vector<vector<int>> psum;
+    int n, m;
+    NumMatrix(vector<vector<int>> &matrix)
+    {
+        this->n = matrix.size();
+        this->m = matrix[0].size();
+        this->psum.assign(n, vector<int>(m));
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
+                psum[i][j] = matrix[i][j] + ((j - 1 != -1) ? psum[i][j - 1] : 0);
+    }
+
+    int sumRegion(int row1, int col1, int row2, int col2)
+    {
+        int sum = 0;
+        for (int i = row1; i <= row2; i++)
+            sum += psum[i][col2] - ((col1 - 1 != -1) ? psum[i][col1 - 1] : 0);
+        return sum;
+    }
+};
+
+/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * NumMatrix* obj = new NumMatrix(matrix);
+ * int param_1 = obj->sumRegion(row1,col1,row2,col2);
+ */
