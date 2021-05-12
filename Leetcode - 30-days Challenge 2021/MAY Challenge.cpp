@@ -502,3 +502,44 @@ public:
  * NumMatrix* obj = new NumMatrix(matrix);
  * int param_1 = obj->sumRegion(row1,col1,row2,col2);
  */
+
+// APPROACH 2 (PRecalculating the Prefix sum - more Smartly) --> O(max((no. of calls), n*m))
+class NumMatrix
+{
+public:
+    vector<vector<int>> psum;
+    int n, m;
+    NumMatrix(vector<vector<int>> &matrix)
+    {
+        this->n = matrix.size();
+        this->m = matrix[0].size();
+        this->psum.assign(n, vector<int>(m));
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                int upper = (i - 1 >= 0) ? psum[i - 1][j] : 0;
+                int left = (j - 1 >= 0) ? psum[i][j - 1] : 0;
+                int diag = (i - 1 >= 0 && j - 1 >= 0) ? psum[i - 1][j - 1] : 0;
+                psum[i][j] = (upper + left - diag) + matrix[i][j];
+            }
+        }
+    }
+
+    int sumRegion(int row1, int col1, int row2, int col2)
+    {
+        int upper = (row1 - 1 >= 0) ? psum[row1 - 1][col2] : 0;
+        int left = (col1 - 1 >= 0) ? psum[row2][col1 - 1] : 0;
+        int diag = (row1 - 1 >= 0 && col1 - 1 >= 0) ? psum[row1 - 1][col1 - 1] : 0;
+
+        int sum = psum[row2][col2] - (upper + left - diag);
+
+        return sum;
+    }
+};
+
+/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * NumMatrix* obj = new NumMatrix(matrix);
+ * int param_1 = obj->sumRegion(row1,col1,row2,col2);
+ */
