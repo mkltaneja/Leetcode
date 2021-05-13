@@ -543,3 +543,45 @@ public:
  * NumMatrix* obj = new NumMatrix(matrix);
  * int param_1 = obj->sumRegion(row1,col1,row2,col2);
  */
+
+// DAY 13 (Ambiguous Coordinates)=======================================================================
+
+bool isvalid(string &s, int decpos)
+{
+    if (decpos && s[s.size() - 1] == '0')
+        return false;
+    if (s.size() > 1 && decpos != 1 && s[0] == '0')
+        return false;
+    return true;
+}
+
+void addDecimal(string &l, string &r, vector<string> &ans)
+{
+    vector<string> ls;
+    for (int i = 0; i < l.size(); i++)
+        if (isvalid(l, i))
+            ls.push_back(l.substr(0, i) + (i ? "." : "") + l.substr(i));
+    for (int i = 0; i < r.size(); i++)
+    {
+        if (isvalid(r, i))
+        {
+            string y = r.substr(0, i) + (i ? "." : "") + r.substr(i);
+            for (string x : ls)
+                ans.push_back("(" + x + ", " + y + ")");
+        }
+    }
+}
+
+vector<string> ambiguousCoordinates(string s)
+{
+    int n = s.size();
+    vector<string> ans;
+    for (int i = 1; i < n - 2; i++)
+    {
+        string l = s.substr(1, i);
+        string r = s.substr(i + 1, (n - 1) - (i + 1));
+        // cout<<l<<", "<<r<<endl;
+        addDecimal(l, r, ans);
+    }
+    return ans;
+}
