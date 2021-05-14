@@ -585,3 +585,27 @@ vector<string> ambiguousCoordinates(string s)
     }
     return ans;
 }
+
+// DAY 14 (Flatten Binary Tree to Linked List)===================================================
+
+// APPROACH 1 (Keeping a global pointer variable)
+TreeNode *list = new TreeNode(-1);
+void preorder(TreeNode *node)
+{
+    if (!node)
+        return;
+    list->right = new TreeNode(node->val);
+    list = list->right;
+    // cout<<list->val<<endl;
+    preorder(node->left);
+    preorder(node->right);
+}
+
+void flatten(TreeNode *root)
+{
+    if (!root)
+        return;
+    TreeNode *head = list;
+    preorder(root);
+    *root = *head->right;
+}
