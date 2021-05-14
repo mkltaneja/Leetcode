@@ -609,3 +609,20 @@ void flatten(TreeNode *root)
     preorder(root);
     *root = *head->right;
 }
+
+// APPROACH 2 (Standard Approach -- Keeping faith at every node to flatten their children)
+
+void flatten(TreeNode *root)
+{
+    if (!root || (!root->left && !root->right))
+        return;
+    flatten(root->left);
+    flatten(root->right);
+
+    TreeNode *r = root->right;
+    root->right = root->left;
+    root->left = nullptr;
+    while (root->right)
+        root = root->right;
+    root->right = r;
+}
