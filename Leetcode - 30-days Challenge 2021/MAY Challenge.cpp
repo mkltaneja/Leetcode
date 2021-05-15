@@ -626,3 +626,67 @@ void flatten(TreeNode *root)
         root = root->right;
     root->right = r;
 }
+
+// DAY 15 (Valid Number)=======================================================================
+
+bool isalpha(char c)
+{
+    c = tolower(c);
+    return (c >= 'a' && c <= 'z');
+}
+
+bool isnum(char c)
+{
+    return (c >= '0' && c <= '9');
+}
+
+bool isNumber(string s)
+{
+    // cout<<s<<": \n";
+    int n = s.size();
+    bool e = false, num = false, dec = false;
+    for (int i = 0; i < n; i++)
+    {
+        if (isnum(s[i]))
+        {
+            // cout<<s[i]<<" --> "<<"num\n";
+            num = true;
+            continue;
+        }
+        if (isalpha(s[i]))
+        {
+            // cout<<s[i]<<" --> "<<"alpha\n";
+            if (e)
+                return false;
+            if (s[i] != 'e' && s[i] != 'E')
+                return false;
+            if (i == 0 || i == n - 1)
+                return false;
+            if (!num)
+                return false;
+            e = true;
+        }
+        else if (s[i] == '.')
+        {
+            // cout<<s[i]<<" --> "<<"dec\n";
+            if (dec || e)
+                return false;
+            // if((i+1 != n && !isnum(s[i+1])) && (i-1 != -1 && !isnum(s[i-1]))) return false;
+            dec = true;
+        }
+        else if (s[i] == '+' || s[i] == '-')
+        {
+            // cout<<s[i]<<" --> "<<"sign\n";
+            if (dec && !e)
+                return false;
+            if (i - 1 != -1 && (s[i - 1] != 'e' && s[i - 1] != 'E'))
+                return false;
+            if (i == n - 1)
+                return false;
+            if (s[i + 1] == 'e' || s[i + 1] == 'E')
+                return false;
+        }
+    }
+    // cout<<endl;
+    return num;
+}
