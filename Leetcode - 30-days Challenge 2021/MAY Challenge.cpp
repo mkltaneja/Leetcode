@@ -690,3 +690,33 @@ bool isNumber(string s)
     // cout<<endl;
     return num;
 }
+
+// DAY 16 (Binary Tree Cameras)=====================================================================
+
+// 0 --> unmonitered, and needs camera
+// 1 --> camera present, can monitor parent too
+// 2 --> monitored, doesn't need camera
+int ans = 0;
+int mincameras(TreeNode *node)
+{
+    if (!node)
+        return 2;
+    if (!node->left && !node->right)
+        return 0;
+    auto l = mincameras(node->left);
+    auto r = mincameras(node->right);
+
+    if ((l && r) == 0)
+    {
+        ans++;
+        return 1;
+    }
+    if (l == 2 && r == 2)
+        return 0;
+    return 2;
+}
+
+int minCameraCover(TreeNode *root)
+{
+    return (mincameras(root) == 0) ? ans + 1 : ans;
+}
