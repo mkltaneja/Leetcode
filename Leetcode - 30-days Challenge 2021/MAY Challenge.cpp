@@ -720,3 +720,35 @@ int minCameraCover(TreeNode *root)
 {
     return (mincameras(root) == 0) ? ans + 1 : ans;
 }
+
+// DAY 17 (Longest String Chain)===================================================================
+
+int longestStrChain(vector<string> &words)
+{
+    unordered_map<int, set<string>> mlen;
+    for (auto s : words)
+        mlen[s.size()].insert(s);
+    unordered_map<string, int> dp;
+
+    int ans = 1;
+    for (int i = 16; i >= 0; i--)
+    {
+        if (mlen[i - 1].empty())
+            continue;
+        for (string par : mlen[i])
+        {
+            int pval = dp.count(par) ? dp[par] : 1;
+            for (int j = 0; j < par.size(); j++)
+            {
+                string pred = par.substr(0, j) + par.substr(j + 1);
+                int cval = dp.count(pred) ? dp[pred] : 1;
+                if (mlen[i - 1].find(pred) != mlen[i - 1].end() && pval >= cval)
+                {
+                    dp[pred] = pval + 1;
+                    ans = max(ans, pval + 1);
+                }
+            }
+        }
+    }
+    return ans;
+}
