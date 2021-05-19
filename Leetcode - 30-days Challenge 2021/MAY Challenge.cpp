@@ -752,3 +752,42 @@ int longestStrChain(vector<string> &words)
     }
     return ans;
 }
+
+// DAY 18 (Find Duplicate File in the System)====================================================================
+
+vector<vector<string>> findDuplicate(vector<string> &paths)
+{
+    unordered_map<string, vector<string>> res;
+    for (string files : paths)
+    {
+        string path = "";
+        int i = 0;
+        while (files[i] != ' ')
+            path += files[i++];
+        i++;
+        string file = "";
+        while (i < files.size())
+        {
+            if (files[i] == '(')
+            {
+                i++;
+                string content = "";
+                while (files[i] != ')')
+                    content += files[i++];
+                res[content].push_back(path + '/' + file);
+                file = "";
+                i += 2;
+            }
+            if (i >= files.size())
+                break;
+            file += files[i++];
+        }
+    }
+
+    vector<vector<string>> ans;
+    for (auto p : res)
+        if (p.second.size() > 1)
+            ans.push_back(p.second);
+
+    return ans;
+}
