@@ -822,3 +822,15 @@ vector<vector<string>> findDuplicate(vector<string> &paths)
 
     return ans;
 }
+
+// DAY 19 (Minimum Moves to Equal Array Elements 2)==============================================================
+
+int minMoves2(vector<int> &nums)
+{
+    sort(nums.begin(), nums.end());
+    int moves = 0;
+    int med = nums[nums.size() / 2];
+    for (int x : nums)
+        moves += abs(med - x);
+    return moves;
+}
