@@ -755,6 +755,8 @@ int longestStrChain(vector<string> &words)
 
 // DAY 18 (Find Duplicate File in the System)====================================================================
 
+// APPROACH 1 (Naive Approach)
+
 vector<vector<string>> findDuplicate(vector<string> &paths)
 {
     unordered_map<string, vector<string>> res;
@@ -781,6 +783,35 @@ vector<vector<string>> findDuplicate(vector<string> &paths)
             if (i >= files.size())
                 break;
             file += files[i++];
+        }
+    }
+
+    vector<vector<string>> ans;
+    for (auto p : res)
+        if (p.second.size() > 1)
+            ans.push_back(p.second);
+
+    return ans;
+}
+
+// APPROACH 2 (Using String property - find)
+
+vector<vector<string>> findDuplicate(vector<string> &paths)
+{
+    unordered_map<string, vector<string>> res;
+    // cout<<string::npos<<endl;
+    for (string files : paths)
+    {
+        int spacei = files.find(' ');
+        string path = files.substr(0, spacei);
+        while (spacei != string::npos)
+        {
+            int openi = files.find('(', spacei);
+            string file = files.substr(spacei + 1, openi - spacei - 1);
+            int closei = files.find(')', openi);
+            string content = files.substr(openi + 1, closei - openi - 1);
+            res[content].push_back(path + '/' + file);
+            spacei = files.find(' ', closei);
         }
     }
 
