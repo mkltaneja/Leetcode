@@ -864,3 +864,25 @@ vector<vector<int>> levelOrder(TreeNode *root)
     }
     return ans;
 }
+
+// APPROACH 2 (DFS)
+
+void dfs(TreeNode *node, vector<vector<int>> &ans, int depth)
+{
+    if (!node)
+        return;
+
+    if (depth == ans.size())
+        ans.push_back(vector<int>());
+    ans[depth].push_back(node->val);
+
+    dfs(node->left, ans, depth + 1);
+    dfs(node->right, ans, depth + 1);
+}
+
+vector<vector<int>> levelOrder(TreeNode *root)
+{
+    vector<vector<int>> ans;
+    dfs(root, ans, 0);
+    return ans;
+}
