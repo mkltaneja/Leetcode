@@ -834,3 +834,33 @@ int minMoves2(vector<int> &nums)
         moves += abs(med - x);
     return moves;
 }
+
+// DAY 20 (Binary Tree Level Order Traversal)=========================================================
+
+// APPROACH 1 (BFS)
+
+vector<vector<int>> levelOrder(TreeNode *root)
+{
+    if (!root)
+        return {};
+    vector<vector<int>> ans;
+    queue<TreeNode *> que;
+    que.push(root);
+    while (!que.empty())
+    {
+        int sz = que.size();
+        vector<int> temp;
+        while (sz--)
+        {
+            TreeNode *top = que.front();
+            que.pop();
+            temp.push_back(top->val);
+            if (top->left)
+                que.push(top->left);
+            if (top->right)
+                que.push(top->right);
+        }
+        ans.push_back(temp);
+    }
+    return ans;
+}
