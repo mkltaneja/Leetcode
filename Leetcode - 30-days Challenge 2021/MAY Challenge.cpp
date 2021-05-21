@@ -886,3 +886,30 @@ vector<vector<int>> levelOrder(TreeNode *root)
     dfs(root, ans, 0);
     return ans;
 }
+
+// DAY 21 (Find and Replace Pattern)==============================================================
+
+bool isvalid(string &s, string &pat)
+{
+    vector<char> map1(26);
+    vector<char> map2(26);
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (map1[pat[i] - 'a'] != NULL && map1[pat[i] - 'a'] != s[i])
+            return false;
+        if (map2[s[i] - 'a'] != NULL && map2[s[i] - 'a'] != pat[i])
+            return false;
+        map1[pat[i] - 'a'] = s[i];
+        map2[s[i] - 'a'] = pat[i];
+    }
+    return true;
+}
+
+vector<string> findAndReplacePattern(vector<string> &words, string pattern)
+{
+    vector<string> ans;
+    for (string s : words)
+        if (isvalid(s, pattern))
+            ans.push_back(s);
+    return ans;
+}
