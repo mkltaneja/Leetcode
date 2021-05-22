@@ -913,3 +913,53 @@ vector<string> findAndReplacePattern(vector<string> &words, string pattern)
             ans.push_back(s);
     return ans;
 }
+
+// DAY 22 (N-Queens)====================================================================================
+
+vector<string> board;
+vector<vector<string>> ans;
+int row = 0, col = 0, ldiag = 0, rdiag = 0;
+
+bool isSafeHere(int r, int c, int n)
+{
+    if ((row & (1 << r)) || (col & (1 << c)) || (ldiag & (1 << (r + c))) || (rdiag & (1 << ((r - c) + (n - 1)))))
+        return false;
+    return true;
+}
+
+void nQueen(int idx, int placed, int n)
+{
+    if (placed == n)
+    {
+        ans.push_back(board);
+        return;
+    }
+    for (int i = idx; i < n * n; i++)
+    {
+        int r = i / n, c = i % n;
+        if (isSafeHere(r, c, n))
+        {
+            row ^= (1 << r);
+            col ^= (1 << c);
+            ldiag ^= (1 << (r + c));
+            rdiag ^= (1 << ((r - c) + (n - 1)));
+            board[r][c] = 'Q';
+            nQueen(i + 1, placed + 1, n);
+            board[r][c] = '.';
+            row ^= (1 << r);
+            col ^= (1 << c);
+            ldiag ^= (1 << (r + c));
+            rdiag ^= (1 << ((r - c) + (n - 1)));
+        }
+    }
+}
+
+vector<vector<string>> solveNQueens(int n)
+{
+    string line = "";
+    for (int i = 0; i < n; i++)
+        line += '.';
+    board.resize(n, line);
+    nQueen(0, 0, n);
+    return ans;
+}
