@@ -47,3 +47,25 @@ bool canReach(string s, int minJump, int maxJump)
     vector<int> dp(s.size(), -1);
     return dfs(0, s.size() - 1, minJump, maxJump, s, dp);
 }
+
+// APPROACH 3 (Range Query Sum Approach) --> O(n)
+// AC
+
+bool canReach(string s, int minJump, int maxJump)
+{
+    if (s[s.size() - 1] == '1')
+        return false;
+    vector<int> ways(2 * s.size() + 1, 0);
+    int psum = 0;
+    ways[0] = 1;
+    ways[1] = -1;
+    for (int i = 0; i < s.size(); i++)
+    {
+        psum += ways[i];
+        if (psum == 0 || s[i] == '1')
+            continue;
+        ways[i + minJump]++;
+        ways[i + maxJump + 1]--;
+    }
+    return (psum > 0);
+}
