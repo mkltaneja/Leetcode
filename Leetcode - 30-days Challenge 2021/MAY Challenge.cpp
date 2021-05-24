@@ -963,3 +963,13 @@ vector<vector<string>> solveNQueens(int n)
     nQueen(0, 0, n);
     return ans;
 }
+
+// DAY 24 (To Lower case)========================================================================
+
+string toLowerCase(string s)
+{
+    for (char &c : s)
+        if (c - 'A' >= 0 && c - 'A' < 26)
+            c = (c - 'A' + 'a');
+    return s;
+}
