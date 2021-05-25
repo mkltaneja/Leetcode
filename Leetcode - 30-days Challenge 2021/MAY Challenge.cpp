@@ -973,3 +973,40 @@ string toLowerCase(string s)
             c = (c - 'A' + 'a');
     return s;
 }
+
+// DAY 25 (Evaluate Reverse Polish Notation)============================================================
+
+bool isnum(string &s)
+{
+    if (s.size() == 1 && (s[0] - '0' < 0 || s[0] - '0' > 9))
+        return false;
+    return true;
+}
+
+int evalRPN(vector<string> &tokens)
+{
+    stack<int> st;
+    for (string x : tokens)
+    {
+        if (isnum(x))
+            st.push(stoi(x));
+        else
+        {
+            int b = st.top();
+            st.pop();
+            int a = st.top();
+            st.pop();
+            int num;
+            if (x == "+")
+                num = a + b;
+            else if (x == "-")
+                num = a - b;
+            else if (x == "*")
+                num = a * b;
+            else if (x == "/")
+                num = a / b;
+            st.push(num);
+        }
+    }
+    return st.top();
+}
