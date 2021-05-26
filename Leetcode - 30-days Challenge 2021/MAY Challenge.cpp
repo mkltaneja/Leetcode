@@ -1010,3 +1010,17 @@ int evalRPN(vector<string> &tokens)
     }
     return st.top();
 }
+
+// DAY 26 (Partition Into Minimum Number of Deci-Binary Numbers)=============================================
+
+int minPartitions(string n)
+{
+    int ans = 0;
+    for (char c : n)
+    {
+        ans = max(ans, c - '0');
+        if (ans == 9)
+            break;
+    }
+    return ans;
+}
