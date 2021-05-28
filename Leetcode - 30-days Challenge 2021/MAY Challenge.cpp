@@ -1041,3 +1041,25 @@ int maxProduct(vector<string> &words)
                 ans = max(ans, (int)(words[i].size() * words[j].size()));
     return ans;
 }
+
+// DAY 29 (Maximum Erasure Value)===================================================================================
+
+int maximumUniqueSubarray(vector<int> &nums)
+{
+    unordered_map<int, int> m;
+    int score = 0, maxscore = 0;
+
+    int i = 0, j = 0;
+    while (i < nums.size())
+    {
+        m[nums[i]]++;
+        while (m[nums[i]] == 2)
+        {
+            m[nums[j]]--;
+            score -= nums[j++];
+        }
+        score += nums[i++];
+        maxscore = max(maxscore, score);
+    }
+    return maxscore;
+}
