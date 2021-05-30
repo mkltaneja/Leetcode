@@ -1063,3 +1063,44 @@ int maximumUniqueSubarray(vector<int> &nums)
     }
     return maxscore;
 }
+
+// DAY 30 (Maximum Gap)================================================================================
+
+int maximumGap(vector<int> &nums)
+{
+    int n = nums.size();
+    if (n < 2)
+        return 0;
+    int mn = *min_element(nums.begin(), nums.end());
+    int mx = *max_element(nums.begin(), nums.end());
+
+    // Here bucket sort will be used, where we will make buckets, each of length "sz"
+
+    int gap = ((mx - mn) + (n - 2)) / (n - 1); // Ceil of min value of maximum possible gaps
+    // Note:- 1. Maximum gaps will always be from maximum value of previous bucket and minimum value of                         current bucket
+    //  2. Count of bucket will be n-1 and and we are considering for n-2 elements (as we already                         considered mn and mx) so there may be an empty bucket also
+    vector<int> minbucket(n - 1, INT_MAX);
+    vector<int> maxbucket(n - 1, INT_MIN);
+
+    for (int i = 0; i < n; i++)
+    {
+        if (nums[i] == mn || nums[i] == mx)
+            continue;
+        int id = (nums[i] - mn) / gap;
+        minbucket[id] = min(minbucket[id], nums[i]);
+        maxbucket[id] = max(maxbucket[id], nums[i]);
+    }
+
+    int ans = 0;
+    int pmax = mn;
+    for (int i = 0; i < n - 1; i++)
+    {
+        if (minbucket[i] == INT_MAX)
+            continue;
+        ans = max(ans, minbucket[i] - pmax);
+        pmax = maxbucket[i];
+    }
+    ans = max(ans, mx - pmax);
+
+    return ans;
+}
