@@ -1107,7 +1107,7 @@ int maximumGap(vector<int> &nums)
 
 // DAY 31 (Search Suggestion System)===========================================================================
 
-// APPROACH 1 (Using Trie)
+// APPROACH 1 (Using Trie) --> O(m*x + n*(26^x)) [n = searchWord.size(), m = products.size(), x = average size of product[i]]
 // AC
 
 class trie
@@ -1169,6 +1169,33 @@ vector<vector<string>> suggestedProducts(vector<string> &products, string search
             break;
         word = searchWord.substr(0, i + 1);
         findSuggestions(t, suggestions[i], word);
+    }
+    return suggestions;
+}
+
+// APPROACH 2 [OPTIMIZED] (Sort and find words for every characted in one traversal) --> O((m*x)*log(m*x) + n) [n = searchWord.size(), m = products.size(), x = average size of product[i]]
+// AC
+
+vector<vector<string>> suggestedProducts(vector<string> &products, string searchWord)
+{
+    sort(products.begin(), products.end());
+
+    int n = searchWord.size();
+    vector<vector<string>> suggestions(n);
+
+    int l = 0, r = products.size() - 1;
+
+    for (int i = 0; i < n; i++)
+    {
+        char c = searchWord[i];
+
+        while (l <= r && (products[l].size() <= i || products[l][i] < c))
+            l++;
+        while (l <= r && (products[r].size() <= i || products[r][i] > c))
+            r--;
+
+        for (int j = 0; (j < 3) && (l + j <= r); j++)
+            suggestions[i].push_back(products[l + j]);
     }
     return suggestions;
 }
