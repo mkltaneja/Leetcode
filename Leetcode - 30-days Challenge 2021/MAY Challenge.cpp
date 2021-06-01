@@ -1104,3 +1104,71 @@ int maximumGap(vector<int> &nums)
 
     return ans;
 }
+
+// DAY 31 (Search Suggestion System)===========================================================================
+
+// APPROACH 1 (Using Trie)
+// AC
+
+class trie
+{
+public:
+    vector<trie *> child;
+    bool wordEnd;
+    trie()
+    {
+        this->child.assign(26, nullptr);
+        this->wordEnd = false;
+    }
+
+    void insert(trie *t, string &word)
+    {
+        for (char c : word)
+        {
+            if (!t->child[c - 'a'])
+                t->child[c - 'a'] = new trie();
+            t = t->child[c - 'a'];
+        }
+        t->wordEnd = true;
+    }
+};
+
+bool findSuggestions(trie *t, vector<string> &words, string &word)
+{
+    if (t->wordEnd)
+        words.push_back(word);
+    if (words.size() == 3)
+        return true;
+
+    for (int i = 0; i < 26; i++)
+    {
+        if (t->child[i])
+        {
+            word += (char)(i + 'a');
+            if (findSuggestions(t->child[i], words, word))
+                return true;
+            word.pop_back();
+        }
+    }
+    return false;
+}
+
+vector<vector<string>> suggestedProducts(vector<string> &products, string searchWord)
+{
+    trie *t = new trie();
+    for (string word : products)
+        t->insert(t, word);
+
+    vector<vector<string>> suggestions(searchWord.size());
+    string word = "";
+    for (int i = 0; i < searchWord.size(); i++)
+    {
+        if (t->child[searchWord[i] - 'a'])
+            t = t->child[searchWord[i] - 'a'];
+        else
+            break;
+        word = searchWord.substr(0, i + 1);
+        findSuggestions(t, suggestions[i], word);
+    }
+    return suggestions;
+}
