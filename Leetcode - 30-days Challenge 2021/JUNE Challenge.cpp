@@ -95,7 +95,7 @@ bool isInterleave(string s1, string s2, string s3)
     return check(0, 0, 0, s1, s2, s3);
 }
 
-// Method 2 (Memoized) --> O(nm*(n+m))
+// Method 2 (Memoized) Sub-metod 1--> O(nm*n*m)
 // AC
 
 bool check(int ai, int bi, int ci, string &a, string &b, string &c, vector<vector<vector<int>>> &dp)
@@ -123,5 +123,35 @@ bool isInterleave(string s1, string s2, string s3)
         return false;
 
     vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(m + 1, vector<int>(nm + 1, -1)));
+    return check(0, 0, 0, s1, s2, s3, dp);
+}
+
+// Sub-method 2 --> O(n*m) [Space and time OPTIMIZED]
+
+bool check(int ai, int bi, int ci, string &a, string &b, string &c, vector<vector<int>> &dp)
+{
+    if (ci == c.size())
+        return (ai == a.size() && bi == b.size());
+    if (dp[ai][bi] != -1)
+        return dp[ai][bi];
+
+    bool af = false, bf = false;
+    if (ai < a.size() && c[ci] == a[ai])
+        af = check(ai + 1, bi, ci + 1, a, b, c, dp);
+    if (bi < b.size() && c[ci] == b[bi])
+        bf = check(ai, bi + 1, ci + 1, a, b, c, dp);
+
+    return dp[ai][bi] = (af || bf);
+}
+
+bool isInterleave(string s1, string s2, string s3)
+{
+    int n = s1.size();
+    int m = s2.size();
+    int nm = s3.size();
+    if (n + m != nm)
+        return false;
+
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
     return check(0, 0, 0, s1, s2, s3, dp);
 }
