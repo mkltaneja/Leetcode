@@ -27,6 +27,9 @@ int maxAreaOfIsland(vector<vector<int>> &grid)
 
 // DAY 2 (Interleaving Strings)=================================================================================
 
+// APPROACH 1 (Backtracking -- Form "s2" using backtracking and at the base case check whether remaining string is equal to s1) --> <O(n^m) [n = s3.size(), m = s2.size()]
+// TLE
+
 bool check(int bi, int ci, string &a, string &b, string &c, vector<bool> &vis)
 {
     if (bi == b.size())
@@ -64,4 +67,29 @@ bool isInterleave(string s1, string s2, string s3)
     vector<bool> vis(s3.size(), false);
 
     return check(0, 0, s1, s2, s3, vis);
+}
+
+// APPROACH 2 (Brute Force) --> O(2^(n+m))
+// TLE
+
+bool check(int ai, int bi, int ci, string &a, string &b, string &c)
+{
+    if (ci == c.size())
+        return (ai == a.size() && bi == b.size());
+
+    bool af = false, bf = false;
+    if (ai < a.size() && c[ci] == a[ai])
+        af = check(ai + 1, bi, ci + 1, a, b, c);
+    if (bi < b.size() && c[ci] == b[bi])
+        bf = check(ai, bi + 1, ci + 1, a, b, c);
+
+    return (af || bf);
+}
+
+bool isInterleave(string s1, string s2, string s3)
+{
+    if (s3.size() != s1.size() + s2.size())
+        return false;
+
+    return check(0, 0, 0, s1, s2, s3);
 }
