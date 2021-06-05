@@ -155,3 +155,37 @@ bool isInterleave(string s1, string s2, string s3)
     vector<vector<int>> dp(n + 1, vector<int>(m + 1, -1));
     return check(0, 0, 0, s1, s2, s3, dp);
 }
+
+// DAY 5 (Maximum Performance of a Team)===========================================================================
+
+#define f first
+#define s second
+#define mod 1000000007
+#define ull unsigned long long
+int maxPerformance(int n, vector<int>& speed, vector<int>& efficiency, int k) 
+{
+    vector<pair<int,int>> effspd(n);
+    for(int i = 0; i < n; i++)
+        effspd[i] = {efficiency[i], speed[i]};
+    sort(effspd.rbegin(), effspd.rend());  // Sorting in reverse order
+    
+    priority_queue<int> pq;
+    ull totalspeed = 0;
+    ull maxperf = 0;
+    for(int i = 0; i < n; i++)
+    {
+        int eff = effspd[i].f;
+        int spd = effspd[i].s;
+        pq.push(-spd);  // Making the behaviour as min priority queue
+        
+        if(pq.size() > k)
+        {
+            totalspeed += spd + pq.top();
+            pq.pop();
+        }
+        else totalspeed += spd;
+        
+        maxperf = max(maxperf, totalspeed*eff);
+    }
+    return maxperf % mod;
+}
