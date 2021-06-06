@@ -162,30 +162,67 @@ bool isInterleave(string s1, string s2, string s3)
 #define s second
 #define mod 1000000007
 #define ull unsigned long long
-int maxPerformance(int n, vector<int>& speed, vector<int>& efficiency, int k) 
+int maxPerformance(int n, vector<int> &speed, vector<int> &efficiency, int k)
 {
-    vector<pair<int,int>> effspd(n);
-    for(int i = 0; i < n; i++)
+    vector<pair<int, int>> effspd(n);
+    for (int i = 0; i < n; i++)
         effspd[i] = {efficiency[i], speed[i]};
-    sort(effspd.rbegin(), effspd.rend());  // Sorting in reverse order
-    
+    sort(effspd.rbegin(), effspd.rend()); // Sorting in reverse order
+
     priority_queue<int> pq;
     ull totalspeed = 0;
     ull maxperf = 0;
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
         int eff = effspd[i].f;
         int spd = effspd[i].s;
-        pq.push(-spd);  // Making the behaviour as min priority queue
-        
-        if(pq.size() > k)
+        pq.push(-spd); // Making the behaviour as min priority queue
+
+        if (pq.size() > k)
         {
             totalspeed += spd + pq.top();
             pq.pop();
         }
-        else totalspeed += spd;
-        
-        maxperf = max(maxperf, totalspeed*eff);
+        else
+            totalspeed += spd;
+
+        maxperf = max(maxperf, totalspeed * eff);
     }
     return maxperf % mod;
+}
+
+// DAY 6 (Longest Consecutive Sequence)============================================================================
+
+int longestConsecutive(vector<int> &nums)
+{
+    unordered_map<int, int> m;
+    int ans = 0;
+    for (int x : nums)
+    {
+        if (m.count(x))
+            continue;
+        if (m.count(x - 1) && m.count(x + 1)) // Number is being added to the 2 sets (left and right)
+        {
+            int len = m[x - m[x - 1]] + m[x + m[x + 1]] + 1;
+            m[x - m[x - 1]] = len;
+            m[x + m[x + 1]] = len;
+            m[x] = len;
+            ans = max(ans, len);
+        }
+        else if (m.count(x - 1)) //Number is being added to the left set
+        {
+            int len = ++m[x - m[x - 1]];
+            ans = max(ans, len);
+            m[x] = len;
+        }
+        else if (m.count(x + 1)) // Number is being added to the right set
+        {
+            int len = ++m[x + m[x + 1]];
+            ans = max(ans, len);
+            m[x] = len;
+        }
+        else // Number is making a new set
+            ans = max(ans, ++m[x]);
+    }
+    return ans;
 }
