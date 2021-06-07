@@ -226,3 +226,23 @@ int longestConsecutive(vector<int> &nums)
     }
     return ans;
 }
+
+// DAY 7 (Min Cost Climbing Stairs)=============================================================
+
+int minCoststairs(int n, vector<int> &cost, vector<int> &dp)
+{
+    for (int i = n - 1; i >= 0; i--)
+    {
+        int one = (i + 1 < n) ? dp[i + 1] : 0;
+        int two = (i + 2 < n) ? dp[i + 2] : 0;
+        dp[i] = min(one, two) + cost[i];
+    }
+    return min(dp[0], dp[1]);
+}
+
+int minCostClimbingStairs(vector<int> &cost)
+{
+    int n = cost.size();
+    vector<int> dp(n + 1, 0);
+    return minCoststairs(n, cost, dp);
+}
