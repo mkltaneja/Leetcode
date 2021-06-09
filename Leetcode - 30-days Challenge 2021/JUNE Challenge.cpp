@@ -278,7 +278,7 @@ TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder)
 
 // DAY 9 (Jump Game 6)==========================================================================
 
-// APPROACH 1 (Bottom up DP)
+// APPROACH 1 (Bottom up DP) --> O(n*k)
 // TLE
 
 int maxResult(vector<int> &nums, int k)
@@ -289,5 +289,32 @@ int maxResult(vector<int> &nums, int k)
     for (int i = n - 2; i >= 0; i--)
         for (int j = 1; j <= k && (i + j) < n; j++)
             dp[i] = max(dp[i], dp[i + j] + nums[i]);
+    return dp[0];
+}
+
+// APPROACH 2 (OPTIMIZED DP (with deque)) --> O(n)
+// [Remove the numbers which are surely not gonna contribute in the maximum (the smaller numbers) every time we push the current index in the deque]
+
+int maxResult(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    vector<int> dp(n, INT_MIN);
+    dp[n - 1] = nums[n - 1];
+
+    deque<int> que;
+    que.push_back(n - 1);
+
+    for (int i = n - 2; i >= 0; i--)
+    {
+        if (que.front() - i > k)
+            que.pop_front();
+
+        dp[i] = dp[que.front()] + nums[i];
+
+        while (!que.empty() && dp[que.back()] <= dp[i])
+            que.pop_back();
+
+        que.push_back(i);
+    }
     return dp[0];
 }
