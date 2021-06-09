@@ -275,3 +275,19 @@ TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder)
     TreeNode *root = build(0, preorder.size() - 1, 0, inorder.size() - 1, preorder, m);
     return root;
 }
+
+// DAY 9 (Jump Game 6)==========================================================================
+
+// APPROACH 1 (Bottom up DP)
+// TLE
+
+int maxResult(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    vector<int> dp(n, INT_MIN);
+    dp[n - 1] = nums[n - 1];
+    for (int i = n - 2; i >= 0; i--)
+        for (int j = 1; j <= k && (i + j) < n; j++)
+            dp[i] = max(dp[i], dp[i + j] + nums[i]);
+    return dp[0];
+}
