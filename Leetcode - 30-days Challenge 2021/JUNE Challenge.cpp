@@ -374,3 +374,26 @@ int stoneGameVII(vector<int>& stones)
     vector<vector<int>> dp(n, vector<int>(n, -1));
     return mindiff(0, n-1, tsum, stones, dp);
 }
+
+// METHOD 2 (Tabulated)
+
+int stoneGameVII(vector<int>& stones) 
+{
+    int n = stones.size();
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+    for(int i = n-2; i >= 0; i--)
+    {
+        int tsum = stones[i];
+        for(int j = i+1; j < n; j++)
+        {
+            tsum += stones[j];
+            
+            int left = tsum - stones[i] - dp[i+1][j];
+            int right = tsum - stones[j] - dp[i][j-1];
+            
+            dp[i][j] = max(left, right);
+        }
+    }
+    
+    return dp[0][n-1];
+}
