@@ -348,3 +348,29 @@ public:
  * MyCalendar* obj = new MyCalendar();
  * bool param_1 = obj->book(start,end);
  */
+
+//  DAY 11 (Stone Game VII)=====================================================================================
+
+// METHOD 1 (Memoized)
+int mindiff(int i, int j, int tsum, vector<int> &stones, vector<vector<int>> &dp)
+{
+    if(i == j) return 0;
+    if(i+1 == j) return max(stones[i], stones[j]);
+    
+    if(dp[i][j] != -1) return dp[i][j];
+    
+    int left = mindiff(i+1, j, tsum-stones[i], stones, dp);
+    int right = mindiff(i, j-1, tsum-stones[j], stones, dp);
+    
+    return dp[i][j] = max((tsum - stones[i] - left), (tsum - stones[j] - right));
+}
+
+int stoneGameVII(vector<int>& stones) 
+{
+    int n = stones.size();
+    int tsum = 0;
+    for(int x : stones)
+        tsum += x;
+    vector<vector<int>> dp(n, vector<int>(n, -1));
+    return mindiff(0, n-1, tsum, stones, dp);
+}
