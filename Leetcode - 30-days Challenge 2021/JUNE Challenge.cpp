@@ -354,46 +354,74 @@ public:
 // METHOD 1 (Memoized)
 int mindiff(int i, int j, int tsum, vector<int> &stones, vector<vector<int>> &dp)
 {
-    if(i == j) return 0;
-    if(i+1 == j) return max(stones[i], stones[j]);
-    
-    if(dp[i][j] != -1) return dp[i][j];
-    
-    int left = mindiff(i+1, j, tsum-stones[i], stones, dp);
-    int right = mindiff(i, j-1, tsum-stones[j], stones, dp);
-    
+    if (i == j)
+        return 0;
+    if (i + 1 == j)
+        return max(stones[i], stones[j]);
+
+    if (dp[i][j] != -1)
+        return dp[i][j];
+
+    int left = mindiff(i + 1, j, tsum - stones[i], stones, dp);
+    int right = mindiff(i, j - 1, tsum - stones[j], stones, dp);
+
     return dp[i][j] = max((tsum - stones[i] - left), (tsum - stones[j] - right));
 }
 
-int stoneGameVII(vector<int>& stones) 
+int stoneGameVII(vector<int> &stones)
 {
     int n = stones.size();
     int tsum = 0;
-    for(int x : stones)
+    for (int x : stones)
         tsum += x;
     vector<vector<int>> dp(n, vector<int>(n, -1));
-    return mindiff(0, n-1, tsum, stones, dp);
+    return mindiff(0, n - 1, tsum, stones, dp);
 }
 
 // METHOD 2 (Tabulated)
 
-int stoneGameVII(vector<int>& stones) 
+int stoneGameVII(vector<int> &stones)
 {
     int n = stones.size();
     vector<vector<int>> dp(n, vector<int>(n, 0));
-    for(int i = n-2; i >= 0; i--)
+    for (int i = n - 2; i >= 0; i--)
     {
         int tsum = stones[i];
-        for(int j = i+1; j < n; j++)
+        for (int j = i + 1; j < n; j++)
         {
             tsum += stones[j];
-            
-            int left = tsum - stones[i] - dp[i+1][j];
-            int right = tsum - stones[j] - dp[i][j-1];
-            
+
+            int left = tsum - stones[i] - dp[i + 1][j];
+            int right = tsum - stones[j] - dp[i][j - 1];
+
             dp[i][j] = max(left, right);
         }
     }
-    
-    return dp[0][n-1];
+
+    return dp[0][n - 1];
+}
+
+// DAY 12 (Minimum Number of Refueling Stops)===========================================================================
+
+int minRefuelStops(int target, int startFuel, vector<vector<int>> &stations)
+{
+    int n = stations.size();
+    priority_queue<int> pq;
+    int i = 0;
+    int cnt = 0;
+    while (startFuel < target)
+    {
+        while (i < n && stations[i][0] <= startFuel)
+            pq.push(stations[i++][1]);
+
+        if (pq.empty())
+            return -1;
+
+        startFuel += pq.top();
+        cnt++;
+        pq.pop();
+    }
+    if (target > startFuel)
+        return -1;
+    return cnt;
 }
