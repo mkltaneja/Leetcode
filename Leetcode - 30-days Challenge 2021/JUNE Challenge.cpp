@@ -425,3 +425,32 @@ int minRefuelStops(int target, int startFuel, vector<vector<int>> &stations)
         return -1;
     return cnt;
 }
+
+// DAY 13 (Palindrome Pairs)===================================================================================
+
+// APPROACH 1 (Brute Force) --> O(n^2)
+
+bool ispal(string s)
+{
+    for (int i = 0; i < s.size() / 2; i++)
+        if (s[i] != s[s.size() - i - 1])
+            return false;
+    return true;
+}
+
+vector<vector<int>> palindromePairs(vector<string> &words)
+{
+    int n = words.size();
+    vector<vector<int>> ans;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (i == j)
+                continue;
+            if (ispal(words[i] + words[j]))
+                ans.push_back({i, j});
+        }
+    }
+    return ans;
+}
