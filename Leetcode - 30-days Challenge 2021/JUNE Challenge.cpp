@@ -454,3 +454,58 @@ vector<vector<int>> palindromePairs(vector<string> &words)
     }
     return ans;
 }
+
+// APPROACH 2 (OPTIMIZED Using map) --> O(n*m) [n = words.size(), m = words[i][j].size()]
+
+bool ispal(int i, int j, string &s)
+{
+    while (i < j)
+        if (s[i++] != s[j--])
+            return false;
+    return true;
+}
+
+vector<vector<int>> palindromePairs(vector<string> &words)
+{
+    int n = words.size();
+
+    unordered_map<string, int> m;
+    for (int i = 0; i < n; i++)
+        m[words[i]] = i;
+
+    vector<vector<int>> ans;
+    for (int i = 0; i < n; i++)
+    {
+        if (words[i] == "")
+        {
+            for (int j = 0; j < n; j++)
+                if (j != i && ispal(0, words[j].size() - 1, words[j]))
+                    ans.push_back({i, j}), ans.push_back({j, i});
+        }
+        else
+        {
+            string tmp = words[i];
+            reverse(tmp.begin(), tmp.end());
+            if (m.count(tmp) && m[tmp] != i)
+                ans.push_back({i, m[tmp]});
+
+            for (int j = 1; j < tmp.size(); j++)
+            {
+                if (ispal(0, j - 1, tmp))
+                {
+                    string s1 = tmp.substr(j, tmp.size() - j);
+                    if (m.count(s1))
+                        ans.push_back({i, m[s1]});
+                }
+
+                if (ispal(j, tmp.size() - 1, tmp))
+                {
+                    string s2 = tmp.substr(0, j);
+                    if (m.count(s2))
+                        ans.push_back({m[s2], i});
+                }
+            }
+        }
+    }
+    return ans;
+}
