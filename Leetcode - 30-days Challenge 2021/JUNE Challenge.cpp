@@ -523,6 +523,33 @@ int maximumUnits(vector<vector<int>> &boxTypes, int truckSize)
         ans += boxes * boxTypes[i][1];
 
         truckSize -= boxes;
+        if (truckSize == 0)
+            break;
     }
     return ans;
+}
+
+// DAY 15 (Matchsticks to Square)=========================================================================================
+
+// APPROACH 1 (Brute Force) --> O(4^n)
+// TLE
+
+bool dfs(long i, long a, long b, long c, long d, vector<int> &arr)
+{
+    if (i == arr.size())
+    {
+        if (a == b && b == c && c == d)
+            return true;
+        return false;
+    }
+
+    return dfs(i + 1, a + arr[i], b, c, d, arr) ||
+           dfs(i + 1, a, b + arr[i], c, d, arr) ||
+           dfs(i + 1, a, b, c + arr[i], d, arr) ||
+           dfs(i + 1, a, b, c, d + arr[i], arr);
+}
+
+bool makesquare(vector<int> &matchsticks)
+{
+    return dfs(0, 0, 0, 0, 0, matchsticks);
 }
