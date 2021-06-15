@@ -553,3 +553,40 @@ bool makesquare(vector<int> &matchsticks)
 {
     return dfs(0, 0, 0, 0, 0, matchsticks);
 }
+
+// APPROACH 2 (Checking all four sides by Target sum approach) --> O(n^3)
+
+bool target_sum(int idx, int len, int sidelen, int vis, int totlens, vector<int> &sticks)
+{
+    if (totlens == 3)
+        return true;
+    if (len == sidelen)
+        return target_sum(0, 0, sidelen, vis, totlens + 1, sticks);
+    if (idx == sticks.size())
+        return false;
+
+    for (int i = idx; i < sticks.size(); i++)
+    {
+        if (!(vis & (1 << i)) && (len + sticks[i] <= sidelen))
+        {
+            vis ^= (1 << i);
+            if (target_sum(i + 1, len + sticks[i], sidelen, vis, totlens, sticks))
+                return true;
+            vis ^= (1 << i);
+        }
+    }
+    return false;
+}
+
+bool makesquare(vector<int> &matchsticks)
+{
+    int n = matchsticks.size();
+    long sum = 0;
+    for (int x : matchsticks)
+        sum += x;
+    if (sum % 4)
+        return false;
+
+    int vis = 0;
+    return target_sum(0, 0, sum / 4, vis, 0, matchsticks);
+}
