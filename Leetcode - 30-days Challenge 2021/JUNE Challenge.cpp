@@ -590,3 +590,26 @@ bool makesquare(vector<int> &matchsticks)
     int vis = 0;
     return target_sum(0, 0, sum / 4, vis, 0, matchsticks);
 }
+
+// DAY 16 (Generate Parenthesis)===================================================================================
+
+void parenthesis(int x, int y, string s, vector<string> &ans)
+{
+    if (x == 0 && y == 0)
+    {
+        ans.push_back(s);
+        return;
+    }
+    if (x == -1 || y == -1 || y < x)
+        return;
+
+    parenthesis(x - 1, y, s + '(', ans);
+    parenthesis(x, y - 1, s + ')', ans);
+}
+
+vector<string> generateParenthesis(int n)
+{
+    vector<string> ans;
+    parenthesis(n, n, "", ans);
+    return ans;
+}
