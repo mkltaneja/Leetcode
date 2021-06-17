@@ -613,3 +613,29 @@ vector<string> generateParenthesis(int n)
     parenthesis(n, n, "", ans);
     return ans;
 }
+
+// DAY 17 (Number of Subarrays with Bounded Maximum)=============================================================
+
+int numSubarrayBoundedMax(vector<int> &nums, int left, int right)
+{
+    long ans = 0;
+    int i = 0, j = 0;
+    int lasti = -1;
+    while (i < nums.size())
+    {
+        if (nums[i] > right)
+        {
+            j = i + 1;
+            lasti = -1;
+        }
+        else if (nums[i] >= left && nums[i] <= right)
+        {
+            ans += (i - j + 1);
+            lasti = i;
+        }
+        else if (lasti != -1)
+            ans += (lasti - j + 1);
+        i++;
+    }
+    return ans;
+}
