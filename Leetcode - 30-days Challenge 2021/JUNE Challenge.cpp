@@ -639,3 +639,61 @@ int numSubarrayBoundedMax(vector<int> &nums, int left, int right)
     }
     return ans;
 }
+
+// DAY 18 (Range Sum Query - Mutable)======================================================
+
+// APPROACH  -> Using Fenwick Trees
+class NumArray
+{
+public:
+    vector<int> nums;
+    vector<int> fentree;
+    int n;
+
+    void updateFen(int i, int x)
+    {
+        while (i <= n)
+        {
+            fentree[i] += x;
+            i += (i & -i);
+        }
+    }
+
+    int Fensum(int i)
+    {
+        int sum = 0;
+        while (i)
+        {
+            sum += fentree[i];
+            i -= (i & -i);
+        }
+        return sum;
+    }
+
+    NumArray(vector<int> &nums)
+    {
+        this->n = nums.size();
+        this->nums = nums;
+        this->fentree.resize(n + 1, 0);
+        for (int i = 1; i <= n; i++)
+            updateFen(i, nums[i - 1]);
+    }
+
+    void update(int index, int val)
+    {
+        updateFen(index + 1, (val - nums[index]));
+        nums[index] = val;
+    }
+
+    int sumRange(int left, int right)
+    {
+        return Fensum(right + 1) - Fensum(left);
+    }
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * obj->update(index,val);
+ * int param_2 = obj->sumRange(left,right);
+ */
