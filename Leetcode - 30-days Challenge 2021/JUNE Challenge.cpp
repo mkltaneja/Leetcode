@@ -697,3 +697,36 @@ public:
  * obj->update(index,val);
  * int param_2 = obj->sumRange(left,right);
  */
+
+// DAY 20 (Swim in Rising Water)==============================================================================
+
+int minans = INT_MAX;
+int dfs(int i, int j, int n, int m, int mx, vector<vector<int>> &arr, vector<vector<int>> &dp, vector<vector<bool>> &vis)
+{
+    if (i == n || j == m || i == -1 || j == -1 || vis[i][j])
+        return INT_MAX;
+    mx = max(mx, arr[i][j]);
+    if (i == n - 1 && j == m - 1)
+        return mx;
+    if (dp[i][j] != -1)
+        return dp[i][j];
+
+    vis[i][j] = true;
+
+    int d = dfs(i + 1, j, n, m, mx, arr, dp, vis);
+    int r = dfs(i, j + 1, n, m, mx, arr, dp, vis);
+    int u = dfs(i - 1, j, n, m, mx, arr, dp, vis);
+    int l = dfs(i, j - 1, n, m, mx, arr, dp, vis);
+
+    vis[i][j] = false;
+
+    return dp[i][j] = min({d, r, u, l});
+}
+
+int swimInWater(vector<vector<int>> &grid)
+{
+    int n = grid.size(), m = grid[0].size();
+    vector<vector<int>> dp(n, vector<int>(m, -1));
+    vector<vector<bool>> vis(n, vector<bool>(m, false));
+    return dfs(0, 0, n, m, -1, grid, dp, vis);
+}
