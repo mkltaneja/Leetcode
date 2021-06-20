@@ -700,6 +700,8 @@ public:
 
 // DAY 20 (Swim in Rising Water)==============================================================================
 
+// APPROACH 1 (Brute Force DFS) --> O(4^(n^2))
+
 int minans = INT_MAX;
 int dfs(int i, int j, int n, int m, int mx, vector<vector<int>> &arr, vector<vector<int>> &dp, vector<vector<bool>> &vis)
 {
@@ -729,4 +731,39 @@ int swimInWater(vector<vector<int>> &grid)
     vector<vector<int>> dp(n, vector<int>(m, -1));
     vector<vector<bool>> vis(n, vector<bool>(m, false));
     return dfs(0, 0, n, m, -1, grid, dp, vis);
+}
+
+// APPROACH 2 (Using the given property -> value ranges from (0 to n*n-1)) --> n^4
+
+vector<vector<int>> dir = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+bool dfs(int i, int j, int n, int m, vector<vector<int>> &grid, vector<vector<bool>> &vis, int wlvl)
+{
+    if (i == -1 || j == -1 | i == n || j == m || grid[i][j] > wlvl || vis[i][j])
+        return false;
+    if (i == n - 1 && j == m - 1)
+        return true;
+
+    vis[i][j] = true;
+
+    for (int d = 0; d < 4; d++)
+        if (dfs(i + dir[d][0], j + dir[d][1], n, m, grid, vis, wlvl))
+            return true;
+
+    vis[i][j] = true;
+
+    return false;
+}
+
+int swimInWater(vector<vector<int>> &grid)
+{
+    int n = grid.size(), m = grid[0].size();
+
+    int minans = max({grid[0][0], grid[n - 1][m - 1], 2 * (n - 1)});
+    for (int wlvl = minans; wlvl < n * n; wlvl++)
+    {
+        vector<vector<bool>> vis(n, vector<bool>(m, false));
+        if (dfs(0, 0, n, m, grid, vis, wlvl))
+            return wlvl;
+    }
+    return n * n;
 }
