@@ -802,3 +802,21 @@ int swimInWater(vector<vector<int>> &grid)
     }
     return si;
 }
+
+// DAY 21 (Pascal's Triangle)=======================================================================================
+
+vector<vector<int>> generate(int numRows)
+{
+    vector<vector<int>> ans(numRows);
+    ans[0].push_back(1);
+    for (int i = 0; i < numRows - 1; i++)
+    {
+        ans[i + 1].assign(i + 2, 0);
+        for (int j = 0; j < i + 1; j++)
+        {
+            ans[i + 1][j] += ans[i][j];
+            ans[i + 1][j + 1] += ans[i][j];
+        }
+    }
+    return ans;
+}
