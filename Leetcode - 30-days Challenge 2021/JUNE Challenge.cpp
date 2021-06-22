@@ -844,3 +844,42 @@ int numMatchingSubseq(string s, vector<string> &words)
             ans++;
     return ans;
 }
+
+// APPROACH 2 (Optimized Brute Force --> Compare all words with the same character of words[i], in s) --> < O(n*m*x)
+
+vector<vector<int>> chari;
+bool isMatched(string &word)
+{
+    int lasti = -1;
+    for (char c : word)
+    {
+        if (chari[c - 'a'].empty())
+            return false;
+        bool found = false;
+        for (int i : chari[c - 'a'])
+        {
+            if (i > lasti)
+            {
+                lasti = i;
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            return false;
+    }
+    return true;
+}
+
+int numMatchingSubseq(string s, vector<string> &words)
+{
+    chari.resize(26);
+    int ans = 0;
+    for (int i = 0; i < s.size(); i++)
+        chari[s[i] - 'a'].push_back(i);
+
+    for (string word : words)
+        if (isMatched(word))
+            ans++;
+    return ans;
+}
