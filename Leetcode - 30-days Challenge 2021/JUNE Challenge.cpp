@@ -820,3 +820,27 @@ vector<vector<int>> generate(int numRows)
     }
     return ans;
 }
+
+// DAY 22 (Number of Matching Subsequences)==================================================================================
+
+// APPROACH 1 (Brute Force -- Compare all words with s in O(n)) --> O(n*m*x) [n = s.size(), m = words.size(), x = words[i].size()]
+
+bool isMatched(string &a, string &b)
+{
+    if (b.size() > a.size())
+        return false;
+    int j = 0;
+    for (int i = 0; i < a.size() && j < b.size(); i++)
+        if (a[i] == b[j])
+            j++;
+    return (j == b.size());
+}
+
+int numMatchingSubseq(string s, vector<string> &words)
+{
+    int ans = 0;
+    for (string word : words)
+        if (isMatched(s, word))
+            ans++;
+    return ans;
+}
