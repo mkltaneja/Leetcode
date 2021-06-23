@@ -883,3 +883,44 @@ int numMatchingSubseq(string s, vector<string> &words)
             ans++;
     return ans;
 }
+
+// DAY 23 (Reverse Linked List 2)======================================================================================
+
+ListNode* reverseBetween(ListNode* head, int left, int right) 
+{
+    int pos = 1;
+    ListNode* curr = nullptr, *prev = nullptr, *forw = curr, *ptrleft = nullptr;
+    ListNode *itr = head, *last = nullptr;
+    while(itr)
+    {
+        if(pos == left && !ptrleft)
+        {
+            ptrleft = itr;
+            curr = itr;
+        }
+        else if(!ptrleft)
+            last = itr;
+        
+        if(curr)
+        {
+            forw = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = forw;
+        }
+        
+        if(pos == right)
+            break;
+        
+        if(ptrleft)
+            itr = curr;
+        else
+            itr = itr->next;
+        pos++;
+    }
+    ptrleft->next = curr;
+    if(last)
+        last->next = prev;
+    
+    return last? head : prev;
+}
