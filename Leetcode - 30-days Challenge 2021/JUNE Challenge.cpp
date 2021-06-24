@@ -924,3 +924,30 @@ ListNode* reverseBetween(ListNode* head, int left, int right)
     
     return last? head : prev;
 }
+
+// DAY 24 (Out of Baoundry Paths)========================================================================
+
+#define mod 1000000007
+
+int dfs(int i, int j, int n, int m, int moves, vector<vector<vector<int>>> &dp)
+{
+    if(i == -1 || j == -1 || i == n || j == m)
+        return 1;
+    if(moves == 0)
+        return dp[i][j][moves] = 0;
+    if(dp[i][j][moves] != -1)
+        return dp[i][j][moves];
+    
+    int d = dfs(i+1, j, n, m, moves-1, dp) % mod;
+    int r = dfs(i, j+1, n, m, moves-1, dp) % mod;
+    int u = dfs(i-1, j, n, m, moves-1, dp) % mod;
+    int l = dfs(i, j-1, n, m, moves-1, dp) % mod;
+    
+    return dp[i][j][moves] = ((d + r) % mod + (u + l) % mod) % mod;
+}
+
+int findPaths(int n, int m, int maxMove, int startRow, int startColumn) 
+{
+    vector<vector<vector<int>>> dp(n, vector<vector<int>> (m, vector<int> (maxMove+1, -1)));
+    return dfs(startRow, startColumn, n, m, maxMove, dp);
+}
