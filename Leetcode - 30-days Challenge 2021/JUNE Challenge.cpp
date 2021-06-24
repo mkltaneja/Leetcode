@@ -886,68 +886,105 @@ int numMatchingSubseq(string s, vector<string> &words)
 
 // DAY 23 (Reverse Linked List 2)======================================================================================
 
-ListNode* reverseBetween(ListNode* head, int left, int right) 
+ListNode *reverseBetween(ListNode *head, int left, int right)
 {
     int pos = 1;
-    ListNode* curr = nullptr, *prev = nullptr, *forw = curr, *ptrleft = nullptr;
+    ListNode *curr = nullptr, *prev = nullptr, *forw = curr, *ptrleft = nullptr;
     ListNode *itr = head, *last = nullptr;
-    while(itr)
+    while (itr)
     {
-        if(pos == left && !ptrleft)
+        if (pos == left && !ptrleft)
         {
             ptrleft = itr;
             curr = itr;
         }
-        else if(!ptrleft)
+        else if (!ptrleft)
             last = itr;
-        
-        if(curr)
+
+        if (curr)
         {
             forw = curr->next;
             curr->next = prev;
             prev = curr;
             curr = forw;
         }
-        
-        if(pos == right)
+
+        if (pos == right)
             break;
-        
-        if(ptrleft)
+
+        if (ptrleft)
             itr = curr;
         else
             itr = itr->next;
         pos++;
     }
     ptrleft->next = curr;
-    if(last)
+    if (last)
         last->next = prev;
-    
-    return last? head : prev;
+
+    return last ? head : prev;
 }
 
 // DAY 24 (Out of Baoundry Paths)========================================================================
+
+// METHOD 1 (Memoization)
 
 #define mod 1000000007
 
 int dfs(int i, int j, int n, int m, int moves, vector<vector<vector<int>>> &dp)
 {
-    if(i == -1 || j == -1 || i == n || j == m)
+    if (i == -1 || j == -1 || i == n || j == m)
         return 1;
-    if(moves == 0)
+    if (moves == 0)
         return dp[i][j][moves] = 0;
-    if(dp[i][j][moves] != -1)
+    if (dp[i][j][moves] != -1)
         return dp[i][j][moves];
-    
-    int d = dfs(i+1, j, n, m, moves-1, dp) % mod;
-    int r = dfs(i, j+1, n, m, moves-1, dp) % mod;
-    int u = dfs(i-1, j, n, m, moves-1, dp) % mod;
-    int l = dfs(i, j-1, n, m, moves-1, dp) % mod;
-    
+
+    int d = dfs(i + 1, j, n, m, moves - 1, dp) % mod;
+    int r = dfs(i, j + 1, n, m, moves - 1, dp) % mod;
+    int u = dfs(i - 1, j, n, m, moves - 1, dp) % mod;
+    int l = dfs(i, j - 1, n, m, moves - 1, dp) % mod;
+
     return dp[i][j][moves] = ((d + r) % mod + (u + l) % mod) % mod;
 }
 
-int findPaths(int n, int m, int maxMove, int startRow, int startColumn) 
+int findPaths(int n, int m, int maxMove, int startRow, int startColumn)
 {
-    vector<vector<vector<int>>> dp(n, vector<vector<int>> (m, vector<int> (maxMove+1, -1)));
+    vector<vector<vector<int>>> dp(n, vector<vector<int>>(m, vector<int>(maxMove + 1, -1)));
     return dfs(startRow, startColumn, n, m, maxMove, dp);
+}
+
+// METHOD 2 (Tabulation)
+
+#define mod 1000000007
+
+int findPaths(int n, int m, int maxMove, int startRow, int startColumn)
+{
+    vector<vector<int>> prevdp(n, vector<int>(m, 0));
+    prevdp[startRow][startColumn] = 1; // prevdp[i][j] represents the number of ways to reach position (i,j) [With 0 moves initially]
+    int ans = 0;
+
+    for (int moves = 1; moves <= maxMove; moves++)
+    {
+        vector<vector<int>> currdp(n, vector<int>(m, 0));
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                // currdp[j][j] represents no. of ways to reach position (i,j) with 1 extra moves than previous
+                currdp[i][j] = (currdp[i][j] % mod + ((i) ? prevdp[i - 1][j] : 0) % mod) % mod;
+                currdp[i][j] = (currdp[i][j] % mod + ((j) ? prevdp[i][j - 1] : 0) % mod) % mod;
+                currdp[i][j] = (currdp[i][j] % mod + ((i != n - 1) ? prevdp[i + 1][j] : 0) % mod) % mod;
+                currdp[i][j] = (currdp[i][j] % mod + ((j != m - 1) ? prevdp[i][j + 1] : 0) % mod) % mod;
+
+                // Adding the Boundries
+                ans = (ans % mod + ((!i) ? prevdp[i][j] : 0) % mod) % mod;
+                ans = (ans % mod + ((!j) ? prevdp[i][j] : 0) % mod) % mod;
+                ans = (ans % mod + ((i == n - 1) ? prevdp[i][j] : 0) % mod) % mod;
+                ans = (ans % mod + ((j == m - 1) ? prevdp[i][j] : 0) % mod) % mod;
+            }
+        }
+        prevdp = currdp;
+    }
+    return ans;
 }
