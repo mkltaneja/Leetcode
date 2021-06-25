@@ -988,3 +988,33 @@ int findPaths(int n, int m, int maxMove, int startRow, int startColumn)
     }
     return ans;
 }
+
+// ḌAY 25 (Redundant Connection)==========================================================================================
+
+vector<int> par;
+int findPar(int u)
+{
+    if(par[u] == u)
+        return u;
+    return par[u] = findPar(par[u]);
+}
+void merge(int u, int v)
+{
+    par[findPar(u)] = findPar(v);
+}
+
+vector<int> findRedundantConnection(vector<vector<int>>& edges) 
+{
+    int n = edges.size();
+    par.resize(n+1);
+    for(int i = 1; i <= n; i++)
+        par[i] = i;
+    
+    for(auto v : edges)
+    {
+        if(findPar(v[0]) == findPar(v[1]))
+            return v;
+        merge(v[0], v[1]);
+    }
+    return {};
+}
