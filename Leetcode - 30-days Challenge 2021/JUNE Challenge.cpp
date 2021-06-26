@@ -994,7 +994,7 @@ int findPaths(int n, int m, int maxMove, int startRow, int startColumn)
 vector<int> par;
 int findPar(int u)
 {
-    if(par[u] == u)
+    if (par[u] == u)
         return u;
     return par[u] = findPar(par[u]);
 }
@@ -1003,18 +1003,58 @@ void merge(int u, int v)
     par[findPar(u)] = findPar(v);
 }
 
-vector<int> findRedundantConnection(vector<vector<int>>& edges) 
+vector<int> findRedundantConnection(vector<vector<int>> &edges)
 {
     int n = edges.size();
-    par.resize(n+1);
-    for(int i = 1; i <= n; i++)
+    par.resize(n + 1);
+    for (int i = 1; i <= n; i++)
         par[i] = i;
-    
-    for(auto v : edges)
+
+    for (auto v : edges)
     {
-        if(findPar(v[0]) == findPar(v[1]))
+        if (findPar(v[0]) == findPar(v[1]))
             return v;
         merge(v[0], v[1]);
     }
     return {};
+}
+
+// DAY 26 (Count of Smaller Number After Self)=====================================================================
+
+vector<int> fentree;
+
+void update(int x)
+{
+    while (x < fentree.size())
+    {
+        fentree[x]++;
+        x += (x & -x);
+    }
+}
+int get(int x)
+{
+    int ans = 0;
+    while (x)
+    {
+        ans += fentree[x];
+        x -= (x & -x);
+    }
+    return ans;
+}
+
+vector<int> countSmaller(vector<int> &nums)
+{
+    int n = nums.size();
+    for (int &x : nums)
+        x += 10004;
+    fentree.resize(20005);
+
+    vector<int> ans(n);
+    for (int i = n - 1; i >= 0; i--)
+    {
+        ans[i] = get(nums[i] - 1);
+        update(nums[i]);
+    }
+
+    return ans;
 }
