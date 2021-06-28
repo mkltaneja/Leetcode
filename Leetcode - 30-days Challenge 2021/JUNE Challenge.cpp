@@ -1058,3 +1058,26 @@ vector<int> countSmaller(vector<int> &nums)
 
     return ans;
 }
+
+// DAY 28 (Remove All Adjacent Adjacent Duplicates in String)=======================================================
+
+string removeDuplicates(string s)
+{
+    string ans = "";
+    stack<int> st;
+    for (char c : s)
+    {
+        if (st.empty() || st.top() != c)
+            st.push(c);
+        else
+            st.pop();
+    }
+    while (!st.empty())
+    {
+        ans += st.top();
+        st.pop();
+    }
+    reverse(ans.begin(), ans.end());
+
+    return ans;
+}
