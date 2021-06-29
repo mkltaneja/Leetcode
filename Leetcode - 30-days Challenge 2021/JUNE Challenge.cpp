@@ -1081,3 +1081,24 @@ string removeDuplicates(string s)
 
     return ans;
 }
+
+// DAY 29 (Max Consecutive Ones 3)===========================================================================
+
+int longestOnes(vector<int> &nums, int k)
+{
+    int i = 0, j = 0;
+    int maxcon = 0;
+    while (i < nums.size())
+    {
+        if (nums[i] == 0)
+        {
+            if (k == 0)
+                while (j < nums.size() && nums[j++] != 0)
+                    ;
+            else
+                k--;
+        }
+        maxcon = max(maxcon, i++ - j + 1);
+    }
+    return maxcon;
+}
