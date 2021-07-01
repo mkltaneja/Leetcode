@@ -1,5 +1,7 @@
 // DAY 1 (Gray Code)=====================================================================================
 
+// METHOD 1 (Using binary string array then converted to decimal) --> >O(2^n * n)
+
 vector<string> grayCode_(int n)
 {
     if (n == 1)
@@ -28,4 +30,17 @@ vector<int> grayCode(int n)
         ans.push_back(x);
     }
     return ans;
+}
+
+// METHOD 2 (Directly converted to decimal) --> O(2^n * n)
+
+vector<int> grayCode(int n)
+{
+    if (n == 1)
+        return {0, 1};
+    vector<int> code = grayCode(n - 1);
+    for (int i = code.size() - 1; i >= 0; i--)
+        code.push_back(code[i] | (1 << (n - 1)));
+
+    return code;
 }
