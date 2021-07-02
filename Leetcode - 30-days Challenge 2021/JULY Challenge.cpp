@@ -44,3 +44,28 @@ vector<int> grayCode(int n)
 
     return code;
 }
+
+// DAY 2 (Find K Closest Elements)=====================================================================
+
+vector<int> findClosestElements(vector<int> &arr, int k, int x)
+{
+    auto pos = lower_bound(arr.begin(), arr.end(), x) - arr.begin();
+
+    int i = pos - 1, j = pos;
+    vector<int> ans(k);
+    int idx = 0;
+    while (i >= 0 && j < arr.size() && idx < k)
+    {
+        if ((abs(x - arr[i]) <= abs(x - arr[j])) || (abs(x - arr[i]) == abs(x - arr[j]) && arr[i] < arr[j]))
+            ans[idx++] = arr[i--];
+        else if (abs(x - arr[i]) > abs(x - arr[j]))
+            ans[idx++] = arr[j++];
+    }
+    while (i >= 0 && idx < k)
+        ans[idx++] = arr[i--];
+    while (j < arr.size() && idx < k)
+        ans[idx++] = arr[j++];
+
+    sort(ans.begin(), ans.end());
+    return ans;
+}
