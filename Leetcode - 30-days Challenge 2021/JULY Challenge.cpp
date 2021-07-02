@@ -47,6 +47,8 @@ vector<int> grayCode(int n)
 
 // DAY 2 (Find K Closest Elements)=====================================================================
 
+// APPROACH 1 (Linear Search) --> O(k + klogk)
+
 vector<int> findClosestElements(vector<int> &arr, int k, int x)
 {
     auto pos = lower_bound(arr.begin(), arr.end(), x) - arr.begin();
@@ -67,5 +69,22 @@ vector<int> findClosestElements(vector<int> &arr, int k, int x)
         ans[idx++] = arr[j++];
 
     sort(ans.begin(), ans.end());
+    return ans;
+}
+
+// APPROACH 2 (Binary Search) --> O(logn)
+
+vector<int> findClosestElements(vector<int> &arr, int k, int x)
+{
+    int l = 0, r = arr.size() - k;
+    while (l < r)
+    {
+        int m = (l + r) >> 1;
+        if (x - arr[m] > arr[m + k] - x)
+            l = m + 1;
+        else
+            r = m;
+    }
+    vector<int> ans(arr.begin() + l, arr.begin() + l + k);
     return ans;
 }
