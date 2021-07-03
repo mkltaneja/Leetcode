@@ -88,3 +88,36 @@ vector<int> findClosestElements(vector<int> &arr, int k, int x)
     vector<int> ans(arr.begin() + l, arr.begin() + l + k);
     return ans;
 }
+
+// DAY 3 (Max Sum of Rectangle No Larger than K)=============================================================================
+
+int maxSumSubmatrix(vector<vector<int>> &matrix, int k)
+{
+    int n = matrix.size(), m = matrix[0].size();
+    for (int i = 0; i < n; i++)
+        for (int j = 1; j < m; j++)
+            matrix[i][j] += matrix[i][j - 1];
+
+    int ans = INT_MIN;
+    for (int st = 0; st < m; st++)
+    {
+        for (int end = st; end < m; end++)
+        {
+            int psum = 0;
+            set<int> psums = {0};
+            for (int i = 0; i < n; i++)
+            {
+                int sum = matrix[i][end];
+                if (st)
+                    sum -= matrix[i][st - 1];
+
+                psum += sum;
+                auto itr = psums.lower_bound(psum - k);
+                if (itr != psums.end())
+                    ans = max(ans, psum - *itr);
+                psums.insert(psum);
+            }
+        }
+    }
+    return ans;
+}
