@@ -91,6 +91,8 @@ vector<int> findClosestElements(vector<int> &arr, int k, int x)
 
 // DAY 3 (Max Sum of Rectangle No Larger than K)=============================================================================
 
+// O(m*m*n*logn)
+
 int maxSumSubmatrix(vector<vector<int>> &matrix, int k)
 {
     int n = matrix.size(), m = matrix[0].size();
@@ -120,4 +122,35 @@ int maxSumSubmatrix(vector<vector<int>> &matrix, int k)
         }
     }
     return ans;
+}
+
+// DAY 4 (Count Vowel Permutation)======================================================================
+
+int mod = 1000000007;
+int solution(int n, char c, unordered_map<char,vector<char>> &m, map<pair<char,int>, int> &dp)
+{
+    if(n == 0)
+        return dp[{c,n}] = 1;
+    if(dp.count({c,n}))
+        return dp[{c,n}];
+    
+    int ans = 0;
+    for(char x : m[c])
+        ans = ((ans % mod) + (solution(n-1, x, m, dp) % mod) % mod);
+    
+    return dp[{c,n}] = ans % mod;
+}
+
+int countVowelPermutation(int n) 
+{
+    unordered_map<char,vector<char>> m;
+    m['#'] = {'a', 'e', 'i', 'o', 'u'};
+    m['a'] = {'e'};
+    m['e'] = {'a', 'i'};
+    m['i'] = {'a', 'e', 'o', 'u'};
+    m['o'] = {'i', 'u'};
+    m['u'] = {'a'};
+    
+    map<pair<char,int>, int> dp;
+    return solution(n, '#', m, dp) % mod;
 }
