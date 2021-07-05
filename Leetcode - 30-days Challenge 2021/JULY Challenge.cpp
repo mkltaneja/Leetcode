@@ -127,30 +127,52 @@ int maxSumSubmatrix(vector<vector<int>> &matrix, int k)
 // DAY 4 (Count Vowel Permutation)======================================================================
 
 int mod = 1000000007;
-int solution(int n, char c, unordered_map<char,vector<char>> &m, map<pair<char,int>, int> &dp)
+int solution(int n, char c, unordered_map<char, vector<char>> &m, map<pair<char, int>, int> &dp)
 {
-    if(n == 0)
-        return dp[{c,n}] = 1;
-    if(dp.count({c,n}))
-        return dp[{c,n}];
-    
+    if (n == 0)
+        return dp[{c, n}] = 1;
+    if (dp.count({c, n}))
+        return dp[{c, n}];
+
     int ans = 0;
-    for(char x : m[c])
-        ans = ((ans % mod) + (solution(n-1, x, m, dp) % mod) % mod);
-    
-    return dp[{c,n}] = ans % mod;
+    for (char x : m[c])
+        ans = ((ans % mod) + (solution(n - 1, x, m, dp) % mod) % mod);
+
+    return dp[{c, n}] = ans % mod;
 }
 
-int countVowelPermutation(int n) 
+int countVowelPermutation(int n)
 {
-    unordered_map<char,vector<char>> m;
+    unordered_map<char, vector<char>> m;
     m['#'] = {'a', 'e', 'i', 'o', 'u'};
     m['a'] = {'e'};
     m['e'] = {'a', 'i'};
     m['i'] = {'a', 'e', 'o', 'u'};
     m['o'] = {'i', 'u'};
     m['u'] = {'a'};
-    
-    map<pair<char,int>, int> dp;
+
+    map<pair<char, int>, int> dp;
     return solution(n, '#', m, dp) % mod;
+}
+
+// DAY 5 (Reshape The Matrix)============================================================================
+
+vector<vector<int>> matrixReshape(vector<vector<int>> &mat, int r, int c)
+{
+    int n = mat.size(), m = mat[0].size();
+    if (n * m != r * c)
+        return mat;
+    vector<int> data(n * m);
+    int k = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            data[k++] = mat[i][j];
+
+    vector<vector<int>> ans(r, vector<int>(c));
+    k = 0;
+    for (int i = 0; i < ans.size(); i++)
+        for (int j = 0; j < ans[0].size(); j++)
+            ans[i][j] = data[k++];
+
+    return ans;
 }
