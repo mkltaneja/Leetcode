@@ -176,3 +176,23 @@ vector<vector<int>> matrixReshape(vector<vector<int>> &mat, int r, int c)
 
     return ans;
 }
+
+// DAY 6 (Reduce Array Size to Half)=====================================================================================
+
+int minSetSize(vector<int> &arr)
+{
+    int n = arr.size();
+    unordered_map<int, int> m;
+    for (int x : arr)
+        m[x]++;
+    vector<int> freq;
+    for (auto p : m)
+        freq.push_back(p.second);
+    sort(freq.begin(), freq.end(), greater<int>());
+
+    int x = 0, i = 0;
+    while (x < n / 2 && i < freq.size())
+        x += freq[i++];
+
+    return i;
+}
