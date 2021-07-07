@@ -196,3 +196,17 @@ int minSetSize(vector<int> &arr)
 
     return i;
 }
+
+// DAY 7 (Kth Smallest Element in a Sorted Matrix)=================================================================================
+
+int kthSmallest(vector<vector<int>>& matrix, int k) 
+{
+    int n = matrix.size(), m = matrix[0].size();
+    vector<int> lin(n*m);
+    int x = 0;
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < m; j++)
+            lin[x++] = matrix[i][j];
+    sort(lin.begin(), lin.end());
+    return lin[k-1];
+}
