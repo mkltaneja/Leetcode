@@ -199,14 +199,42 @@ int minSetSize(vector<int> &arr)
 
 // DAY 7 (Kth Smallest Element in a Sorted Matrix)=================================================================================
 
-int kthSmallest(vector<vector<int>>& matrix, int k) 
+int kthSmallest(vector<vector<int>> &matrix, int k)
 {
     int n = matrix.size(), m = matrix[0].size();
-    vector<int> lin(n*m);
+    vector<int> lin(n * m);
     int x = 0;
-    for(int i = 0; i < n; i++)
-        for(int j = 0; j < m; j++)
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
             lin[x++] = matrix[i][j];
     sort(lin.begin(), lin.end());
-    return lin[k-1];
+    return lin[k - 1];
+}
+
+// DAY 8 (Maximum Length of Repeated Subarray)=========================================================================
+
+// APPROACH 1 (Maximum common substring -- DP) -> O(n*m)
+
+int findLength(vector<int> &nums1, vector<int> &nums2)
+{
+    int n = nums1.size(), m = nums2.size();
+    vector<vector<int>> dp(n, vector<int>(m, 0));
+
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (nums1[i] != nums2[j])
+                dp[i][j] = 0;
+            else
+            {
+                dp[i][j] = 1;
+                if (i && j)
+                    dp[i][j] += dp[i - 1][j - 1];
+            }
+            ans = max(ans, dp[i][j]);
+        }
+    }
+    return ans;
 }
