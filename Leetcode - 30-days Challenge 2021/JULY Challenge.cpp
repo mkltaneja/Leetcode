@@ -238,3 +238,23 @@ int findLength(vector<int> &nums1, vector<int> &nums2)
     }
     return ans;
 }
+
+// DAY 9 (Longest Common Subsequence)============================================================================
+
+// APPROACH 1 (DP) --> O(n^2)
+
+int lengthOfLIS(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<int> maxlen(n, 1);
+
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < i; j++)
+            if (nums[j] < nums[i] && maxlen[j] + 1 > maxlen[i])
+                maxlen[i] = maxlen[j] + 1;
+        ans = max(ans, maxlen[i]);
+    }
+    return ans;
+}
