@@ -258,3 +258,31 @@ int lengthOfLIS(vector<int> &nums)
     }
     return ans;
 }
+
+// APPROACH 2 (Optimized DP -- Greedy - [By updating the lis array and running binary search in it to choose the numbers optimally]) --> O(n*logn)
+
+int lengthOfLIS(vector<int> &nums)
+{
+    int n = nums.size();
+
+    vector<int> lis;
+    for (int i = 0; i < n; i++)
+    {
+        if (lis.empty() || lis.back() < nums[i])
+        {
+            lis.push_back(nums[i]);
+            continue;
+        }
+        int si = 0, ei = lis.size() - 1, idx = -1;
+        while (si <= ei)
+        {
+            int mid = (si + ei) >> 1;
+            if (lis[mid] < nums[i])
+                si = mid + 1;
+            else
+                idx = mid, ei = mid - 1;
+        }
+        lis[idx] = nums[i];
+    }
+    return lis.size();
+}
