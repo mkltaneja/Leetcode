@@ -286,3 +286,47 @@ int lengthOfLIS(vector<int> &nums)
     }
     return lis.size();
 }
+
+// DAY 11 (Find Median From Data Stream)===============================================================
+
+class MedianFinder
+{
+public:
+    priority_queue<int> max;
+    priority_queue<int, vector<int>, greater<int>> min;
+    /** initialize your data structure here. */
+    MedianFinder()
+    {
+    }
+
+    void addNum(int num)
+    {
+        if (max.empty() || num < max.top())
+            max.push(num);
+        else
+            min.push(num);
+        if (max.size() > min.size() + 1)
+        {
+            min.push(max.top());
+            max.pop();
+        }
+        else if (min.size() > max.size() + 1)
+        {
+            max.push(min.top());
+            min.pop();
+        }
+    }
+
+    double findMedian()
+    {
+        double ans = (max.size() == min.size()) ? ((max.top() + min.top()) / 2.0) : ((min.size() > max.size()) ? min.top() : max.top());
+        return ans;
+    }
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
