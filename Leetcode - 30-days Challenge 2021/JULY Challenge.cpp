@@ -364,3 +364,5 @@ int findPeakElement(vector<int> &nums)
     }
     return -1;
 }
+
+// APPROACH 2 (Binary Search)
