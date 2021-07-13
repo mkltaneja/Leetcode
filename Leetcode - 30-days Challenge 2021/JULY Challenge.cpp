@@ -347,3 +347,20 @@ bool isIsomorphic(string s, string t)
     }
     return true;
 }
+
+// DAY 13 (Find Peak Element)=================================================================================================
+
+// APPROACH 1 (Linearly) --> O(n)
+
+int findPeakElement(vector<int> &nums)
+{
+    int n = nums.size();
+    for (int i = 0; i < n; i++)
+    {
+        long l = i ? nums[i - 1] : LONG_MIN;
+        long r = (i != n - 1) ? nums[i + 1] : LONG_MIN;
+        if (nums[i] > l && nums[i] > r)
+            return i;
+    }
+    return -1;
+}
