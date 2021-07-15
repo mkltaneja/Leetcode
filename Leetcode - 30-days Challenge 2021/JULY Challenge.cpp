@@ -397,3 +397,34 @@ string customSortString(string order, string str)
             ans += char(i + 'a');
     return ans;
 }
+
+// DAY 15 (Valid Triangle Number)=====================================================================================
+
+int triangleNumber(vector<int> &nums)
+{
+    int n = nums.size();
+    sort(nums.begin(), nums.end());
+
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            int si = j + 1, ei = n - 1, x = -1;
+            while (si <= ei)
+            {
+                int mid = (si + ei) >> 1;
+                if (nums[i] + nums[j] <= nums[mid])
+                    ei = mid - 1;
+                else
+                {
+                    x = mid;
+                    si = mid + 1;
+                }
+            }
+            if (x != -1)
+                ans += x - j;
+        }
+    }
+    return ans;
+}
