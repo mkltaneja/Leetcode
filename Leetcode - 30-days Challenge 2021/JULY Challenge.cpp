@@ -449,3 +449,27 @@ vector<vector<int>> fourSum(vector<int> &nums, int target)
 
     return ans;
 }
+
+// DAY 17 (Three Equal Parts)============================================================================================
+
+vector<int> threeEqualParts(vector<int> &arr)
+{
+    int n = arr.size();
+    vector<int> oi;
+    for (int i = 0; i < n; i++)
+        if (arr[i])
+            oi.push_back(i);
+    int tot = oi.size();
+
+    if (tot == 0)
+        return {0, n - 1};
+    if (tot % 3)
+        return {-1, -1};
+    int x = oi[0], y = oi[tot / 3], z = oi[2 * (tot / 3)];
+
+    while (z < n && arr[x] == arr[y] && arr[x] == arr[z])
+        x++, y++, z++;
+    if (z == n)
+        return {x - 1, y};
+    return {-1, -1};
+}
