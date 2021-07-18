@@ -473,3 +473,37 @@ vector<int> threeEqualParts(vector<int> &arr)
         return {x - 1, y};
     return {-1, -1};
 }
+
+// DAY 18 (Reserve Nodes in K Group)====================================================================
+
+ListNode *reverseKGroup(ListNode *head, int k)
+{
+    int n = 0;
+    ListNode *itr = head;
+    while (itr)
+    {
+        itr = itr->next;
+        n++;
+    }
+    int x = n / k;
+    ListNode *curr = head, *forw = curr, *prev = nullptr;
+    ListNode *plast = nullptr, *last = head;
+    while (x--)
+    {
+        for (int i = 0; i < k; i++)
+        {
+            forw = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = forw;
+        }
+        last->next = curr;
+        if (plast == nullptr)
+            head = prev;
+        else
+            plast->next = prev;
+        plast = last;
+        last = curr;
+    }
+    return head;
+}
