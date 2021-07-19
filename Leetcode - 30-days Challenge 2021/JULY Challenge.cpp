@@ -507,3 +507,13 @@ ListNode *reverseKGroup(ListNode *head, int k)
     }
     return head;
 }
+
+// DAY 19 (Lowest Common Ancestor of a Binary Search Tree)===============================================================================
+
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
+{
+    if(!root) return root;
+    if(root->val < min(p->val, q->val)) return lowestCommonAncestor(root->right, p, q);
+    else if(root->val > max(p->val, q->val)) return lowestCommonAncestor(root->left, p, q);
+    return root;
+}
