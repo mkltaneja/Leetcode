@@ -510,10 +510,50 @@ ListNode *reverseKGroup(ListNode *head, int k)
 
 // DAY 19 (Lowest Common Ancestor of a Binary Search Tree)===============================================================================
 
-TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
+TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
 {
-    if(!root) return root;
-    if(root->val < min(p->val, q->val)) return lowestCommonAncestor(root->right, p, q);
-    else if(root->val > max(p->val, q->val)) return lowestCommonAncestor(root->left, p, q);
+    if (!root)
+        return root;
+    if (root->val < min(p->val, q->val))
+        return lowestCommonAncestor(root->right, p, q);
+    else if (root->val > max(p->val, q->val))
+        return lowestCommonAncestor(root->left, p, q);
     return root;
 }
+
+// DAY 20 (Shuffle An Array)==================================================================================
+class Solution
+{
+public:
+    vector<int> a, b;
+    Solution(vector<int> &nums)
+    {
+        a = nums;
+        b = nums;
+    }
+
+    /** Resets the array to its original configuration and return it. */
+    vector<int> reset()
+    {
+        b = a;
+        return b;
+    }
+
+    /** Returns a random shuffling of the array. */
+    vector<int> shuffle()
+    {
+        for (int i = 0; i < b.size(); i++)
+        {
+            int j = rand() % (i + 1);
+            swap(b[i], b[j]);
+        }
+        return b;
+    }
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(nums);
+ * vector<int> param_1 = obj->reset();
+ * vector<int> param_2 = obj->shuffle();
+ */
