@@ -592,3 +592,23 @@ string pushDominoes(string dominoes)
 
     return ans;
 }
+
+// DAY 22 (Partition Array Into Disjoint Intervals)===============================================================
+
+int partitionDisjoint(vector<int> &nums)
+{
+    int mx = -1, n = nums.size();
+
+    vector<int> minar(n, 0);
+    minar[n - 1] = -1;
+    for (int i = n - 2; i >= 0; i--)
+        minar[i] = min(nums[i + 1], ((i != n - 2) ? minar[i + 1] : INT_MAX));
+
+    for (int i = 0; i < n; i++)
+    {
+        mx = max(mx, nums[i]);
+        if (mx <= minar[i])
+            return i + 1;
+    }
+    return n;
+}
