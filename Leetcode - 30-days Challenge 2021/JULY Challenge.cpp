@@ -612,3 +612,18 @@ int partitionDisjoint(vector<int> &nums)
     }
     return n;
 }
+
+// ḌAY 23 (Binary Tree Pruning)==========================================================================
+
+TreeNode *pruneTree(TreeNode *root)
+{
+    if (!root)
+        return root;
+
+    root->left = pruneTree(root->left);
+    root->right = pruneTree(root->right);
+
+    if (!root->left && !root->right && root->val == 0)
+        return nullptr;
+    return root;
+}
