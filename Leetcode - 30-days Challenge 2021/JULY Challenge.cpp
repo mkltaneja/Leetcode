@@ -681,3 +681,28 @@ vector<vector<string>> findLadders(string beginWord, string endWord, vector<stri
     }
     return ans;
 }
+
+// DAY 25 (Non-negative Integers without Consecutive Ones)====================================================================
+
+int findIntegers(int n)
+{
+    vector<int> fib(32);
+    fib[0] = 1, fib[1] = 2;
+    for (int i = 2; i < 32; i++)
+        fib[i] = fib[i - 1] + fib[i - 2];
+
+    int ans = 0, pbit = 0;
+    for (int i = 31; i >= 0; i--)
+    {
+        if (n & (1 << i))
+        {
+            ans += fib[i];
+            if (pbit == 1)
+                return ans;
+            pbit = 1;
+        }
+        else
+            pbit = 0;
+    }
+    return ans + 1;
+}
