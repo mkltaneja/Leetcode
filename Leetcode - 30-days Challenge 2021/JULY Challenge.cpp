@@ -627,3 +627,57 @@ TreeNode *pruneTree(TreeNode *root)
         return nullptr;
     return root;
 }
+
+// DAY 24 (Word Ladder 2)===========================================================================================
+
+#define f first
+#define s second
+
+vector<vector<string>> findLadders(string beginWord, string endWord, vector<string> &wordList)
+{
+    unordered_map<string, int> m;
+    for (string s : wordList)
+        m[s] = INT_MAX;
+    m[beginWord] = 0;
+
+    if (!m.count(endWord))
+        return {};
+
+    vector<vector<string>> ans;
+
+    queue<pair<string, vector<string>>> que;
+    que.push({beginWord, {beginWord}});
+
+    while (!que.empty())
+    {
+        auto tp = que.front();
+        que.pop();
+
+        if (tp.f == endWord)
+        {
+            ans.push_back(tp.s);
+            continue;
+        }
+
+        for (int i = 0; i < tp.f.size(); i++)
+        {
+            string x = tp.f;
+            for (int c = 'a'; c <= 'z'; c++)
+            {
+                if (c == x[i])
+                    continue;
+                x[i] = c;
+                if (!m.count(x))
+                    continue;
+                if (m[x] < tp.s.size())
+                    continue;
+
+                m[x] = tp.s.size();
+                tp.s.push_back(x);
+                que.push({x, tp.s});
+                tp.s.pop_back();
+            }
+        }
+    }
+    return ans;
+}
