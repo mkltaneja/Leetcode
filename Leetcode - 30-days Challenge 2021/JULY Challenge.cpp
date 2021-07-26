@@ -706,3 +706,25 @@ int findIntegers(int n)
     }
     return ans + 1;
 }
+
+// DAY 26 (Convert Sorted Array To Binary Search Tree)==================================================================================
+
+TreeNode *merge(int si, int ei, vector<int> &nums)
+{
+    if (si > ei)
+        return nullptr;
+    if (si == ei)
+        return new TreeNode(nums[si]);
+
+    int mid = (si + ei) >> 1;
+
+    TreeNode *l = merge(si, mid - 1, nums);
+    TreeNode *r = merge(mid + 1, ei, nums);
+
+    return new TreeNode(nums[mid], l, r);
+}
+
+TreeNode *sortedArrayToBST(vector<int> &nums)
+{
+    return merge(0, nums.size() - 1, nums);
+}
