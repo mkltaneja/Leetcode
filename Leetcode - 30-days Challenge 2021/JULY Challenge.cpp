@@ -759,3 +759,22 @@ int threeSumClosest(vector<int> &nums, int target)
     }
     return ans;
 }
+
+// DAY 29 (Beautiful Array)==============================================================================
+
+vector<int> beautifulArray(int n)
+{
+    vector<int> ans = {1};
+    while (ans.size() < n)
+    {
+        vector<int> curr;
+        for (int x : ans)
+            if (2 * x - 1 <= n)
+                curr.push_back(2 * x - 1);
+        for (int x : ans)
+            if (2 * x <= n)
+                curr.push_back(2 * x);
+        ans = curr;
+    }
+    return ans;
+}
