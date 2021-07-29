@@ -760,7 +760,7 @@ int threeSumClosest(vector<int> &nums, int target)
     return ans;
 }
 
-// DAY 29 (Beautiful Array)==============================================================================
+// DAY 28 (Beautiful Array)==============================================================================
 
 vector<int> beautifulArray(int n)
 {
@@ -775,6 +775,41 @@ vector<int> beautifulArray(int n)
             if (2 * x <= n)
                 curr.push_back(2 * x);
         ans = curr;
+    }
+    return ans;
+}
+
+// DAY 29 (01 Matrix)=========================================================================================
+
+vector<vector<int>> updateMatrix(vector<vector<int>> &mat)
+{
+    int n = mat.size(), m = mat[0].size();
+    queue<pair<int, int>> que;
+    vector<vector<int>> ans(n, vector<int>(m));
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            if (!mat[i][j])
+                que.push({i * m + j, 0});
+
+    int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    while (!que.empty())
+    {
+        int x = que.front().first;
+        int dist = que.front().second;
+        que.pop();
+        int i = x / m;
+        int j = x % m;
+        ans[i][j] = dist;
+
+        for (int d = 0; d < 4; d++)
+        {
+            int r = i + dir[d][0], c = j + dir[d][1];
+            if (r >= 0 && c >= 0 && r < n && c < m && mat[r][c])
+            {
+                mat[r][c] = 0;
+                que.push({r * m + c, dist + 1});
+            }
+        }
     }
     return ans;
 }
