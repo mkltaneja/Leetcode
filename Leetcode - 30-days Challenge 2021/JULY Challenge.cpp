@@ -813,3 +813,72 @@ vector<vector<int>> updateMatrix(vector<vector<int>> &mat)
     }
     return ans;
 }
+
+// DAY 30 (Map Sum Pairs)=============================================================================
+class MapSum
+{
+public:
+    /** Initialize your data structure here. */
+
+    class trie
+    {
+    public:
+        vector<trie *> t;
+        int sum;
+        int wordAns;
+        trie()
+        {
+            this->t.assign(26, nullptr);
+            this->sum = 0;
+            this->wordAns = 0;
+        }
+    };
+
+    trie *map;
+    MapSum()
+    {
+        this->map = new trie();
+    }
+
+    void insert(string key, int val)
+    {
+        trie *temp = map;
+        for (char c : key)
+        {
+            if (!temp->t[c - 'a'])
+                temp->t[c - 'a'] = new trie();
+            temp = temp->t[c - 'a'];
+        }
+        int x = 0;
+        if (temp->wordAns)
+            x = temp->wordAns;
+
+        temp = map;
+        for (char c : key)
+        {
+            temp = temp->t[c - 'a'];
+            temp->sum += val - x;
+        }
+        temp->wordAns = val;
+    }
+
+    int sum(string prefix)
+    {
+        trie *temp = map;
+        int ans = 0;
+        for (char c : prefix)
+        {
+            if (!temp->t[c - 'a'])
+                return 0;
+            temp = temp->t[c - 'a'];
+        }
+        return temp->sum;
+    }
+};
+
+/**
+ * Your MapSum object will be instantiated and called as such:
+ * MapSum* obj = new MapSum();
+ * obj->insert(key,val);
+ * int param_2 = obj->sum(prefix);
+ */
