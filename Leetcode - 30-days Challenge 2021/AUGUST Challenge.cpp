@@ -1,4 +1,20 @@
 
+// DAY 2 (Two Sum)=========================================================================
+
+vector<int> twoSum(vector<int> &nums, int target)
+{
+    unordered_map<int, int> m;
+    for (int i = 0; i < nums.size(); i++)
+    {
+        if (m.count(target - nums[i]))
+            return {m[target - nums[i]], i};
+        m[nums[i]] = i;
+    }
+    return {};
+}
+
+// DAY 3 (Subsets 2)===============================================================================================
+
 void subsets(int i, vector<int> &nums, set<vector<int>> &st, vector<vector<int>> &ans, vector<int> ss)
 {
     if (i == nums.size())
