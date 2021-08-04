@@ -40,3 +40,30 @@ vector<vector<int>> subsetsWithDup(vector<int> &nums)
     subsets(0, nums, st, ans, {});
     return ans;
 }
+
+// DAY 4 (Path Sum 2)================================================================================
+
+void dfs(TreeNode* node, int sum, int target, vector<int> &curr, vector<vector<int>> &ans)
+{
+    if(!node) return;
+    
+    curr.push_back(node->val);
+    sum += node->val;
+    
+    if(!node->left && !node->right && sum == target)
+        ans.push_back(curr);
+    
+    dfs(node->left, sum, target, curr, ans);
+    dfs(node->right, sum, target, curr, ans);
+    
+    curr.pop_back();
+    sum -= node->val;
+}
+
+vector<vector<int>> pathSum(TreeNode* root, int targetSum) 
+{
+    vector<vector<int>> ans;
+    vector<int> curr;
+    dfs(root, 0, targetSum, curr, ans);
+    return ans;
+}
