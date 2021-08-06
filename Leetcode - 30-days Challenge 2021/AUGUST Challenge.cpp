@@ -43,27 +43,80 @@ vector<vector<int>> subsetsWithDup(vector<int> &nums)
 
 // DAY 4 (Path Sum 2)================================================================================
 
-void dfs(TreeNode* node, int sum, int target, vector<int> &curr, vector<vector<int>> &ans)
+void dfs(TreeNode *node, int sum, int target, vector<int> &curr, vector<vector<int>> &ans)
 {
-    if(!node) return;
-    
+    if (!node)
+        return;
+
     curr.push_back(node->val);
     sum += node->val;
-    
-    if(!node->left && !node->right && sum == target)
+
+    if (!node->left && !node->right && sum == target)
         ans.push_back(curr);
-    
+
     dfs(node->left, sum, target, curr, ans);
     dfs(node->right, sum, target, curr, ans);
-    
+
     curr.pop_back();
     sum -= node->val;
 }
 
-vector<vector<int>> pathSum(TreeNode* root, int targetSum) 
+vector<vector<int>> pathSum(TreeNode *root, int targetSum)
 {
     vector<vector<int>> ans;
     vector<int> curr;
     dfs(root, 0, targetSum, curr, ans);
     return ans;
 }
+
+// DAY 6 (N - ary tree Level Order Traversal)===============================================================================
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> children;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+    }
+
+    Node(int _val, vector<Node*> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution
+{
+public:
+    vector<vector<int>> levelOrder(Node *root)
+    {
+        if (!root)
+            return {};
+
+        vector<vector<int>> ans;
+
+        queue<Node *> que;
+        que.push(root);
+
+        while (!que.empty())
+        {
+            int sz = que.size();
+            vector<int> lvl;
+            while (sz--)
+            {
+                Node *node = que.front();
+                que.pop();
+                lvl.push_back(node->val);
+                for (Node *child : node->children)
+                    que.push(child);
+            }
+            ans.push_back(lvl);
+        }
+        return ans;
+    }
+};
