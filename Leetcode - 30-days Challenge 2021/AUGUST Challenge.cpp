@@ -120,3 +120,41 @@ public:
         return ans;
     }
 };
+
+// DAY 7 (Palindromic Partitioning 2)=======================================================================
+
+int minCut(string s)
+{
+    int n = s.size();
+    vector<vector<bool>> ispal(n, vector<bool>(n, false));
+
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; j++, i++)
+        {
+            if (gap == 0)
+                ispal[i][j] = true;
+            else if (s[i] == s[j] && gap == 1)
+                ispal[i][j] = true;
+            else if (s[i] == s[j] && ispal[i + 1][j - 1])
+                ispal[i][j] = true;
+        }
+    }
+
+    vector<int> dp(n);
+    for (int i = 0; i < n; i++)
+        dp[i] = i;
+
+    for (int i = 1; i < n; i++)
+    {
+        if (ispal[0][i])
+        {
+            dp[i] = 0;
+            continue;
+        }
+        for (int j = 1; j <= i; j++)
+            if (ispal[j][i])
+                dp[i] = min(dp[i], dp[j - 1] + 1);
+    }
+    return dp[n - 1];
+}
