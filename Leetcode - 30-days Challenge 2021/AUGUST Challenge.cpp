@@ -158,3 +158,52 @@ int minCut(string s)
     }
     return dp[n - 1];
 }
+
+// DAY 8 (Rank Transform of a Matrix)==============================================================================
+
+#define f first
+#define s second
+
+int findpar(int x, vector<int> &par)
+{
+    if (par[x] == x)
+        return x;
+    return par[x] = findpar(par[x], par);
+}
+
+vector<vector<int>> matrixRankTransform(vector<vector<int>> &matrix)
+{
+    int n = matrix.size(), m = matrix[0].size();
+    map<int, vector<pair<int, int>>> mat;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            mat[matrix[i][j]].push_back({i, j});
+
+    vector<int> rank(n + m, 0);
+    vector<vector<int>> ans(n, vector<int>(m, 0));
+    for (auto p : mat)
+    {
+        vector<int> par(n + m);
+        for (int i = 0; i < n + m; i++)
+            par[i] = i;
+
+        for (auto pt : p.s)
+        {
+            int i = pt.f, j = pt.s;
+            int pi = findpar(i, par), pj = findpar(j + n, par);
+            par[pi] = pj;
+            rank[pj] = max(rank[pi], rank[pj]);
+        }
+        vector<int> curr = rank;
+        for (auto pt : p.s)
+        {
+            int i = pt.f, j = pt.s;
+            int pij = findpar(i, par);
+            ans[i][j] = rank[pij] + 1;
+            curr[i] = rank[pij] + 1;
+            curr[j + n] = rank[pij] + 1;
+        }
+        rank = curr;
+    }
+    return ans;
+}
