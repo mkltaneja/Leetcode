@@ -207,3 +207,27 @@ vector<vector<int>> matrixRankTransform(vector<vector<int>> &matrix)
     }
     return ans;
 }
+
+// DAY 9 (Add Strings)======================================================
+
+string addStrings(string num1, string num2)
+{
+    string ans = "";
+    int i = num1.size() - 1, j = num2.size() - 1;
+    int carry = 0;
+    while (i >= 0 || j >= 0)
+    {
+        int x = (i >= 0) ? (num1[i--] - '0') : 0;
+        int y = (j >= 0) ? (num2[j--] - '0') : 0;
+
+        int sum = x + y + carry;
+        carry = sum / 10;
+        ans += char(sum % 10 + '0');
+    }
+
+    if (carry)
+        ans += char(carry + '0');
+    reverse(ans.begin(), ans.end());
+
+    return ans;
+}
