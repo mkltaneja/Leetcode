@@ -261,3 +261,21 @@ int minFlipsMonoIncr(string s)
     }
     return mincost;
 }
+
+// APPROACH 2 (Two variable approach)===================================================
+
+int minFlipsMonoIncr(string s) 
+{
+    int ones = 0, flips = 0;
+    for(char c : s)
+    {
+        if(c == '0')
+        {
+            if(ones) flips++;
+        }
+        else ones++;
+        if(ones < flips)
+            flips = ones;
+    }
+    return flips;
+}
