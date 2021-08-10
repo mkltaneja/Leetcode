@@ -231,3 +231,33 @@ string addStrings(string num1, string num2)
 
     return ans;
 }
+
+// DAY 10 (Flip String to Monotone String)===================================================
+
+// APPROACH 1 (Making all possible combinations of the string) --> O(n^2)
+// TLE
+
+int cost(string &a, string &b)
+{
+    int cost = 0;
+    for(int i = 0; i < a.size(); i++)
+        cost += (a[i] != b[i]);
+    return cost;
+}
+
+int minFlipsMonoIncr(string s) 
+{
+    int zeros = s.size(), ones = 0;
+    int mincost = INT_MAX;
+    while(zeros >= 0)
+    {
+        string temp = "";
+        for(int i = 0; i < zeros; i++)
+            temp += "0";
+        for(int i = 0; i < ones; i++)
+            temp += "1";
+        mincost = min(mincost, cost(temp, s));
+        zeros--, ones++;
+    }
+    return mincost;
+}
