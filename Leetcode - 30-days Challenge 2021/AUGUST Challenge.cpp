@@ -279,3 +279,35 @@ int minFlipsMonoIncr(string s)
     }
     return flips;
 }
+
+// DAY 11 (Array of Doubled Pairs)====================================================================
+
+bool canReorderDoubled(vector<int>& arr) 
+{
+    sort(arr.begin(), arr.end(), [](int a, int b){
+        return abs(a) < abs(b);
+    });
+    unordered_map<int,int> m;
+    for(int x : arr)
+        m[x]++;
+    
+    for(int x : arr)
+    {
+        if(x & 1)
+        {
+            if(m[2*x] == 0)
+                return false;
+            m[x]--;
+            m[2*x]--;
+        }
+        else
+        {
+            if(m[x] == 0) continue;
+            if(m[2*x] == 0)
+                return false;
+            m[x]--;
+            m[2*x]--;
+        }
+    }
+    return true;
+}
