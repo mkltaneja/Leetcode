@@ -313,4 +313,31 @@ bool canReorderDoubled(vector<int>& arr)
 }
 
 // DAY 12 (Group Anagrams)=====================================================================
-git
+
+#define ull unsigned long long
+
+int primes[26] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101};
+
+ull make_hash(string &s)
+{
+    ull hash = 1;
+    for(char c : s)
+        hash *= primes[c-'a'];
+    return hash;
+}
+
+vector<vector<string>> groupAnagrams(vector<string>& strs) 
+{
+    unordered_map<ull,vector<string>> m;
+    for(string s : strs)
+    {
+        ull hash = make_hash(s);
+        m[hash].push_back(s);
+    }
+    
+    vector<vector<string>> ans;
+    for(auto p : m)
+        ans.push_back(p.second);
+    
+    return ans;
+}
