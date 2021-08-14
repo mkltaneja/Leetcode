@@ -240,21 +240,21 @@ string addStrings(string num1, string num2)
 int cost(string &a, string &b)
 {
     int cost = 0;
-    for(int i = 0; i < a.size(); i++)
+    for (int i = 0; i < a.size(); i++)
         cost += (a[i] != b[i]);
     return cost;
 }
 
-int minFlipsMonoIncr(string s) 
+int minFlipsMonoIncr(string s)
 {
     int zeros = s.size(), ones = 0;
     int mincost = INT_MAX;
-    while(zeros >= 0)
+    while (zeros >= 0)
     {
         string temp = "";
-        for(int i = 0; i < zeros; i++)
+        for (int i = 0; i < zeros; i++)
             temp += "0";
-        for(int i = 0; i < ones; i++)
+        for (int i = 0; i < ones; i++)
             temp += "1";
         mincost = min(mincost, cost(temp, s));
         zeros--, ones++;
@@ -264,17 +264,19 @@ int minFlipsMonoIncr(string s)
 
 // APPROACH 2 (Two variable approach)===================================================
 
-int minFlipsMonoIncr(string s) 
+int minFlipsMonoIncr(string s)
 {
     int ones = 0, flips = 0;
-    for(char c : s)
+    for (char c : s)
     {
-        if(c == '0')
+        if (c == '0')
         {
-            if(ones) flips++;
+            if (ones)
+                flips++;
         }
-        else ones++;
-        if(ones < flips)
+        else
+            ones++;
+        if (ones < flips)
             flips = ones;
     }
     return flips;
@@ -282,31 +284,31 @@ int minFlipsMonoIncr(string s)
 
 // DAY 11 (Array of Doubled Pairs)====================================================================
 
-bool canReorderDoubled(vector<int>& arr) 
+bool canReorderDoubled(vector<int> &arr)
 {
-    sort(arr.begin(), arr.end(), [](int a, int b){
-        return abs(a) < abs(b);
-    });
-    unordered_map<int,int> m;
-    for(int x : arr)
+    sort(arr.begin(), arr.end(), [](int a, int b)
+         { return abs(a) < abs(b); });
+    unordered_map<int, int> m;
+    for (int x : arr)
         m[x]++;
-    
-    for(int x : arr)
+
+    for (int x : arr)
     {
-        if(x & 1)
+        if (x & 1)
         {
-            if(m[2*x] == 0)
+            if (m[2 * x] == 0)
                 return false;
             m[x]--;
-            m[2*x]--;
+            m[2 * x]--;
         }
         else
         {
-            if(m[x] == 0) continue;
-            if(m[2*x] == 0)
+            if (m[x] == 0)
+                continue;
+            if (m[2 * x] == 0)
                 return false;
             m[x]--;
-            m[2*x]--;
+            m[2 * x]--;
         }
     }
     return true;
@@ -321,39 +323,63 @@ int primes[26] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59
 ull make_hash(string &s)
 {
     ull hash = 1;
-    for(char c : s)
-        hash *= primes[c-'a'];
+    for (char c : s)
+        hash *= primes[c - 'a'];
     return hash;
 }
 
-vector<vector<string>> groupAnagrams(vector<string>& strs) 
+vector<vector<string>> groupAnagrams(vector<string> &strs)
 {
-    unordered_map<ull,vector<string>> m;
-    for(string s : strs)
+    unordered_map<ull, vector<string>> m;
+    for (string s : strs)
     {
         ull hash = make_hash(s);
         m[hash].push_back(s);
     }
-    
+
     vector<vector<string>> ans;
-    for(auto p : m)
+    for (auto p : m)
         ans.push_back(p.second);
-    
+
     return ans;
 }
 
 // DAY 13 (Set Matrix Zeros)============================================================================
 
-void setZeroes(vector<vector<int>>& matrix) 
+void setZeroes(vector<vector<int>> &matrix)
 {
     int n = matrix.size(), m = matrix[0].size();
     vector<bool> row(n), col(m);
-    for(int i = 0; i < n; i++)
-        for(int j = 0; j < m; j++)
-            if(matrix[i][j] == 0)
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            if (matrix[i][j] == 0)
                 row[i] = true, col[j] = true;
-    for(int i = 0; i < n; i++)
-        for(int j = 0; j < m; j++)
-            if(row[i] || col[j])
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            if (row[i] || col[j])
                 matrix[i][j] = 0;
+}
+
+// DAY 14 (Remove Boxes)========================================================================================
+
+int dfs(int i, int j, int k, vector<int> &boxes, vector<vector<vector<int>>> &dp)
+{
+    if (i > j)
+        return 0;
+
+    if (dp[i][j][k] != -1)
+        return dp[i][j][k];
+
+    int ans = (k + 1) * (k + 1) + dfs(i + 1, j, 0, boxes, dp);
+    for (int x = i + 1; x <= j; x++)
+        if (boxes[x] == boxes[i])
+            ans = max(ans, dfs(i + 1, x - 1, 0, boxes, dp) + dfs(x, j, k + 1, boxes, dp));
+    return dp[i][j][k] = ans;
+}
+
+int removeBoxes(vector<int> &boxes)
+{
+    int n = boxes.size();
+    vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(n, -1)));
+    return dfs(0, n - 1, 0, boxes, dp);
 }
