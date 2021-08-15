@@ -383,3 +383,34 @@ int removeBoxes(vector<int> &boxes)
     vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(n, -1)));
     return dfs(0, n - 1, 0, boxes, dp);
 }
+
+// DAY 15 (Minimum Sliding Window Substring)=======================================================================
+
+string minWindow(string s, string t)
+{
+    unordered_map<char, int> map, tmap;
+    for (char c : t)
+        map[c]++, tmap[c]++;
+
+    int match = 0, x = s.size(), y = -1;
+    int j = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (map[s[i]])
+        {
+            if (tmap[s[i]] > 0)
+                match++;
+            tmap[s[i]]--;
+        }
+        while (j <= i && match == t.size())
+        {
+            if (i - j + 1 < x - y + 1)
+                x = i, y = j;
+            if (map[s[j]])
+                if (++tmap[s[j]] > 0)
+                    match--;
+            j++;
+        }
+    }
+    return y == -1 ? "" : s.substr(y, x - y + 1);
+}
