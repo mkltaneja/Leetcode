@@ -414,3 +414,27 @@ string minWindow(string s, string t)
     }
     return y == -1 ? "" : s.substr(y, x - y + 1);
 }
+
+// DAY 16 (Range Sum Query - Immutable)===================================================================================
+class NumArray
+{
+public:
+    vector<int> psum;
+    NumArray(vector<int> &nums)
+    {
+        psum.assign(nums.size(), 0);
+        for (int i = 0; i < nums.size(); i++)
+            psum[i] = (i ? psum[i - 1] : 0) + nums[i];
+    }
+
+    int sumRange(int left, int right)
+    {
+        return psum[right] - (left ? psum[left - 1] : 0);
+    }
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * int param_1 = obj->sumRange(left,right);
+ */
