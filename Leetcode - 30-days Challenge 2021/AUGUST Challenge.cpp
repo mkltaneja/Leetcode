@@ -439,6 +439,25 @@ public:
  * int param_1 = obj->sumRange(left,right);
  */
 
+// DAY 17 (Count Good Nodes in Binary Tree)====================================================================
+
+int ans = 0;
+void dfs(TreeNode *node, int mx)
+{
+    if (!node)
+        return;
+    if (node->val >= mx)
+        ans++;
+    dfs(node->left, max(mx, node->val));
+    dfs(node->right, max(mx, node->val));
+}
+
+int goodNodes(TreeNode *root)
+{
+    dfs(root, INT_MIN);
+    return ans;
+}
+
 // DAY 18 (Decode Ways)=============================================================
 
 int dfs(int i, string &s, vector<int> &dp)
