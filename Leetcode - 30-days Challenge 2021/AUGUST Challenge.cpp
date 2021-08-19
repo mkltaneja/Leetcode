@@ -486,3 +486,37 @@ int numDecodings(string s)
     vector<int> dp(s.size(), -1);
     return dfs(0, s, dp);
 }
+
+// DAY 19 (Maximum Sum of Splitted Binary Tree)=========================================================
+
+#define ull unsigned long long
+
+ull tsum = 0;
+ull total_sum(TreeNode* node)
+{
+    if(!node) return 0;
+    return total_sum(node->left) + total_sum(node->right) + node->val;
+}
+
+ull maxans = 0;
+ull dfs(TreeNode* node)
+{
+    if(!node) return 0;
+    
+    ull lsum = dfs(node->left);
+    ull rsum = dfs(node->right);
+    
+    ull csum = node->val + lsum + rsum;
+    
+    maxans = max(maxans, csum*(tsum-csum));
+    
+    return lsum + rsum + node->val;
+}
+
+int maxProduct(TreeNode* root) 
+{
+    tsum = total_sum(root);
+    dfs(root);
+    
+    return maxans % (1000000007);
+}
