@@ -492,31 +492,73 @@ int numDecodings(string s)
 #define ull unsigned long long
 
 ull tsum = 0;
-ull total_sum(TreeNode* node)
+ull total_sum(TreeNode *node)
 {
-    if(!node) return 0;
+    if (!node)
+        return 0;
     return total_sum(node->left) + total_sum(node->right) + node->val;
 }
 
 ull maxans = 0;
-ull dfs(TreeNode* node)
+ull dfs(TreeNode *node)
 {
-    if(!node) return 0;
-    
+    if (!node)
+        return 0;
+
     ull lsum = dfs(node->left);
     ull rsum = dfs(node->right);
-    
+
     ull csum = node->val + lsum + rsum;
-    
-    maxans = max(maxans, csum*(tsum-csum));
-    
+
+    maxans = max(maxans, csum * (tsum - csum));
+
     return lsum + rsum + node->val;
 }
 
-int maxProduct(TreeNode* root) 
+int maxProduct(TreeNode *root)
 {
     tsum = total_sum(root);
     dfs(root);
-    
+
     return maxans % (1000000007);
+}
+
+// DAY 20 (Valid Sudoku)================================================================================
+
+int row[9] = {0}, col[9] = {0}, mat[3][3] = {0};
+
+bool isSafe(int i, int j, int n)
+{
+    if ((row[i] & (1 << n)) || (col[j] & (1 << n)) || (mat[i / 3][j / 3] & (1 << n)))
+        return false;
+    return true;
+}
+
+void set(int i, int j, int n, bool placed, vector<vector<char>> &board)
+{
+    if (placed)
+        board[i][j] = '.';
+    else
+        board[i][j] = char(n + '0');
+
+    row[i] ^= (1 << n);
+    col[j] ^= (1 << n);
+    mat[i / 3][j / 3] ^= (1 << n);
+}
+
+bool isValidSudoku(vector<vector<char>> &board)
+{
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            if (board[i][j] != '.')
+            {
+                if (!isSafe(i, j, board[i][j] - '0'))
+                    return false;
+                set(i, j, board[i][j] - '0', false, board);
+            }
+        }
+    }
+    return true;
 }
