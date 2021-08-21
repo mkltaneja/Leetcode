@@ -562,3 +562,52 @@ bool isValidSudoku(vector<vector<char>> &board)
     }
     return true;
 }
+
+// DAY 21 (Sudoku Solver)=====================================================================================
+
+int row[9] = {0}, col[9] = {0}, mat[3][3] = {0};
+
+bool isSafe(int i, int j, int n)
+{
+    if((row[i] & (1 << n)) || (col[j] & (1 << n)) || (mat[i/3][j/3] & (1 << n)))
+        return false;
+    return true;
+}
+
+void set(int i, int j, int n, bool placed, vector<vector<char>> &board)
+{
+    board[i][j] = placed? '.' : char(n+'0');
+    row[i] ^= (1 << n);
+    col[j] ^= (1 << n);
+    mat[i/3][j/3] ^= (1 << n);
+}
+
+bool sudoku(int x, vector<vector<char>> &board)
+{
+    if(x == 81) return true;
+    
+    int i = x/9, j = x%9;
+    if(board[i][j] != '.')
+        return sudoku(x+1, board);
+    
+    
+    for(int n = 1; n <= 9; n++)
+    {
+        if(isSafe(i, j, n))
+        {
+            set(i, j, n, false, board);
+            if(sudoku(x+1, board)) return true;
+            set(i, j, n, true, board);
+        }
+    }
+    return false;
+}
+
+void solveSudoku(vector<vector<char>>& board) 
+{
+    for(int i = 0; i < 9; i++)
+        for(int j = 0; j < 9; j++)
+            if(board[i][j] != '.')
+                set(i, j, board[i][j]-'0', false, board);
+    sudoku(0, board);
+}
