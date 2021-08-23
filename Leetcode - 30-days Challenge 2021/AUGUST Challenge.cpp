@@ -611,3 +611,32 @@ void solveSudoku(vector<vector<char>>& board)
                 set(i, j, board[i][j]-'0', false, board);
     sudoku(0, board);
 }
+
+// DAY 23 (2 Sum 4 - Input in a BST) ==========================================================================
+
+// APPROACH 1 --> O(n*logn)
+
+bool find(TreeNode* root, TreeNode* node, int x)
+{
+    if(!root) return false;
+    if(root->val == x && root != node) return true;
+    if(root->val < x) return find(root->right, node, x);
+    else return find(root->left, node, x);
+}
+
+bool preorder(TreeNode* root, TreeNode* node, int k)
+{
+    if(!node) return false;
+    
+    if(find(root, node, k - node->val)) return true;
+    
+    if(preorder(root, node->left, k)) return true;
+    if(preorder(root, node->right, k)) return true;
+    
+    return false;
+}
+
+bool findTarget(TreeNode* root, int k) 
+{
+    return preorder(root, root, k);
+}
