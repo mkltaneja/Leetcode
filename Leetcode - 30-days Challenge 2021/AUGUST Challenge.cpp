@@ -1313,3 +1313,18 @@ bool findTarget(TreeNode* root, int k)
     }
     return false;
 }
+
+// DAY 25 (Sum of Square Numbers)=========================================================================
+
+bool judgeSquareSum(int c) 
+{
+    int i = 0, j = sqrt(c);
+    while(i <= j)
+    {
+        int diff = c - i*i;
+        if(diff == j*j) return true;
+        if(diff < j*j) j--;
+        else i++;
+    }
+    return false;
+}
