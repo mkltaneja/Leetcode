@@ -1328,3 +1328,40 @@ bool judgeSquareSum(int c)
     }
     return false;
 }
+
+// DAY 26 (Verify Preorder Traversal of Binary Tree)=============================================================
+
+// APPROACH 1 (Traversing on tree data)
+
+bool isValidSerialization(string preorder) 
+{
+    if(preorder == "#") return true;
+    vector<int> st;
+    stringstream ss(preorder);
+    string x;
+    bool first = true;
+    
+    while(getline(ss, x, ','))
+    {
+        if(x == ",") continue;
+        if(x == "#")
+        {
+            if(st.empty()) return false;
+            st[st.size()-1]--;
+            while(!st.empty() && st.back() == 0)
+            {
+                st.pop_back();
+                if(!st.empty())
+                    st[st.size()-1]--;
+            }
+        }
+        else 
+        {
+            if(st.empty() && !first)
+                return false;
+            st.push_back(2);
+            first = false;
+        }
+    }
+    return st.empty();
+}
