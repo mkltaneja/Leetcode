@@ -1365,3 +1365,19 @@ bool isValidSerialization(string preorder)
     }
     return st.empty();
 }
+
+// Approach 2 (Traversing on commas)
+
+bool isValidSerialization(string preorder) 
+{
+    int cap = 1;
+    preorder += ",";
+    for(int i = 0; i < preorder.size(); i++)
+    {
+        if(preorder[i] != ',') continue;
+        cap--;
+        if(cap < 0) return false;
+        if(preorder[i-1] != '#') cap += 2;
+    }
+    return cap == 0;
+}
