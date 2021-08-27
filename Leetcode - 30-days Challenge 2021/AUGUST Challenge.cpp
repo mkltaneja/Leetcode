@@ -1381,3 +1381,35 @@ bool isValidSerialization(string preorder)
     }
     return cap == 0;
 }
+
+// DAY 27 (Longest Uncommon Subsequence 2)=======================================================================
+
+bool isSubstr(string &a, string &b)
+{
+    int i = 0, j = 0;
+    while(i < a.size() && j < b.size())
+    {
+        if(b[j] == a[i]) i++;
+        j++;
+    }
+    return i != a.size();
+}
+
+int findLUSlength(vector<string>& strs) 
+{
+    int maxlen = -1;
+    for(int i = 0; i < strs.size(); i++)
+    {
+        bool fl = true;
+        for(int j = 0; j < strs.size(); j++)
+        {
+            if((i != j) && !isSubstr(strs[i], strs[j]))
+            {
+                fl = false;
+                break;
+            }
+        }
+        if(fl) maxlen = max(maxlen, (int)strs[i].size());
+    }
+    return maxlen;
+}
