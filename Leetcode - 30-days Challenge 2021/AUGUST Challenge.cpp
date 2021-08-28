@@ -1413,3 +1413,29 @@ int findLUSlength(vector<string>& strs)
     }
     return maxlen;
 }
+
+// DAY 28 (Maximum Profit in Job Scheduling)==============================================
+
+#define f first
+#define s second
+
+int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) 
+{
+    int n = startTime.size();
+    vector<int> dp(n,0);
+
+    vector<pair<int,pair<int,int>>> arr(n);
+    for(int i = 0; i < n; i++)
+        arr[i] = {startTime[i], {endTime[i], profit[i]}};
+    sort(arr.begin(), arr.end());
+    int maxprofit = 0;
+    for(int i = n-1; i >= 0; i--)
+    {
+        for(int j = i+1; j < n; j++)
+            if(arr[j].f >= arr[i].s.f)
+                dp[i] = max(dp[j], dp[i]);
+        dp[i] += arr[i].s.s;
+        maxprofit = max(maxprofit, dp[i]);
+    }
+    return maxprofit;
+}
