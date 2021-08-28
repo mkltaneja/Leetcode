@@ -1416,6 +1416,9 @@ int findLUSlength(vector<string>& strs)
 
 // DAY 28 (Maximum Profit in Job Scheduling)==============================================
 
+// APPROACH 1 --> O(n^2)
+// TLE
+
 #define f first
 #define s second
 
@@ -1435,6 +1438,44 @@ int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& pro
             if(arr[j].f >= arr[i].s.f)
                 dp[i] = max(dp[j], dp[i]);
         dp[i] += arr[i].s.s;
+        maxprofit = max(maxprofit, dp[i]);
+    }
+    return maxprofit;
+}
+
+// APPROACH 2 (Binary Search) --> O(n*logn)
+// AC
+
+#define f first
+#define s second
+
+int lower_bound(vector<pair<int,pair<int,int>>> &arr, int st, int x)
+{
+    int end = arr.size()-1;
+    while(st <= end)
+    {
+        int mid = st + ((end - st)>>1);
+        if(arr[mid].f >= x) end = mid - 1;
+        else st = mid + 1;
+    }
+    return st;
+}
+
+int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) 
+{
+    int n = startTime.size();
+    vector<int> dp(n,0);
+
+    vector<pair<int,pair<int,int>>> arr(n);
+    for(int i = 0; i < n; i++)
+        arr[i] = {startTime[i], {endTime[i], profit[i]}};
+    sort(arr.begin(), arr.end());
+    int maxprofit = 0;
+    for(int i = n-1; i >= 0; i--)
+    {
+        int j = lower_bound(arr, i+1, arr[i].s.f);
+        int lb = j == n? 0 : dp[j];
+        dp[i] = max(arr[i].s.s + lb, maxprofit);
         maxprofit = max(maxprofit, dp[i]);
     }
     return maxprofit;
