@@ -1480,3 +1480,21 @@ int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& pro
     }
     return maxprofit;
 }
+
+// DAY 29 (Patching Array)====================================================================
+
+    int minPatches(vector<int>& nums, int n) 
+    {
+        long ans = 0, miss = 1, i = 0;
+        while(miss <= n)
+        {
+            if(i < nums.size() && nums[i] <= miss)
+                miss += nums[i++];
+            else 
+            {
+                miss += miss;
+                ans++;
+            }
+        }
+        return ans;
+    }
