@@ -569,46 +569,47 @@ int row[9] = {0}, col[9] = {0}, mat[3][3] = {0};
 
 bool isSafe(int i, int j, int n)
 {
-    if((row[i] & (1 << n)) || (col[j] & (1 << n)) || (mat[i/3][j/3] & (1 << n)))
+    if ((row[i] & (1 << n)) || (col[j] & (1 << n)) || (mat[i / 3][j / 3] & (1 << n)))
         return false;
     return true;
 }
 
 void set(int i, int j, int n, bool placed, vector<vector<char>> &board)
 {
-    board[i][j] = placed? '.' : char(n+'0');
+    board[i][j] = placed ? '.' : char(n + '0');
     row[i] ^= (1 << n);
     col[j] ^= (1 << n);
-    mat[i/3][j/3] ^= (1 << n);
+    mat[i / 3][j / 3] ^= (1 << n);
 }
 
 bool sudoku(int x, vector<vector<char>> &board)
 {
-    if(x == 81) return true;
-    
-    int i = x/9, j = x%9;
-    if(board[i][j] != '.')
-        return sudoku(x+1, board);
-    
-    
-    for(int n = 1; n <= 9; n++)
+    if (x == 81)
+        return true;
+
+    int i = x / 9, j = x % 9;
+    if (board[i][j] != '.')
+        return sudoku(x + 1, board);
+
+    for (int n = 1; n <= 9; n++)
     {
-        if(isSafe(i, j, n))
+        if (isSafe(i, j, n))
         {
             set(i, j, n, false, board);
-            if(sudoku(x+1, board)) return true;
+            if (sudoku(x + 1, board))
+                return true;
             set(i, j, n, true, board);
         }
     }
     return false;
 }
 
-void solveSudoku(vector<vector<char>>& board) 
+void solveSudoku(vector<vector<char>> &board)
 {
-    for(int i = 0; i < 9; i++)
-        for(int j = 0; j < 9; j++)
-            if(board[i][j] != '.')
-                set(i, j, board[i][j]-'0', false, board);
+    for (int i = 0; i < 9; i++)
+        for (int j = 0; j < 9; j++)
+            if (board[i][j] != '.')
+                set(i, j, board[i][j] - '0', false, board);
     sudoku(0, board);
 }
 
@@ -616,27 +617,35 @@ void solveSudoku(vector<vector<char>>& board)
 
 // APPROACH 1 --> O(n*logn)
 
-bool find(TreeNode* root, TreeNode* node, int x)
+bool find(TreeNode *root, TreeNode *node, int x)
 {
-    if(!root) return false;
-    if(root->val == x && root != node) return true;
-    if(root->val < x) return find(root->right, node, x);
-    else return find(root->left, node, x);
+    if (!root)
+        return false;
+    if (root->val == x && root != node)
+        return true;
+    if (root->val < x)
+        return find(root->right, node, x);
+    else
+        return find(root->left, node, x);
 }
 
-bool preorder(TreeNode* root, TreeNode* node, int k)
+bool preorder(TreeNode *root, TreeNode *node, int k)
 {
-    if(!node) return false;
-    
-    if(find(root, node, k - node->val)) return true;
-    
-    if(preorder(root, node->left, k)) return true;
-    if(preorder(root, node->right, k)) return true;
-    
+    if (!node)
+        return false;
+
+    if (find(root, node, k - node->val))
+        return true;
+
+    if (preorder(root, node->left, k))
+        return true;
+    if (preorder(root, node->right, k))
+        return true;
+
     return false;
 }
 
-bool findTarget(TreeNode* root, int k) 
+bool findTarget(TreeNode *root, int k)
 {
     return preorder(root, root, k);
 }
@@ -1213,46 +1222,47 @@ int row[9] = {0}, col[9] = {0}, mat[3][3] = {0};
 
 bool isSafe(int i, int j, int n)
 {
-    if((row[i] & (1 << n)) || (col[j] & (1 << n)) || (mat[i/3][j/3] & (1 << n)))
+    if ((row[i] & (1 << n)) || (col[j] & (1 << n)) || (mat[i / 3][j / 3] & (1 << n)))
         return false;
     return true;
 }
 
 void set(int i, int j, int n, bool placed, vector<vector<char>> &board)
 {
-    board[i][j] = placed? '.' : char(n+'0');
+    board[i][j] = placed ? '.' : char(n + '0');
     row[i] ^= (1 << n);
     col[j] ^= (1 << n);
-    mat[i/3][j/3] ^= (1 << n);
+    mat[i / 3][j / 3] ^= (1 << n);
 }
 
 bool sudoku(int x, vector<vector<char>> &board)
 {
-    if(x == 81) return true;
-    
-    int i = x/9, j = x%9;
-    if(board[i][j] != '.')
-        return sudoku(x+1, board);
-    
-    
-    for(int n = 1; n <= 9; n++)
+    if (x == 81)
+        return true;
+
+    int i = x / 9, j = x % 9;
+    if (board[i][j] != '.')
+        return sudoku(x + 1, board);
+
+    for (int n = 1; n <= 9; n++)
     {
-        if(isSafe(i, j, n))
+        if (isSafe(i, j, n))
         {
             set(i, j, n, false, board);
-            if(sudoku(x+1, board)) return true;
+            if (sudoku(x + 1, board))
+                return true;
             set(i, j, n, true, board);
         }
     }
     return false;
 }
 
-void solveSudoku(vector<vector<char>>& board) 
+void solveSudoku(vector<vector<char>> &board)
 {
-    for(int i = 0; i < 9; i++)
-        for(int j = 0; j < 9; j++)
-            if(board[i][j] != '.')
-                set(i, j, board[i][j]-'0', false, board);
+    for (int i = 0; i < 9; i++)
+        for (int j = 0; j < 9; j++)
+            if (board[i][j] != '.')
+                set(i, j, board[i][j] - '0', false, board);
     sudoku(0, board);
 }
 
@@ -1260,71 +1270,86 @@ void solveSudoku(vector<vector<char>>& board)
 
 // APPROACH 1 --> O(n*logn)
 
-bool find(TreeNode* root, TreeNode* node, int x)
+bool find(TreeNode *root, TreeNode *node, int x)
 {
-    if(!root) return false;
-    if(root->val == x && root != node) return true;
-    if(root->val < x) return find(root->right, node, x);
-    else return find(root->left, node, x);
+    if (!root)
+        return false;
+    if (root->val == x && root != node)
+        return true;
+    if (root->val < x)
+        return find(root->right, node, x);
+    else
+        return find(root->left, node, x);
 }
 
-bool preorder(TreeNode* root, TreeNode* node, int k)
+bool preorder(TreeNode *root, TreeNode *node, int k)
 {
-    if(!node) return false;
-    
-    if(find(root, node, k - node->val)) return true;
-    
-    if(preorder(root, node->left, k)) return true;
-    if(preorder(root, node->right, k)) return true;
-    
+    if (!node)
+        return false;
+
+    if (find(root, node, k - node->val))
+        return true;
+
+    if (preorder(root, node->left, k))
+        return true;
+    if (preorder(root, node->right, k))
+        return true;
+
     return false;
 }
 
-bool findTarget(TreeNode* root, int k) 
+bool findTarget(TreeNode *root, int k)
 {
     return preorder(root, root, k);
 }
 
 // APPROACH 2 --> O(n)
 
-void preorder(TreeNode* node, int k, vector<int> &arr)
+void preorder(TreeNode *node, int k, vector<int> &arr)
 {
-    if(!node) return;
-    
+    if (!node)
+        return;
+
     preorder(node->left, k, arr);
     arr.push_back(node->val);
     preorder(node->right, k, arr);
-    
+
     return;
 }
 
-bool findTarget(TreeNode* root, int k) 
+bool findTarget(TreeNode *root, int k)
 {
     vector<int> arr;
     preorder(root, k, arr);
-    
-    int i = 0, j = arr.size()-1;
-    
-    while(i < j)
+
+    int i = 0, j = arr.size() - 1;
+
+    while (i < j)
     {
-        if(arr[i] + arr[j] == k) return true;
-        if(arr[i] + arr[j] < k) i++;
-        else j--;
+        if (arr[i] + arr[j] == k)
+            return true;
+        if (arr[i] + arr[j] < k)
+            i++;
+        else
+            j--;
     }
     return false;
 }
 
 // DAY 25 (Sum of Square Numbers)=========================================================================
 
-bool judgeSquareSum(int c) 
+bool judgeSquareSum(int c)
 {
     int i = 0, j = sqrt(c);
-    while(i <= j)
+    while (i <= j)
     {
-        int diff = c - i*i;
-        if(diff == j*j) return true;
-        if(diff < j*j) j--;
-        else i++;
+        int diff = c - i * i;
+        if (diff == j * j)
+            return true;
+        if (diff < j * j)
+            j--;
+        else
+            i++;
     }
     return false;
 }
@@ -1333,31 +1358,34 @@ bool judgeSquareSum(int c)
 
 // APPROACH 1 (Traversing on tree data)
 
-bool isValidSerialization(string preorder) 
+bool isValidSerialization(string preorder)
 {
-    if(preorder == "#") return true;
+    if (preorder == "#")
+        return true;
     vector<int> st;
     stringstream ss(preorder);
     string x;
     bool first = true;
-    
-    while(getline(ss, x, ','))
+
+    while (getline(ss, x, ','))
     {
-        if(x == ",") continue;
-        if(x == "#")
+        if (x == ",")
+            continue;
+        if (x == "#")
         {
-            if(st.empty()) return false;
-            st[st.size()-1]--;
-            while(!st.empty() && st.back() == 0)
+            if (st.empty())
+                return false;
+            st[st.size() - 1]--;
+            while (!st.empty() && st.back() == 0)
             {
                 st.pop_back();
-                if(!st.empty())
-                    st[st.size()-1]--;
+                if (!st.empty())
+                    st[st.size() - 1]--;
             }
         }
-        else 
+        else
         {
-            if(st.empty() && !first)
+            if (st.empty() && !first)
                 return false;
             st.push_back(2);
             first = false;
@@ -1368,16 +1396,19 @@ bool isValidSerialization(string preorder)
 
 // Approach 2 (Traversing on commas)
 
-bool isValidSerialization(string preorder) 
+bool isValidSerialization(string preorder)
 {
     int cap = 1;
     preorder += ",";
-    for(int i = 0; i < preorder.size(); i++)
+    for (int i = 0; i < preorder.size(); i++)
     {
-        if(preorder[i] != ',') continue;
+        if (preorder[i] != ',')
+            continue;
         cap--;
-        if(cap < 0) return false;
-        if(preorder[i-1] != '#') cap += 2;
+        if (cap < 0)
+            return false;
+        if (preorder[i - 1] != '#')
+            cap += 2;
     }
     return cap == 0;
 }
@@ -1387,29 +1418,31 @@ bool isValidSerialization(string preorder)
 bool isSubstr(string &a, string &b)
 {
     int i = 0, j = 0;
-    while(i < a.size() && j < b.size())
+    while (i < a.size() && j < b.size())
     {
-        if(b[j] == a[i]) i++;
+        if (b[j] == a[i])
+            i++;
         j++;
     }
     return i != a.size();
 }
 
-int findLUSlength(vector<string>& strs) 
+int findLUSlength(vector<string> &strs)
 {
     int maxlen = -1;
-    for(int i = 0; i < strs.size(); i++)
+    for (int i = 0; i < strs.size(); i++)
     {
         bool fl = true;
-        for(int j = 0; j < strs.size(); j++)
+        for (int j = 0; j < strs.size(); j++)
         {
-            if((i != j) && !isSubstr(strs[i], strs[j]))
+            if ((i != j) && !isSubstr(strs[i], strs[j]))
             {
                 fl = false;
                 break;
             }
         }
-        if(fl) maxlen = max(maxlen, (int)strs[i].size());
+        if (fl)
+            maxlen = max(maxlen, (int)strs[i].size());
     }
     return maxlen;
 }
@@ -1422,20 +1455,20 @@ int findLUSlength(vector<string>& strs)
 #define f first
 #define s second
 
-int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) 
+int jobScheduling(vector<int> &startTime, vector<int> &endTime, vector<int> &profit)
 {
     int n = startTime.size();
-    vector<int> dp(n,0);
+    vector<int> dp(n, 0);
 
-    vector<pair<int,pair<int,int>>> arr(n);
-    for(int i = 0; i < n; i++)
+    vector<pair<int, pair<int, int>>> arr(n);
+    for (int i = 0; i < n; i++)
         arr[i] = {startTime[i], {endTime[i], profit[i]}};
     sort(arr.begin(), arr.end());
     int maxprofit = 0;
-    for(int i = n-1; i >= 0; i--)
+    for (int i = n - 1; i >= 0; i--)
     {
-        for(int j = i+1; j < n; j++)
-            if(arr[j].f >= arr[i].s.f)
+        for (int j = i + 1; j < n; j++)
+            if (arr[j].f >= arr[i].s.f)
                 dp[i] = max(dp[j], dp[i]);
         dp[i] += arr[i].s.s;
         maxprofit = max(maxprofit, dp[i]);
@@ -1449,32 +1482,34 @@ int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& pro
 #define f first
 #define s second
 
-int lower_bound(vector<pair<int,pair<int,int>>> &arr, int st, int x)
+int lower_bound(vector<pair<int, pair<int, int>>> &arr, int st, int x)
 {
-    int end = arr.size()-1;
-    while(st <= end)
+    int end = arr.size() - 1;
+    while (st <= end)
     {
-        int mid = st + ((end - st)>>1);
-        if(arr[mid].f >= x) end = mid - 1;
-        else st = mid + 1;
+        int mid = st + ((end - st) >> 1);
+        if (arr[mid].f >= x)
+            end = mid - 1;
+        else
+            st = mid + 1;
     }
     return st;
 }
 
-int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) 
+int jobScheduling(vector<int> &startTime, vector<int> &endTime, vector<int> &profit)
 {
     int n = startTime.size();
-    vector<int> dp(n,0);
+    vector<int> dp(n, 0);
 
-    vector<pair<int,pair<int,int>>> arr(n);
-    for(int i = 0; i < n; i++)
+    vector<pair<int, pair<int, int>>> arr(n);
+    for (int i = 0; i < n; i++)
         arr[i] = {startTime[i], {endTime[i], profit[i]}};
     sort(arr.begin(), arr.end());
     int maxprofit = 0;
-    for(int i = n-1; i >= 0; i--)
+    for (int i = n - 1; i >= 0; i--)
     {
-        int j = lower_bound(arr, i+1, arr[i].s.f);
-        int lb = j == n? 0 : dp[j];
+        int j = lower_bound(arr, i + 1, arr[i].s.f);
+        int lb = j == n ? 0 : dp[j];
         dp[i] = max(arr[i].s.s + lb, maxprofit);
         maxprofit = max(maxprofit, dp[i]);
     }
@@ -1483,18 +1518,57 @@ int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& pro
 
 // DAY 29 (Patching Array)====================================================================
 
-    int minPatches(vector<int>& nums, int n) 
+int minPatches(vector<int> &nums, int n)
+{
+    long ans = 0, miss = 1, i = 0;
+    while (miss <= n)
     {
-        long ans = 0, miss = 1, i = 0;
-        while(miss <= n)
+        if (i < nums.size() && nums[i] <= miss)
+            miss += nums[i++];
+        else
         {
-            if(i < nums.size() && nums[i] <= miss)
-                miss += nums[i++];
-            else 
-            {
-                miss += miss;
-                ans++;
-            }
+            miss += miss;
+            ans++;
         }
-        return ans;
     }
+    return ans;
+}
+
+// DAY 30 (Range Addition 2)=====================================================================
+
+int maxCount(int n, int m, vector<vector<int>> &ops)
+{
+    vector<vector<int>> arr(n + 1, vector<int>(m + 1, 0));
+    vector<int> row(n + 1, 0);
+    vector<int> col(m + 1, 0);
+    int sum = 0;
+    for (vector<int> v : ops)
+    {
+        sum++;
+        row[v[0]]--;
+        col[v[1]]--;
+        arr[v[0]][v[1]]++;
+    }
+    int prev = sum;
+    unordered_map<int, int> mp;
+    int mx = 0, ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int prev = sum + row[i];
+        for (int j = 0; j < m; j++)
+        {
+            arr[i][j] += prev + col[j];
+            row[i] = 0;
+            prev = arr[i][j];
+            ++mp[arr[i][j]];
+            if (arr[i][j] > mx)
+            {
+                mx = arr[i][j];
+                ans = 1;
+            }
+            else if (arr[i][j] == mx)
+                ans = mp[arr[i][j]];
+        }
+    }
+    return ans;
+}
