@@ -1536,6 +1536,9 @@ int minPatches(vector<int> &nums, int n)
 
 // DAY 30 (Range Addition 2)=====================================================================
 
+// APPROACH 1 (Using space) --> O(n*m)
+// MLE
+
 int maxCount(int n, int m, vector<vector<int>> &ops)
 {
     vector<vector<int>> arr(n + 1, vector<int>(m + 1, 0));
@@ -1571,4 +1574,17 @@ int maxCount(int n, int m, vector<vector<int>> &ops)
         }
     }
     return ans;
+}
+
+// APPROACH 2 (Without space) --> O(ops.size())
+
+int maxCount(int n, int m, vector<vector<int>> &ops)
+{
+    int minx = n, miny = m;
+    for (auto v : ops)
+    {
+        minx = min(minx, v[0]);
+        miny = min(miny, v[1]);
+    }
+    return minx * miny;
 }
