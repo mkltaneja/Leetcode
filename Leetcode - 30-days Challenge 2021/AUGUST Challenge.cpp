@@ -1591,15 +1591,29 @@ int maxCount(int n, int m, vector<vector<int>> &ops)
 
 // DAY 31 (Find Minimum in the Rotated Sorted Array)===========================================================
 
-int findMin(vector<int>& nums) 
+// APPROACH 1 (Linear Search) --> O(n)
+
+int findMin(vector<int> &nums)
 {
-    int l = 0, r = nums.size()-1;
-    while(l < r)
+    int mn = INT_MAX;
+    for (int x : nums)
+        mn = min(mn, x);
+
+    return mn;
+}
+
+// APPROACH 2 (Binary Search) --> O(logn)
+
+int findMin(vector<int> &nums)
+{
+    int l = 0, r = nums.size() - 1;
+    while (l < r)
     {
-        int m = l + ((r - l)>>1);
-        if(nums[m] <= nums[r])
+        int m = l + ((r - l) >> 1);
+        if (nums[m] <= nums[r])
             r = m;
-        else l = m+1;
+        else
+            l = m + 1;
     }
     return nums[r];
 }
