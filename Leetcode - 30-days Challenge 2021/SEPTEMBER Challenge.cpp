@@ -88,3 +88,26 @@ vector<int> sumOfDistancesInTree(int n, vector<vector<int>> &edges)
 
     return ans;
 }
+
+// DAY 5 (Orderly Queue)===================================================================
+
+string orderlyQueue(string s, int k) 
+{
+    if(k > 1)
+    {
+        sort(s.begin(), s.end());
+        return s;
+    }
+    char minc = 'z';
+    for(char c : s) minc = min(minc, c);
+    string ans = s;
+    for(int i = 0; i < s.size(); i++)
+    {
+        if(s[i] == minc)
+        {
+            string x = s.substr(i, s.size()) + s.substr(0, i);
+            if(x < ans) ans = x;
+        }
+    }
+    return ans;
+}
