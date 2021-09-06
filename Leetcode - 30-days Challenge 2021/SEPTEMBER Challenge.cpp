@@ -169,3 +169,23 @@ string orderlyQueue(string s, int k)
     }
     return ans;
 }
+
+// DAY 6 (Slowest Key)==================================================================================
+
+char slowestKey(vector<int> &releaseTimes, string keysPressed)
+{
+    char ans = NULL;
+    int maxdur = 0;
+    for (int i = 0; i < releaseTimes.size(); i++)
+    {
+        int dur = releaseTimes[i] - (i ? releaseTimes[i - 1] : 0);
+        if (ans == NULL || dur > maxdur)
+        {
+            ans = keysPressed[i];
+            maxdur = dur;
+        }
+        else if (dur == maxdur && keysPressed[i] > ans)
+            ans = keysPressed[i];
+    }
+    return ans;
+}
