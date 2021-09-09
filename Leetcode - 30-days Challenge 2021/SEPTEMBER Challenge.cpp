@@ -204,3 +204,47 @@ ListNode *reverseList(ListNode *head)
     }
     return prev;
 }
+
+// DAY 8 (Shifting Letters)====================================================
+
+string shiftingLetters(string s, vector<int> &shifts)
+{
+    for (int i = shifts.size() - 1; i >= 0; i--)
+    {
+        shifts[i] = (shifts[i] + ((i == shifts.size() - 1) ? 0 : shifts[i + 1])) % 26;
+        s[i] = char(((s[i] - 'a') + shifts[i]) % 26 + 'a');
+        cout << shifts[i] << ", " << s[i] << endl;
+    }
+    return s;
+}
+
+// DAY 9 (Largest Plus Sign)===============================================================
+
+int orderOfLargestPlusSign(int n, vector<vector<int>> &mines)
+{
+    vector<vector<int>> grid(n, vector<int>(n, 1));
+    for (auto v : mines)
+        grid[v[0]][v[1]] = 0;
+    vector<vector<vector<int>>> arr(vector<vector<vector<int>>>(n, vector<vector<int>>(n, vector<int>(4, 0))));
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            int left = (grid[i][j] && j) ? arr[i][j - 1][0] : 0;
+            int up = (grid[j][i] && j) ? arr[j - 1][i][2] : 0;
+            int down = (grid[n - j - 1][i] && j) ? arr[n - j][i][1] : 0;
+            int right = (grid[i][n - j - 1] && j) ? arr[i][n - j][3] : 0;
+            arr[i][j][0] = grid[i][j] + left;
+            arr[j][i][2] = grid[j][i] + up;
+            arr[n - j - 1][i][1] = grid[n - j - 1][i] + down;
+            arr[i][n - j - 1][3] = grid[i][n - j - 1] + right;
+        }
+    }
+
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            ans = max(ans, min({arr[i][j][0], arr[i][j][1], arr[i][j][2], arr[i][j][3]}));
+    return ans;
+}
