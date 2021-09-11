@@ -248,3 +248,28 @@ int orderOfLargestPlusSign(int n, vector<vector<int>> &mines)
             ans = max(ans, min({arr[i][j][0], arr[i][j][1], arr[i][j][2], arr[i][j][3]}));
     return ans;
 }
+
+// DAY 10 (Arithimetic Slices 2 - Subsequence)=============================================================
+
+int numberOfArithmeticSlices(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<unordered_map<long, long>> cnts(n);
+
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            long diff = (long)nums[i] - nums[j];
+            cnts[i][diff]++;
+            if (cnts[j].count(diff))
+            {
+                cnts[i][diff] += cnts[j][diff];
+                ans += cnts[j][diff];
+            }
+        }
+    }
+
+    return ans;
+}
