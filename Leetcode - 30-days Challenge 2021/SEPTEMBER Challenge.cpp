@@ -273,3 +273,30 @@ int numberOfArithmeticSlices(vector<int> &nums)
 
     return ans;
 }
+
+// DAY 11 (Basic Calculator)==========================================================
+
+int calc(int &i, string &s)
+{
+    int x = 0, pol = 1, sum = 0;
+    for (; i < s.size() && s[i] != ')'; i++)
+    {
+        if (s[i] >= '0' && s[i] <= '9')
+            x = x * 10 + (s[i] - '0');
+        else if (s[i] == '+' || s[i] == '-')
+        {
+            sum += pol * x;
+            x = 0;
+            pol = (s[i] == '+') ? 1 : -1;
+        }
+        else if (s[i] == '(')
+            sum += pol * calc(++i, s);
+    }
+    return sum + pol * x;
+}
+
+int calculate(string s)
+{
+    int i = 0;
+    return calc(i, s);
+}
