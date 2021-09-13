@@ -300,3 +300,68 @@ int calculate(string s)
     int i = 0;
     return calc(i, s);
 }
+
+// DAY 12 (Reachable Nodes in Subdivided Graph)==============================================================
+
+#define f first
+#define s second
+
+class comp
+{
+public:
+    bool operator()(pair<int, int> &a, pair<int, int> &b)
+    {
+        return a.s < b.s;
+    }
+};
+
+int reachableNodes(vector<vector<int>> &edges, int maxMoves, int n)
+{
+    vector<unordered_map<int, int>> gp(n);
+    for (auto v : edges)
+    {
+        gp[v[0]].insert({v[1], v[2]});
+        gp[v[1]].insert({v[0], v[2]});
+    }
+
+    vector<bool> vis(n, false);
+    priority_queue<pair<int, int>, vector<pair<int, int>>, comp> pq;
+    pq.push({0, maxMoves});
+    int ans = 1;
+    while (!pq.empty())
+    {
+        auto tp = pq.top();
+        pq.pop();
+        if (vis[tp.f])
+        {
+            ans--;
+            continue;
+        }
+        vis[tp.f] = true;
+
+        for (auto v : gp[tp.f])
+        {
+            int rem = v.s;
+            if (!vis[v.f] || rem)
+            {
+                if (rem <= tp.s)
+                {
+                    if (rem == tp.s)
+                        ans--;
+                    ans += rem + 1;
+                    gp[tp.f][v.f] = 0;
+                    gp[v.f][tp.f] = 0;
+                }
+                else
+                {
+                    ans += tp.s;
+                    gp[tp.f][v.f] = rem - tp.s;
+                    gp[v.f][tp.f] = rem - tp.s;
+                }
+                if (tp.s - rem - 1 >= 0)
+                    pq.push({v.f, tp.s - rem - 1});
+            }
+        }
+    }
+    return ans;
+}
