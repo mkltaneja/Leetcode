@@ -365,3 +365,21 @@ int reachableNodes(vector<vector<int>> &edges, int maxMoves, int n)
     }
     return ans;
 }
+
+// DAY 13 (Maximum Number of Balloons)===============================================================
+
+int maxNumberOfBalloons(string text)
+{
+    unordered_map<char, int> req;
+    req['b'] = 1, req['a'] = 1, req['l'] = 2, req['o'] = 2, req['n'] = 1;
+
+    unordered_map<char, int> curr;
+    for (char c : text)
+        curr[c]++;
+
+    int ans = text.size();
+    for (auto p : req)
+        ans = min(ans, curr[p.first] / p.second);
+
+    return ans;
+}
