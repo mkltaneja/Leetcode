@@ -383,3 +383,26 @@ int maxNumberOfBalloons(string text)
 
     return ans;
 }
+
+// DAY 14 (Reverse Only Letters)==================================================================
+
+string reverseOnlyLetters(string s) 
+{
+    string t = "";
+    for(char c : s)
+    {
+        char x = tolower(c);
+        if(x >= 'a' && x <= 'z')
+            t += c;
+    }
+    reverse(t.begin(), t.end());
+    
+    int i = 0;
+    for(char &c : s)
+    {
+        char x = tolower(c);
+        if(x >= 'a' && x <= 'z')
+            c = t[i++];
+    }
+    return s;
+}
