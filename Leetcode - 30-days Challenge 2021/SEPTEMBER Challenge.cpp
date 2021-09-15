@@ -386,23 +386,48 @@ int maxNumberOfBalloons(string text)
 
 // DAY 14 (Reverse Only Letters)==================================================================
 
-string reverseOnlyLetters(string s) 
+string reverseOnlyLetters(string s)
 {
     string t = "";
-    for(char c : s)
+    for (char c : s)
     {
         char x = tolower(c);
-        if(x >= 'a' && x <= 'z')
+        if (x >= 'a' && x <= 'z')
             t += c;
     }
     reverse(t.begin(), t.end());
-    
+
     int i = 0;
-    for(char &c : s)
+    for (char &c : s)
     {
         char x = tolower(c);
-        if(x >= 'a' && x <= 'z')
+        if (x >= 'a' && x <= 'z')
             c = t[i++];
     }
     return s;
+}
+
+// DAY 15 (Longest Turbulent Subarray)=====================================================================
+
+int maxTurbulenceSize(vector<int> &arr)
+{
+    int maxans = 1;
+    int psmall = 1, plarge = 1;
+    for (int i = 1; i < arr.size(); i++)
+    {
+        if (arr[i] > arr[i - 1])
+        {
+            plarge = psmall + 1;
+            psmall = 1;
+        }
+        else if (arr[i] < arr[i - 1])
+        {
+            psmall = plarge + 1;
+            plarge = 1;
+        }
+        else
+            psmall = 1, plarge = 1;
+        maxans = max({maxans, psmall, plarge});
+    }
+    return maxans;
 }
