@@ -431,3 +431,31 @@ int maxTurbulenceSize(vector<int> &arr)
     }
     return maxans;
 }
+
+// DAY 16 (Spiral Matrix)======================================================================
+
+vector<int> spiralOrder(vector<vector<int>> &matrix)
+{
+    int n = matrix.size(), m = matrix[0].size();
+
+    vector<int> ans(n * m);
+    int k = 0;
+    int sr = 0, sc = 0, er = n - 1, ec = m - 1;
+    while (k < n * m)
+    {
+        for (int i = sc; i <= ec && k < n * m; i++)
+            ans[k++] = matrix[sr][i];
+        sr++;
+        for (int i = sr; i <= er && k < n * m; i++)
+            ans[k++] = matrix[i][ec];
+        ec--;
+        for (int i = ec; i >= sc && k < n * m; i--)
+            ans[k++] = matrix[er][i];
+        er--;
+        for (int i = er; i >= sr && k < n * m; i--)
+            ans[k++] = matrix[i][sc];
+        sc++;
+    }
+
+    return ans;
+}
