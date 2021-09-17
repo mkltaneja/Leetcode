@@ -459,3 +459,22 @@ vector<int> spiralOrder(vector<vector<int>> &matrix)
 
     return ans;
 }
+
+// DAY 17 (Intersection of 2 Arrays)=============================================================
+
+vector<int> intersect(vector<int> &nums1, vector<int> &nums2)
+{
+    unordered_map<int, int> m;
+    for (int x : nums1)
+        m[x]++;
+    vector<int> ans;
+    for (int x : nums2)
+    {
+        if (m[x])
+        {
+            ans.push_back(x);
+            m[x]--;
+        }
+    }
+    return ans;
+}
