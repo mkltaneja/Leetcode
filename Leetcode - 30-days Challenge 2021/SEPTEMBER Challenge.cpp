@@ -499,3 +499,57 @@ int numDistinct(string s, string t)
     }
     return dp[n][m];
 }
+
+// DAY 20 (Find Winner in a Tic Tac Toe Game)==================================================================
+
+string rowwin(vector<vector<int>> &tt)
+{
+    if (tt[0][0] != -1 && tt[0][0] == tt[0][1] && tt[0][0] == tt[0][2])
+        return tt[0][0] ? "B" : "A";
+    if (tt[1][0] != -1 && tt[1][0] == tt[1][1] && tt[1][0] == tt[1][2])
+        return tt[1][0] ? "B" : "A";
+    if (tt[2][0] != -1 && tt[2][0] == tt[2][1] && tt[2][0] == tt[2][2])
+        return tt[2][0] ? "B" : "A";
+    return "";
+}
+
+string colwin(vector<vector<int>> &tt)
+{
+    if (tt[0][0] != -1 && tt[0][0] == tt[1][0] && tt[0][0] == tt[2][0])
+        return tt[0][0] ? "B" : "A";
+    if (tt[0][1] != -1 && tt[0][1] == tt[1][1] && tt[0][1] == tt[2][1])
+        return tt[0][1] ? "B" : "A";
+    if (tt[0][2] != -1 && tt[0][2] == tt[1][2] && tt[0][2] == tt[2][2])
+        return tt[0][2] ? "B" : "A";
+    return "";
+}
+
+string diagwin(vector<vector<int>> &tt)
+{
+    if (tt[0][0] != -1 && tt[0][0] == tt[1][1] && tt[0][0] == tt[2][2])
+        return tt[0][0] ? "B" : "A";
+    if (tt[0][2] != -1 && tt[0][2] == tt[1][1] && tt[0][2] == tt[2][0])
+        return tt[0][2] ? "B" : "A";
+    return "";
+}
+
+string tictactoe(vector<vector<int>> &moves)
+{
+    vector<vector<int>> tt(3, vector<int>(3, -1));
+    for (int i = 0; i < moves.size(); i++)
+        tt[moves[i][0]][moves[i][1]] = (i & 1);
+
+    string rowans = rowwin(tt);
+    if (!rowans.empty())
+        return rowans;
+
+    string colans = colwin(tt);
+    if (!colans.empty())
+        return colans;
+
+    string diagans = diagwin(tt);
+    if (!diagans.empty())
+        return diagans;
+
+    return (moves.size() == 9) ? "Draw" : "Pending";
+}
