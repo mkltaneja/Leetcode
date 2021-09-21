@@ -553,3 +553,16 @@ string tictactoe(vector<vector<int>> &moves)
 
     return (moves.size() == 9) ? "Draw" : "Pending";
 }
+
+// DAY 21 (Max Consecutive Ones)==============================================================
+
+int findMaxConsecutiveOnes(vector<int> &nums)
+{
+    int ans = 0, curr = 0;
+    for (int i = 0; i < nums.size(); i++)
+    {
+        curr = nums[i] ? curr + 1 : 0;
+        ans = max(ans, curr);
+    }
+    return ans;
+}
