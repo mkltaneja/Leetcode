@@ -660,17 +660,18 @@ int maxLength(vector<string> &arr)
 
 string breakPalindrome(string s)
 {
-    if (s.size() == 1)
+    int n = s.size();
+    if (n == 1)
         return "";
 
-    for (int i = 0; i < s.size(); i++)
+    for (int i = 0; i < n / 2; i++)
     {
-        if (s[i] == 'a' || i == s.size() / 2)
+        if (s[i] == 'a')
             continue;
         s[i] = 'a';
         return s;
     }
-    s[s.size() - 1] = 'b';
+    s[n - 1] = 'b';
 
     return s;
 }
