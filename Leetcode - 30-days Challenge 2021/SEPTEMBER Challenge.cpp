@@ -655,3 +655,22 @@ int maxLength(vector<string> &arr)
     }
     return ans;
 }
+
+// DAY 23 (Break a Palindrome)========================================================================
+
+string breakPalindrome(string s)
+{
+    if (s.size() == 1)
+        return "";
+
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (s[i] == 'a' || i == s.size() / 2)
+            continue;
+        s[i] = 'a';
+        return s;
+    }
+    s[s.size() - 1] = 'b';
+
+    return s;
+}
