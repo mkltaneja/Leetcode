@@ -569,6 +569,8 @@ int findMaxConsecutiveOnes(vector<int> &nums)
 
 // DAY 22 (Maximum Length of a Concatenated String With Unique Characters)=====================================
 
+// METHOD 1 (Subsequences) --> O(2^n)
+
 int checkuni(vector<string> &conc)
 {
     int map[26] = {0};
@@ -603,6 +605,53 @@ int maxLength(vector<string> &arr)
             x >>= 1;
         }
         ans = max(ans, checkuni(tmp));
+    }
+    return ans;
+}
+
+// METHOD 2 (Using DP and Bitmask) --> O(n^2)
+
+int cntbits(int x)
+{
+    int ans = 0;
+    while (x)
+    {
+        x &= x - 1;
+        ans++;
+    }
+    return ans;
+}
+
+int maxLength(vector<string> &arr)
+{
+    vector<int> dp;
+    int ans = 0;
+    for (string s : arr)
+    {
+        int x = 0;
+        bool valid = true;
+        for (char c : s)
+        {
+            if (x & (1 << (c - 'a')))
+            {
+                valid = false;
+                break;
+            }
+            x |= (1 << (c - 'a'));
+        }
+        if (!valid)
+            continue;
+        int n = cntbits(x);
+        ans = max(ans, n);
+
+        for (int i = dp.size() - 1; i >= 0; i--)
+        {
+            if (dp[i] & x)
+                continue;
+            dp.push_back(dp[i] | x);
+            ans = max(ans, cntbits(dp[i]) + n);
+        }
+        dp.push_back(x);
     }
     return ans;
 }
