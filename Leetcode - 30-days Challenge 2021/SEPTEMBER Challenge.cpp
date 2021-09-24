@@ -675,3 +675,22 @@ string breakPalindrome(string s)
 
     return s;
 }
+
+// DAY 24 (N-th Tribonacci Number)===============================================================================
+
+int tribonacci(int n)
+{
+    int a = 0, b = 1, c = 1, sum = 1;
+
+    if (n == 0)
+        return a;
+
+    for (int i = 3; i <= n; i++)
+    {
+        sum = a + b + c;
+        a = b;
+        b = c;
+        c = sum;
+    }
+    return sum;
+}
