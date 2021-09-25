@@ -694,3 +694,51 @@ int tribonacci(int n)
     }
     return sum;
 }
+
+// DAY 26 (Shortest Path in a Grid with Obstacle Elimination)============================================================
+
+#define f first
+#define s second
+
+int shortestPath(vector<vector<int>> &grid, int k)
+{
+    int n = grid.size(), m = grid[0].size();
+
+    queue<pair<int, int>> que;
+    que.push({0, k});
+
+    int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    vector<vector<vector<bool>>> vis(n, vector<vector<bool>>(m, vector<bool>(k + 1, false)));
+
+    int lvl = 0;
+    while (!que.empty())
+    {
+        int sz = que.size();
+        while (sz--)
+        {
+            auto tp = que.front();
+            que.pop();
+            int i = tp.f / m;
+            int j = tp.f % m;
+
+            if (tp.s < 0)
+                continue;
+
+            if (i == n - 1 && j == m - 1)
+                return lvl;
+
+            for (int d = 0; d < 4; d++)
+            {
+                int r = i + dir[d][0];
+                int c = j + dir[d][1];
+                if (r != -1 && c != -1 && r != n && c != m && (tp.s - grid[r][c]) >= 0 && !vis[r][c][tp.s - grid[r][c]])
+                {
+                    vis[r][c][tp.s - grid[r][c]] = true;
+                    que.push({r * m + c, tp.s - grid[r][c]});
+                }
+            }
+        }
+        lvl++;
+    }
+    return -1;
+}
