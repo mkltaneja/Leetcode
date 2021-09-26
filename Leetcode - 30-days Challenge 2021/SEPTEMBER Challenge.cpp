@@ -742,3 +742,44 @@ int shortestPath(vector<vector<int>> &grid, int k)
     }
     return -1;
 }
+
+// DAY 26 (Transform to Chessboard)==================================================================================================
+
+int movesToChessboard(vector<vector<int>> &board)
+{
+    int n = board.size();
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            if ((board[0][0] ^ board[i][0]) ^ (board[0][j] ^ board[i][j]))
+                return -1;
+    int ones_in_1st_row = 0, ones_in_1st_col = 0;
+    int row_moves = 0, col_moves = 0;
+    for (int i = 0; i < n; i++)
+    {
+        ones_in_1st_row += board[0][i];
+        ones_in_1st_col += board[i][0];
+
+        row_moves += (board[i][0] == (i & 1));
+        col_moves += (board[0][i] == (i & 1));
+    }
+
+    if (ones_in_1st_row < n / 2 || ones_in_1st_row > (n + 1) / 2)
+        return -1;
+    if (ones_in_1st_col < n / 2 || ones_in_1st_col > (n + 1) / 2)
+        return -1;
+
+    if (n & 1)
+    {
+        if (row_moves & 1)
+            row_moves = n - row_moves;
+        if (col_moves & 1)
+            col_moves = n - col_moves;
+    }
+    else
+    {
+        row_moves = min(row_moves, n - row_moves);
+        col_moves = min(col_moves, n - col_moves);
+    }
+
+    return (row_moves + col_moves) / 2;
+}
