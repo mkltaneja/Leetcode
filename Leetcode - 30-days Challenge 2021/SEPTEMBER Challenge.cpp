@@ -783,3 +783,30 @@ int movesToChessboard(vector<vector<int>> &board)
 
     return (row_moves + col_moves) / 2;
 }
+
+// DAY 27 (Unique Email Addresses)===============================================================
+
+int numUniqueEmails(vector<string> &emails)
+{
+    unordered_set<string> st;
+    for (string s : emails)
+    {
+        string lname = "", dname = "";
+        int i = 0;
+        while (i < s.size() && s[i] != '@' && s[i] != '+')
+        {
+            if (s[i] == '.')
+                i++;
+            else
+                lname += s[i++];
+        }
+        if (s[i] == '+')
+            while (i < s.size() && s[i] != '@')
+                i++;
+        while (i < s.size())
+            dname += s[i++];
+        st.insert(lname + "@" + dname);
+        // cout<<lname<<"@"<<dname<<endl;
+    }
+    return st.size();
+}
