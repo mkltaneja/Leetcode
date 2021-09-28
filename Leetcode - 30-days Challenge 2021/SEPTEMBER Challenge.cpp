@@ -810,3 +810,37 @@ int numUniqueEmails(vector<string> &emails)
     }
     return st.size();
 }
+
+// DAY 28 (Sort Array by Parity 2)===============================================================================
+
+vector<int> sortArrayByParityII(vector<int> &nums)
+{
+    queue<int> eo, oe;
+    for (int i = 0; i < nums.size(); i++)
+    {
+        if ((nums[i] & 1) != (i & 1))
+        {
+            if (i & 1)
+            {
+                if (!eo.empty())
+                {
+                    swap(nums[eo.front()], nums[i]);
+                    eo.pop();
+                }
+                else
+                    oe.push(i);
+            }
+            else
+            {
+                if (!oe.empty())
+                {
+                    swap(nums[oe.front()], nums[i]);
+                    oe.pop();
+                }
+                else
+                    eo.push(i);
+            }
+        }
+    }
+    return nums;
+}
