@@ -813,6 +813,8 @@ int numUniqueEmails(vector<string> &emails)
 
 // DAY 28 (Sort Array by Parity 2)===============================================================================
 
+// METHOD 1 (Using queue)
+
 vector<int> sortArrayByParityII(vector<int> &nums)
 {
     queue<int> eo, oe;
@@ -840,6 +842,27 @@ vector<int> sortArrayByParityII(vector<int> &nums)
                 else
                     eo.push(i);
             }
+        }
+    }
+    return nums;
+}
+
+// METHOD 2 (2 Pointer Approach)
+
+vector<int> sortArrayByParityII(vector<int> &nums)
+{
+    int i = 0, j = 1;
+    while (i < nums.size() && j < nums.size())
+    {
+        if ((nums[i] & 1) == 0)
+            i += 2;
+        else if (nums[j] & 1)
+            j += 2;
+        else
+        {
+            swap(nums[i], nums[j]);
+            i += 2;
+            j += 2;
         }
     }
     return nums;
