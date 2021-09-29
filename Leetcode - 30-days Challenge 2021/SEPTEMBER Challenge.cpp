@@ -867,3 +867,41 @@ vector<int> sortArrayByParityII(vector<int> &nums)
     }
     return nums;
 }
+
+// DAY 29 (Split Linked List in Parts)================================================================================
+
+vector<ListNode *> splitListToParts(ListNode *head, int k)
+{
+    int n = 0;
+    ListNode *itr = head;
+    while (itr)
+    {
+        itr = itr->next;
+        n++;
+    }
+    int x = n / k, y = n % k;
+
+    vector<ListNode *> ans(k);
+
+    itr = head;
+    int i = 0;
+    while (itr && i < k)
+    {
+        int tmp = x + ((y > 0) ? 1 : 0);
+        ListNode *curr = itr;
+        while (curr && --tmp)
+            curr = curr->next;
+
+        ListNode *tmpnode = nullptr;
+        if (curr)
+        {
+            tmpnode = curr->next;
+            curr->next = nullptr;
+        }
+        ans[i++] = itr;
+        itr = tmpnode;
+        y--;
+    }
+
+    return ans;
+}
