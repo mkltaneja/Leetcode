@@ -81,3 +81,17 @@ int islandPerimeter(vector<vector<int>> &grid)
     }
     return ans;
 }
+
+// DAY 5 (Climbing Stairs)====================================================================
+
+int climbStairs(int n)
+{
+    int a = 1, b = 1, ans = 1;
+    while (--n)
+    {
+        a = b;
+        b = ans;
+        ans = a + b;
+    }
+    return ans;
+}
