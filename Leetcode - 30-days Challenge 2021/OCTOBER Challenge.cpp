@@ -109,3 +109,31 @@ vector<int> findDuplicates(vector<int>& nums)
     }
     return ans;
 }
+
+// DAY 7 (Word Search)===============================================================================
+
+bool dfs(int i, int j, int k, int n, int m, vector<vector<char>> &board, string &s)
+{
+    if(k == s.size()) return true;
+    if(i == -1 || j == -1 || i == n || j == m || board[i][j] != s[k]) return false;
+    
+    char c = board[i][j];
+    board[i][j] = '#';
+    if(dfs(i+1, j, k+1, n, m, board, s)) return true;
+    if(dfs(i, j+1, k+1, n, m, board, s)) return true;
+    if(dfs(i-1, j, k+1, n, m, board, s)) return true;
+    if(dfs(i, j-1, k+1, n, m, board, s)) return true;
+    board[i][j] = c;
+    
+    return false;
+}
+
+bool exist(vector<vector<char>>& board, string word) 
+{
+    int n = board.size(), m = board[0].size();
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < m; j++)
+            if(dfs(i, j, 0, n, m, board, word))
+                return true;
+    return false;
+}
