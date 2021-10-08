@@ -137,3 +137,70 @@ bool exist(vector<vector<char>>& board, string word)
                 return true;
     return false;
 }
+
+// DAY 8 (Implement Trie (Prefix Tree))===============================================================================
+class Trie {
+public:
+    
+    
+    class Node
+    {
+        public:
+        vector<Node*> t;
+        bool wordEnd;
+        Node()
+        {
+            this->t.assign(26,nullptr);
+            this->wordEnd = false;
+        }
+    };
+    
+    Node* node;
+    
+    Trie() 
+    {
+        this->node = new Node();        
+    }
+    
+    void insert(string word) 
+    {
+        Node* curr = node;
+        for(char c : word)
+        {
+            if(!curr->t[c-'a'])
+                curr->t[c-'a'] = new Node();
+            curr = curr->t[c-'a'];
+        }
+        curr->wordEnd = true;
+    }
+    
+    bool search(string word) 
+    {
+        Node* curr = node;
+        for(char c : word)
+        {
+            if(!curr->t[c-'a']) return false;
+            curr = curr->t[c-'a'];
+        }
+        return curr->wordEnd;
+    }
+    
+    bool startsWith(string prefix) 
+    {
+        Node* curr = node;
+        for(char c : prefix)
+        {
+            if(!curr->t[c-'a']) return false;
+            curr = curr->t[c-'a'];
+        }
+        return true;
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
