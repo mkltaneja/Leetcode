@@ -98,14 +98,15 @@ int climbStairs(int n)
 
 // DAY 6 (Find All Duplicates in an Array)===============================================================
 
-vector<int> findDuplicates(vector<int>& nums)
+vector<int> findDuplicates(vector<int> &nums)
 {
     vector<int> ans;
-    for(int i = 0; i < nums.size(); i++)
+    for (int i = 0; i < nums.size(); i++)
     {
-        if(nums[abs(nums[i])-1] > 0)
-            nums[abs(nums[i])-1] *= -1;
-        else ans.push_back(abs(nums[i]));
+        if (nums[abs(nums[i]) - 1] > 0)
+            nums[abs(nums[i]) - 1] *= -1;
+        else
+            ans.push_back(abs(nums[i]));
     }
     return ans;
 }
@@ -114,84 +115,91 @@ vector<int> findDuplicates(vector<int>& nums)
 
 bool dfs(int i, int j, int k, int n, int m, vector<vector<char>> &board, string &s)
 {
-    if(k == s.size()) return true;
-    if(i == -1 || j == -1 || i == n || j == m || board[i][j] != s[k]) return false;
-    
+    if (k == s.size())
+        return true;
+    if (i == -1 || j == -1 || i == n || j == m || board[i][j] != s[k])
+        return false;
+
     char c = board[i][j];
     board[i][j] = '#';
-    if(dfs(i+1, j, k+1, n, m, board, s)) return true;
-    if(dfs(i, j+1, k+1, n, m, board, s)) return true;
-    if(dfs(i-1, j, k+1, n, m, board, s)) return true;
-    if(dfs(i, j-1, k+1, n, m, board, s)) return true;
+    if (dfs(i + 1, j, k + 1, n, m, board, s))
+        return true;
+    if (dfs(i, j + 1, k + 1, n, m, board, s))
+        return true;
+    if (dfs(i - 1, j, k + 1, n, m, board, s))
+        return true;
+    if (dfs(i, j - 1, k + 1, n, m, board, s))
+        return true;
     board[i][j] = c;
-    
+
     return false;
 }
 
-bool exist(vector<vector<char>>& board, string word) 
+bool exist(vector<vector<char>> &board, string word)
 {
     int n = board.size(), m = board[0].size();
-    for(int i = 0; i < n; i++)
-        for(int j = 0; j < m; j++)
-            if(dfs(i, j, 0, n, m, board, word))
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            if (dfs(i, j, 0, n, m, board, word))
                 return true;
     return false;
 }
 
 // DAY 8 (Implement Trie (Prefix Tree))===============================================================================
-class Trie {
+class Trie
+{
 public:
-    
-    
     class Node
     {
-        public:
-        vector<Node*> t;
+    public:
+        vector<Node *> t;
         bool wordEnd;
         Node()
         {
-            this->t.assign(26,nullptr);
+            this->t.assign(26, nullptr);
             this->wordEnd = false;
         }
     };
-    
-    Node* node;
-    
-    Trie() 
+
+    Node *node;
+
+    Trie()
     {
-        this->node = new Node();        
+        this->node = new Node();
     }
-    
-    void insert(string word) 
+
+    void insert(string word)
     {
-        Node* curr = node;
-        for(char c : word)
+        Node *curr = node;
+        for (char c : word)
         {
-            if(!curr->t[c-'a'])
-                curr->t[c-'a'] = new Node();
-            curr = curr->t[c-'a'];
+            if (!curr->t[c - 'a'])
+                curr->t[c - 'a'] = new Node();
+            curr = curr->t[c - 'a'];
         }
         curr->wordEnd = true;
     }
-    
-    bool search(string word) 
+
+    bool search(string word)
     {
-        Node* curr = node;
-        for(char c : word)
+        Node *curr = node;
+        for (char c : word)
         {
-            if(!curr->t[c-'a']) return false;
-            curr = curr->t[c-'a'];
+            if (!curr->t[c - 'a'])
+                return false;
+            curr = curr->t[c - 'a'];
         }
         return curr->wordEnd;
     }
-    
-    bool startsWith(string prefix) 
+
+    bool startsWith(string prefix)
     {
-        Node* curr = node;
-        for(char c : prefix)
+        Node *curr = node;
+        for (char c : prefix)
         {
-            if(!curr->t[c-'a']) return false;
-            curr = curr->t[c-'a'];
+            if (!curr->t[c - 'a'])
+                return false;
+            curr = curr->t[c - 'a'];
         }
         return true;
     }
@@ -204,3 +212,24 @@ public:
  * bool param_2 = obj->search(word);
  * bool param_3 = obj->startsWith(prefix);
  */
+
+// DAY 10 (Bitwise and Number Range)======================================================================
+
+int rangeBitwiseAnd(int left, int right)
+{
+    int ans = 0;
+    int i = 0;
+    while (i < 32)
+    {
+        if (right & (1 << i))
+        {
+            int offbit = right & ~(1 << i);
+            offbit |= (1 << i) - 1;
+            if (left > offbit)
+                ans |= (1 << i);
+        }
+        i++;
+    }
+
+    return ans;
+}
