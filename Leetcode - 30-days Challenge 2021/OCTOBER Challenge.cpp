@@ -215,6 +215,8 @@ public:
 
 // DAY 10 (Bitwise and Number Range)======================================================================
 
+// APPROACH 1 (Find the last OFF bit for a particular ON bit) --> O(32)
+
 int rangeBitwiseAnd(int left, int right)
 {
     int ans = 0;
@@ -232,4 +234,18 @@ int rangeBitwiseAnd(int left, int right)
     }
 
     return ans;
+}
+
+// APPROACH 2 (Find maximum common prefix) --> O(log(right))
+
+int rangeBitwiseAnd(int left, int right)
+{
+    int x = 0;
+    while (left != right)
+    {
+        left >>= 1;
+        right >>= 1;
+        x++;
+    }
+    return left << x;
 }
