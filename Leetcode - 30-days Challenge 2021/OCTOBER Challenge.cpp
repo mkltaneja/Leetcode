@@ -249,3 +249,23 @@ int rangeBitwiseAnd(int left, int right)
     }
     return left << x;
 }
+
+// DAY 11 (Diameter of a Binary Tree)==============================================
+
+int ans = 0;
+int dia(TreeNode* node)
+{
+    if(!node) return -1;
+    
+    int lans = dia(node->left);
+    int rans = dia(node->right);
+    ans = max(ans, lans + rans + 2);
+    
+    return max(lans, rans) + 1;
+}
+
+int diameterOfBinaryTree(TreeNode* root) 
+{
+    dia(root);
+    return ans;
+}
