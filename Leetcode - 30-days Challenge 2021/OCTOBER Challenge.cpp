@@ -269,3 +269,20 @@ int diameterOfBinaryTree(TreeNode* root)
     dia(root);
     return ans;
 }
+
+// DAY 12 (Guess the Number Higher or Lower)=======================================================
+
+int guessNumber(int n) 
+{
+    int l = 1, r = n;
+    while(l <= r)
+    {
+        int m = l + (r - l)/2;
+        int guessed = guess(m);
+        if(guessed == 0)
+            return m;
+        if(guessed == -1) r = m-1;
+        else l = m+1;
+    }
+    return -1;
+}
