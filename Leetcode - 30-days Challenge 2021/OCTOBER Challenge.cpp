@@ -253,18 +253,19 @@ int rangeBitwiseAnd(int left, int right)
 // DAY 11 (Diameter of a Binary Tree)==============================================
 
 int ans = 0;
-int dia(TreeNode* node)
+int dia(TreeNode *node)
 {
-    if(!node) return -1;
-    
+    if (!node)
+        return -1;
+
     int lans = dia(node->left);
     int rans = dia(node->right);
     ans = max(ans, lans + rans + 2);
-    
+
     return max(lans, rans) + 1;
 }
 
-int diameterOfBinaryTree(TreeNode* root) 
+int diameterOfBinaryTree(TreeNode *root)
 {
     dia(root);
     return ans;
@@ -272,37 +273,68 @@ int diameterOfBinaryTree(TreeNode* root)
 
 // DAY 12 (Guess the Number Higher or Lower)=======================================================
 
-int guessNumber(int n) 
+int guessNumber(int n)
 {
     int l = 1, r = n;
-    while(l <= r)
+    while (l <= r)
     {
-        int m = l + (r - l)/2;
+        int m = l + (r - l) / 2;
         int guessed = guess(m);
-        if(guessed == 0)
+        if (guessed == 0)
             return m;
-        if(guessed == -1) r = m-1;
-        else l = m+1;
+        if (guessed == -1)
+            r = m - 1;
+        else
+            l = m + 1;
     }
     return -1;
 }
 
 // DAY 13 (Construct Binary Search Tree From Preorder Travesal)==========================================================
 
-TreeNode* insert(int x, TreeNode* node)
+TreeNode *insert(int x, TreeNode *node)
 {
-    if(!node) return new TreeNode(x);
-    if(x > node->val)
+    if (!node)
+        return new TreeNode(x);
+    if (x > node->val)
         node->right = insert(x, node->right);
-    else node->left = insert(x, node->left);
-    
+    else
+        node->left = insert(x, node->left);
+
     return node;
 }
 
-TreeNode* bstFromPreorder(vector<int>& preorder) 
+TreeNode *bstFromPreorder(vector<int> &preorder)
 {
-    TreeNode* root = nullptr;
-    for(int x : preorder)
+    TreeNode *root = nullptr;
+    for (int x : preorder)
         root = insert(x, root);
     return root;
+}
+
+// DAY 14 ( Perfect Squares)===========================================================================
+
+#define f first
+#define s second
+int numSquares(int n)
+{
+    queue<pair<int, int>> que;
+    que.push({n, 0});
+    while (!que.empty())
+    {
+        auto tp = que.front();
+        que.pop();
+        // cout<<tp.f<<", "<<tp.s<<endl;
+        if (tp.f == 0)
+            return tp.s;
+
+        int x = sqrt(tp.f);
+        for (int i = x; i >= 1; i--)
+        {
+            if (i * i == tp.f)
+                return tp.s + 1;
+            que.push({tp.f - i * i, tp.s + 1});
+        }
+    }
+    return n;
 }
