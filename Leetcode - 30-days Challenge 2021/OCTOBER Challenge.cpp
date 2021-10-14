@@ -286,3 +286,23 @@ int guessNumber(int n)
     }
     return -1;
 }
+
+// DAY 13 (Construct Binary Search Tree From Preorder Travesal)==========================================================
+
+TreeNode* insert(int x, TreeNode* node)
+{
+    if(!node) return new TreeNode(x);
+    if(x > node->val)
+        node->right = insert(x, node->right);
+    else node->left = insert(x, node->left);
+    
+    return node;
+}
+
+TreeNode* bstFromPreorder(vector<int>& preorder) 
+{
+    TreeNode* root = nullptr;
+    for(int x : preorder)
+        root = insert(x, root);
+    return root;
+}
