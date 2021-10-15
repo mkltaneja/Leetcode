@@ -338,3 +338,18 @@ int numSquares(int n)
     }
     return n;
 }
+
+// DAY 15 (Best Time to Buy and Sell Stock with Cooldown)=======================================================
+
+int maxProfit(vector<int>& prices) 
+{
+    int sellp = 0, buyp = INT_MIN, psellp = 0;
+    for(int x : prices)
+    {
+        int tmp = sellp;
+        sellp = max(sellp, buyp + x);
+        buyp = max(buyp, psellp - x);
+        psellp = tmp;
+    }
+    return sellp;
+}
