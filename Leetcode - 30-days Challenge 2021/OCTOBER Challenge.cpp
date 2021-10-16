@@ -341,10 +341,10 @@ int numSquares(int n)
 
 // DAY 15 (Best Time to Buy and Sell Stock with Cooldown)=======================================================
 
-int maxProfit(vector<int>& prices) 
+int maxProfit(vector<int> &prices)
 {
     int sellp = 0, buyp = INT_MIN, psellp = 0;
-    for(int x : prices)
+    for (int x : prices)
     {
         int tmp = sellp;
         sellp = max(sellp, buyp + x);
@@ -352,4 +352,20 @@ int maxProfit(vector<int>& prices)
         psellp = tmp;
     }
     return sellp;
+}
+
+// DAY 16 (Best Time to Buy and Sell Stock 3)------------------------------------------------------------------------------
+
+int maxProfit(vector<int> &prices)
+{
+    int sk1 = 0, sk2 = 0, bk1 = INT_MIN, bk2 = INT_MIN;
+    for (int x : prices)
+    {
+        sk2 = max(sk2, bk2 + x);
+        bk2 = max(bk2, sk1 - x);
+        sk1 = max(sk1, bk1 + x);
+        bk1 = max(bk1, -x);
+    }
+
+    return sk2;
 }
