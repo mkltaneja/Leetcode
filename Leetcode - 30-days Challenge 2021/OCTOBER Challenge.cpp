@@ -369,3 +369,27 @@ int maxProfit(vector<int> &prices)
 
     return sk2;
 }
+
+// ḌAY 17 (Path Sum 3)=======================================================================================
+
+int rootsum(TreeNode *node, int sum)
+{
+    if (!node)
+        return 0;
+
+    int ans = 0;
+    if (sum == node->val)
+        ans++;
+
+    ans += rootsum(node->left, sum - node->val);
+    ans += rootsum(node->right, sum - node->val);
+
+    return ans;
+}
+
+int pathSum(TreeNode *root, int targetSum)
+{
+    if (!root)
+        return 0;
+    return pathSum(root->left, targetSum) + rootsum(root, targetSum) + pathSum(root->right, targetSum);
+}
