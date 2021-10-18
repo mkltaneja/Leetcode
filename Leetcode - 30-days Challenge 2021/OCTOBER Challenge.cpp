@@ -393,3 +393,40 @@ int pathSum(TreeNode *root, int targetSum)
         return 0;
     return pathSum(root->left, targetSum) + rootsum(root, targetSum) + pathSum(root->right, targetSum);
 }
+
+// DAY 18 (Cousins in Binary Tree)====================================================================================
+
+#define f first
+#define s second
+
+bool isCousins(TreeNode *root, int x, int y)
+{
+    queue<pair<TreeNode *, int>> que;
+    que.push({root, -1});
+
+    while (!que.empty())
+    {
+        int sz = que.size();
+        pair<TreeNode *, int> p1 = {nullptr, -1}, p2 = {nullptr, -1};
+        while (sz--)
+        {
+            auto tp = que.front();
+            que.pop();
+            if (tp.f->val == x)
+                p1 = {tp.f, tp.s};
+            if (tp.f->val == y)
+                p2 = {tp.f, tp.s};
+
+            if (tp.f->left)
+                que.push({tp.f->left, tp.f->val});
+            if (tp.f->right)
+                que.push({tp.f->right, tp.f->val});
+        }
+        if (p1.f && p2.f)
+            return p1.s != p2.s;
+        if (p1.f || p2.f)
+            return false;
+    }
+
+    return false;
+}
