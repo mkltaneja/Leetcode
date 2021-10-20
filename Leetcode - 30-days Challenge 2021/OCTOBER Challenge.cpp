@@ -458,3 +458,24 @@ vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2)
 
     return ans;
 }
+
+// DAY 20 (Reverse Words in a String)====================================================================
+
+string reverseWords(string s) 
+{
+    stringstream ss(s);
+    string token;
+    
+    vector<string> ans;
+    while(ss >> token)
+        ans.push_back(token);
+    
+    reverse(ans.begin(), ans.end());
+    
+    string res = "";
+    for(string x : ans)
+        res += x + " ";
+    res.pop_back();
+    
+    return res;
+}
