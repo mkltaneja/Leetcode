@@ -479,3 +479,47 @@ string reverseWords(string s)
     
     return res;
 }
+
+// DAY 21 (Insert Delete GetRandom O(1))=================================================================
+class RandomizedSet {
+public:
+    
+    unordered_map<int,int> mi;
+    vector<int> arr;
+    RandomizedSet() {}
+    
+    bool insert(int val) 
+    {
+        if(mi.count(val)) return false;
+        
+        mi[val] = arr.size();
+        arr.push_back(val);
+        
+        return true;
+    }
+    
+    bool remove(int val) 
+    {
+        if(!mi.count(val)) return false;
+        
+        arr[mi[val]] = arr[arr.size()-1];
+        arr.pop_back();
+        mi[arr[mi[val]]] = mi[val];
+        mi.erase(val);
+        
+        return true;
+    }
+    
+    int getRandom() 
+    {
+        return arr[rand()%arr.size()];
+    }
+};
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet* obj = new RandomizedSet();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
