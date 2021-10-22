@@ -461,58 +461,60 @@ vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2)
 
 // DAY 20 (Reverse Words in a String)====================================================================
 
-string reverseWords(string s) 
+string reverseWords(string s)
 {
     stringstream ss(s);
     string token;
-    
+
     vector<string> ans;
-    while(ss >> token)
+    while (ss >> token)
         ans.push_back(token);
-    
+
     reverse(ans.begin(), ans.end());
-    
+
     string res = "";
-    for(string x : ans)
+    for (string x : ans)
         res += x + " ";
     res.pop_back();
-    
+
     return res;
 }
 
 // DAY 21 (Insert Delete GetRandom O(1))=================================================================
-class RandomizedSet {
+class RandomizedSet
+{
 public:
-    
-    unordered_map<int,int> mi;
+    unordered_map<int, int> mi;
     vector<int> arr;
     RandomizedSet() {}
-    
-    bool insert(int val) 
+
+    bool insert(int val)
     {
-        if(mi.count(val)) return false;
-        
+        if (mi.count(val))
+            return false;
+
         mi[val] = arr.size();
         arr.push_back(val);
-        
+
         return true;
     }
-    
-    bool remove(int val) 
+
+    bool remove(int val)
     {
-        if(!mi.count(val)) return false;
-        
-        arr[mi[val]] = arr[arr.size()-1];
+        if (!mi.count(val))
+            return false;
+
+        arr[mi[val]] = arr[arr.size() - 1];
         arr.pop_back();
         mi[arr[mi[val]]] = mi[val];
         mi.erase(val);
-        
+
         return true;
     }
-    
-    int getRandom() 
+
+    int getRandom()
     {
-        return arr[rand()%arr.size()];
+        return arr[rand() % arr.size()];
     }
 };
 
@@ -523,3 +525,36 @@ public:
  * bool param_2 = obj->remove(val);
  * int param_3 = obj->getRandom();
  */
+
+// DAY 22 (Sort Characters By Frequency)================================================================================
+
+string frequencySort(string s)
+{
+    vector<pair<int, char>> map(62);
+    for (int i = 0; i < 62; i++)
+    {
+        if (i < 26)
+            map[i] = {0, char(i + 'a')};
+        else if (i < 52)
+            map[i] = {0, char(i - 26 + 'A')};
+        else
+            map[i] = {0, char(i - 52 + '0')};
+    }
+
+    for (char c : s)
+    {
+        if (c >= 'a' && c <= 'z')
+            map[c - 'a'].first++;
+        else if (c >= 'A' && c <= 'Z')
+            map[26 + c - 'A'].first++;
+        else
+            map[52 + c - '0'].first++;
+    }
+    sort(map.rbegin(), map.rend());
+
+    string ans = "";
+    for (int i = 0; i < 62; i++)
+        while (map[i].first--)
+            ans += map[i].second;
+    return ans;
+}
