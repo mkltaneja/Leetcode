@@ -561,17 +561,60 @@ string frequencySort(string s)
 
 // DAY 23 (Find Minimum in Rotated Sorted Array)========================================================================
 
-int findMin(vector<int>& nums) 
+int findMin(vector<int> &nums)
 {
-    int l = 0, r = nums.size()-1;
-    while(l < r)
+    int l = 0, r = nums.size() - 1;
+    while (l < r)
     {
-        int m = (l + r)/2;
-        if(nums[m] > nums[r])
+        int m = (l + r) / 2;
+        if (nums[m] > nums[r])
             l = m + 1;
-        else if(nums[m] < nums[l])
+        else if (nums[m] < nums[l])
             r = m;
-        else r--;
+        else
+            r--;
     }
     return nums[l];
+}
+
+// DAY 24 (Count Complete Tree Nodes)==============================================
+
+int lefth(TreeNode *node)
+{
+    int cnt = 0;
+    while (node)
+    {
+        cnt++;
+        node = node->left;
+    }
+
+    return cnt;
+}
+int righth(TreeNode *node)
+{
+    int cnt = 0;
+    while (node)
+    {
+        cnt++;
+        node = node->right;
+    }
+
+    return cnt;
+}
+
+int countNodes(TreeNode *root)
+{
+    if (!root)
+        return 0;
+
+    int lh = lefth(root);
+    int rh = righth(root);
+
+    if (lh == rh)
+        return (1 << lh) - 1;
+
+    int l = countNodes(root->left);
+    int r = countNodes(root->right);
+
+    return l + r + 1;
 }
