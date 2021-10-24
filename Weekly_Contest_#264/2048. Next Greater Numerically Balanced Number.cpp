@@ -37,3 +37,27 @@ int nextBeautifulNumber(int n)
         return arr2[cnt][y];
     return min(arr2[cnt - 1][x], arr2[cnt][y]);
 }
+
+// APPROACH 2
+
+bool isgood(int n)
+{
+    int cnt[10] = {0};
+    while (n)
+    {
+        cnt[n % 10]++;
+        n /= 10;
+    }
+    for (int i = 0; i < 10; i++)
+        if (cnt[i] && cnt[i] != i)
+            return false;
+    return true;
+}
+
+int nextBeautifulNumber(int n)
+{
+    while (!isgood(++n))
+        ;
+
+    return n;
+}
