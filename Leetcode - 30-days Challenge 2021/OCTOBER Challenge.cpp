@@ -620,46 +620,47 @@ int countNodes(TreeNode *root)
 }
 
 // DAY 25 (Min Stack)==========================================================================
-class MinStack {
+class MinStack
+{
 public:
-    
     stack<long> st;
     long mn;
-    MinStack() 
+    MinStack()
     {
         this->mn = INT_MAX;
     }
-    
+
     void push(int val)
     {
-        if(st.empty())
+        if (st.empty())
         {
             st.push(val);
             mn = val;
         }
-        else if(val < mn)
+        else if (val < mn)
         {
             st.push(val - mn + val);
             mn = val;
         }
-        else st.push(val);
+        else
+            st.push(val);
     }
-    
-    void pop() 
+
+    void pop()
     {
-        if(st.top() < mn)
-            mn = mn - st.top() + mn; 
+        if (st.top() < mn)
+            mn = mn - st.top() + mn;
         st.pop();
     }
-    
-    int top() 
+
+    int top()
     {
-        if(st.top() < mn)
+        if (st.top() < mn)
             return mn;
         return st.top();
     }
-    
-    int getMin() 
+
+    int getMin()
     {
         return mn;
     }
@@ -673,3 +674,19 @@ public:
  * int param_3 = obj->top();
  * int param_4 = obj->getMin();
  */
+
+// DAY 26 (Invert Binary Tree)========================================================================
+
+TreeNode *invertTree(TreeNode *root)
+{
+    if (!root)
+        return root;
+
+    TreeNode *l = invertTree(root->left);
+    TreeNode *r = invertTree(root->right);
+
+    root->left = r;
+    root->right = l;
+
+    return root;
+}
