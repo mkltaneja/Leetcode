@@ -706,3 +706,43 @@ void sortColors(vector<int> &nums)
             i++;
     }
 }
+
+// DAY 28 (3Sum)=====================================================================================
+
+vector<int> twoSum(int l, int r, vector<int> &nums, int tar, vector<vector<int>> &res)
+{
+    while (l < r)
+    {
+        int sum = nums[l] + nums[r];
+        if (sum == tar)
+        {
+            int x = nums[l], y = nums[r];
+            res.push_back({-tar, nums[l], nums[r]});
+            while (l < r && nums[l] == x)
+                l++;
+            while (l < r && nums[r] == y)
+                r--;
+        }
+        else if (sum < tar)
+            l++;
+        else
+            r--;
+    }
+    return {-1, -1};
+}
+
+vector<vector<int>> threeSum(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<vector<int>> ans;
+    sort(nums.begin(), nums.end());
+
+    for (int i = 0; i < n; i++)
+    {
+        twoSum(i + 1, n - 1, nums, -nums[i], ans);
+        while (i + 1 < n && nums[i + 1] == nums[i])
+            i++;
+    }
+
+    return ans;
+}
