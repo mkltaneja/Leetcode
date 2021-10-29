@@ -746,3 +746,54 @@ vector<vector<int>> threeSum(vector<int> &nums)
 
     return ans;
 }
+
+// DAY 29 (Rotten Oranges)======================================================================
+
+int orangesRotting(vector<vector<int>>& grid) 
+{
+    int n = grid.size(), m = grid[0].size();
+    queue<int> que;
+    int rot = 0;
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(grid[i][j] == 2)
+                que.push(i*m+j);
+            else if(grid[i][j] == 1) rot++;
+        }
+    }
+    
+    int dir[4][2] = {{1,0},{0,1},{-1,0},{0,-1}};
+    
+    int time = 0;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        bool areRot = false;
+        while(sz--)
+        {
+            int x = que.front();
+            que.pop();
+            
+            int i = x / m;
+            int j = x % m;
+            
+            for(int d = 0; d < 4; d++)
+            {
+                int r = i + dir[d][0];
+                int c = j + dir[d][1];
+                if(r < n && c < m && r != -1 && c != -1 && grid[r][c] == 1)
+                {
+                    grid[r][c] = 2;
+                    areRot = true;
+                    rot--;
+                    que.push(r*m + c);
+                }
+            }
+        }
+        time += areRot;
+    }
+    
+    return rot? -1 : time;
+}
