@@ -749,51 +749,96 @@ vector<vector<int>> threeSum(vector<int> &nums)
 
 // DAY 29 (Rotten Oranges)======================================================================
 
-int orangesRotting(vector<vector<int>>& grid) 
+int orangesRotting(vector<vector<int>> &grid)
 {
     int n = grid.size(), m = grid[0].size();
     queue<int> que;
     int rot = 0;
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        for(int j = 0; j < m; j++)
+        for (int j = 0; j < m; j++)
         {
-            if(grid[i][j] == 2)
-                que.push(i*m+j);
-            else if(grid[i][j] == 1) rot++;
+            if (grid[i][j] == 2)
+                que.push(i * m + j);
+            else if (grid[i][j] == 1)
+                rot++;
         }
     }
-    
-    int dir[4][2] = {{1,0},{0,1},{-1,0},{0,-1}};
-    
+
+    int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
     int time = 0;
-    while(!que.empty())
+    while (!que.empty())
     {
         int sz = que.size();
         bool areRot = false;
-        while(sz--)
+        while (sz--)
         {
             int x = que.front();
             que.pop();
-            
+
             int i = x / m;
             int j = x % m;
-            
-            for(int d = 0; d < 4; d++)
+
+            for (int d = 0; d < 4; d++)
             {
                 int r = i + dir[d][0];
                 int c = j + dir[d][1];
-                if(r < n && c < m && r != -1 && c != -1 && grid[r][c] == 1)
+                if (r < n && c < m && r != -1 && c != -1 && grid[r][c] == 1)
                 {
                     grid[r][c] = 2;
                     areRot = true;
                     rot--;
-                    que.push(r*m + c);
+                    que.push(r * m + c);
                 }
             }
         }
         time += areRot;
     }
-    
-    return rot? -1 : time;
+
+    return rot ? -1 : time;
+}
+
+// DAY 31 (Flatten a Multilevel Doubly Linked List)=====================================================================
+
+#define h first
+#define t second
+
+pair<Node *, Node *> flatten_(Node *head)
+{
+    Node *itr = head, *tail = head;
+    while (itr)
+    {
+        pair<Node *, Node *> child = {nullptr, nullptr};
+        if (itr->child)
+            child = flatten_(itr->child);
+
+        Node *nxt = itr->next;
+        if (child.h != nullptr)
+        {
+            itr->next = nullptr;
+            itr->next = child.h;
+            child.h->prev = itr;
+
+            child.t->next = nxt;
+            if (nxt)
+            {
+                nxt->prev = nullptr;
+                nxt->prev = child.t;
+            }
+            itr->child = nullptr;
+
+            tail = child.t;
+        }
+        else
+            tail = itr;
+        itr = nxt;
+    }
+    return {head, tail};
+}
+
+Node *flatten(Node *head)
+{
+    Node *node = flatten_(head).h;
+    return node;
 }
