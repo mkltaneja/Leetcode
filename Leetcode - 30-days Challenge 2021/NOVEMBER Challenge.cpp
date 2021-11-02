@@ -1,5 +1,5 @@
 
-// DAY 1 (130. Surrounded Regions)
+// DAY 1 (130. Surrounded Regions)========================================================================
 
 void dfs(int i, int j, int n, int m, vector<vector<char>> &arr)
 {
@@ -42,4 +42,43 @@ void solve(vector<vector<char>> &board)
                 board[i][j] = 'O';
         }
     }
+}
+
+// DAY 2 ()=============================================================================
+
+int dfs(int i, int j, int empty, int n, int m, vector<vector<int>> &arr)
+{
+    if(i == n || j == m || i == -1 || j == -1 || arr[i][j] == -1)
+        return 0;
+    if(arr[i][j] == 2)
+    {
+        if(empty == 0)
+            return 1;
+        return 0;
+    }
+    
+    arr[i][j] = -1;
+    int ans = dfs(i+1, j, empty-1, n, m, arr) +
+            dfs(i, j+1, empty-1, n, m, arr) +
+            dfs(i-1, j, empty-1, n, m, arr) +
+            dfs(i, j-1, empty-1, n, m, arr);
+    arr[i][j] = 0;
+    
+    return ans;
+}
+
+int uniquePathsIII(vector<vector<int>>& grid)
+{
+    int n = grid.size(), m = grid[0].size();
+    int si, sj, empty = 0;
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(grid[i][j] == 1)
+                si = i, sj = j;
+            else if(grid[i][j] == 0) empty++;
+        }
+    }
+    return dfs(si, sj, empty+1, n, m, grid);
 }
