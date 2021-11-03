@@ -44,41 +44,64 @@ void solve(vector<vector<char>> &board)
     }
 }
 
-// DAY 2 ()=============================================================================
+// DAY 2 (980. Unique Paths III)=============================================================================
 
 int dfs(int i, int j, int empty, int n, int m, vector<vector<int>> &arr)
 {
-    if(i == n || j == m || i == -1 || j == -1 || arr[i][j] == -1)
+    if (i == n || j == m || i == -1 || j == -1 || arr[i][j] == -1)
         return 0;
-    if(arr[i][j] == 2)
+    if (arr[i][j] == 2)
     {
-        if(empty == 0)
+        if (empty == 0)
             return 1;
         return 0;
     }
-    
+
     arr[i][j] = -1;
-    int ans = dfs(i+1, j, empty-1, n, m, arr) +
-            dfs(i, j+1, empty-1, n, m, arr) +
-            dfs(i-1, j, empty-1, n, m, arr) +
-            dfs(i, j-1, empty-1, n, m, arr);
+    int ans = dfs(i + 1, j, empty - 1, n, m, arr) +
+              dfs(i, j + 1, empty - 1, n, m, arr) +
+              dfs(i - 1, j, empty - 1, n, m, arr) +
+              dfs(i, j - 1, empty - 1, n, m, arr);
     arr[i][j] = 0;
-    
+
     return ans;
 }
 
-int uniquePathsIII(vector<vector<int>>& grid)
+int uniquePathsIII(vector<vector<int>> &grid)
 {
     int n = grid.size(), m = grid[0].size();
     int si, sj, empty = 0;
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        for(int j = 0; j < m; j++)
+        for (int j = 0; j < m; j++)
         {
-            if(grid[i][j] == 1)
+            if (grid[i][j] == 1)
                 si = i, sj = j;
-            else if(grid[i][j] == 0) empty++;
+            else if (grid[i][j] == 0)
+                empty++;
         }
     }
-    return dfs(si, sj, empty+1, n, m, grid);
+    return dfs(si, sj, empty + 1, n, m, grid);
+}
+
+// DAY 3 (129. Sum Root to Leaf Numbers)========================================================================================
+
+int ans = 0;
+void dfs(TreeNode *node, int x)
+{
+    if (!node)
+        return;
+    if (!node->left && !node->right)
+    {
+        ans += x * 10 + node->val;
+        return;
+    }
+    dfs(node->left, x * 10 + node->val);
+    dfs(node->right, x * 10 + node->val);
+}
+
+int sumNumbers(TreeNode *root)
+{
+    dfs(root, 0);
+    return ans;
 }
