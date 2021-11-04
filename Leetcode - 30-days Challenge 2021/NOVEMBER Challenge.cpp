@@ -105,3 +105,14 @@ int sumNumbers(TreeNode *root)
     dfs(root, 0);
     return ans;
 }
+
+// DAY 4 (404. Sum of Left Leaves)=================================================================================
+
+int sumOfLeftLeaves(TreeNode *root)
+{
+    if (!root)
+        return 0;
+    int tot = sumOfLeftLeaves(root->left) + sumOfLeftLeaves(root->right);
+
+    return tot + ((root->left && !root->left->left && !root->left->right) ? root->left->val : 0);
+}
