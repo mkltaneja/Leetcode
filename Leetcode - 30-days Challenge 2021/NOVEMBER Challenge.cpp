@@ -134,3 +134,22 @@ int arrangeCoins(int n)
     }
     return l - 1;
 }
+
+// DAY 6 (260. Single Number III)===================================================================================
+
+vector<int> singleNumber(vector<int> &nums)
+{
+    long comb = 0;
+    for (int x : nums)
+        comb ^= x;
+    long rsb = comb & -comb;
+    int a = 0, b = 0;
+    for (int x : nums)
+    {
+        if (x & rsb)
+            a ^= x;
+        else
+            b ^= x;
+    }
+    return {a, b};
+}
