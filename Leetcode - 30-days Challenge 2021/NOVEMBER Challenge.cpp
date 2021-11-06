@@ -116,3 +116,21 @@ int sumOfLeftLeaves(TreeNode *root)
 
     return tot + ((root->left && !root->left->left && !root->left->right) ? root->left->val : 0);
 }
+
+// DAY 5 (441. Arranging Coins)=================================================================================================
+
+int arrangeCoins(int n)
+{
+    int l = 1, r = INT_MAX;
+    while (l < r)
+    {
+        long m = l + (r - l) / 2;
+        if (m * (m + 1) / 2 == n)
+            return m;
+        if (m * (m + 1) / 2 < n)
+            l = m + 1;
+        else
+            r = m;
+    }
+    return l - 1;
+}
