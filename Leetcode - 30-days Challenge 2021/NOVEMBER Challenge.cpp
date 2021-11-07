@@ -153,3 +153,32 @@ vector<int> singleNumber(vector<int> &nums)
     }
     return {a, b};
 }
+
+// DAY 7 (43. Multiply Strings)=====================================================================
+
+string multiply(string num1, string num2)
+{
+    int n = num1.size(), m = num2.size();
+    vector<int> prod(n + m);
+    for (int i = n - 1; i >= 0; i--)
+    {
+        for (int j = m - 1; j >= 0; j--)
+        {
+            int x = i + j;
+            int y = i + j + 1;
+            int sum = (num1[i] - '0') * (num2[j] - '0') + prod[y];
+            prod[y] = sum % 10;
+            prod[x] += sum / 10;
+        }
+    }
+
+    string ans = "";
+    for (int i = 0; i < n + m; i++)
+    {
+        if (prod[i] == 0 && ans.empty())
+            continue;
+        ans += prod[i] + '0';
+    }
+
+    return ans.empty() ? "0" : ans;
+}
