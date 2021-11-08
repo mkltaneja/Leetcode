@@ -182,3 +182,22 @@ string multiply(string num1, string num2)
 
     return ans.empty() ? "0" : ans;
 }
+
+// DAY 8 (Unique Binary Search Trees)=============================================================================
+
+// METHOD 1 (Memoized)
+
+int dp[20];
+int numTrees(int n)
+{
+    if (n <= 2)
+        return n ? n : 1;
+    if (dp[n])
+        return dp[n];
+
+    int ans = 0;
+    for (int i = 1; i <= n; i++)
+        ans += numTrees(i - 1) * numTrees(n - i);
+
+    return dp[n] = ans;
+}
