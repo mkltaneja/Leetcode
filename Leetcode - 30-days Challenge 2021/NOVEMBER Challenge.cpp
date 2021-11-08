@@ -201,3 +201,17 @@ int numTrees(int n)
 
     return dp[n] = ans;
 }
+
+// METHOD 2 (Tabulized)
+
+int numTrees(int n)
+{
+    vector<int> ans(n + 1);
+    ans[0] = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= i; j++)
+            ans[i] += ans[j - 1] * ans[i - j];
+    }
+    return ans[n];
+}
