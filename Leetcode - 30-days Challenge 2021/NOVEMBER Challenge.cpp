@@ -215,3 +215,39 @@ int numTrees(int n)
     }
     return ans[n];
 }
+
+// DAY 9 (1178. Number of Valid Words for Each Puzzle)=====================================================================================
+
+int toBit(string s)
+{
+    int mask = 0;
+    for (char c : s)
+        mask |= 1 << (c - 'a');
+
+    return mask;
+}
+
+vector<int> findNumOfValidWords(vector<string> &words, vector<string> &puzzles)
+{
+    int n = puzzles.size();
+    unordered_map<int, int> m;
+    for (string s : words)
+        m[toBit(s)]++;
+
+    vector<int> ans(n);
+    for (int i = 0; i < n; i++)
+    {
+        int first = (1 << (puzzles[i][0] - 'a'));
+        int tot = m[first];
+
+        int mask = toBit(puzzles[i].substr(1));
+        int submask = mask;
+        while (submask)
+        {
+            tot += m[submask | first];
+            submask = (submask - 1) & mask;
+        }
+        ans[i] = tot;
+    }
+    return ans;
+}
