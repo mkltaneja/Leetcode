@@ -251,3 +251,18 @@ vector<int> findNumOfValidWords(vector<string> &words, vector<string> &puzzles)
     }
     return ans;
 }
+
+// DAY 10 (122. Best Time to Buy and Sell Stock II)======================================================================
+
+int maxProfit(vector<int> &prices)
+{
+    int bprof = INT_MIN, sprof = 0;
+    for (int x : prices)
+    {
+        int pbprof = bprof;
+        bprof = max(bprof, sprof - x);
+        sprof = max(sprof, pbprof + x);
+    }
+
+    return sprof;
+}
