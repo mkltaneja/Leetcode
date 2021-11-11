@@ -266,3 +266,16 @@ int maxProfit(vector<int> &prices)
 
     return sprof;
 }
+
+// DAY 11 (1413. Minimum Value to Get Positive Step by Step Sum)=========================================================
+
+int minStartValue(vector<int>& nums) 
+{
+    int sum = 0, mn = 100;
+    for(int x : nums)
+    {
+        sum += x;
+        mn = min(mn, sum);
+    }
+    return mn < 1? -mn + 1 : 1;
+}
