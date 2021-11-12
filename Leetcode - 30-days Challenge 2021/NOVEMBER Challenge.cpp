@@ -269,13 +269,37 @@ int maxProfit(vector<int> &prices)
 
 // DAY 11 (1413. Minimum Value to Get Positive Step by Step Sum)=========================================================
 
-int minStartValue(vector<int>& nums) 
+int minStartValue(vector<int> &nums)
 {
     int sum = 0, mn = 100;
-    for(int x : nums)
+    for (int x : nums)
     {
         sum += x;
         mn = min(mn, sum);
     }
-    return mn < 1? -mn + 1 : 1;
+    return mn < 1 ? -mn + 1 : 1;
+}
+
+// DAY 12 (203. Remove Linked List Elements)===============================================================================
+
+ListNode *removeElements(ListNode *head, int val)
+{
+    ListNode *prev = nullptr, *curr = head, *next = curr;
+    while (curr)
+    {
+        next = curr->next;
+        if (curr->val == val)
+        {
+            if (prev)
+                prev->next = curr->next;
+            else
+                head = head->next;
+            curr = nullptr;
+        }
+        else
+            prev = curr;
+        curr = next;
+    }
+
+    return head;
 }
