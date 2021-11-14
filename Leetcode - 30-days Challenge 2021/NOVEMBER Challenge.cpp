@@ -306,25 +306,72 @@ ListNode *removeElements(ListNode *head, int val)
 
 // DAY 13 (739. Daily Temperatures)============================================================================
 
-vector<int> dailyTemperatures(vector<int>& temperatures) 
+vector<int> dailyTemperatures(vector<int> &temperatures)
 {
     int n = temperatures.size();
     vector<int> ans(n);
     stack<int> st;
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        while(!st.empty() && temperatures[i] > temperatures[st.top()])
+        while (!st.empty() && temperatures[i] > temperatures[st.top()])
         {
             ans[st.top()] = i - st.top();
             st.pop();
         }
         st.push(i);
     }
-    while(!st.empty())
+    while (!st.empty())
     {
         ans[st.top()] = 0;
         st.pop();
     }
-    
+
     return ans;
 }
+
+// DAY 14 (1286. Iterator for Combination)============================================================================
+class CombinationIterator
+{
+public:
+    string s;
+    int n;
+
+    queue<string> ans;
+    void combs(int i, string x)
+    {
+        if (x.size() == n)
+        {
+            ans.push(x);
+            return;
+        }
+
+        for (int j = i; j < s.size(); j++)
+            combs(j + 1, x + s[j]);
+    }
+
+    CombinationIterator(string characters, int combinationLength)
+    {
+        this->s = characters;
+        this->n = combinationLength;
+        combs(0, "");
+    }
+
+    string next()
+    {
+        string res = ans.front();
+        ans.pop();
+        return res;
+    }
+
+    bool hasNext()
+    {
+        return !ans.empty();
+    }
+};
+
+/**
+ * Your CombinationIterator object will be instantiated and called as such:
+ * CombinationIterator* obj = new CombinationIterator(characters, combinationLength);
+ * string param_1 = obj->next();
+ * bool param_2 = obj->hasNext();
+ */
