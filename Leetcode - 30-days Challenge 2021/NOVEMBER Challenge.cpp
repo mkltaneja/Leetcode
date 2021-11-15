@@ -375,3 +375,35 @@ public:
  * string param_1 = obj->next();
  * bool param_2 = obj->hasNext();
  */
+
+// DAY 15 (368. Largest Divisible Subset)================================================================================
+
+vector<int> largestDivisibleSubset(vector<int>& nums) 
+{
+    int n = nums.size();
+    sort(nums.begin(), nums.end());
+    vector<int> ans, dp(n, 1), nxti(n, -1);
+    int mxi = n-1;
+    for(int i = n-2; i >= 0; i--)
+    {
+        for(int j = i+1; j < n; j++)
+        {
+            if(nums[j] % nums[i] == 0 && dp[j] + 1 > dp[i])
+            {
+                dp[i] = dp[j] + 1;
+                nxti[i] = j;
+            }
+        }
+        if(dp[i] > dp[mxi])
+            mxi = i;
+    }
+    
+    int i = mxi;
+    while(i != -1)
+    {
+        ans.push_back(nums[i]);
+        i = nxti[i];
+    }
+    
+    return ans;
+}
