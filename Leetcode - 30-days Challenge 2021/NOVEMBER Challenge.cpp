@@ -378,32 +378,58 @@ public:
 
 // DAY 15 (368. Largest Divisible Subset)================================================================================
 
-vector<int> largestDivisibleSubset(vector<int>& nums) 
+vector<int> largestDivisibleSubset(vector<int> &nums)
 {
     int n = nums.size();
     sort(nums.begin(), nums.end());
     vector<int> ans, dp(n, 1), nxti(n, -1);
-    int mxi = n-1;
-    for(int i = n-2; i >= 0; i--)
+    int mxi = n - 1;
+    for (int i = n - 2; i >= 0; i--)
     {
-        for(int j = i+1; j < n; j++)
+        for (int j = i + 1; j < n; j++)
         {
-            if(nums[j] % nums[i] == 0 && dp[j] + 1 > dp[i])
+            if (nums[j] % nums[i] == 0 && dp[j] + 1 > dp[i])
             {
                 dp[i] = dp[j] + 1;
                 nxti[i] = j;
             }
         }
-        if(dp[i] > dp[mxi])
+        if (dp[i] > dp[mxi])
             mxi = i;
     }
-    
+
     int i = mxi;
-    while(i != -1)
+    while (i != -1)
     {
         ans.push_back(nums[i]);
         i = nxti[i];
     }
-    
+
     return ans;
+}
+
+// DAY 16 (668. Kth Smallest Number in Multiplication Table)==================================================================
+
+int mid_lb_count(int x, int n, int m)
+{
+    int count = 0;
+    for (int i = 1; i <= n; i++)
+        count += min(x / i, m);
+    return count;
+}
+
+int findKthNumber(int n, int m, int k)
+{
+    int si = 1, ei = n * m;
+
+    while (si < ei)
+    {
+        int mid = si + ((ei - si) >> 1);
+        if (mid_lb_count(mid, n, m) >= k)
+            ei = mid;
+        else
+            si = mid + 1;
+    }
+
+    return si;
 }
