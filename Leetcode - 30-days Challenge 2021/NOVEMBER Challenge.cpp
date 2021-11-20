@@ -436,53 +436,84 @@ int findKthNumber(int n, int m, int k)
 
 // DAY 17 (62. Unique Paths)=================================================================================
 
-int uniquePaths(int n, int m) 
+int uniquePaths(int n, int m)
 {
     vector<vector<int>> paths(n, vector<int>(m, 0));
-    paths[n-1][m-1] = 1;
-    
-    for(int i = n-1; i >= 0; i--)
+    paths[n - 1][m - 1] = 1;
+
+    for (int i = n - 1; i >= 0; i--)
     {
-        for(int j = m-1; j >= 0; j--)
+        for (int j = m - 1; j >= 0; j--)
         {
-            if(i == n-1 && j == m-1)
+            if (i == n - 1 && j == m - 1)
                 continue;
-            int dans = (i == n-1)? 0 : paths[i+1][j];
-            int rans = (j == m-1)? 0 : paths[i][j+1];
-            
+            int dans = (i == n - 1) ? 0 : paths[i + 1][j];
+            int rans = (j == m - 1) ? 0 : paths[i][j + 1];
+
             paths[i][j] = dans + rans;
         }
     }
-    
+
     return paths[0][0];
 }
 
 // DAY 18 (448. Find All Numbers Disappeared in an Array)================================================================
 
-vector<int> findDisappearedNumbers(vector<int>& nums) 
+vector<int> findDisappearedNumbers(vector<int> &nums)
 {
     vector<int> ans;
-    for(int &x : nums)
-        nums[abs(x)-1] = -1*abs(nums[abs(x)-1]);
-    
-    for(int i = 0; i < nums.size(); i++)
-        if(nums[i] > 0)
-            ans.push_back(i+1);
-    
+    for (int &x : nums)
+        nums[abs(x) - 1] = -1 * abs(nums[abs(x) - 1]);
+
+    for (int i = 0; i < nums.size(); i++)
+        if (nums[i] > 0)
+            ans.push_back(i + 1);
+
     return ans;
 }
 
 // DAY 19 (461. Hamming Distance)==============================================================================
 
-int hammingDistance(int x, int y) 
+int hammingDistance(int x, int y)
 {
     int ans = 0;
-    while(x || y)
+    while (x || y)
     {
         ans += (x ^ y) & 1;
         x >>= 1;
         y >>= 1;
     }
-    
+
     return ans;
+}
+
+// DAY 20 (540. Single Element in a Sorted Array)==================================================================
+
+int singleNonDuplicate(vector<int> &nums)
+{
+    int n = nums.size();
+    int si = 0, ei = n - 1;
+
+    while (si < ei)
+    {
+        int m = si + (ei - si) / 2;
+        if ((m == 0 || nums[m] != nums[m - 1]) && (m + 1 == n || nums[m] != nums[m + 1]))
+            return nums[m];
+        if (m && nums[m] == nums[m - 1])
+        {
+            if (m & 1)
+                si = m + 1;
+            else
+                ei = m - 1;
+        }
+        else if (m + 1 < n && nums[m] == nums[m + 1])
+        {
+            if (m & 1)
+                ei = m - 1;
+            else
+                si = m + 1;
+        }
+    }
+
+    return nums[si];
 }
