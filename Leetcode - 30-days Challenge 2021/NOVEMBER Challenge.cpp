@@ -471,3 +471,18 @@ vector<int> findDisappearedNumbers(vector<int>& nums)
     
     return ans;
 }
+
+// DAY 19 (461. Hamming Distance)==============================================================================
+
+int hammingDistance(int x, int y) 
+{
+    int ans = 0;
+    while(x || y)
+    {
+        ans += (x ^ y) & 1;
+        x >>= 1;
+        y >>= 1;
+    }
+    
+    return ans;
+}
