@@ -517,3 +517,32 @@ int singleNonDuplicate(vector<int> &nums)
 
     return nums[si];
 }
+
+// DAY 21 (106. Construct Binary Tree from Inorder and Postorder Traversal)==============================================================
+
+TreeNode *buildinpost(int ii, int ij, int pi, int pj, unordered_map<int, int> &mi, vector<int> &post)
+{
+    if (ii > ij || pi > pj)
+        return nullptr;
+    if (pi == pj)
+        return new TreeNode(post[pi]);
+    int x = mi[post[pj]];
+
+    TreeNode *node = new TreeNode(post[pj]);
+
+    int cnt = ij - x;
+
+    node->left = buildinpost(ii, x - 1, pi, pj - cnt - 1, mi, post);
+    node->right = buildinpost(x + 1, ij, pi - cnt, pj - 1, mi, post);
+
+    return node;
+}
+
+TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder)
+{
+    int n = inorder.size();
+    unordered_map<int, int> mi;
+    for (int i = 0; i < n; i++)
+        mi[inorder[i]] = i;
+    return buildinpost(0, n - 1, 0, n - 1, mi, postorder);
+}
