@@ -546,3 +546,36 @@ TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder)
         mi[inorder[i]] = i;
     return buildinpost(0, n - 1, 0, n - 1, mi, postorder);
 }
+
+// DAY 22 (450. Delete Node in a BST)==========================================================================
+
+TreeNode *deleteMe(TreeNode *node)
+{
+    if (!node->left && !node->right)
+        return nullptr;
+
+    if (!node->left || !node->right)
+        return node->left ? node->left : node->right;
+
+    TreeNode *l = node->left, *lr = l;
+    while (lr->right)
+        lr = lr->right;
+    lr->right = node->right;
+    delete node;
+
+    return l;
+}
+
+TreeNode *deleteNode(TreeNode *root, int key)
+{
+    if (!root)
+        return nullptr;
+    if (root->val > key)
+        root->left = deleteNode(root->left, key);
+    else if (root->val < key)
+        root->right = deleteNode(root->right, key);
+    else
+        return root = deleteMe(root);
+
+    return root;
+}
