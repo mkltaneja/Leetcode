@@ -579,3 +579,48 @@ TreeNode *deleteNode(TreeNode *root, int key)
 
     return root;
 }
+
+// DAY 24 (986. Interval List Intersections)============================================================================
+
+vector<vector<int>> intervalIntersection(vector<vector<int>> &a, vector<vector<int>> &b)
+{
+    int n = a.size(), m = b.size();
+    vector<vector<int>> ans;
+    int lend = 0;
+    int i = 0, j = 0;
+    while (i < n && j < m)
+    {
+        if (a[i][0] <= b[j][1] && a[i][0] >= b[j][0])
+        {
+            if (a[i][1] > b[j][1])
+            {
+                lend = a[i][1];
+                ans.push_back({a[i][0], b[j++][1]});
+            }
+            else
+            {
+                lend = b[j][1];
+                ans.push_back({a[i][0], a[i++][1]});
+            }
+        }
+        else if (b[j][0] <= a[i][1] && b[j][0] >= a[i][0])
+        {
+            if (a[i][1] > b[j][1])
+            {
+                lend = a[i][1];
+                ans.push_back({b[j][0], b[j++][1]});
+            }
+            else
+            {
+                lend = b[j][1];
+                ans.push_back({b[j][0], a[i++][1]});
+            }
+        }
+        else if (a[i][1] < b[j][0])
+            i++;
+        else
+            j++;
+    }
+
+    return ans;
+}
