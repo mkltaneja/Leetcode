@@ -624,3 +624,17 @@ vector<vector<int>> intervalIntersection(vector<vector<int>> &a, vector<vector<i
 
     return ans;
 }
+
+// DAY 25 (53. Maximum Subarray)===================================================================
+
+int maxSubArray(vector<int> &nums)
+{
+    int currsum = 0, maxsum = INT_MIN;
+    for (int x : nums)
+    {
+        currsum += x;
+        maxsum = max(maxsum, currsum);
+        currsum = max(currsum, 0);
+    }
+    return maxsum;
+}
