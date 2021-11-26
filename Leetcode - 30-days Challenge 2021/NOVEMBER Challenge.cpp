@@ -638,3 +638,21 @@ int maxSubArray(vector<int> &nums)
     }
     return maxsum;
 }
+
+// DAY 26 (35. Search Insert Position)===================================================================
+
+int searchInsert(vector<int> &nums, int target)
+{
+    int si = 0, ei = nums.size() - 1;
+    while (si <= ei)
+    {
+        int m = si + (ei - si) / 2;
+        if (nums[m] == target)
+            return m;
+        if (nums[m] < target)
+            si = m + 1;
+        else
+            ei = m - 1;
+    }
+    return si;
+}
