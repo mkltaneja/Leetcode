@@ -580,6 +580,55 @@ TreeNode *deleteNode(TreeNode *root, int key)
     return root;
 }
 
+// DAY 23 (952. Largest Component Size by Common Factor)==========================================================================
+
+vector<int> par;
+unordered_map<int, int> psize;
+int maxsize = 0;
+
+int findpar(int x)
+{
+    if (par[x] == x)
+        return x;
+    return par[x] = findpar(par[x]);
+}
+
+void merge(int x, int y)
+{
+    int px = findpar(x);
+    int py = findpar(y);
+    if (px != py)
+        par[py] = px;
+}
+
+void add_factors(int n)
+{
+    for (int i = 2; i * i <= n; i++)
+    {
+        if (n % i == 0)
+        {
+            merge(i, n);
+            merge(i, n / i);
+        }
+    }
+}
+
+int largestComponentSize(vector<int> &nums)
+{
+    par.resize(100001);
+    for (int i = 2; i <= 100000; i++)
+        par[i] = i;
+    for (int x : nums)
+        add_factors(x);
+
+    for (int x : nums)
+    {
+        int p = findpar(x);
+        maxsize = max(maxsize, ++psize[p]);
+    }
+    return maxsize;
+}
+
 // DAY 24 (986. Interval List Intersections)============================================================================
 
 vector<vector<int>> intervalIntersection(vector<vector<int>> &a, vector<vector<int>> &b)
@@ -659,21 +708,24 @@ int searchInsert(vector<int> &nums, int target)
 
 // DAY 27 (238. Product of Array Except Self)================================================================================
 
-vector<int> productExceptSelf(vector<int>& nums) 
+vector<int> productExceptSelf(vector<int> &nums)
 {
     int count0 = 0, totprod = 1;
-    for(int x : nums)
+    for (int x : nums)
     {
-        if(x == 0) count0++;
-        totprod *= x? x : 1;
+        if (x == 0)
+            count0++;
+        totprod *= x ? x : 1;
     }
-    
+
     vector<int> ans(nums.size());
-    for(int i = 0; i < nums.size(); i++)
+    for (int i = 0; i < nums.size(); i++)
     {
-        if(nums[i]) ans[i] = count0? 0 : totprod/nums[i];
-        else ans[i] = count0 > 1? 0 : totprod;
+        if (nums[i])
+            ans[i] = count0 ? 0 : totprod / nums[i];
+        else
+            ans[i] = count0 > 1 ? 0 : totprod;
     }
-    
+
     return ans;
 }
