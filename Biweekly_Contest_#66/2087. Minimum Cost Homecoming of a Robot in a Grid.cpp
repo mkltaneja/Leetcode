@@ -1,5 +1,5 @@
 
-// APPROACH 1 (Using Dijikstra) 
+// APPROACH 1 (Using Dijikstra)
 // TLE
 
 #define f first
@@ -45,4 +45,23 @@ int minCost(vector<int> &st, vector<int> &end, vector<int> &rc, vector<int> &cc)
     vector<vector<int>> mincost(n, vector<int>(m, INT_MAX));
     // cout<<endl;
     return bfs(st[0], st[1], end[0], end[1], n, m, mincost, rc, cc);
+}
+
+// APPROACH 2 (OPITIMIZED)
+// AC
+
+int minCost(vector<int> &st, vector<int> &end, vector<int> &rc, vector<int> &cc)
+{
+    int n = rc.size(), m = cc.size();
+    int cost = 0;
+    for (int i = st[0] + 1; i <= end[0]; i++)
+        cost += rc[i];
+    for (int i = st[1] + 1; i <= end[1]; i++)
+        cost += cc[i];
+    for (int i = st[0] - 1; i >= end[0]; i--)
+        cost += rc[i];
+    for (int i = st[1] - 1; i >= end[1]; i--)
+        cost += cc[i];
+
+    return cost;
 }
