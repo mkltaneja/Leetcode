@@ -55,31 +55,55 @@ vector<int> findAllPeople(int n, vector<vector<int>> &meetings, int firstPerson)
 // APPROACH 1 (DFS)
 
 vector<vector<int>> ans;
-void dfs(int u, int n, vector<bool> &vis, vector<vector<int>> &gp, vector<int> &path)
+void dfs(int u, int n, vector<vector<int>> &gp, vector<int> &path)
 {
     if (u == n - 1)
         ans.push_back(path);
     for (int v : gp[u])
     {
-        if (!vis[v])
-        {
-            vis[v] = true;
-            path.push_back(v);
-            dfs(v, n, vis, gp, path);
-            path.pop_back();
-            vis[v] = false;
-        }
+        path.push_back(v);
+        dfs(v, n, gp, path);
+        path.pop_back();
     }
 }
 
 vector<vector<int>> allPathsSourceTarget(vector<vector<int>> &graph)
 {
     int n = graph.size();
-    vector<bool> vis(n);
     vector<int> path;
     path.push_back(0);
-    vis[0] = true;
-    dfs(0, n, vis, graph, path);
+    dfs(0, n, graph, path);
+
+    return ans;
+}
+
+// APPROACH 2 (BFS)
+
+#define f first
+#define s second
+vector<vector<int>> allPathsSourceTarget(vector<vector<int>> &graph)
+{
+    int n = graph.size();
+    vector<vector<int>> ans;
+    vector<bool> vis(n);
+
+    queue<pair<int, vector<int>>> que;
+    que.push({0, {0}});
+    while (!que.empty())
+    {
+        auto tp = que.front();
+        que.pop();
+
+        if (tp.f == n - 1)
+            ans.push_back(tp.s);
+
+        for (int v : graph[tp.f])
+        {
+            tp.s.push_back(v);
+            que.push({v, {tp.s}});
+            tp.s.pop_back();
+        }
+    }
 
     return ans;
 }
