@@ -49,3 +49,37 @@ vector<int> findAllPeople(int n, vector<vector<int>> &meetings, int firstPerson)
 
     return ans;
 }
+
+// DAY 28 (797. All Paths From Source to Target)=========================================================
+
+// APPROACH 1 (DFS)
+
+vector<vector<int>> ans;
+void dfs(int u, int n, vector<bool> &vis, vector<vector<int>> &gp, vector<int> &path)
+{
+    if (u == n - 1)
+        ans.push_back(path);
+    for (int v : gp[u])
+    {
+        if (!vis[v])
+        {
+            vis[v] = true;
+            path.push_back(v);
+            dfs(v, n, vis, gp, path);
+            path.pop_back();
+            vis[v] = false;
+        }
+    }
+}
+
+vector<vector<int>> allPathsSourceTarget(vector<vector<int>> &graph)
+{
+    int n = graph.size();
+    vector<bool> vis(n);
+    vector<int> path;
+    path.push_back(0);
+    vis[0] = true;
+    dfs(0, n, vis, graph, path);
+
+    return ans;
+}
