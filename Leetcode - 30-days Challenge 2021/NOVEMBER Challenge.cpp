@@ -729,3 +729,109 @@ vector<int> productExceptSelf(vector<int> &nums)
 
     return ans;
 }
+
+// DAY 28 (797. All Paths From Source to Target)=========================================================
+
+// APPROACH 1 (DFS)
+
+vector<vector<int>> ans;
+void dfs(int u, int n, vector<vector<int>> &gp, vector<int> &path)
+{
+    if (u == n - 1)
+        ans.push_back(path);
+    for (int v : gp[u])
+    {
+        path.push_back(v);
+        dfs(v, n, gp, path);
+        path.pop_back();
+    }
+}
+
+vector<vector<int>> allPathsSourceTarget(vector<vector<int>> &graph)
+{
+    int n = graph.size();
+    vector<int> path;
+    path.push_back(0);
+    dfs(0, n, graph, path);
+
+    return ans;
+}
+
+// APPROACH 2 (BFS)
+
+#define f first
+#define s second
+vector<vector<int>> allPathsSourceTarget(vector<vector<int>> &graph)
+{
+    int n = graph.size();
+    vector<vector<int>> ans;
+    vector<bool> vis(n);
+
+    queue<pair<int, vector<int>>> que;
+    que.push({0, {0}});
+    while (!que.empty())
+    {
+        auto tp = que.front();
+        que.pop();
+
+        if (tp.f == n - 1)
+            ans.push_back(tp.s);
+
+        for (int v : graph[tp.f])
+        {
+            tp.s.push_back(v);
+            que.push({v, {tp.s}});
+            tp.s.pop_back();
+        }
+    }
+
+    return ans;
+}
+
+// DAY 30 (85. Maximal Rectangle)=============================================================================
+
+int maxarea_hist(int n, vector<int> &ht)
+{
+    int maxarea = 0;
+    stack<int> st;
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && ht[st.top()] >= ht[i])
+        {
+            int tp = st.top();
+            st.pop();
+            maxarea = max(maxarea, ht[tp] * (st.empty() ? i : (i - st.top() - 1)));
+        }
+        st.push(i);
+    }
+    while (!st.empty())
+    {
+        int tp = st.top();
+        st.pop();
+        maxarea = max(maxarea, ht[tp] * (st.empty() ? n : (n - st.top() - 1)));
+    }
+    return maxarea;
+}
+
+int maximalRectangle(vector<vector<char>> &matrix)
+{
+    int n = matrix.size();
+    if (n == 0)
+        return 0;
+    int m = matrix[0].size();
+    vector<vector<int>> ht(n, vector<int>(m, 0));
+
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (matrix[i][j] == '0')
+                continue;
+            ht[i][j] = (i ? ht[i - 1][j] + 1 : 1);
+        }
+        ans = max(ans, maxarea_hist(m, ht[i]));
+    }
+
+    return ans;
+}
