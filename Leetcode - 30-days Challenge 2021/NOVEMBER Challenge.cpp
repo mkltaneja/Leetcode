@@ -788,6 +788,73 @@ vector<vector<int>> allPathsSourceTarget(vector<vector<int>> &graph)
     return ans;
 }
 
+// DAY 29 (721. Accounts Merge)============================================================================
+
+unordered_map<string, int> mailpar;
+vector<int> namepar;
+vector<long> psize;
+
+int findpar(int x)
+{
+    return namepar[x] = (namepar[x] == x) ? x : findpar(namepar[x]);
+}
+
+vector<vector<string>> accountsMerge(vector<vector<string>> &accounts)
+{
+    int n = accounts.size();
+    namepar.resize(n);
+    psize.resize(n, 0);
+    vector<vector<string>> ans;
+    unordered_map<int, set<string>> m;
+
+    for (int i = 0; i < n; i++)
+        namepar[i] = i;
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 1; j < accounts[i].size(); j++)
+        {
+            int p1 = findpar(namepar[i]);
+            if (!mailpar.count(accounts[i][j]))
+            {
+                mailpar[accounts[i][j]] = p1;
+                psize[p1]++;
+            }
+            else
+            {
+                int p2 = findpar(mailpar[accounts[i][j]]);
+                if (p1 == p2)
+                    continue;
+                if (psize[p1] > psize[p2])
+                {
+                    namepar[p2] = p1;
+                    psize[p1] += psize[p2];
+                    psize[p2] = psize[p1];
+                }
+                else
+                {
+                    namepar[p1] = p2;
+                    psize[p2] += psize[p1];
+                    psize[p1] = psize[p2];
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+        for (int j = 1; j < accounts[i].size(); j++)
+            m[findpar(mailpar[accounts[i][j]])].insert(accounts[i][j]);
+
+    for (auto p : m)
+    {
+        ans.push_back({accounts[p.first][0]});
+        for (string child : p.second)
+            ans.back().push_back(child);
+    }
+
+    return ans;
+}
+
 // DAY 30 (85. Maximal Rectangle)=============================================================================
 
 int maxarea_hist(int n, vector<int> &ht)
