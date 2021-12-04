@@ -30,3 +30,64 @@ int maxProduct(vector<int> &nums)
 
     return ans;
 }
+
+// DAY 4 (1032. Stream of Characters)=======================================================================
+class StreamChecker {
+public:
+    
+    class trie
+    {
+        public:
+        vector<trie*> v;
+        bool wordEnd;
+        trie()
+        {
+            this->v.assign(26, nullptr);
+            this->wordEnd = false;
+        }
+        
+        void insert(string &s)
+        {
+            trie* curr = this;
+            for(char c : s)
+            {
+                if(!curr->v[c-'a'])
+                    curr->v[c-'a'] = new trie();
+                curr = curr->v[c-'a'];
+            }
+            curr->wordEnd = true;
+        }
+    };
+    trie* root = new trie();
+    
+    StreamChecker(vector<string>& words) 
+    {
+        for(string word : words)
+        {
+            reverse(word.begin(), word.end());
+            root->insert(word);
+        }
+    }
+    string s = "";
+    bool query(char letter)
+    {
+        s += letter;
+        trie* curr = root;
+        for(int i = s.size()-1; i >= 0; i--)
+        {
+            if(!curr->v[s[i]-'a'])
+                return false;
+            if(curr->v[s[i]-'a']->wordEnd)
+                return true;
+            curr = curr->v[s[i]-'a'];
+        }
+        return curr->wordEnd;
+        return true;
+    }
+};
+
+/**
+ * Your StreamChecker object will be instantiated and called as such:
+ * StreamChecker* obj = new StreamChecker(words);
+ * bool param_1 = obj->query(letter);
+ */
