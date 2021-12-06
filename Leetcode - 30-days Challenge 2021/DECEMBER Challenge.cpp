@@ -32,37 +32,37 @@ int maxProduct(vector<int> &nums)
 }
 
 // DAY 4 (1032. Stream of Characters)=======================================================================
-class StreamChecker {
+class StreamChecker
+{
 public:
-    
     class trie
     {
-        public:
-        vector<trie*> v;
+    public:
+        vector<trie *> v;
         bool wordEnd;
         trie()
         {
             this->v.assign(26, nullptr);
             this->wordEnd = false;
         }
-        
+
         void insert(string &s)
         {
-            trie* curr = this;
-            for(char c : s)
+            trie *curr = this;
+            for (char c : s)
             {
-                if(!curr->v[c-'a'])
-                    curr->v[c-'a'] = new trie();
-                curr = curr->v[c-'a'];
+                if (!curr->v[c - 'a'])
+                    curr->v[c - 'a'] = new trie();
+                curr = curr->v[c - 'a'];
             }
             curr->wordEnd = true;
         }
     };
-    trie* root = new trie();
-    
-    StreamChecker(vector<string>& words) 
+    trie *root = new trie();
+
+    StreamChecker(vector<string> &words)
     {
-        for(string word : words)
+        for (string word : words)
         {
             reverse(word.begin(), word.end());
             root->insert(word);
@@ -72,14 +72,14 @@ public:
     bool query(char letter)
     {
         s += letter;
-        trie* curr = root;
-        for(int i = s.size()-1; i >= 0; i--)
+        trie *curr = root;
+        for (int i = s.size() - 1; i >= 0; i--)
         {
-            if(!curr->v[s[i]-'a'])
+            if (!curr->v[s[i] - 'a'])
                 return false;
-            if(curr->v[s[i]-'a']->wordEnd)
+            if (curr->v[s[i] - 'a']->wordEnd)
                 return true;
-            curr = curr->v[s[i]-'a'];
+            curr = curr->v[s[i] - 'a'];
         }
         return curr->wordEnd;
         return true;
@@ -91,3 +91,20 @@ public:
  * StreamChecker* obj = new StreamChecker(words);
  * bool param_1 = obj->query(letter);
  */
+
+//  DAY 5 (337. House Robber III)=========================================================================================
+
+// APPROACH 1 (Without DP) --> O(4^h) [h = height of tree]      OR O(n^2)  [n = number of nodes]
+// TLE
+
+int rob(TreeNode *root)
+{
+    if (!root)
+        return 0;
+
+    int exc = rob(root->left) + rob(root->right);
+    int inc = (root->left ? rob(root->left->left) + rob(root->left->right) : 0) +
+              (root->right ? rob(root->right->left) + rob(root->right->right) : 0) + root->val;
+
+    return max(inc, exc);
+}
