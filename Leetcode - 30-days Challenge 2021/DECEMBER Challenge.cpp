@@ -128,6 +128,31 @@ int rob(TreeNode *root)
     return dp[root] = max(inc, exc);
 }
 
+// APPROACH 3 (Without DP -> inc, exc) --> O(n)
+// AC
+
+#define f first
+#define s second
+pair<int, int> dfs(TreeNode *node)
+{
+    if (!node)
+        return {0, 0};
+
+    auto lmax = dfs(node->left);
+    auto rmax = dfs(node->right);
+
+    int inc = lmax.s + rmax.s + node->val;
+    int exc = max(lmax.f, lmax.s) + max(rmax.f, rmax.s);
+
+    return {inc, exc};
+}
+
+int rob(TreeNode *root)
+{
+    auto ans = dfs(root);
+    return max(ans.f, ans.s);
+}
+
 // DAY 6 (1217. Minimum Cost to Move Chips to The Same Position)==========================================================================
 
 int minCostToMoveChips(vector<int> &position)
