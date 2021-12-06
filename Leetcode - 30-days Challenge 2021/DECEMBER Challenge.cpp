@@ -108,3 +108,22 @@ int rob(TreeNode *root)
 
     return max(inc, exc);
 }
+
+// APPROACH 2 (Using map as DP) --> >O(n)
+// AC
+
+unordered_map<TreeNode *, int> dp;
+int rob(TreeNode *root)
+{
+    if (!root)
+        return 0;
+
+    if (dp.count(root))
+        return dp[root];
+
+    int exc = rob(root->left) + rob(root->right);
+    int inc = (root->left ? rob(root->left->left) + rob(root->left->right) : 0) +
+              (root->right ? rob(root->right->left) + rob(root->right->right) : 0) + root->val;
+
+    return dp[root] = max(inc, exc);
+}
