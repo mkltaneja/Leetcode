@@ -127,3 +127,17 @@ int rob(TreeNode *root)
 
     return dp[root] = max(inc, exc);
 }
+
+// DAY 6 (1217. Minimum Cost to Move Chips to The Same Position)==========================================================================
+
+int minCostToMoveChips(vector<int> &position)
+{
+    int osum = 0, esum = 0;
+    for (int i = 0; i < position.size(); i++)
+    {
+        osum += (position[i] & 1);
+        esum += (position[i] & 1 ^ 1);
+    }
+
+    return min(osum, esum);
+}
