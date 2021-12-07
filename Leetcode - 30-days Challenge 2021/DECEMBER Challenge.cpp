@@ -166,3 +166,18 @@ int minCostToMoveChips(vector<int> &position)
 
     return min(osum, esum);
 }
+
+// DAY 7 (1290. Convert Binary Number in a Linked List to Integer)=======================================================================
+
+int getDecimalValue(ListNode *head)
+{
+    int ans = 0;
+    ListNode *curr = head;
+    while (curr)
+    {
+        ans = ans * 2 + curr->val;
+        curr = curr->next;
+    }
+
+    return ans;
+}
