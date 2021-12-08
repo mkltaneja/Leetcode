@@ -181,3 +181,28 @@ int getDecimalValue(ListNode *head)
 
     return ans;
 }
+
+// DAY 8 (563. Binary Tree Tilt)==============================================================================================
+
+#define f first
+#define s second
+
+int sum = 0;
+int dfs(TreeNode *node)
+{
+    if (!node)
+        return 0;
+
+    int lans = dfs(node->left);
+    int rans = dfs(node->right);
+
+    sum += abs(lans - rans);
+
+    return lans + rans + node->val;
+}
+
+int findTilt(TreeNode *root)
+{
+    dfs(root);
+    return sum;
+}
