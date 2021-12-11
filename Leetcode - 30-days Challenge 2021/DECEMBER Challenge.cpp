@@ -206,3 +206,36 @@ int findTilt(TreeNode *root)
     dfs(root);
     return sum;
 }
+
+// DAY 11 (878. Nth Magical Number)===============================================================================================
+
+int mod = (int)1e9 + 7;
+long gcd(int a, int b)
+{
+    return (a == 0) ? b : gcd(b % a, a);
+}
+
+int nthMagicalNumber(int n, int a, int b)
+{
+    int lcm = a / gcd(a, b) * b;
+    int x = (lcm / a) + (lcm / b) - 1;
+    int q = n / x;
+    int r = n % x;
+
+    long ans = ((long)(q % mod) * (lcm % mod)) % mod;
+
+    if (r == 0)
+        return (int)ans % mod;
+
+    int aa = a, bb = b;
+    for (int i = 0; i < r - 1; i++)
+    {
+        if (aa <= bb)
+            aa += a;
+        else
+            bb += b;
+    }
+    ans = (ans + min(aa, bb)) % mod;
+
+    return (int)ans % mod;
+}
