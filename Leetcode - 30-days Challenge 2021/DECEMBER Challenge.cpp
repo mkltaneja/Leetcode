@@ -302,7 +302,7 @@ bool canPartition(vector<int> &nums)
     return dp[n][tsum];
 }
 
-// APPROACH 3 (Tabulation with 1D DP -> [space optimized, as we ony needed the previous index for every index in dp])
+// APPROACH 3 (Tabulation with 1D DP -> [space optimized, as we ony needed the previous index for every index in dp]) --> O(n*(sum/2))
 
 bool canPartition(vector<int> &nums)
 {
@@ -322,4 +322,29 @@ bool canPartition(vector<int> &nums)
             dp[i] |= dp[i - x];
 
     return dp[tsum];
+}
+
+// APPROACH 4 (Using bitset) --> O(n) [MOST OPTIMIZED]
+
+bool canPartition(vector<int> &nums)
+{
+    int n = nums.size();
+
+    int tsum = 0;
+    for (int x : nums)
+        tsum += x;
+    if (tsum & 1)
+        return false;
+    tsum >>= 1;
+
+    bitset<10001> dp = 1;
+
+    for (int x : nums)
+    {
+        dp |= (dp << x);
+        if (dp.test(tsum))
+            return true;
+    }
+
+    return false;
 }
