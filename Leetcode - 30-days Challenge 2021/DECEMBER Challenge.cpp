@@ -301,3 +301,25 @@ bool canPartition(vector<int> &nums)
 
     return dp[n][tsum];
 }
+
+// APPROACH 3 (Tabulation with 1D DP -> [space optimized, as we ony needed the previous index for every index in dp])
+
+bool canPartition(vector<int> &nums)
+{
+    int n = nums.size();
+
+    int tsum = 0;
+    for (int x : nums)
+        tsum += x;
+    if (tsum & 1)
+        return false;
+    tsum >>= 1;
+
+    vector<int> dp(tsum + 1, 0);
+    dp[0] = 1;
+    for (int x : nums)
+        for (int i = tsum; i >= x; i--)
+            dp[i] |= dp[i - x];
+
+    return dp[tsum];
+}
