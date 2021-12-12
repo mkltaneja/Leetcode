@@ -272,3 +272,32 @@ bool canPartition(vector<int> &nums)
     vector<vector<int>> dp(n, vector<int>(tsum + 1, -1));
     return subseq(0, n, 0, tsum, nums, dp);
 }
+
+// APPROACH 2 (Tabulation with 2D DP) --> O(n*(sum/2))
+
+bool canPartition(vector<int> &nums)
+{
+    int n = nums.size();
+
+    int tsum = 0;
+    for (int x : nums)
+        tsum += x;
+    if (tsum & 1)
+        return false;
+    tsum >>= 1;
+
+    vector<vector<bool>> dp(n + 1, vector<bool>(tsum + 1, false));
+    dp[0][0] = true;
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= tsum; j++)
+        {
+            if (j < nums[i - 1])
+                dp[i][j] = dp[i - 1][j];
+            else
+                dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]];
+        }
+    }
+
+    return dp[n][tsum];
+}
