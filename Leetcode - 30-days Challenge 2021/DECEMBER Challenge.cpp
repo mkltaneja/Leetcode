@@ -239,3 +239,36 @@ int nthMagicalNumber(int n, int a, int b)
 
     return (int)ans % mod;
 }
+
+// DAY 12 (416. Partition Equal Subset Sum)====================================================================
+
+// APPROACH 1 (Memoization with 2D DP) --> O(n*(sum/2))
+
+bool subseq(int i, int n, int csum, int tsum, vector<int> &arr, vector<vector<int>> &dp)
+{
+    if (i == n)
+        return false;
+    if (2 * csum == tsum)
+        return dp[i][csum] = true;
+    if (2 * csum > tsum)
+        return false;
+    if (dp[i][csum] != -1)
+        return dp[i][csum];
+
+    return dp[i][csum] = subseq(i + 1, n, csum + arr[i], tsum, arr, dp) ||
+                         subseq(i + 1, n, csum, tsum, arr, dp);
+}
+
+bool canPartition(vector<int> &nums)
+{
+    int n = nums.size();
+
+    int tsum = 0;
+    for (int x : nums)
+        tsum += x;
+    if (tsum & 1)
+        return false;
+
+    vector<vector<int>> dp(n, vector<int>(tsum + 1, -1));
+    return subseq(0, n, 0, tsum, nums, dp);
+}
