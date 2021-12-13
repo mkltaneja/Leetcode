@@ -207,6 +207,43 @@ int findTilt(TreeNode *root)
     return sum;
 }
 
+// DAY 9 (1306. Jump Game III)==========================================================================================
+
+// APPROACH 1 (BFS) -> O(n)
+
+bool canReach(vector<int> &arr, int start)
+{
+    queue<int> que;
+    que.push(start);
+    if (arr[start] == 0)
+        return true;
+
+    while (!que.empty())
+    {
+        int i = que.front();
+        que.pop();
+
+        int j = i + arr[i];
+        int k = i - arr[i];
+        arr[i] = -1;
+
+        if (j < arr.size() && arr[j] != -1)
+        {
+            if (arr[j] == 0)
+                return true;
+            que.push(j);
+        }
+        if (k >= 0 && arr[k] != -1)
+        {
+            if (arr[k] == 0)
+                return true;
+            que.push(k);
+        }
+    }
+
+    return false;
+}
+
 // DAY 11 (878. Nth Magical Number)===============================================================================================
 
 int mod = (int)1e9 + 7;
