@@ -407,3 +407,21 @@ bool canPartition(vector<int> &nums)
 
     return false;
 }
+
+// DAY 13 (1446. Consecutive Characters)=========================================================================
+
+int maxPower(string s)
+{
+    int n = s.size();
+    int ans = 0;
+    for (int i = 0; i < n;)
+    {
+        int j = i;
+        while (j < n && s[j] == s[i])
+            j++;
+        ans = max(ans, j - i);
+        i = j;
+    }
+
+    return ans;
+}
