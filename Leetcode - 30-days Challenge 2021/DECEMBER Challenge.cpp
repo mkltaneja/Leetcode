@@ -244,6 +244,28 @@ bool canReach(vector<int> &arr, int start)
     return false;
 }
 
+// APPROACH 2 (DFS) --> O(n)
+
+bool dfs(int i, int n, vector<int> &arr, vector<bool> &vis)
+{
+    if (i < 0 || i >= n || vis[i])
+        return false;
+
+    if (arr[i] == 0)
+        return true;
+
+    vis[i] = true;
+
+    return dfs(i + arr[i], n, arr, vis) || dfs(i - arr[i], n, arr, vis);
+}
+
+bool canReach(vector<int> &arr, int start)
+{
+    int n = arr.size();
+    vector<bool> vis(n, false);
+    return dfs(start, n, arr, vis);
+}
+
 // DAY 11 (878. Nth Magical Number)===============================================================================================
 
 int mod = (int)1e9 + 7;
