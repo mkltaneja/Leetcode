@@ -441,35 +441,71 @@ int rangeSumBST(TreeNode *root, int low, int high)
     return rangeSumBST(root->left, low, high) + rangeSumBST(root->right, low, high) + root->val;
 }
 
-// DAY 17 (147. Insertion Sort List)============================================================================
+// DAY 15 (147. Insertion Sort List)============================================================================
 
-ListNode* insertionSortList(ListNode* head) 
+ListNode *insertionSortList(ListNode *head)
 {
-    ListNode* curr = head->next, *sortend = head;
-    while(curr)
+    ListNode *curr = head->next, *sortend = head;
+    while (curr)
     {
-        ListNode* itr = head, *prev = nullptr;
-        ListNode* next = curr->next;
-        while(itr->val < curr->val)
+        ListNode *itr = head, *prev = nullptr;
+        ListNode *next = curr->next;
+        while (itr->val < curr->val)
         {
             prev = itr;
             itr = itr->next;
         }
-        if(prev == nullptr)
+        if (prev == nullptr)
         {
             curr->next = head;
             head = curr;
         }
-        else 
+        else
         {
             prev->next = curr;
-            if(itr != curr)
+            if (itr != curr)
                 curr->next = itr;
         }
-        if(itr == curr)
+        if (itr == curr)
             sortend = sortend->next;
-        else sortend->next = next;
+        else
+            sortend->next = next;
         curr = next;
     }
     return head;
+}
+
+// DAY 16 (310. Minimum Height Trees)================================================================
+
+int findh(int u, int p, vector<vector<int>> &gp)
+{
+    int h = 0;
+    for (int v : gp[u])
+        if (v != p)
+            h = max(h, findh(v, u, gp));
+    return h + 1;
+}
+
+vector<int> findMinHeightTrees(int n, vector<vector<int>> &edges)
+{
+    vector<vector<int>> gp(n);
+    for (vector<int> e : edges)
+    {
+        gp[e[0]].push_back(e[1]);
+        gp[e[1]].push_back(e[0]);
+    }
+
+    vector<int> ht(n);
+    int minh = n + 1;
+    for (int i = 0; i < n; i++)
+    {
+        ht[i] = findh(i, -1, gp);
+        minh = min(minh, ht[i]);
+    }
+
+    vector<int> ans;
+    for (int i = 0; i < n; i++)
+        if (ht[i] == minh)
+            ans.push_back(i);
+    return ans;
 }
