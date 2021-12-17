@@ -440,3 +440,36 @@ int rangeSumBST(TreeNode *root, int low, int high)
         return rangeSumBST(root->right, low, high);
     return rangeSumBST(root->left, low, high) + rangeSumBST(root->right, low, high) + root->val;
 }
+
+// DAY 17 (147. Insertion Sort List)============================================================================
+
+ListNode* insertionSortList(ListNode* head) 
+{
+    ListNode* curr = head->next, *sortend = head;
+    while(curr)
+    {
+        ListNode* itr = head, *prev = nullptr;
+        ListNode* next = curr->next;
+        while(itr->val < curr->val)
+        {
+            prev = itr;
+            itr = itr->next;
+        }
+        if(prev == nullptr)
+        {
+            curr->next = head;
+            head = curr;
+        }
+        else 
+        {
+            prev->next = curr;
+            if(itr != curr)
+                curr->next = itr;
+        }
+        if(itr == curr)
+            sortend = sortend->next;
+        else sortend->next = next;
+        curr = next;
+    }
+    return head;
+}
