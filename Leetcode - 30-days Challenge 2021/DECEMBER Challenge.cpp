@@ -509,3 +509,29 @@ vector<int> findMinHeightTrees(int n, vector<vector<int>> &edges)
             ans.push_back(i);
     return ans;
 }
+
+// DAY 17 (221. Maximal Square)============================================================================
+
+int maximalSquare(vector<vector<char>> &matrix)
+{
+    int n = matrix.size(), m = matrix[0].size();
+    vector<int> pdp(m + 1, 0), dp(m + 1, 0);
+
+    int maxsq = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= m; j++)
+        {
+            if (matrix[i - 1][j - 1] - '0')
+            {
+                dp[j] = min({pdp[j], dp[j - 1], pdp[j - 1]}) + 1;
+                maxsq = max(maxsq, dp[j]);
+            }
+            else
+                dp[j] = 0;
+        }
+        pdp = dp;
+    }
+
+    return maxsq * maxsq;
+}
