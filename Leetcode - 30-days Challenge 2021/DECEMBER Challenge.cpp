@@ -535,3 +535,62 @@ int maximalSquare(vector<vector<char>> &matrix)
 
     return maxsq * maxsq;
 }
+
+// DAY 19 (394. Decode String)============================================================================================
+
+    bool isnum(char c)
+    {
+        return c >= '0' && c <= '9';
+    }
+    bool ischar(char c)
+    {
+        return c >= 'a' && c <= 'z';
+    }
+    
+    string decodeString(string s) 
+    {
+        vector<string> st;
+        for(int i = 0; i < s.size(); i++)
+        {
+            if(s[i] == '[') continue;
+            
+            string x = "";
+            while(i < s.size() && isnum(s[i]))
+                x += s[i++];
+            if(!x.empty())
+                st.push_back(x);
+            
+            else if(s[i] >= 'a' && s[i] <= 'z')
+            {
+                string tp = "";
+                if(!st.empty() && (!isnum(st.back()[0])))
+                {
+                    tp = st.back();
+                    st.pop_back();
+                }
+                tp += s[i];
+                st.push_back(tp);
+            }
+            else if(s[i] == ']')
+            {
+                string tp = st.back();
+                st.pop_back();
+                int x = stoi(st.back());
+                st.pop_back();
+                
+                string tmp = "";
+                while(x--)
+                    tmp += tp;
+                while(!st.empty() && !isnum(st.back()[0]))
+                {
+                    tmp = st.back() + tmp;
+                    st.pop_back();
+                }
+                st.push_back(tmp);
+            }
+        }
+        string ans = "";
+        for(int i = 0; i < st.size(); i++)
+            ans += st[i];
+        return ans;
+    }
