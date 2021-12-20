@@ -614,3 +614,44 @@ vector<vector<int>> minimumAbsDifference(vector<int> &arr)
 
     return ans;
 }
+
+// APPROACH 2 (Counting Sort) -> O(n + m) [n -> size of array, m -> (max - min) element in array]
+
+vector<vector<int>> minimumAbsDifference(vector<int> &arr)
+{
+    int mn = INT_MAX;
+    int mx = INT_MIN;
+    for (int x : arr)
+    {
+        mx = max(mx, x);
+        mn = min(mn, x);
+    }
+    vector<int> line(mx - mn + 1, 0);
+    for (int x : arr)
+        line[x - mn] = 1;
+
+    int prev = INT_MIN;
+    int mindiff = INT_MAX;
+    for (int i = 0; i <= mx - mn; i++)
+    {
+        if (line[i])
+        {
+            if (prev != INT_MIN)
+                mindiff = min(mindiff, (i + mn) - prev);
+            prev = i + mn;
+        }
+    }
+
+    vector<vector<int>> ans;
+    for (int i = 0; i <= mx - mn; i++)
+    {
+        if (line[i])
+        {
+            if (prev != INT_MIN && (i + mn) - prev == mindiff)
+                ans.push_back({prev, i + mn});
+            prev = i + mn;
+        }
+    }
+
+    return ans;
+}
