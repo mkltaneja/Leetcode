@@ -538,59 +538,79 @@ int maximalSquare(vector<vector<char>> &matrix)
 
 // DAY 19 (394. Decode String)============================================================================================
 
-    bool isnum(char c)
+bool isnum(char c)
+{
+    return c >= '0' && c <= '9';
+}
+bool ischar(char c)
+{
+    return c >= 'a' && c <= 'z';
+}
+
+string decodeString(string s)
+{
+    vector<string> st;
+    for (int i = 0; i < s.size(); i++)
     {
-        return c >= '0' && c <= '9';
-    }
-    bool ischar(char c)
-    {
-        return c >= 'a' && c <= 'z';
-    }
-    
-    string decodeString(string s) 
-    {
-        vector<string> st;
-        for(int i = 0; i < s.size(); i++)
+        if (s[i] == '[')
+            continue;
+
+        string x = "";
+        while (i < s.size() && isnum(s[i]))
+            x += s[i++];
+        if (!x.empty())
+            st.push_back(x);
+
+        else if (s[i] >= 'a' && s[i] <= 'z')
         {
-            if(s[i] == '[') continue;
-            
-            string x = "";
-            while(i < s.size() && isnum(s[i]))
-                x += s[i++];
-            if(!x.empty())
-                st.push_back(x);
-            
-            else if(s[i] >= 'a' && s[i] <= 'z')
+            string tp = "";
+            if (!st.empty() && (!isnum(st.back()[0])))
             {
-                string tp = "";
-                if(!st.empty() && (!isnum(st.back()[0])))
-                {
-                    tp = st.back();
-                    st.pop_back();
-                }
-                tp += s[i];
-                st.push_back(tp);
-            }
-            else if(s[i] == ']')
-            {
-                string tp = st.back();
+                tp = st.back();
                 st.pop_back();
-                int x = stoi(st.back());
-                st.pop_back();
-                
-                string tmp = "";
-                while(x--)
-                    tmp += tp;
-                while(!st.empty() && !isnum(st.back()[0]))
-                {
-                    tmp = st.back() + tmp;
-                    st.pop_back();
-                }
-                st.push_back(tmp);
             }
+            tp += s[i];
+            st.push_back(tp);
         }
-        string ans = "";
-        for(int i = 0; i < st.size(); i++)
-            ans += st[i];
-        return ans;
+        else if (s[i] == ']')
+        {
+            string tp = st.back();
+            st.pop_back();
+            int x = stoi(st.back());
+            st.pop_back();
+
+            string tmp = "";
+            while (x--)
+                tmp += tp;
+            while (!st.empty() && !isnum(st.back()[0]))
+            {
+                tmp = st.back() + tmp;
+                st.pop_back();
+            }
+            st.push_back(tmp);
+        }
     }
+    string ans = "";
+    for (int i = 0; i < st.size(); i++)
+        ans += st[i];
+    return ans;
+}
+
+// DAY 20 (1200. Minimum Absolute Difference)==================================================================
+
+// APPROACH 1 (Simple sort) -> O(n*logn)
+
+vector<vector<int>> minimumAbsDifference(vector<int> &arr)
+{
+    sort(arr.begin(), arr.end());
+    int mindiff = INT_MAX;
+    for (int i = 1; i < arr.size(); i++)
+        mindiff = min(mindiff, arr[i] - arr[i - 1]);
+
+    vector<vector<int>> ans;
+    for (int i = 1; i < arr.size(); i++)
+        if (arr[i] - arr[i - 1] == mindiff)
+            ans.push_back({arr[i - 1], arr[i]});
+
+    return ans;
+}
