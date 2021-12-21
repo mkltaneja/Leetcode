@@ -658,9 +658,16 @@ vector<vector<int>> minimumAbsDifference(vector<int> &arr)
 
 // DAY 21 (231. Power of Two)==============================================================================
 
-// METHOD 1 (By finding RSB and subtracting with n)
+// METHOD 1 (subtraction with n should be 0)
 
 bool isPowerOfTwo(int n)
 {
     return (n > 0 && (n - (n & -n) == 0));
+}
+
+// METHOD 2 (AND with n-1 should be 0)
+
+bool isPowerOfTwo(int n)
+{
+    return (n > 0 && !(n & (n - 1)));
 }
