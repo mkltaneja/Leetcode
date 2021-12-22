@@ -674,27 +674,66 @@ bool isPowerOfTwo(int n)
 
 // DAY 22 (143. Reorder List)=======================================================================
 
-bool dfs(ListNode* &head, ListNode* itr)
+// APPROACH 1 (Recursively) --> O(n) time, O(n) space [stack space]
+
+bool dfs(ListNode *&head, ListNode *itr)
 {
-    if(!itr)
+    if (!itr)
         return false;
-    
-    if(dfs(head, itr->next))
+
+    if (dfs(head, itr->next))
         return true;
-    
+
     itr->next = nullptr;
-    ListNode* nxt = head->next;
-    if(itr == nxt || itr == head)
+    ListNode *nxt = head->next;
+    if (itr == nxt || itr == head)
         return true;
-    
+
     itr->next = nxt;
     head->next = itr;
     head = nxt;
-    
+
     return false;
 }
 
-void reorderList(ListNode* head) 
+void reorderList(ListNode *head)
 {
     dfs(head, head);
+}
+
+// APPROACH 2 (Reversing the second half of LL) --> O(n) time, O(1) space
+
+ListNode *reverse(ListNode *head)
+{
+    ListNode *prev = nullptr, *forw = nullptr;
+    while (head)
+    {
+        forw = head->next;
+        head->next = prev;
+        prev = head;
+        head = forw;
+    }
+    return prev;
+}
+
+void reorderList(ListNode *head)
+{
+    ListNode *fast = head, *slow = head;
+    while (fast && fast->next && fast->next->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    ListNode *tail = reverse(slow);
+
+    while (head && tail && head != tail)
+    {
+        ListNode *nxt1 = head->next;
+        ListNode *nxt2 = tail->next;
+        head->next = tail;
+        tail->next = nxt1;
+        head = nxt1;
+        tail = nxt2;
+    }
 }
