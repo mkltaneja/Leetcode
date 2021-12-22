@@ -671,3 +671,30 @@ bool isPowerOfTwo(int n)
 {
     return (n > 0 && !(n & (n - 1)));
 }
+
+// DAY 22 (143. Reorder List)=======================================================================
+
+bool dfs(ListNode* &head, ListNode* itr)
+{
+    if(!itr)
+        return false;
+    
+    if(dfs(head, itr->next))
+        return true;
+    
+    itr->next = nullptr;
+    ListNode* nxt = head->next;
+    if(itr == nxt || itr == head)
+        return true;
+    
+    itr->next = nxt;
+    head->next = itr;
+    head = nxt;
+    
+    return false;
+}
+
+void reorderList(ListNode* head) 
+{
+    dfs(head, head);
+}
