@@ -737,3 +737,39 @@ void reorderList(ListNode *head)
         tail = nxt2;
     }
 }
+
+// DAY 23 (210. Course Schedule II)===================================================================================
+
+vector<int> topologicalSort(int n, vector<vector<int>> &gp, vector<int> &indeg)
+{
+    vector<int> ans;
+    queue<int> que;
+    for(int i = 0; i < n; i++)
+        if(indeg[i] == 0)
+            que.push(i);
+    while(!que.empty())
+    {
+        int u = que.front();
+        que.pop();
+        ans.push_back(u);
+        
+        for(int v : gp[u])
+            if(--indeg[v] == 0)
+                que.push(v);
+    }
+    reverse(ans.begin(), ans.end());
+    return ans.size() == n? ans : vector<int>();
+}
+
+vector<int> findOrder(int n, vector<vector<int>>& pre)
+{
+    vector<vector<int>> gp(n);
+    vector<int> indeg(n);
+    for(vector<int> v : pre)
+    {
+        gp[v[0]].push_back(v[1]);
+        indeg[v[1]]++;
+    }
+    
+    return topologicalSort(n, gp, indeg);
+}
