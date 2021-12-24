@@ -744,32 +744,55 @@ vector<int> topologicalSort(int n, vector<vector<int>> &gp, vector<int> &indeg)
 {
     vector<int> ans;
     queue<int> que;
-    for(int i = 0; i < n; i++)
-        if(indeg[i] == 0)
+    for (int i = 0; i < n; i++)
+        if (indeg[i] == 0)
             que.push(i);
-    while(!que.empty())
+    while (!que.empty())
     {
         int u = que.front();
         que.pop();
         ans.push_back(u);
-        
-        for(int v : gp[u])
-            if(--indeg[v] == 0)
+
+        for (int v : gp[u])
+            if (--indeg[v] == 0)
                 que.push(v);
     }
     reverse(ans.begin(), ans.end());
-    return ans.size() == n? ans : vector<int>();
+    return ans.size() == n ? ans : vector<int>();
 }
 
-vector<int> findOrder(int n, vector<vector<int>>& pre)
+vector<int> findOrder(int n, vector<vector<int>> &pre)
 {
     vector<vector<int>> gp(n);
     vector<int> indeg(n);
-    for(vector<int> v : pre)
+    for (vector<int> v : pre)
     {
         gp[v[0]].push_back(v[1]);
         indeg[v[1]]++;
     }
-    
+
     return topologicalSort(n, gp, indeg);
+}
+
+// DAY 24 (56. Merge Intervals)=============================================================================================
+
+vector<vector<int>> merge(vector<vector<int>> &intervals)
+{
+    sort(intervals.begin(), intervals.end());
+    vector<vector<int>> ans;
+    int st = intervals[0][0], end = intervals[0][1];
+    for (int i = 1; i < intervals.size(); i++)
+    {
+        if (intervals[i][0] <= end)
+            end = max(end, intervals[i][1]);
+        else
+        {
+            ans.push_back({st, end});
+            st = intervals[i][0];
+            end = intervals[i][1];
+        }
+    }
+    ans.push_back({st, end});
+
+    return ans;
 }
