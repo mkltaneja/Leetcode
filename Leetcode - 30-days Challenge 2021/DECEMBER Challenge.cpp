@@ -796,3 +796,41 @@ vector<vector<int>> merge(vector<vector<int>> &intervals)
 
     return ans;
 }
+
+// DAY 25 (227. Basic Calculator II)=======================================================================================
+
+int calculate(string s)
+{
+    int n = s.size();
+    int ans = 0;
+    int prev = 0, curr = 0;
+    char psign = '+';
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] >= '0' && s[i] <= '9')
+            curr = curr * 10 + (s[i] - '0');
+        if (s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/' || i == n - 1)
+        {
+            if (psign == '+')
+            {
+                ans += prev;
+                prev = curr;
+            }
+            else if (psign == '-')
+            {
+                ans += prev;
+                prev = -curr;
+            }
+            else if (psign == '*')
+                prev *= curr;
+            else
+                prev /= curr;
+
+            curr = 0;
+            psign = s[i];
+        }
+    }
+    ans += prev;
+
+    return ans;
+}
