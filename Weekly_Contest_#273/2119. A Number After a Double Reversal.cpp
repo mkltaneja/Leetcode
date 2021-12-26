@@ -1,5 +1,5 @@
 
-// APPROACH 1 (Brute Force)
+// APPROACH 1 (Brute Force) -> O(number of digits)
 
 int reverse(int x)
 {
@@ -18,4 +18,11 @@ bool isSameAfterReversals(int num)
     int r2 = reverse(r1);
 
     return r2 == num;
+}
+
+// APPROACH 2 (check for 0 at unit place for a non zero value) -> O(1)
+
+bool isSameAfterReversals(int num)
+{
+    return !num || num % 10;
 }
