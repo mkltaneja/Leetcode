@@ -834,3 +834,17 @@ int calculate(string s)
 
     return ans;
 }
+
+// DAY 26 (973. K Closest Points to Origin)===========================================================================
+
+vector<vector<int>> kClosest(vector<vector<int>> &points, int k)
+{
+    sort(points.begin(), points.end(), [](auto const &a, auto const &b)
+         { return (a[0] * a[0] + a[1] * a[1]) < (b[0] * b[0] + b[1] * b[1]); });
+
+    vector<vector<int>> ans(k);
+    for (int i = 0; i < k; i++)
+        ans[i] = points[i];
+
+    return ans;
+}
