@@ -849,6 +849,19 @@ vector<vector<int>> kClosest(vector<vector<int>> &points, int k)
     return ans;
 }
 
+// DAY 27 (476. Number Complement)==============================================================
+
+int findComplement(int num)
+{
+    int ans = 0, cnt = 0;
+    while (num)
+    {
+        ans |= ((num & 1 ^ 1) << cnt++);
+        num >>= 1;
+    }
+    return ans;
+}
+
 // DAY 28 (876. Middle of the Linked List)=========================================================================
 
 ListNode *middleNode(ListNode *head)
