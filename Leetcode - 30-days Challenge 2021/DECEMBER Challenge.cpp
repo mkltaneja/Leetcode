@@ -851,6 +851,8 @@ vector<vector<int>> kClosest(vector<vector<int>> &points, int k)
 
 // DAY 27 (476. Number Complement)==============================================================
 
+// METHOD 1 (naive)
+
 int findComplement(int num)
 {
     int ans = 0, cnt = 0;
@@ -860,6 +862,20 @@ int findComplement(int num)
         num >>= 1;
     }
     return ans;
+}
+
+// METHOD 2 (Using XOR)
+
+int findComplement(int num)
+{
+    int bits = 0;
+    int x = num;
+    while (x)
+    {
+        x >>= 1;
+        bits++;
+    }
+    return num ^ ((1l << bits) - 1);
 }
 
 // DAY 28 (876. Middle of the Linked List)=========================================================================
