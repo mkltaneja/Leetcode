@@ -893,6 +893,8 @@ ListNode *middleNode(ListNode *head)
 
 // DAY 31 (1026. Maximum Difference Between Node and Ancestor)================================================================================
 
+// METHOD 1 (return type - pair<int,int>)
+
 #define f first
 #define s second
 
@@ -914,4 +916,25 @@ int maxAncestorDiff(TreeNode *root)
 {
     dfs(root);
     return ans;
+}
+
+// METHOD 2 (return type - int)
+
+int dfs(TreeNode *node, int mn, int mx)
+{
+    if (!node)
+        return mx - mn;
+
+    mn = min(mn, node->val);
+    mx = max(mx, node->val);
+
+    int lans = dfs(node->left, mn, mx);
+    int rans = dfs(node->right, mn, mx);
+
+    return max(lans, rans);
+}
+
+int maxAncestorDiff(TreeNode *root)
+{
+    return dfs(root, root->val, root->val);
 }
