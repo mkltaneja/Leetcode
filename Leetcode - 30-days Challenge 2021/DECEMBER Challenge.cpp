@@ -891,6 +891,26 @@ ListNode *middleNode(ListNode *head)
     return slow;
 }
 
+// DAY 29 (116. Populating Next Right Pointers in Each Node)==============================================================
+
+// METHOD 1 (DFS)
+
+Node *dfs(Node *node, Node *nxt)
+{
+    if (!node)
+        return nullptr;
+    node->next = nxt;
+    node->left = dfs(node->left, node->right);
+    node->right = dfs(node->right, nxt ? nxt->left : nullptr);
+
+    return node;
+}
+
+Node *connect(Node *root)
+{
+    return dfs(root, nullptr);
+}
+
 // DAY 30 (1015. Smallest Integer Divisible by K)=============================================================================
 
 int smallestRepunitDivByK(int k)
