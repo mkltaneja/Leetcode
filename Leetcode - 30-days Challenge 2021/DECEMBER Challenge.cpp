@@ -911,6 +911,29 @@ Node *connect(Node *root)
     return dfs(root, nullptr);
 }
 
+// METFHO 2 (Iterative level order traversral of Perfect Binary Tree)
+
+Node *connect(Node *root)
+{
+    Node *node = root, *temp = node;
+    while (node && node->left)
+    {
+        temp->left->next = temp->right;
+        if (temp->next)
+        {
+            temp->right->next = temp->next->left;
+            temp = temp->next;
+        }
+        else
+        {
+            node = node->left;
+            temp = node;
+        }
+    }
+
+    return root;
+}
+
 // DAY 30 (1015. Smallest Integer Divisible by K)=============================================================================
 
 int smallestRepunitDivByK(int k)
