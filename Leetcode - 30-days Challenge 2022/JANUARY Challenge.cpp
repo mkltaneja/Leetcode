@@ -24,3 +24,19 @@ int maxCoins(vector<int> &nums)
 
     return dp[0][nums.size() + 1];
 }
+
+// DAY 2 (1010. Pairs of Songs With Total Durations Divisible by 60)=====================================================================
+
+int numPairsDivisibleBy60(vector<int> &time)
+{
+    int n = time.size();
+    unordered_map<int, int> m;
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int mod = time[i] % 60;
+        ans += m[(60 - mod) % 60];
+        m[mod]++;
+    }
+    return ans;
+}
