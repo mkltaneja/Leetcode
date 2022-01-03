@@ -40,3 +40,28 @@ int numPairsDivisibleBy60(vector<int> &time)
     }
     return ans;
 }
+
+// DAY 3 (997. Find the Town Judge)================================================================================
+
+int findJudge(int n, vector<vector<int>> &trust)
+{
+    vector<int> tcnt(n, 0);
+    for (vector<int> v : trust)
+    {
+        tcnt[v[1] - 1]++;
+        tcnt[v[0] - 1]--;
+    }
+
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (tcnt[i] == n - 1)
+        {
+            if (ans)
+                return -1;
+            ans = i + 1;
+        }
+    }
+
+    return ans ? ans : -1;
+}
