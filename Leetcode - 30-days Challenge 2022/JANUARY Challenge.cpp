@@ -65,3 +65,20 @@ int findJudge(int n, vector<vector<int>> &trust)
 
     return ans ? ans : -1;
 }
+
+// DAY 4 (1009. Complement of Base 10 Integer)========================================================================
+
+    int bitwiseComplement(int n) 
+    {
+        if(n == 0) return 1;
+        
+        int ans = 0;
+        int cnt = 0;
+        while(n)
+        {
+            ans |= ((n&1^1) << cnt++);
+            n >>= 1;
+        }
+        
+        return ans;
+    }
