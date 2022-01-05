@@ -68,17 +68,49 @@ int findJudge(int n, vector<vector<int>> &trust)
 
 // DAY 4 (1009. Complement of Base 10 Integer)========================================================================
 
-    int bitwiseComplement(int n) 
+int bitwiseComplement(int n)
+{
+    if (n == 0)
+        return 1;
+
+    int ans = 0;
+    int cnt = 0;
+    while (n)
     {
-        if(n == 0) return 1;
-        
-        int ans = 0;
-        int cnt = 0;
-        while(n)
-        {
-            ans |= ((n&1^1) << cnt++);
-            n >>= 1;
-        }
-        
-        return ans;
+        ans |= ((n & 1 ^ 1) << cnt++);
+        n >>= 1;
     }
+
+    return ans;
+}
+
+// DAY 5 (131. Palindrome Partitioning)========================================================================================
+
+vector<vector<string>> ans;
+void dfs(int i, string &s, vector<vector<int>> &ispal, vector<string> &curr)
+{
+    if (i == s.size())
+        ans.push_back(curr);
+
+    for (int j = i; j < s.size(); j++)
+    {
+        if (s[i] == s[j] && (j - i <= 2 || ispal[i + 1][j - 1]))
+        {
+            ispal[i][j] = 1;
+            curr.push_back(s.substr(i, j - i + 1));
+            dfs(j + 1, s, ispal, curr);
+            curr.pop_back();
+        }
+    }
+}
+
+vector<vector<string>> partition(string s)
+{
+    int n = s.size();
+    vector<vector<int>> ispal(n, vector<int>(n));
+
+    vector<string> curr;
+    dfs(0, s, ispal, curr);
+
+    return ans;
+}
