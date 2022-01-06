@@ -114,3 +114,26 @@ vector<vector<string>> partition(string s)
 
     return ans;
 }
+
+// DAY 6 (1094. Car Pooling)========================================================================
+
+bool carPooling(vector<vector<int>> &trips, int capacity)
+{
+    int people[1001] = {0};
+
+    int mxd = 0;
+    for (vector<int> v : trips)
+    {
+        people[v[2]] -= v[0];
+        people[v[1]] += v[0];
+        mxd = max(mxd, v[2]);
+    }
+    for (int i = 0; i <= mxd; i++)
+    {
+        people[i] += i ? people[i - 1] : 0;
+        if (people[i] > capacity)
+            return false;
+    }
+
+    return true;
+}
