@@ -229,3 +229,31 @@ int cherryPickup(vector<vector<int>> &grid)
     vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(m, -1)));
     return dfs(0, 0, m - 1, n, m, grid, dp);
 }
+
+// METHOD 2 (Tabulation)=====================================================
+
+int cherryPickup(vector<vector<int>> &grid)
+{
+    int n = grid.size(), m = grid[0].size();
+    vector<vector<vector<int>>> dp(n, vector<vector<int>>(m, vector<int>(m, 0)));
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        for (int j1 = 0; j1 < m; j1++)
+        {
+            for (int j2 = 0; j2 < m; j2++)
+            {
+                dp[i][j1][j2] = grid[i][j1] + ((j1 == j2) ? 0 : grid[i][j2]);
+                if (i == n - 1)
+                    continue;
+                int ans = INT_MIN;
+                for (int x = -1; x <= 1; x++)
+                    for (int y = -1; y <= 1; y++)
+                        ans = max(ans, (j1 + x == -1 || j1 + x == m || j2 + y == -1 || j2 + y == m) ? 0 : dp[i + 1][j1 + x][j2 + y]);
+                dp[i][j1][j2] += ans;
+            }
+        }
+    }
+
+    return dp[0][0][m - 1];
+}
