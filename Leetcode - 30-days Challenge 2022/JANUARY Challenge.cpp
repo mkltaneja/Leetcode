@@ -177,24 +177,55 @@ public:
 
 //  DAY 8 (1463. Cherry Pickup II)===============================================================================
 
-    int dfs(int i, int j1, int j2, int n, int m, vector<vector<int>> &grid, vector<vector<vector<int>>> &dp)
-    {
-        if(i == n || j1 == -1 || j1 == m || j2 == -1 || j2 == m)
-            return 0;
-        
-        if(dp[i][j1][j2] != -1)
-            return dp[i][j1][j2];
-        
-        int ans = INT_MIN;
-        for(int x = -1; x <= 1; x++)
-            for(int y = -1; y <= 1; y++)
-                ans = max(ans, dfs(i+1, j1+x, j2+y, n, m, grid, dp));
-        return dp[i][j1][j2] = ans + grid[i][j1] + ((j1 == j2)? 0 : grid[i][j2]);
-    }
-    
-    int cherryPickup(vector<vector<int>>& grid) 
-    {
-        int n = grid.size(), m = grid[0].size();
-        vector<vector<vector<int>>> dp(n,vector<vector<int>>(n,vector<int>(m,-1)));
-        return dfs(0, 0, m-1, n, m, grid, dp);
-    }
+// APPROACH 1 (4D DP - Memoization)
+
+int dfs(int i1, int j1, int i2, int j2, int n, int m, vector<vector<int>> &grid, vector<vector<vector<vector<int>>>> &dp)
+{
+    if (j1 == -1 || i1 == n || j1 == m || j2 == -1 || i2 == n || j2 == m)
+        return 0;
+
+    if (dp[i1][j1][i2][j2] != -1)
+        return dp[i1][j1][i2][j2];
+
+    int x1 = grid[i1][j1];
+    int x2 = grid[i2][j2];
+
+    int ans = INT_MIN;
+    for (int x = -1; x <= 1; x++)
+        for (int y = -1; y <= 1; y++)
+            ans = max(ans, dfs(i1 + 1, j1 + x, i2 + 1, j2 + y, n, m, grid, dp));
+    return dp[i1][j1][i2][j2] = ans + x1 + ((i1 == i2 && j1 == j2) ? 0 : x2);
+}
+
+int cherryPickup(vector<vector<int>> &grid)
+{
+    int n = grid.size(), m = grid[0].size();
+    vector<vector<vector<vector<int>>>> dp(n, vector<vector<vector<int>>>(m, vector<vector<int>>(n, vector<int>(m, -1))));
+    return dfs(0, 0, 0, m - 1, n, m, grid, dp);
+}
+
+// APPROACH 2 (3D DP)
+
+// METHOD 1 (Memoization)
+
+int dfs(int i, int j1, int j2, int n, int m, vector<vector<int>> &grid, vector<vector<vector<int>>> &dp)
+{
+    if (i == n || j1 == -1 || j1 == m || j2 == -1 || j2 == m)
+        return 0;
+
+    if (dp[i][j1][j2] != -1)
+        return dp[i][j1][j2];
+
+    int ans = INT_MIN;
+    for (int x = -1; x <= 1; x++)
+        for (int y = -1; y <= 1; y++)
+            ans = max(ans, dfs(i + 1, j1 + x, j2 + y, n, m, grid, dp));
+    return dp[i][j1][j2] = ans + grid[i][j1] + ((j1 == j2) ? 0 : grid[i][j2]);
+}
+
+int cherryPickup(vector<vector<int>> &grid)
+{
+    int n = grid.size(), m = grid[0].size();
+    vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(m, -1)));
+    return dfs(0, 0, m - 1, n, m, grid, dp);
+}
