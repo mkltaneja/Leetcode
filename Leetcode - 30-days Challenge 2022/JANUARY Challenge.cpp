@@ -257,3 +257,30 @@ int cherryPickup(vector<vector<int>> &grid)
 
     return dp[0][0][m - 1];
 }
+
+// DAY 9 (1041. Robot Bounded In Circle)==================================================================
+
+bool isRobotBounded(string instructions)
+{
+    vector<vector<int>> dir = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    int idx = 0, x = 0, y = 0;
+    vector<int> d = dir[idx], di = d;
+    for (int i = 0; i < 4; i++)
+    {
+        for (char c : instructions)
+        {
+            if (c == 'R')
+                idx = ++idx % 4;
+            else if (c == 'L')
+                idx = (--idx + 4) % 4;
+            else
+                x += d[0], y += d[1];
+
+            d = dir[idx];
+        }
+
+        if (d == di && (x == 0 && y == 0))
+            return true;
+    }
+    return false;
+}
