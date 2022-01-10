@@ -284,3 +284,23 @@ bool isRobotBounded(string instructions)
     }
     return false;
 }
+
+// DAY 10 (67. Add Binary)================================================================
+
+string addBinary(string a, string b)
+{
+    string c = "";
+    int n = a.size(), m = b.size();
+    int carry = 0;
+    while (n || m)
+    {
+        int x = n ? a[--n] - '0' : 0;
+        int y = m ? b[--m] - '0' : 0;
+        int z = x + y + carry;
+        c = char((z % 2) + '0') + c;
+        carry = z / 2;
+    }
+    c = (carry ? "1" : "") + c;
+
+    return c;
+}
