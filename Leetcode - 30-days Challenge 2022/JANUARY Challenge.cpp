@@ -304,3 +304,20 @@ string addBinary(string a, string b)
 
     return c;
 }
+
+// DAY 11 (1022. Sum of Root To Leaf Binary Numbers)=========================================================
+
+int dfs(int sum, TreeNode *node)
+{
+    if (!node)
+        return 0;
+    sum = sum * 2 + node->val;
+    if (!node->left && !node->right)
+        return sum;
+    return dfs(sum, node->left) + dfs(sum, node->right);
+}
+
+int sumRootToLeaf(TreeNode *root)
+{
+    return dfs(0, root);
+}
