@@ -321,3 +321,18 @@ int sumRootToLeaf(TreeNode *root)
 {
     return dfs(0, root);
 }
+
+// DAY 12 (701. Insert into a Binary Search Tree)============================================================================
+
+TreeNode *insertIntoBST(TreeNode *root, int val)
+{
+    if (!root)
+        return new TreeNode(val);
+
+    if (val < root->val)
+        root->left = insertIntoBST(root->left, val);
+    else
+        root->right = insertIntoBST(root->right, val);
+
+    return root;
+}
