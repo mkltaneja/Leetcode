@@ -324,6 +324,8 @@ int sumRootToLeaf(TreeNode *root)
 
 // DAY 12 (701. Insert into a Binary Search Tree)============================================================================
 
+// APPROACH 1 (Recursively)
+
 TreeNode *insertIntoBST(TreeNode *root, int val)
 {
     if (!root)
@@ -334,5 +336,38 @@ TreeNode *insertIntoBST(TreeNode *root, int val)
     else
         root->right = insertIntoBST(root->right, val);
 
+    return root;
+}
+
+// APPROACH 2 (Iteratively)
+
+TreeNode *insertIntoBST(TreeNode *root, int val)
+{
+    if (!root)
+        return new TreeNode(val);
+    TreeNode *node = root;
+    while (true)
+    {
+        if (val < node->val)
+        {
+            if (node->left)
+                node = node->left;
+            else
+            {
+                node->left = new TreeNode(val);
+                break;
+            }
+        }
+        else
+        {
+            if (node->right)
+                node = node->right;
+            else
+            {
+                node->right = new TreeNode(val);
+                break;
+            }
+        }
+    }
     return root;
 }
