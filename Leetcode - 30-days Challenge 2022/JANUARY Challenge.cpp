@@ -391,3 +391,37 @@ int findMinArrowShots(vector<vector<int>> &points)
     }
     return arrows;
 }
+
+// DAY 14 (8. String to Integer (atoi))=================================================================
+
+bool isnum(char c)
+{
+    return (c >= '0' && c <= '9');
+}
+
+int myAtoi(string s)
+{
+    int n = s.size();
+    int i = 0;
+    while (i < n && s[i] == ' ')
+        i++;
+    int sign = 1;
+    if (i < n && (s[i] == '-' || s[i] == '+'))
+        sign = (s[i] == '-') ? -1 : 1, i++;
+    long ans = 0;
+    while (i < n && isnum(s[i]))
+    {
+        ans *= 10;
+        if (sign == 1)
+            ans += s[i] - '0';
+        else
+            ans -= s[i] - '0';
+        if (ans >= INT_MAX)
+            return INT_MAX;
+        if (ans <= INT_MIN)
+            return INT_MIN;
+        i++;
+    }
+
+    return ans;
+}
