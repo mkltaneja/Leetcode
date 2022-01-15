@@ -425,3 +425,37 @@ int myAtoi(string s)
 
     return ans;
 }
+
+// DAY 15 (1345. Jump Game IV)==============================================================================
+
+// APPROACH 1 (DFS) --> O(n^n)
+// TLE
+
+unordered_map<int, vector<int>> m;
+int minjumps(int i, vector<int> &vis, vector<int> &arr)
+{
+    if (i == -1 || i == arr.size() || vis[i])
+        return INT_MAX;
+    if (i == arr.size() - 1)
+        return 0;
+
+    vis[i] = true;
+
+    int minans = min({minjumps(i - 1, vis, arr),
+                      minjumps(i + 1, vis, arr)});
+
+    for (int x : m[arr[i]])
+        minans = min(minans, minjumps(x, vis, arr));
+
+    vis[i] = false;
+
+    return minans == INT_MAX ? 0 : minans + 1;
+}
+
+int minJumps(vector<int> &arr)
+{
+    for (int i = 0; i < arr.size(); i++)
+        m[arr[i]].push_back(i);
+    vector<int> vis(arr.size());
+    return minjumps(0, vis, arr);
+}
