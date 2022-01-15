@@ -459,3 +459,57 @@ int minJumps(vector<int> &arr)
     vector<int> vis(arr.size());
     return minjumps(0, vis, arr);
 }
+
+// APPROACH 2 (BFS) --> O(n^n), but MUCH OPTIMIZED (and passes all tc)
+
+int minJumps(vector<int> &arr)
+{
+    unordered_map<int, vector<int>> m;
+    int n = arr.size();
+    for (int i = 0; i < n; i++)
+        m[arr[i]].push_back(i);
+
+    queue<int> que;
+    que.push(n - 1);
+
+    vector<int> vis(n);
+    vis[n - 1] = true;
+
+    int lvl = 0;
+    while (!que.empty())
+    {
+        int sz = que.size();
+        while (sz--)
+        {
+            int i = que.front();
+            que.pop();
+
+            if (i == 0)
+                return lvl;
+
+            for (int d : {-1, 1})
+            {
+                if (i + d >= 0 && i + d < n && !vis[i + d])
+                {
+                    if (i + d == 0)
+                        return lvl + 1;
+                    vis[i + d] = true;
+                    que.push(i + d);
+                }
+            }
+            for (int x : m[arr[i]])
+            {
+                if (!vis[x])
+                {
+
+                    if (x == 0)
+                        return lvl + 1;
+                    vis[x] = true;
+                    que.push(x);
+                }
+            }
+        }
+        lvl++;
+    }
+    return lvl;
+}
