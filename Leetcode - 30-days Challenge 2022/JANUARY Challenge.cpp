@@ -513,3 +513,23 @@ int minJumps(vector<int> &arr)
     }
     return lvl;
 }
+
+// DAY 16 (849. Maximize Distance to Closest Person)======================================================================
+
+// APPROACH 1 (Storing the minimum distances in an array) --> O(3*n) time, O(n) space
+
+int maxDistToClosest(vector<int> &seats)
+{
+    int n = seats.size();
+    vector<int> d(n, INT_MAX);
+    for (int i = 0; i < n; i++)
+        d[i] = seats[i] ? 0 : ((!i || d[i - 1] == INT_MAX) ? INT_MAX : (d[i - 1] + 1));
+    for (int i = n - 2; i >= 0; i--)
+        d[i] = min(d[i], d[i + 1] + 1);
+
+    int ans = 0;
+    for (int x : d)
+        ans = max(ans, x);
+
+    return ans;
+}
