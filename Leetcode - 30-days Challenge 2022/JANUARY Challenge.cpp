@@ -533,3 +533,27 @@ int maxDistToClosest(vector<int> &seats)
 
     return ans;
 }
+
+// APPROACH 2 (Single Traversal -- Using the previous seat pointer) --> O(n) time, O(1) space
+
+int maxDistToClosest(vector<int> &seats)
+{
+    int n = seats.size();
+    int i = 0, pi = -1;
+    int ans = 0;
+    while (!seats[i])
+        i++;
+    while (i < n)
+    {
+        if (seats[i])
+        {
+            if (pi == -1)
+                ans = max(ans, i);
+            else
+                ans = max(ans, (i - pi) / 2);
+            pi = i;
+        }
+        i++;
+    }
+    return max(ans, i - pi - 1);
+}
