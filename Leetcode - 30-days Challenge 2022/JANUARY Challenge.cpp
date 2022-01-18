@@ -586,3 +586,37 @@ bool wordPattern(string pattern, string s)
 
     return (j >= s.size());
 }
+
+// DAY 18 (605. Can Place Flowers)===================================================================================================
+
+bool canPlaceFlowers(vector<int> &flowerbed, int n)
+{
+    int m = flowerbed.size();
+    int avail = 0;
+    int i = 0;
+    while (i < m)
+    {
+        if (flowerbed[i] == 1)
+        {
+            i++;
+            continue;
+        }
+        int j = i;
+        int z = 0;
+        while (j < m && flowerbed[j] == 0)
+        {
+            z++;
+            j++;
+        }
+        if (i == 0 && j == m)
+            avail += (z + 1) / 2;
+        else if (i == 0 || j == m)
+            avail += z / 2;
+        else
+            avail += (z - 1) / 2;
+        i = j;
+        if (avail >= n)
+            return true;
+    }
+    return avail >= n;
+}
