@@ -620,3 +620,32 @@ bool canPlaceFlowers(vector<int> &flowerbed, int n)
     }
     return avail >= n;
 }
+
+// DAY 19 (142. Linked List Cycle II)========================================================================
+
+ListNode *detectCycle(ListNode *head)
+{
+    ListNode *fast = head, *slow = head;
+    bool loop = false;
+    while (fast && fast->next && fast->next->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+        if (fast == slow)
+        {
+            loop = true;
+            break;
+        }
+    }
+    if (!loop)
+        return NULL;
+
+    slow = head;
+    while (slow != fast)
+    {
+        slow = slow->next;
+        fast = fast->next;
+    }
+
+    return fast;
+}
