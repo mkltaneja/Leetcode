@@ -649,3 +649,36 @@ ListNode *detectCycle(ListNode *head)
 
     return fast;
 }
+
+// DAY 20 (875. Koko Eating Bananas)================================================================================================
+
+bool check(unsigned long k, int h, vector<int> &piles)
+{
+    unsigned long time = 0;
+    for (int x : piles)
+    {
+        time += ceil(1.0 * x / k);
+        if (time > h)
+            return false;
+    }
+    return true;
+}
+
+int minEatingSpeed(vector<int> &piles, int h)
+{
+    unsigned long l = 1, r = 0;
+    for (int x : piles)
+        r += x;
+
+    while (l < r)
+    {
+        unsigned long m = l + ((r - l) >> 1);
+        bool res = check(m, h, piles);
+
+        if (res)
+            r = m;
+        else
+            l = m + 1;
+    }
+    return l;
+}
