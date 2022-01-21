@@ -682,3 +682,23 @@ int minEatingSpeed(vector<int> &piles, int h)
     }
     return l;
 }
+
+// DAY 21 (134. Gas Station)======================================================================
+
+int canCompleteCircuit(vector<int> &gas, vector<int> &cost)
+{
+    int ans = 0;
+    int currgas = 0, totgas = 0;
+    for (int i = 0; i < gas.size(); i++)
+    {
+        int delta = gas[i] - cost[i];
+        totgas += delta;
+        currgas += delta;
+        if (currgas < 0)
+        {
+            currgas = 0;
+            ans = i + 1;
+        }
+    }
+    return totgas < 0 ? -1 : ans % gas.size();
+}
