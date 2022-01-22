@@ -5,6 +5,8 @@
         "*.tcc": "cpp",
         "deque": "cpp",
         "string": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "array": "cpp",
+        "regex": "cpp"
     }
 }

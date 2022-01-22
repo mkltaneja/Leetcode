@@ -705,17 +705,19 @@ int canCompleteCircuit(vector<int> &gas, vector<int> &cost)
 
 // DAY 22 (1510. Stone Game IV)======================================================
 
-    bool winnerSquareGame(int n) 
+bool winnerSquareGame(int n)
+{
+    vector<bool> win(n + 1, false);
+
+    for (int x = 1; x <= n; x++)
     {
-        vector<bool> win(n+1, false);
-        
-        for(int x = 1; x <= n; x++)
-        {
-            int m = 1;
-            while(x - m*m >= 0 && win[x-m*m])
-                m++;
-            if(x-m*m < 0) win[x] = false;
-            else win[x] = true;
-        }
-        return win[n];
+        int m = 1;
+        while (x - m * m >= 0 && win[x - m * m])
+            m++;
+        if (x - m * m < 0)
+            win[x] = false;
+        else
+            win[x] = true;
     }
+    return win[n];
+}
