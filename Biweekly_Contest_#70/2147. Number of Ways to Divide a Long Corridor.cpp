@@ -35,3 +35,22 @@ int numberOfWays(string corridor)
     }
     return ans % mod;
 }
+
+// APPROACH 2 (DP) --> O(n)
+
+int numberOfWays(string corridor)
+{
+    int n = corridor.size();
+    vector<long> dp(n + 1), cnt(n + 1);
+    dp[0] = cnt[0] = 1;
+    int s = 0;
+    int mod = (int)(1e9 + 7);
+    for (int i = 1; i <= n; i++)
+    {
+        s += corridor[i - 1] == 'S';
+        if (s >= 2)
+            dp[i] = cnt[s - 2];
+        cnt[s] = ((cnt[s] % mod) + (dp[i] % mod)) % mod;
+    }
+    return dp[n];
+}
