@@ -721,3 +721,24 @@ bool winnerSquareGame(int n)
     }
     return win[n];
 }
+
+// DAY 23 (1291. Sequential Digits)=====================================================================
+
+vector<int> sequentialDigits(int low, int high)
+{
+    vector<int> ans;
+    for (int i = 1; i < 9; i++)
+    {
+        long x = i;
+        int j = i;
+        while (x <= high && j <= 9)
+        {
+            if (x >= low)
+                ans.push_back(x);
+            x = x * 10 + ++j;
+        }
+    }
+    sort(ans.begin(), ans.end());
+
+    return ans;
+}
