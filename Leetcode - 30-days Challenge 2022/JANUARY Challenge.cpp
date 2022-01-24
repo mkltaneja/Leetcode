@@ -742,3 +742,19 @@ vector<int> sequentialDigits(int low, int high)
 
     return ans;
 }
+
+// DAY 24 (520. Detect Capital)================================================================================
+
+bool iscap(char &c)
+{
+    return c >= 'A' && c <= 'Z';
+}
+
+bool detectCapitalUse(string word)
+{
+    int cap = 0;
+    for (int i = 0; i < word.size(); i++)
+        if (iscap(word[i]))
+            cap++;
+    return !cap || (cap == word.size()) || (cap == 1 && iscap(word[0]));
+}
