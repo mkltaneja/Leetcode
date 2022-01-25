@@ -758,3 +758,16 @@ bool detectCapitalUse(string word)
             cap++;
     return !cap || (cap == word.size()) || (cap == 1 && iscap(word[0]));
 }
+
+// DAY 25 (941. Valid Mountain Array)=======================================================================================
+
+bool validMountainArray(vector<int> &arr)
+{
+    int i = 0, j = arr.size() - 1;
+    while (i < j && arr[i] < arr[i + 1])
+        i++;
+    while (j > i && arr[j] < arr[j - 1])
+        j--;
+
+    return i > 0 && i == j && j < arr.size() - 1;
+}
