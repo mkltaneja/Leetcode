@@ -774,6 +774,8 @@ bool validMountainArray(vector<int> &arr)
 
 // DAY 26 (1305. All Elements in Two Binary Search Trees)==========================================================================================
 
+// METHOD 1 (Inorder DFS)
+
 void inorder(TreeNode *node, vector<int> &in)
 {
     if (!node)
@@ -788,6 +790,58 @@ vector<int> getAllElements(TreeNode *root1, TreeNode *root2)
     vector<int> in1, in2;
     inorder(root1, in1);
     inorder(root2, in2);
+
+    int n = in1.size(), m = in2.size();
+    vector<int> ans(n + m);
+    int i = 0, j = 0, k = 0;
+    while (k < n + m)
+    {
+        int x = i < n ? in1[i] : INT_MAX;
+        int y = j < m ? in2[j] : INT_MAX;
+        if (x < y)
+            ans[k++] = x, i++;
+        else
+            ans[k++] = y, j++;
+    }
+
+    return ans;
+}
+
+// METHOD 2 (Morris Inorder Traversal)
+
+vector<int> morris_inorder(TreeNode *node)
+{
+    vector<int> in;
+    while (node)
+    {
+        if (!node->left)
+        {
+            in.push_back(node->val);
+            node = node->right;
+            continue;
+        }
+        TreeNode *nodep1 = node->left;
+        while (nodep1->right && nodep1->right != node)
+            nodep1 = nodep1->right;
+        if (!nodep1->right)
+        {
+            nodep1->right = node;
+            node = node->left;
+        }
+        else
+        {
+            in.push_back(node->val);
+            node = node->right;
+            nodep1->right = nullptr;
+        }
+    }
+    return in;
+}
+
+vector<int> getAllElements(TreeNode *root1, TreeNode *root2)
+{
+    vector<int> in1 = morris_inorder(root1);
+    vector<int> in2 = morris_inorder(root2);
 
     int n = in1.size(), m = in2.size();
     vector<int> ans(n + m);
