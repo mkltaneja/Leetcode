@@ -858,3 +858,57 @@ vector<int> getAllElements(TreeNode *root1, TreeNode *root2)
 
     return ans;
 }
+
+// DAY 27 (421. Maximum XOR of Two Numbers in an Array)============================================================================
+
+class trie
+{
+public:
+    vector<trie *> on;
+    trie()
+    {
+        this->on.assign(2, nullptr);
+    }
+
+    void insert(int x, trie *root)
+    {
+        trie *tmp = root;
+        for (int i = 31; i >= 0; i--)
+        {
+            int idx = (x >> i & 1);
+            if (!tmp->on[idx])
+                tmp->on[idx] = new trie();
+            tmp = tmp->on[idx];
+        }
+    }
+};
+trie *root = new trie();
+
+int findMaximumXOR(vector<int> &nums)
+{
+    for (int x : nums)
+    {
+        root->insert(x, root);
+    }
+
+    int ans = 0;
+    for (int x : nums)
+    {
+        int mx = 0;
+        trie *tmp = root;
+        for (int i = 31; i >= 0; i--)
+        {
+            int idx = (x >> i & 1 ^ 1);
+            if (tmp->on[idx])
+            {
+                mx |= (1 << i);
+                tmp = tmp->on[idx];
+            }
+            else
+                tmp = tmp->on[idx ^ 1];
+        }
+        ans = max(ans, mx);
+    }
+
+    return ans;
+}
