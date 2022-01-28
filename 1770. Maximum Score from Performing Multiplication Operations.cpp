@@ -19,3 +19,21 @@ int maximumScore(vector<int> &nums, vector<int> &multipliers)
     vector<vector<int>> dp(m, vector<int>(m, -1));
     return dfs(0, 0, n, m, nums, multipliers, dp);
 }
+
+// APPROACH 2 (Tabulated)
+
+int maximumScore(vector<int> &nums, vector<int> &multipliers)
+{
+    int n = nums.size(), m = multipliers.size();
+    vector<vector<int>> dp(m + 1, vector<int>(m + 1, 0));
+    for (int k = m - 1; k >= 0; k--)
+    {
+        int x = multipliers[k];
+        for (int i = k; i >= 0; i--)
+        {
+            int j = (n - 1) - (k - i);
+            dp[i][k] = max(x * nums[i] + dp[i + 1][k + 1], x * nums[j] + dp[i][k + 1]);
+        }
+    }
+    return dp[0][0];
+}
