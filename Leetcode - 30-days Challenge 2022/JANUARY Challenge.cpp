@@ -912,3 +912,65 @@ int findMaximumXOR(vector<int> &nums)
 
     return ans;
 }
+
+// DAY 28 (211. Design Add and Search Words Data Structure)========================================================================================
+class WordDictionary
+{
+public:
+    class trie
+    {
+    public:
+        vector<trie *> on;
+        bool wordEnd;
+        trie()
+        {
+            this->on.assign(26, nullptr);
+            this->wordEnd = false;
+        }
+    };
+
+    trie *root;
+    WordDictionary()
+    {
+        this->root = new trie();
+    }
+
+    void addWord(string word)
+    {
+        trie *tmp = root;
+        for (char c : word)
+        {
+            if (!tmp->on[c - 'a'])
+                tmp->on[c - 'a'] = new trie();
+            tmp = tmp->on[c - 'a'];
+        }
+        tmp->wordEnd = true;
+    }
+
+    bool dfs(int i, trie *curr, string &word)
+    {
+        if (i == word.size())
+            return curr->wordEnd;
+        if (word[i] == '.')
+        {
+            for (trie *itr : curr->on)
+                if (itr && dfs(i + 1, itr, word))
+                    return true;
+            return false;
+        }
+
+        return curr->on[word[i] - 'a'] ? dfs(i + 1, curr->on[word[i] - 'a'], word) : false;
+    }
+
+    bool search(string word)
+    {
+        return dfs(0, root, word);
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
