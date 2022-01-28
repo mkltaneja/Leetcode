@@ -35,3 +35,27 @@ int deleteAndEarn(vector<int> &nums)
 
     return ans;
 }
+
+// APPROACH 2 (DP -- Constant Space)
+
+int deleteAndEarn(vector<int> &nums)
+{
+    int n = nums.size();
+    map<int, int> m;
+    for (int x : nums)
+        m[x]++;
+
+    int inc = 0, exc = 0;
+    int prev = -1;
+    for (auto p : m)
+    {
+        int newexc = max(inc, exc);
+        int newinc = p.first * p.second + ((p.first == prev + 1) ? exc : newexc);
+
+        inc = newinc;
+        exc = newexc;
+        prev = p.first;
+    }
+
+    return max(inc, exc);
+}
