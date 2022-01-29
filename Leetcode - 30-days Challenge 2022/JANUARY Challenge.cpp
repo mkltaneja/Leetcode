@@ -974,3 +974,26 @@ public:
  * obj->addWord(word);
  * bool param_2 = obj->search(word);
  */
+
+
+// DAY 29 (84. Largest Rectangle in Histogram)==========================================================================
+
+    int largestRectangleArea(vector<int>& heights) 
+    {
+        int n = heights.size();
+        stack<int> st;
+        st.push(-1);
+        int ans = 0;
+        for(int i = 0; i <= n; i++)
+        {
+            int x = (i == n)? INT_MIN : heights[i];
+            while(st.top() != -1 && x <= heights[st.top()])
+            {
+                int h = heights[st.top()];
+                st.pop();
+                ans = max(ans, h * (i - st.top() - 1));
+            }
+            st.push(i);
+        }
+        return ans;
+    }
