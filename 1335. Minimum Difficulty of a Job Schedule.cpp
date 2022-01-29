@@ -33,3 +33,29 @@ int minDifficulty(vector<int> &jd, int d)
 
     return ans == INT_MAX ? -1 : ans;
 }
+
+// APPROACH 2 (Tabulated)
+
+int minDifficulty(vector<int> &jd, int d)
+{
+    int n = jd.size();
+    if (n < d)
+        return -1;
+    vector<vector<int>> dp(d + 1, vector<int>(n, INT_MAX));
+    for (int i = 0; i < n; i++)
+        dp[1][i] = i ? max(dp[1][i - 1], jd[i]) : jd[i];
+
+    for (int days = 2; days <= d; days++)
+    {
+        for (int i = days - 1; i < n; i++)
+        {
+            int mx = -1;
+            for (int j = i; j >= days - 1; j--)
+            {
+                mx = max(mx, jd[j]);
+                dp[days][i] = min(dp[days][i], dp[days - 1][j - 1] + mx);
+            }
+        }
+    }
+    return dp[d][n - 1];
+}
