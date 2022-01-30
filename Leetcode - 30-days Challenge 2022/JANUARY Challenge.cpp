@@ -1028,3 +1028,15 @@ void rotate(vector<int> &nums, int k)
         i = (i + k) % n;
     }
 }
+
+// Method 2 (Appending elements)
+
+void rotate(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    k %= n;
+    vector<int> ans(nums.begin() + n - k, nums.end());
+    ans.insert(ans.end(), nums.begin(), nums.begin() + n - k);
+
+    nums = ans;
+}
