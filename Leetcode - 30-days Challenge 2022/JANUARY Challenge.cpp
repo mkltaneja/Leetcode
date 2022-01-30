@@ -996,3 +996,35 @@ int largestRectangleArea(vector<int> &heights)
     }
     return ans;
 }
+
+// DAY 30 (189. Rotate Array)=============================================================================
+
+// APPROACH 1 (Linear Space)
+
+// METHOD 1 (Marking Visited indices)
+
+void rotate(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    vector<bool> vis(n, false);
+    int viscnt = 0;
+
+    k %= n;
+    if (!k)
+        return;
+    int i = k, prev = nums[0];
+    while (viscnt < n)
+    {
+        while (viscnt < n && !vis[i])
+        {
+            int curr = nums[i];
+            nums[i] = prev;
+            prev = curr;
+            vis[i] = true;
+            viscnt++;
+            i = (i + k) % n;
+        }
+        prev = nums[++i % n];
+        i = (i + k) % n;
+    }
+}
