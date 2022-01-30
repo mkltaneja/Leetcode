@@ -1040,3 +1040,14 @@ void rotate(vector<int> &nums, int k)
 
     nums = ans;
 }
+
+// APPROACH 2 (Constant Space) [Reversing the 2 portions of array]
+
+void rotate(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    k %= n;
+    reverse(nums.begin(), nums.begin() + n - k);
+    reverse(nums.begin() + n - k, nums.end());
+    reverse(nums.begin(), nums.end());
+}
