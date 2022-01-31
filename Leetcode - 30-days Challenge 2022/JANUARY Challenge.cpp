@@ -1051,3 +1051,19 @@ void rotate(vector<int> &nums, int k)
     reverse(nums.begin() + n - k, nums.end());
     reverse(nums.begin(), nums.end());
 }
+
+// DAY 31 (1672. Richest Customer Wealth)
+
+int maximumWealth(vector<vector<int>> &accounts)
+{
+    int n = accounts.size(), m = accounts[0].size();
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int wealth = 0;
+        for (int j = 0; j < m; j++)
+            wealth += accounts[i][j];
+        ans = max(ans, wealth);
+    }
+    return ans;
+}
