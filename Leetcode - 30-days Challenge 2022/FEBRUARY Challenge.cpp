@@ -67,10 +67,10 @@ int findMaxLength(vector<int> &nums)
     mp[0] = -1;
     int pol = 0;
     int ans = 0;
-    for (int x : nums)
+    for (int i = 0; i < nums.size(); i++)
     {
-        pol += (x == 1);
-        pol -= (x == 0);
+        pol += (nums[i] == 1);
+        pol -= (nums[i] == 0);
         if (!mp.count(pol))
             mp[pol] = i;
         else
