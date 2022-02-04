@@ -58,3 +58,23 @@ int fourSumCount(vector<int> &nums1, vector<int> &nums2, vector<int> &nums3, vec
 
     return ans;
 }
+
+// DAY 4 (525. Contiguous Array)======================================================================
+
+int findMaxLength(vector<int> &nums)
+{
+    unordered_map<int, int> mp;
+    mp[0] = -1;
+    int pol = 0;
+    int ans = 0;
+    for (int x : nums)
+    {
+        pol += (x == 1);
+        pol -= (x == 0);
+        if (!mp.count(pol))
+            mp[pol] = i;
+        else
+            ans = max(ans, i - mp[pol]);
+    }
+    return ans;
+}
