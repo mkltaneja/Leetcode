@@ -114,7 +114,9 @@ ListNode *mergeKLists(vector<ListNode *> &lists)
     return ans->next;
 }
 
-// APPROACH 2 (Brute Force) --> O(n*k) [n -> total nodes]
+// APPROACH 2 (DIVIDE)
+
+// METHOD 1 (Brute Force) --> O(n*k) [n -> total nodes]
 
 ListNode *merge2lists(ListNode *l1, ListNode *l2)
 {
@@ -147,4 +149,39 @@ ListNode *mergeKLists(vector<ListNode *> &lists)
         ans = merge2lists(ans, lists[i]);
 
     return ans->next;
+}
+
+// METHOD 2 (Divide and Conquer) --> O(n*logn(k)) [n -> total nodes] [O(1) space]
+
+ListNode *merge2lists(ListNode *l1, ListNode *l2)
+{
+    ListNode *ans = new ListNode(INT_MIN), *itr = ans;
+    while (l1 && l2)
+    {
+        if (l1->val < l2->val)
+        {
+            itr->next = l1;
+            l1 = l1->next;
+        }
+        else
+        {
+            itr->next = l2;
+            l2 = l2->next;
+        }
+        itr = itr->next;
+    }
+    itr->next = l1 ? l1 : l2;
+    return ans->next;
+}
+
+ListNode *mergeKLists(vector<ListNode *> &lists)
+{
+    if (lists.empty())
+        return nullptr;
+
+    for (int i = 1; i < lists.size(); i *= 2)
+        for (int j = 0; i + j < lists.size(); j += (i * 2))
+            lists[j] = merge2lists(lists[j], lists[i + j]);
+
+    return lists[0];
 }
