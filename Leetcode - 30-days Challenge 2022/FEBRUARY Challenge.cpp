@@ -78,3 +78,38 @@ int findMaxLength(vector<int> &nums)
     }
     return ans;
 }
+
+// DAY 5 (23. Merge k Sorted Lists)=============================================================================
+
+// APPROACH 1 (Using Priority Queue) --> O(n*log(k))
+
+struct comp
+{
+    bool operator()(ListNode *a, ListNode *b)
+    {
+        return a->val > b->val;
+    }
+};
+
+ListNode *mergeKLists(vector<ListNode *> &lists)
+{
+    priority_queue<ListNode *, vector<ListNode *>, comp> pq;
+    for (int i = 0; i < lists.size(); i++)
+        if (lists[i])
+            pq.push(lists[i]);
+
+    ListNode *ans = new ListNode(INT_MIN), *itr = ans;
+    while (!pq.empty())
+    {
+        ListNode *node = pq.top();
+        pq.pop();
+        ListNode *nxt = node->next;
+        if (nxt)
+            pq.push(nxt);
+
+        itr->next = node;
+        itr = itr->next;
+    }
+
+    return ans->next;
+}
