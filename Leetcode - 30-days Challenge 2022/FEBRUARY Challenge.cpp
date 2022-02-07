@@ -200,3 +200,18 @@ int removeDuplicates(vector<int> &nums)
     }
     return j;
 }
+
+// DAY 7 (389. Find the Difference)=================================================================================================
+
+char findTheDifference(string s, string t)
+{
+    int ans = 0;
+    for (int i = 0; i < s.size(); i++)
+    {
+        ans ^= s[i];
+        ans ^= t[i];
+    }
+    ans ^= t.back();
+
+    return ans;
+}
