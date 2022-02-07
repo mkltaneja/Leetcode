@@ -39,3 +39,28 @@ int countVowelPermutation(int n)
 
     return ans % m;
 }
+
+// APPROACH 2 (Tabulated [Space OPTIMIZED])
+
+int m = 1e9 + 7;
+int countVowelPermutation(int n)
+{
+    long pa, pe, pi, po, pu;
+    pa = pe = pi = po = pu = 1;
+    for (int x = 1; x < n; x++)
+    {
+        long a = pe % m;
+        long e = (pa + pi) % m;
+        long i = (pa + pe + po + pu) % m;
+        long o = (pi + pu) % m;
+        long u = pa % m;
+
+        pa = a;
+        pe = e;
+        pi = i;
+        po = o;
+        pu = u;
+    }
+
+    return (pa + pe + pi + po + pu) % m;
+}
