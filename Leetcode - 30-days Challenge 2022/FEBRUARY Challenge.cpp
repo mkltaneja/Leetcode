@@ -222,3 +222,18 @@ int addDigits(int num)
 {
     return 1 + (num-1)%9;
 }
+
+// DAY 9 (532. K-diff Pairs in an Array)=============================================================================================
+
+int findPairs(vector<int>& nums, int k) 
+{
+    unordered_map<int,int> mp;
+    for(int x : nums)
+        mp[x]++;
+    int ans = 0;
+    for(auto p : mp)
+    {
+        if(k == 0) ans += (p.second > 1);
+    }
+    return ans;
+}
