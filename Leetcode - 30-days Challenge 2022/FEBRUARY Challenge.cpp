@@ -237,3 +237,20 @@ int findPairs(vector<int>& nums, int k)
     }
     return ans;
 }
+
+// DAY 10 (560. Subarray Sum Equals K)============================================================================================================================
+
+int subarraySum(vector<int>& nums, int k) 
+{
+    unordered_map<int,int> mp;
+    mp[0] = 1;
+    int psum = 0;
+    int ans = 0;
+    for(int x : nums)
+    {
+        psum += x;
+        ans += mp[psum-k];
+        mp[psum]++;
+    }
+    return ans;
+}
