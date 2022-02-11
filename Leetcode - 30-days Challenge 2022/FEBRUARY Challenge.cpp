@@ -254,3 +254,37 @@ int subarraySum(vector<int>& nums, int k)
     }
     return ans;
 }
+
+// DAY 11 (567. Permutation in String)==============================================================================================
+
+// APPROACH 1 (Sliding window - with variable size)
+
+bool checkInclusion(string s1, string s2) 
+{
+    vector<int> map(26);
+    for(char c : s1)
+        map[c-'a']++;
+
+    int i = 0;
+    while(i < s2.size())
+    {
+        if(!map[s2[i]-'a']) 
+        {
+            i++;
+            continue;
+        }
+
+        int n = s1.size();
+        vector<int> tmap(26);
+        int j = i;
+        while(i < s2.size() && map[s2[i]-'a'])
+        {
+            tmap[s2[i]-'a']++;
+            while(j < i && tmap[s2[i]-'a'] > map[s2[i]-'a'])
+                tmap[s2[j++]-'a']--;
+            i++;
+            if(tmap == map) return true;
+        }
+    }
+    return false;
+}
