@@ -215,3 +215,10 @@ char findTheDifference(string s, string t)
 
     return ans;
 }
+
+// DAY 8 (258. Add Digits)==========================================================================================================
+
+int addDigits(int num) 
+{
+    return 1 + (num-1)%9;
+}
