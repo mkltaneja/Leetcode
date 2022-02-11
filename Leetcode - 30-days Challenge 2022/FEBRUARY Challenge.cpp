@@ -288,3 +288,22 @@ bool checkInclusion(string s1, string s2)
     }
     return false;
 }
+
+// APPROACH 2 (Sliding Window - fixed size)
+
+bool checkInclusion(string s1, string s2) 
+{
+    vector<int> map1(26), map2(26);
+    for(char c : s1)
+        map1[c-'a']++;
+
+    for(int i = 0; i < s2.size(); i++)
+    {
+        if(i >= s1.size()) 
+            map2[s2[i-s1.size()]-'a']--;
+        map2[s2[i]-'a']++;
+
+        if(map1 == map2) return true;
+    }
+    return false;
+}
