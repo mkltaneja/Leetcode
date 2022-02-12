@@ -307,3 +307,52 @@ bool checkInclusion(string s1, string s2)
     }
     return false;
 }
+
+// DAY 12 (127. Word Ladder)===============================================================================================
+
+int ladderLength(string beginWord, string endWord, vector<string>& wordList) 
+{
+    unordered_set<string> st;
+    for(string s : wordList)
+        st.insert(s);
+
+    if(!st.count(endWord)) return 0;
+
+    queue<string> que;
+    que.push(beginWord);
+
+    unordered_set<string> vis;
+    vis.insert(beginWord);
+
+    int lvl = 1;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            string x = que.front();
+            que.pop();
+
+            if(x == endWord) return lvl;
+
+            for(int i = 0; i < x.size(); i++)
+            {
+                char c = x[i];
+                for(int j = 'a'; j <= 'z'; j++)
+                {
+                    if(j == c) continue;
+                    x[i] = j;
+                    if(st.count(x) && !vis.count(x)) 
+                    {
+                        que.push(x);
+                        vis.insert(x);
+                    }
+                }
+                x[i] = c;
+            }
+        }
+        lvl++;
+    }
+
+    return 0;
+}
