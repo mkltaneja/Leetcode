@@ -356,3 +356,20 @@ int ladderLength(string beginWord, string endWord, vector<string>& wordList)
 
     return 0;
 }
+
+// DAY 13 (78. Subsets)======================================================================================================
+
+vector<vector<int>> subsets(vector<int>& nums) 
+{
+    vector<vector<int>> ans;
+    int n = nums.size();
+    for(int i = 0; i < (1 << n); i++)
+    {
+        vector<int> curr;
+        for(int j = 0; j < n; j++)
+            if(i & (1 << j))
+                curr.push_back(nums[j]);
+        ans.push_back(curr);
+    }
+    return ans;
+}
