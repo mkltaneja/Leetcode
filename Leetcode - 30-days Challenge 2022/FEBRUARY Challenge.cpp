@@ -373,3 +373,10 @@ vector<vector<int>> subsets(vector<int>& nums)
     }
     return ans;
 }
+
+// DAY 14 (104. Maximum Depth of Binary Tree)=======================================================================
+
+int maxDepth(TreeNode* root) 
+{
+    return root? max(maxDepth(root->left), maxDepth(root->right)) + 1 : 0;
+}
