@@ -380,3 +380,12 @@ int maxDepth(TreeNode* root)
 {
     return root? max(maxDepth(root->left), maxDepth(root->right)) + 1 : 0;
 }
+
+// DAY 15 (136. Single Number)==================================================================================================
+
+int singleNumber(vector<int>& nums) 
+{
+    int ans = 0;
+    for(int x : nums) ans ^= x;
+    return ans;
+}
