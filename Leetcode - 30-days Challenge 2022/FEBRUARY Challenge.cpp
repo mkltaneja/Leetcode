@@ -389,3 +389,28 @@ int singleNumber(vector<int>& nums)
     for(int x : nums) ans ^= x;
     return ans;
 }
+
+// DAY 16 (24. Swap Nodes in Pairs)========================================================================================================
+
+ListNode* swapPairs(ListNode* head) 
+{
+    ListNode *prev = nullptr, *next, *itr = head;
+
+    while(itr && itr->next)
+    {
+        ListNode *a = itr, *b = itr->next;
+        a->next = nullptr;
+        a->next = b->next;
+        b->next = nullptr;
+        b->next = a;
+        if(prev != nullptr)
+            prev->next = b;
+        else
+            head = b;
+
+        prev = itr;
+        itr = itr->next;
+    }
+
+    return head;
+}
