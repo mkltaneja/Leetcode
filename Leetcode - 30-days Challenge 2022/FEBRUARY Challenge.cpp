@@ -414,3 +414,28 @@ ListNode* swapPairs(ListNode* head)
 
     return head;
 }
+
+// DAY 17 (39. Combination Sum)===========================================================================================
+
+vector<vector<int>> combinationSum(vector<int>& candidates, int target) 
+{
+    vector<vector<vector<int>>> ans(target+1);
+    for(int x : candidates)
+    {
+        for(int i = x; i <= target; i++)
+        {
+            if(x > i) continue;
+            if(i == x) ans[i].push_back({x});
+            else
+            {
+                for(vector<int> v : ans[i-x])
+                {
+                    vector<int> tmp = v;
+                    tmp.push_back(x);
+                    ans[i].push_back(tmp);
+                }
+            }
+        }
+    }
+    return ans[target];
+}
