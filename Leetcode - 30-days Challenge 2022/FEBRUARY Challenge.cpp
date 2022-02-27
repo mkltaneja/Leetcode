@@ -439,3 +439,33 @@ vector<vector<int>> combinationSum(vector<int>& candidates, int target)
     }
     return ans[target];
 }
+
+// DAY 18 (402. Remove K Digits)===========================================================================================
+
+string removeKdigits(string num, int k) 
+{
+    stack<char> st;
+    for(char c : num)
+    {
+        while(!st.empty() && k && c < st.top())
+        {
+            st.pop();
+            k--;
+        }
+        if(c == '0' && st.empty()) continue;
+        st.push(c);
+    }
+
+    while(k-- && !st.empty())
+        st.pop();
+
+    string ans = "";
+    while(!st.empty())
+    {
+        ans += st.top();
+        st.pop();
+    }
+    reverse(ans.begin(), ans.end());
+
+    return ans.empty()? "0" : ans;
+}
