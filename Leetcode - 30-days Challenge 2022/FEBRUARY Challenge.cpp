@@ -538,3 +538,48 @@ int titleToNumber(string columnTitle)
         ans = ans*26 + (c-'A'+1);
     return ans;
 }
+
+// DAY 23 (133. Clone Graph)===========================================================================================
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+
+class Solution {
+public:
+    
+    Node* cloneGraph(Node* node, vector<Node*> &vis)
+    {
+        if(!node) return node;
+        if(vis[node->val]) return vis[node->val];
+        
+        Node* nnode = new Node(node->val);
+        vis[nnode->val] = nnode;
+        
+        for(Node* nbr : node->neighbors)
+            nnode->neighbors.push_back(cloneGraph(nbr, vis));
+        return nnode;
+    }
+    
+    Node* cloneGraph(Node* node) 
+    {
+        vector<Node*> vis(101, nullptr);
+        return cloneGraph(node, vis);
+    }
+};
