@@ -655,3 +655,48 @@ int compareVersion(string version1, string version2)
     }
     return 0;
 }
+
+// DAY 26 (847. Shortest Path Visiting All Nodes)======================================================================
+
+int shortestPathLength(vector<vector<int>>& graph) 
+{
+    int n = graph.size();
+    if(n == 1) return 0;
+    int allvis = (1 << n) - 1;
+
+    vector<vector<int>> vis(n, vector<int>((1<<n), 0));
+
+    queue<pair<int,int>> que;
+    for(int i = 0; i < n; i++)
+    {
+        que.push({i, (1<<i)});
+        vis[i][(1<<i)] = 1;
+    }
+
+    int steps = 0;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            auto p = que.front();
+            que.pop();
+            int u = p.first;
+            int mask = p.second;
+            for(int v : graph[u])
+            {
+                int mask2 = mask | (1 << v);
+                if(mask2 == allvis) 
+                    return steps+1;
+
+                if(!vis[v][mask2])
+                {
+                    vis[v][mask2] = 1;
+                    que.push({v, mask2});
+                }
+            }
+        }
+        steps++;
+    }
+    return steps;
+}
