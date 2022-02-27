@@ -469,3 +469,29 @@ string removeKdigits(string num, int k)
 
     return ans.empty()? "0" : ans;
 }
+
+// DAY 19 (1675. Minimize Deviation in Array)===========================================================================================
+
+int minimumDeviation(vector<int>& nums) 
+{
+    priority_queue<int> pq;
+    int mn = INT_MAX;
+    for(int x : nums)
+    {
+        if(x&1) x *= 2;
+        mn = min(mn, x);
+        pq.push(x);
+    }
+    int mndev = pq.top() - mn;
+    while(pq.top() & 1 ^ 1)
+    {
+        int tp = pq.top();
+        pq.pop();
+        tp /= 2;
+        pq.push(tp);
+        mn = min(mn, tp);
+        mndev = min(mndev, pq.top()-mn);
+    }
+
+    return mndev;
+}
