@@ -540,6 +540,7 @@ int titleToNumber(string columnTitle)
 }
 
 // DAY 23 (133. Clone Graph)===========================================================================================
+
 /*
 // Definition for a Node.
 class Node {
@@ -583,3 +584,53 @@ public:
         return cloneGraph(node, vis);
     }
 };
+
+// DAY 24 (148. Sort List)===========================================================================================
+
+ListNode* getMid(ListNode* head)
+{
+    ListNode* fast = head, *slow = head;
+    while(fast->next && fast->next->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+    return slow;
+}
+
+ListNode* merge(ListNode* l1, ListNode* l2)
+{
+    ListNode* ans = new ListNode(INT_MIN), *itr = ans;
+    while(l1 || l2)
+    {
+        int x = l1? l1->val : INT_MAX;
+        int y = l2? l2->val : INT_MAX;
+        if(x < y)
+        {
+            itr->next = new ListNode(x);
+            l1 = l1->next;
+        }
+        else
+        {
+            itr->next = new ListNode(y);
+            l2 = l2->next;
+        }
+        itr = itr->next;
+    }
+    return ans->next;
+}
+
+ListNode* sortList(ListNode* head) 
+{
+    if(!head || !head->next) return head;
+
+    ListNode* mid = getMid(head);
+    ListNode* nxt = mid->next;
+    mid->next = nullptr;
+    ListNode* l1 = sortList(head);
+    ListNode* l2 = sortList(nxt);
+
+    ListNode* ans = merge(l1, l2);
+
+    return ans;
+}
