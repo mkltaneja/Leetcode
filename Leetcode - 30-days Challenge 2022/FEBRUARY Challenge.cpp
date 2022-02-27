@@ -700,3 +700,31 @@ int shortestPathLength(vector<vector<int>>& graph)
     }
     return steps;
 }
+
+// DAY 27 (662. Maximum Width of Binary Tree)======================================================================
+
+int widthOfBinaryTree(TreeNode* root) 
+{
+    long maxw = 1;
+    queue<pair<TreeNode*,long>> que;
+    que.push({root, 0});
+
+    while(!que.empty())
+    {
+        int sz = que.size();
+        long st = que.front().second;
+        long end = que.back().second;
+        while(sz--)
+        {
+            TreeNode* node = que.front().first;
+            long x = que.front().second;
+            que.pop();
+            long vlvl = x - st;
+            if(node->left) que.push({node->left, 2*vlvl+1});
+            if(node->right) que.push({node->right, 2*vlvl+2});
+        }
+        maxw = max(maxw, end-st+1);
+    }
+
+    return maxw;
+}
