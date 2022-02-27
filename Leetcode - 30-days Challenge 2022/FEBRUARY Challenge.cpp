@@ -528,3 +528,13 @@ int majorityElement(vector<int>& nums)
     }
     return n;
 }
+
+// DAY 22 (171. Excel Sheet Column Number)===========================================================================================
+
+int titleToNumber(string columnTitle) 
+{
+    int ans = 0;
+    for(char c : columnTitle)
+        ans = ans*26 + (c-'A'+1);
+    return ans;
+}
