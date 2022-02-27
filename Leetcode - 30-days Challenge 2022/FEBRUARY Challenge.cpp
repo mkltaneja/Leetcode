@@ -514,3 +514,17 @@ int removeCoveredIntervals(vector<vector<int>>& intervals)
 
     return intervals.size() - rem;
 }
+
+// DAY 21 (169. Majority Element)===========================================================================================
+
+int majorityElement(vector<int>& nums) 
+{
+    int cnt = 0, n = 0;
+    for(int x : nums)
+    {
+        if(cnt == 0) n = x, cnt = 1;
+        else if(x == n) cnt++;
+        else cnt--;
+    }
+    return n;
+}
