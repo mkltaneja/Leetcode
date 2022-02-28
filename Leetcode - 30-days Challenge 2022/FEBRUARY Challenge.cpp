@@ -728,3 +728,21 @@ int widthOfBinaryTree(TreeNode* root)
 
     return maxw;
 }
+
+// DAY 28 (228. Summary Ranges)======================================================================
+
+vector<string> summaryRanges(vector<int>& nums) 
+{
+    vector<string> ans;
+    for(int i = 0; i < nums.size();)
+    {
+        int j = i;
+        while(i+1 < nums.size() && nums[i+1] == nums[i]+1) i++;
+        if(i == j) 
+            ans.push_back(to_string(nums[j]));
+        else 
+            ans.push_back(to_string(nums[j]) + "->" + to_string(nums[i]));
+        i++;
+    }
+    return ans;
+}
