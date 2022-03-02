@@ -26,3 +26,16 @@ vector<int> countBits(int n)
         ans[i] = ans[i & (i-1)] + 1;
     return ans;
 }
+
+// DAY 2 (392. Is Subsequence)=========================================================================================================================
+
+bool isSubsequence(string s, string t) 
+{
+    int i = 0, j = 0, n = s.size(), m = t.size();
+    while(i < n && j < m)
+    {
+        if(s[i] == t[j]) i++;
+        j++;
+    }
+    return i == n;
+}
