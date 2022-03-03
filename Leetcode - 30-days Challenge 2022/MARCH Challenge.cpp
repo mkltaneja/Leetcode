@@ -39,3 +39,19 @@ bool isSubsequence(string s, string t)
     }
     return i == n;
 }
+
+// DAY 3 (413. Arithmetic Slices)=========================================================================================================================
+
+int numberOfArithmeticSlices(vector<int>& nums) 
+{
+    int i = 2, j = 0, n = nums.size();
+    int ans = 0;
+    while(i < n)
+    {
+        if(2*nums[i-1] == nums[i-2] + nums[i]) 
+            ans += i-j-1;
+        else j = i-1;
+        i++;
+    }
+    return ans;
+}
