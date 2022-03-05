@@ -78,3 +78,26 @@ double champagneTower(int poured, int query_row, int query_glass)
     }
     return min(1.0, glasses[query_glass]);
 }
+
+// DAY 5 (740. Delete and Earn)=========================================================================================================================
+
+int deleteAndEarn(vector<int>& nums) 
+{
+    map<int,int> mp;
+    for(int x : nums)
+        mp[x]++;
+
+    int inc = 0, exc = 0;
+    int prev = -1;
+    for(auto p : mp)
+    {
+        int nexc = max(inc, exc);
+        int ninc = p.first * p.second + (prev+1 == p.first? exc : nexc);
+
+        inc = ninc;
+        exc = nexc;
+        prev = p.first;
+    }
+
+    return max(inc, exc);
+}
