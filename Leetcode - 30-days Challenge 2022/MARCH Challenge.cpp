@@ -55,3 +55,26 @@ int numberOfArithmeticSlices(vector<int>& nums)
     }
     return ans;
 }
+
+// DAY 4 (799. Champagne Tower)=========================================================================================================================
+
+double champagneTower(int poured, int query_row, int query_glass) 
+{
+    vector<double> glasses(1);
+    glasses[0] = poured;
+
+    for(int i = 0; i < query_row; i++)
+    {
+        vector<double> nglasses(i+2);
+        for(int j = 0; j <= i; j++)
+        {
+            double x = (glasses[j] - 1) / 2.0;
+            if(x <= 0) continue;
+            nglasses[j] += x;
+            nglasses[j+1] += x;
+        }
+
+        glasses = nglasses;
+    }
+    return min(1.0, glasses[query_glass]);
+}
