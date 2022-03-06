@@ -101,3 +101,17 @@ int deleteAndEarn(vector<int>& nums)
 
     return max(inc, exc);
 }
+
+// DAY 6 (1359. Count All Valid Pickup and Delivery Options)=========================================================================================================================
+
+int countOrders(int n) 
+{
+    int mod = 1e9 + 7;
+    long ans = 1;
+    while(n)
+    {
+        ans = (ans * (long)(n * (2*n - 1)) % mod) % mod;
+        n--;
+    }
+    return ans;
+}
