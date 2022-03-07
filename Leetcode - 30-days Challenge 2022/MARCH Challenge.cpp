@@ -115,3 +115,27 @@ int countOrders(int n)
     }
     return ans;
 }
+
+// DAY 7 (21. Merge Two Sorted Lists)=========================================================================================================================
+
+ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) 
+{
+    ListNode* ans = new ListNode(-101), *itr = ans;
+    while(list1 || list2)
+    {
+        int x = list1? list1->val : INT_MAX;
+        int y = list2? list2->val : INT_MAX;
+        if(x < y)
+        {
+            itr->next = list1;
+            list1 = list1->next;
+        }
+        else
+        {
+            itr->next = list2;
+            list2 = list2->next;
+        }
+        itr = itr->next;
+    }
+    return ans->next;
+}
