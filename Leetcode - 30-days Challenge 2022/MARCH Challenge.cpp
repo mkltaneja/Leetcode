@@ -139,3 +139,18 @@ ListNode* mergeTwoLists(ListNode* list1, ListNode* list2)
     }
     return ans->next;
 }
+
+// DAY 8 (141. Linked List Cycle)=========================================================================================================================
+
+bool hasCycle(ListNode *head) 
+{
+    ListNode* fast = head, *slow = head;
+    while(fast && fast->next && fast->next->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+        if(fast == slow)
+            return true;
+    }
+    return false;
+}
