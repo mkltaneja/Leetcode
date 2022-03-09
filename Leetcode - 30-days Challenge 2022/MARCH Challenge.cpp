@@ -154,3 +154,23 @@ bool hasCycle(ListNode *head)
     }
     return false;
 }
+
+// DAY 9 (82. Remove Duplicates from Sorted List II)=========================================================================================================================
+
+ListNode* deleteDuplicates(ListNode* head) 
+{
+    ListNode* ans = new ListNode(-1), *itr = head, *tmp = ans;
+    while(itr)
+    {
+        ListNode* itr2 = itr->next;
+        while(itr2 && itr2->val == itr->val)
+            itr2 = itr2->next;
+        if(itr2 == itr->next)
+        {
+            tmp->next = new ListNode(itr->val);
+            tmp = tmp->next;
+        }
+        itr = itr2;
+    }
+    return ans->next;
+}
