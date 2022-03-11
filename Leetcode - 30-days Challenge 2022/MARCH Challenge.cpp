@@ -174,3 +174,33 @@ ListNode* deleteDuplicates(ListNode* head)
     }
     return ans->next;
 }
+
+// DAY 10 (61. Rotate List)=========================================================================================================================
+
+ListNode* rotateRight(ListNode* head, int k) 
+{
+    if(!head || !head->next) return head;
+
+    int n = 0;
+    ListNode* itr = head, *tail = nullptr;
+    while(itr)
+    {
+        tail = itr;
+        itr = itr->next;
+        n++;
+    }
+
+    k = k % n;
+    if(k == 0) return head;
+
+    int x = n-k;
+    ListNode* tmp = head;
+    while(--x)
+    {
+        tmp = tmp->next;
+    }
+    ListNode* tmp2 = tmp->next;
+    tmp->next = nullptr;
+    tail->next = head;
+    return tmp2;
+}
