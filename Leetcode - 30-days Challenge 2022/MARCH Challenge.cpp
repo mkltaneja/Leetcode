@@ -204,3 +204,48 @@ ListNode* rotateRight(ListNode* head, int k)
     tail->next = head;
     return tmp2;
 }
+
+// DAY 11 (138. Copy List with Random Pointer)=========================================================================================================================
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) 
+    {
+        unordered_map<Node*, Node*> mp;
+        Node* ans = nullptr, *prev = nullptr, *itr = head;
+        while(itr)
+        {
+            Node* nnode = new Node(itr->val);
+            mp[itr] = nnode;
+            if(!ans) ans = nnode;
+            else prev->next = nnode;
+            
+            prev = nnode;
+            itr = itr->next;
+        }
+        itr = head;
+        Node* itr2 = ans;
+        while(itr)
+        {
+            itr2->random = mp[itr->random];
+            itr = itr->next;
+            itr2 = itr2->next;
+        }
+        return ans;
+    }
+};
