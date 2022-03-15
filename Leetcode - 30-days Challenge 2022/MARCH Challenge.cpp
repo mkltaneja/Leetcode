@@ -249,3 +249,26 @@ public:
         return ans;
     }
 };
+
+// DAY 12 (20. Valid Parentheses)=========================================================================================================================
+
+bool isValid(string s) 
+{
+    stack<char> st;
+    for(char c : s)
+    {
+        if(c == '(' || c == '{' || c == '[')
+            st.push(c);
+        else 
+        {
+            if(c == ')' && (st.empty() || st.top() != '('))
+                return false;
+            if(c == '}' && (st.empty() || st.top() != '{'))
+                return false;
+            if(c == ']' && (st.empty() || st.top() != '['))
+                return false;
+            st.pop();
+        }
+    }
+    return st.empty();
+}
