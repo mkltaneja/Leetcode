@@ -250,7 +250,7 @@ public:
     }
 };
 
-// DAY 12 (20. Valid Parentheses)=========================================================================================================================
+// DAY 13 (20. Valid Parentheses)=========================================================================================================================
 
 bool isValid(string s) 
 {
@@ -271,4 +271,42 @@ bool isValid(string s)
         }
     }
     return st.empty();
+}
+
+// DAY 14 (71. Simplify Path)=========================================================================================================================
+
+string simplifyPath(string path) 
+{
+    int i = 0, n = path.size();
+    string ans = "";
+    stack<string> st;
+    while(i < n)
+    {
+        string tmp = "";
+        while(i < n && path[i] == '/') i++;
+
+        while(i < n && path[i] != '/')
+            tmp += path[i++];
+        if(tmp.empty() || tmp == ".") continue;
+
+        if(tmp == "..")
+        {
+            if(!st.empty())
+                st.pop();
+        }
+        else st.push(tmp);
+    }
+
+    vector<string> tmp;
+    while(!st.empty())
+    {
+        tmp.push_back(st.top());
+        st.pop();
+    }
+    reverse(tmp.begin(), tmp.end());
+
+    for(string s : tmp)
+        ans += "/" + s;
+
+    return ans.empty()? "/" : ans;
 }
