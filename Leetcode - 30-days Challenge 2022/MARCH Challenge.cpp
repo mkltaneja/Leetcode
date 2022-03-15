@@ -310,3 +310,30 @@ string simplifyPath(string path)
 
     return ans.empty()? "/" : ans;
 }
+
+// DAY 15 (1249. Minimum Remove to Make Valid Parentheses)=========================================================================================================================
+
+string minRemoveToMakeValid(string s) 
+{
+    vector<int> st;
+    for(int i = 0; i < s.size(); i++)
+    {
+        if(s[i] == '(') st.push_back(i);
+        else if(s[i] == ')') 
+        {
+            if(st.empty() || s[st.back()] == ')') st.push_back(i);
+            else if(s[st.back()] == '(') st.pop_back();
+        }
+    }
+    string ans = "";
+    for(int i = 0, j = 0; i < s.size(); i++)
+    {
+        if(j < st.size() && i == st[j]) 
+        {
+            j++;
+            continue;
+        }
+        ans += s[i];
+    }
+    return ans;
+}
