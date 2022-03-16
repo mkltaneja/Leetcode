@@ -337,3 +337,21 @@ string minRemoveToMakeValid(string s)
     }
     return ans;
 }
+
+// DAY 15 (946. Validate Stack Sequences)=========================================================================================================================
+
+bool validateStackSequences(vector<int>& pushed, vector<int>& popped) 
+{
+    stack<int> st;
+    for(int i = 0, j = 0; i < pushed.size() && j < popped.size(); i++)
+    {
+        st.push(pushed[i]);
+        while(!st.empty() && j < popped.size() && popped[j] == st.top())
+        {
+            st.pop();
+            j++;
+        }
+    }
+
+    return st.empty();
+}
