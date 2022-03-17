@@ -355,3 +355,27 @@ bool validateStackSequences(vector<int>& pushed, vector<int>& popped)
 
     return st.empty();
 }
+
+// DAY 16 (856. Score of Parentheses)=========================================================================================================================
+
+int scoreOfParentheses(string s) 
+{
+    stack<int> st;
+    st.push(0);
+    for(char c : s)
+    {
+        if(c == '(') st.push(0);
+        else 
+        {
+            int tp = st.top();
+            st.pop();
+            int x = 0;
+            if(tp == 0) x = 1;
+            else x = tp*2;
+
+            st.top() += x;
+        }
+    }
+
+    return st.top();
+}
