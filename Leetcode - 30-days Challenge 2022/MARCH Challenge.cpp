@@ -338,7 +338,7 @@ string minRemoveToMakeValid(string s)
     return ans;
 }
 
-// DAY 15 (946. Validate Stack Sequences)=========================================================================================================================
+// DAY 16 (946. Validate Stack Sequences)=========================================================================================================================
 
 bool validateStackSequences(vector<int>& pushed, vector<int>& popped) 
 {
@@ -356,7 +356,7 @@ bool validateStackSequences(vector<int>& pushed, vector<int>& popped)
     return st.empty();
 }
 
-// DAY 16 (856. Score of Parentheses)=========================================================================================================================
+// DAY 17 (856. Score of Parentheses)=========================================================================================================================
 
 int scoreOfParentheses(string s) 
 {
@@ -380,7 +380,34 @@ int scoreOfParentheses(string s)
     return st.top();
 }
 
-// DAY 17 (895. Maximum Frequency Stack)=========================================================================================================================
+// DAY 18 (316. Remove Duplicate Letters)=========================================================================================================================
+
+string removeDuplicateLetters(string s) 
+{
+    string ans = "";
+    vector<int> cnt(26);
+    vector<bool> vis(s.size(), false);
+    for(char c : s)
+        cnt[c-'a']++;
+
+    for(char c : s)
+    {
+        cnt[c-'a']--;
+        if(vis[c-'a']) continue;
+
+        while(!ans.empty() && c < ans.back() && cnt[ans.back()-'a'])
+        {
+            vis[ans.back()-'a'] = false;
+            ans.pop_back();
+        }
+        ans += c;
+        vis[c-'a'] = true;
+    }
+
+    return ans;
+}
+
+// DAY 19 (895. Maximum Frequency Stack)=========================================================================================================================
 
 unordered_map<int,int> mp;
 vector<vector<int>> st;
