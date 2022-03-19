@@ -379,3 +379,28 @@ int scoreOfParentheses(string s)
 
     return st.top();
 }
+
+// DAY 17 (895. Maximum Frequency Stack)=========================================================================================================================
+
+unordered_map<int,int> mp;
+vector<vector<int>> st;
+FreqStack() 
+{
+
+}
+
+void push(int val) 
+{
+    int x = mp[val]++;
+    if(x == st.size()) st.push_back({val});
+    else st[x].push_back(val);
+}
+
+int pop() 
+{
+    int ans = st.back().back();
+    st.back().pop_back();
+    if(st[st.size()-1].empty()) st.pop_back();
+    mp[ans]--;
+    return ans;
+}
