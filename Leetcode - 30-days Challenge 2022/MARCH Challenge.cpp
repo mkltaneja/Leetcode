@@ -431,3 +431,33 @@ int pop()
     mp[ans]--;
     return ans;
 }
+
+// DAY 20 (1007. Minimum Domino Rotations For Equal Row)=========================================================================================================================
+
+int check(int x, vector<int> &tops, vector<int> &bottoms)
+{
+    int topx = 0, bottomx = 0;
+    for(int i = 0; i < tops.size(); i++)
+    {
+        if(tops[i] != x && bottoms[i] != x)
+            return -1;
+        else 
+        {
+            topx += tops[i] == x;
+            bottomx += bottoms[i] == x;
+        }
+    }
+    return max(topx, bottomx);
+}
+
+int minDominoRotations(vector<int>& tops, vector<int>& bottoms) 
+{
+    int ans = INT_MAX;
+    for(int x : {tops[0], bottoms[0]})
+    {
+        int xx = check(x, tops, bottoms);
+        if(xx == -1) continue;
+        ans = min(ans, (int)tops.size() - xx);
+    }
+    return ans == INT_MAX? -1 : ans;
+}
