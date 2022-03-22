@@ -461,3 +461,18 @@ int minDominoRotations(vector<int>& tops, vector<int>& bottoms)
     }
     return ans == INT_MAX? -1 : ans;
 }
+
+// DAY 21 (1663. Smallest String With A Given Numeric Value)=========================================================================================================================
+
+string getSmallestString(int n, int k) 
+{
+    int val = n;
+    string ans(n, 'a');
+    for(int i = n-1; i >= 0 && val != k; i--)
+    {
+        int x = min(k - val, 25);
+        val += x;
+        ans[i] = x + 'a';
+    }
+    return ans;
+}
