@@ -462,7 +462,31 @@ int minDominoRotations(vector<int>& tops, vector<int>& bottoms)
     return ans == INT_MAX? -1 : ans;
 }
 
-// DAY 21 (1663. Smallest String With A Given Numeric Value)=========================================================================================================================
+// DAY 21 (763. Partition Labels)=========================================================================================================================
+
+vector<int> partitionLabels(string s) 
+{
+    int n = s.size();
+    vector<int> last(26, -1);
+    for(int i = 0; i < n; i++)
+        last[s[i]-'a'] = i;
+
+    vector<int> ans;
+    int i = 0;
+    while(i < n)
+    {
+        int j = i, part = last[s[i]-'a'];
+        while(j < part)
+        {
+            part = max(part, last[s[++j]-'a']);
+        }
+        ans.push_back(j-i+1);
+        i = ++j;
+    }
+    return ans;
+}
+
+// DAY 22 (1663. Smallest String With A Given Numeric Value)=========================================================================================================================
 
 string getSmallestString(int n, int k) 
 {
