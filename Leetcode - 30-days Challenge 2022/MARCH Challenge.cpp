@@ -514,3 +514,19 @@ int brokenCalc(int startValue, int target)
     }
     return ans + (startValue - target);
 }
+
+// DAY 24 (881. Boats to Save People)=========================================================================================================================
+
+int numRescueBoats(vector<int>& people, int limit) 
+{
+    sort(people.begin(), people.end());
+    int boats = 0;
+    int i = 0, j = people.size()-1;
+    while(i <= j)
+    {
+        if(people[i] + people[j] <= limit) i++, j--;
+        else j--;
+        boats++;
+    }
+    return boats;
+}
