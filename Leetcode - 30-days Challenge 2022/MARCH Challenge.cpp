@@ -561,3 +561,35 @@ int search(vector<int>& nums, int target)
     }
     return -1;
 }
+
+// DAY 27 (1337. The K Weakest Rows in a Matrix)=========================================================================================================================
+
+struct comp
+{
+    bool operator()(vector<int> &a, vector<int> &b)
+    {
+        return a[0] == b[0]? a[1] < b[1] : a[0] < b[0];
+    }
+};
+
+vector<int> kWeakestRows(vector<vector<int>>& mat, int k) 
+{
+    int n = mat.size();
+    priority_queue<vector<int>, vector<vector<int>>, comp> pq;
+    for(int i = 0; i < n; i++)
+    {
+        int j = 0;
+        for(; j < mat[i].size() && mat[i][j]; j++);
+        pq.push({j, i});
+        if(pq.size() > k) pq.pop();
+    }
+
+    vector<int> ans;
+    while(!pq.empty())
+    {
+        ans.push_back(pq.top()[1]);
+        pq.pop();
+    }
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
