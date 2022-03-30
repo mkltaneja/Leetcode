@@ -594,7 +594,7 @@ vector<int> kWeakestRows(vector<vector<int>>& mat, int k)
     return ans;
 }
 
-// DAY 28 (287. Find the Duplicate Number)=========================================================================================================================
+// DAY 29 (287. Find the Duplicate Number)=========================================================================================================================
 
 int findDuplicate(vector<int>& nums) 
 {
@@ -604,4 +604,24 @@ int findDuplicate(vector<int>& nums)
         nums[abs(x)-1] *= -1;
     }
     return -1;
+}
+
+// DAY 30 (74. Search a 2D Matrix)=========================================================================================================================
+
+bool searchMatrix(vector<vector<int>>& matrix, int target) 
+{
+    int si = 0, ei = matrix.size() * matrix[0].size() - 1;
+
+    while(si <= ei)
+    {
+        int mi = (si + ei) >> 1;
+        int i = mi / matrix[0].size();
+        int j = mi % matrix[0].size();
+
+        if(matrix[i][j] == target) return true;
+        if(matrix[i][j] < target) si = mi + 1;
+        else ei = mi - 1;
+    }
+
+    return false;
 }
