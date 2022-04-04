@@ -25,3 +25,9 @@ bool validPalindrome(string s)
     }
     return true;
 }
+
+// DAY 3 (31. Next Permutation)=================================================================================================
+
+void nextPermutation(vector<int>& nums) {
+    next_permutation(nums.begin(), nums.end());
+}
