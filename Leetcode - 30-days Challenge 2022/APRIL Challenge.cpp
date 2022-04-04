@@ -31,3 +31,26 @@ bool validPalindrome(string s)
 void nextPermutation(vector<int>& nums) {
     next_permutation(nums.begin(), nums.end());
 }
+
+// DAY 4 (1721. Swapping Nodes in a Linked List)=================================================================================================
+
+ListNode* swapNodes(ListNode* head, int k) 
+{
+    int n = 0;
+    ListNode* itr = head;
+    while(itr)
+    {
+        itr = itr->next;
+        n++;
+    }
+    int kk = n-k;
+    ListNode* itr1 = head, *itr2 = head;
+    while(--k)
+        itr1 = itr1->next;
+    while(kk--)
+        itr2 = itr2->next;
+
+    swap(itr1->val, itr2->val);
+
+    return head;
+}
