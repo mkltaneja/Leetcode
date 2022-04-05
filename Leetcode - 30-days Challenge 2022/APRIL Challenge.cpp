@@ -54,3 +54,17 @@ ListNode* swapNodes(ListNode* head, int k)
 
     return head;
 }
+
+// DAY 5 (11. Container With Most Water)=================================================================================================
+
+int maxArea(vector<int>& height) 
+{
+    int i = 0, j = height.size()-1;
+    int ans = 0;
+    while(i < j)
+    {
+        ans = max(ans, (height[i] < height[j])? height[i] * (j - i++)
+                                             : height[j] * (j-- - i));
+    }
+    return ans;
+}
