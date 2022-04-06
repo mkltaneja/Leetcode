@@ -68,3 +68,35 @@ int maxArea(vector<int>& height)
     }
     return ans;
 }
+
+// DAY 6 (923. 3Sum With Multiplicity)=================================================================================================
+
+#define f first
+#define s second
+int threeSumMulti(vector<int>& arr, int target) 
+{
+    int n = arr.size();
+    long ans = 0;
+    int mod = 1e9 + 7;
+    unordered_map<int,long> mp;
+    for(int i = 0; i < n; i++)
+        mp[arr[i]]++;
+
+    for(auto p1 : mp)
+    {
+        for(auto p2 : mp)
+        {
+            int x = target - p1.f - p2.f;
+            if(!mp.count(x)) continue;
+
+            if(p1.f == p2.f && p2.f == x)
+                ans += p1.s * (p1.s - 1) * (p1.s - 2) / 6;
+            else if(p1.f == p2.f)
+                ans += mp[x] * p1.s * (p1.s - 1) / 2;
+            else if(p1.f < p2.f && p2.f < x)
+                ans += mp[x] * p1.s * p2.s;
+        }
+    }
+
+    return ans % mod;
+}
