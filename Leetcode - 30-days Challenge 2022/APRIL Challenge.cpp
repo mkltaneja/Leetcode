@@ -100,3 +100,22 @@ int threeSumMulti(vector<int>& arr, int target)
 
     return ans % mod;
 }
+
+// DAY 7 (1046. Last Stone Weight)=================================================================================================
+
+int lastStoneWeight(vector<int>& stones) 
+{
+    priority_queue<int> pq;
+    for(int x : stones)
+        pq.push(x);
+    while(pq.size() > 1)
+    {
+        int x = pq.top();
+        pq.pop();
+        int y = pq.top();
+        pq.pop();
+        if(x > y) pq.push(x-y);
+        else if(y > x) pq.push(y-x);
+    }
+    return pq.empty()? 0 : pq.top();
+}
