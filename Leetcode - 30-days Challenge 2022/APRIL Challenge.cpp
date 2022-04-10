@@ -145,3 +145,40 @@ vector<int> topKFrequent(vector<int>& nums, int k)
 
     return ans;
 }
+
+// DAY 9 (682. Baseball Game)=================================================================================================
+
+int calPoints(vector<string>& ops) 
+{
+    int ans = 0;
+    stack<int> st;
+    for(string s : ops)
+    {
+        if(s[0] == '-' || (s[0] >= '1' && s[0] <= '9'))
+            st.push(stoi(s));
+        else if(s == "+")
+        {
+            int a = st.top();
+            st.pop();
+            int b = st.top();
+            st.pop();
+            st.push(b);
+            st.push(a);
+            st.push(a + b);
+        }
+        else if(s == "D")
+        {
+            int x = st.top();
+            x *= 2;
+            st.push(x);
+        }
+        else st.pop();
+    }
+    while(!st.empty())
+    {
+        ans += st.top();
+        st.pop();
+    }
+
+    return ans;
+}
