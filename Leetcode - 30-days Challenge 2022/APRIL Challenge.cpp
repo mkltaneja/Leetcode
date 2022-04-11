@@ -182,3 +182,27 @@ int calPoints(vector<string>& ops)
 
     return ans;
 }
+
+// DAY 10 (1260. Shift 2D Grid)=================================================================================================
+
+vector<vector<int>> shiftGrid(vector<vector<int>>& grid, int k) 
+{
+    int n = grid.size(), m = grid[0].size();
+    k %= n*m;
+
+    vector<int> grid1d(n*m);
+    for(int i = 0; i < n*m; i++)
+    {
+        grid1d[i] = grid[i/m][i%m];
+    }
+
+    vector<int> a = vector<int>(grid1d.begin(), grid1d.begin() + n*m - k);
+    vector<int> b = vector<int>(grid1d.begin() + n*m - k, grid1d.end());
+    grid1d = vector<int>(b.begin(), b.end());
+    grid1d.insert(grid1d.end(), a.begin(), a.end());
+
+    for(int i = 0; i < n*m; i++)
+        grid[i/m][i%m] = grid1d[i];
+
+    return grid;
+}
