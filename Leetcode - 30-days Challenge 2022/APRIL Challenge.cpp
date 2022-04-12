@@ -206,3 +206,38 @@ vector<vector<int>> shiftGrid(vector<vector<int>>& grid, int k)
 
     return grid;
 }
+
+// DAY 11 (289. Game of Life)=================================================================================================
+
+void gameOfLife(vector<vector<int>>& board) 
+{
+    int n = board.size(), m = board[0].size();
+
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            int lives = (i? (board[i-1][j] == 1 || board[i-1][j] == 2) : 0) + 
+                (j? (board[i][j-1] == 1 || board[i][j-1] == 2) : 0) + 
+                (i+1 < n? (board[i+1][j] == 1 || board[i+1][j] == 2) : 0) + 
+                (j+1 < m? (board[i][j+1] == 1 || board[i][j+1] == 2) : 0) + 
+                (i && j+1 < m? (board[i-1][j+1] == 1 || board[i-1][j+1] == 2) : 0) + 
+                (j && i+1 < n? (board[i+1][j-1] == 1 || board[i+1][j-1] == 2) : 0) + 
+                (i && j? board[i-1][j-1] == 1 || board[i-1][j-1] == 2 : 0) + 
+                (i+1 < n && j+1 < m? (board[i+1][j+1] == 1 || board[i+1][j+1] == 2) : 0);
+            if(board[i][j])
+            {
+                if(lives < 2 || lives > 3) board[i][j] = 2;
+            }
+            else if(lives == 3) board[i][j] = 3;
+        }
+    }
+
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            board[i][j] %= 2;
+        }
+    }
+}
