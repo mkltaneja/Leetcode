@@ -241,3 +241,27 @@ void gameOfLife(vector<vector<int>>& board)
         }
     }
 }
+
+// DAY 12 (59. Spiral Matrix II)=================================================================================================
+
+vector<vector<int>> generateMatrix(int n) 
+{
+    vector<vector<int>> arr(n,vector<int>(n));
+    int sr = 0, sc = 0, er = n-1, ec = n-1, x = 1;
+    while(x <= n*n)
+    {
+        for(int i = sc; i <= ec && x <= n*n; i++, x++)
+            arr[sr][i] = x;
+        sr++;
+        for(int i = sr; i <= er && x <= n*n; i++, x++)
+            arr[i][ec] = x;
+        ec--;
+        for(int i = ec; i >= sc && x <= n*n; i--, x++)
+            arr[er][i] = x;
+        er--;
+        for(int i = er; i >= sr && x <= n*n; i--, x++)
+            arr[i][sc] = x;
+        sc++;
+    }
+    return arr;
+}
