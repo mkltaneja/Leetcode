@@ -265,3 +265,13 @@ vector<vector<int>> generateMatrix(int n)
     }
     return arr;
 }
+
+// DAY 13 (700. Search in a Binary Search Tree)=================================================================================================
+
+TreeNode* searchBST(TreeNode* root, int val) 
+{
+    if(!root) return nullptr;
+    if(root->val == val) return root;
+
+    return root->val < val? searchBST(root->right, val) : searchBST(root->left, val);
+}
