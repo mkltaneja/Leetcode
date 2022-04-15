@@ -275,3 +275,20 @@ TreeNode* searchBST(TreeNode* root, int val)
 
     return root->val < val? searchBST(root->right, val) : searchBST(root->left, val);
 }
+
+// DAY 15 (669. Trim a Binary Search Tree)=================================================================================================
+
+TreeNode* trimBST(TreeNode* root, int low, int high) 
+{
+    if(!root) return nullptr;
+    if(low <= root->val && high >= root->val) 
+    {
+        root->left = trimBST(root->left, low, high);
+        root->right = trimBST(root->right, low, high);
+        return root;
+    }
+    else if(low > root->val)
+        return trimBST(root->right, low, high);
+    else
+        return trimBST(root->left, low, high);
+}
