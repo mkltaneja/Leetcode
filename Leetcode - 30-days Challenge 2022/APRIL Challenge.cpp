@@ -120,7 +120,39 @@ int lastStoneWeight(vector<int>& stones)
     return pq.empty()? 0 : pq.top();
 }
 
-// DAY 8 (347. Top K Frequent Elements)=================================================================================================
+// DAY 8 (703. Kth Largest Element in a Stream)=================================================================================================
+
+class KthLargest {
+public:
+    priority_queue<int, vector<int>, greater<int>> pq;
+    int k;
+    KthLargest(int k, vector<int>& nums) 
+    {
+        this->k = k;
+        for(int x : nums)
+        {
+            pq.push(x);
+            if(pq.size() > k)
+                pq.pop();
+        }
+    }
+    
+    int add(int val) 
+    {
+        pq.push(val);
+        if(pq.size() > k)
+            pq.pop();
+        return pq.top();
+    }
+};
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * KthLargest* obj = new KthLargest(k, nums);
+ * int param_1 = obj->add(val);
+ */
+
+// DAY 9 (347. Top K Frequent Elements)=================================================================================================
 
 vector<int> topKFrequent(vector<int>& nums, int k) 
 {
@@ -146,7 +178,7 @@ vector<int> topKFrequent(vector<int>& nums, int k)
     return ans;
 }
 
-// DAY 9 (682. Baseball Game)=================================================================================================
+// DAY 10 (682. Baseball Game)=================================================================================================
 
 int calPoints(vector<string>& ops) 
 {
@@ -183,7 +215,7 @@ int calPoints(vector<string>& ops)
     return ans;
 }
 
-// DAY 10 (1260. Shift 2D Grid)=================================================================================================
+// DAY 11 (1260. Shift 2D Grid)=================================================================================================
 
 vector<vector<int>> shiftGrid(vector<vector<int>>& grid, int k) 
 {
@@ -207,7 +239,7 @@ vector<vector<int>> shiftGrid(vector<vector<int>>& grid, int k)
     return grid;
 }
 
-// DAY 11 (289. Game of Life)=================================================================================================
+// DAY 12 (289. Game of Life)=================================================================================================
 
 void gameOfLife(vector<vector<int>>& board) 
 {
@@ -242,7 +274,7 @@ void gameOfLife(vector<vector<int>>& board)
     }
 }
 
-// DAY 12 (59. Spiral Matrix II)=================================================================================================
+// DAY 13 (59. Spiral Matrix II)=================================================================================================
 
 vector<vector<int>> generateMatrix(int n) 
 {
@@ -266,7 +298,7 @@ vector<vector<int>> generateMatrix(int n)
     return arr;
 }
 
-// DAY 13 (700. Search in a Binary Search Tree)=================================================================================================
+// DAY 14 (700. Search in a Binary Search Tree)=================================================================================================
 
 TreeNode* searchBST(TreeNode* root, int val) 
 {
