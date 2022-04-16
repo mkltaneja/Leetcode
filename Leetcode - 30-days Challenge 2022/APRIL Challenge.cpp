@@ -324,3 +324,18 @@ TreeNode* trimBST(TreeNode* root, int low, int high)
     else
         return trimBST(root->left, low, high);
 }
+
+// DAY 16 (538. Convert BST to Greater Tree)=================================================================================================
+
+int tot = 0;
+TreeNode* convertBST(TreeNode* root) 
+{
+    if(!root) return root;
+
+    convertBST(root->right);
+    tot += root->val;
+    root->val = tot;
+    convertBST(root->left);
+
+    return root;
+}
