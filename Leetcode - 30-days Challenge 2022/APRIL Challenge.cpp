@@ -339,3 +339,21 @@ TreeNode* convertBST(TreeNode* root)
 
     return root;
 }
+
+// DAY 17 (897. Increasing Order Search Tree)=================================================================================================
+
+TreeNode* ans = new TreeNode(-1), *itr = ans;
+void inorder(TreeNode* node)
+{
+    if(!node) return;
+    inorder(node->left);
+    itr->right = new TreeNode(node->val);
+    itr = itr->right;
+    inorder(node->right);
+}
+
+TreeNode* increasingBST(TreeNode* root) 
+{
+    inorder(root);
+    return ans->right;
+}
