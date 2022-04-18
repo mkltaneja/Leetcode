@@ -357,3 +357,18 @@ TreeNode* increasingBST(TreeNode* root)
     inorder(root);
     return ans->right;
 }
+
+// DAY 18 (230. Kth Smallest Element in a BST)=================================================================================================
+
+int kthSmallest(TreeNode* root, int &k) 
+{
+    if(!root) return -1;
+
+    int lans = kthSmallest(root->left, k);
+    if(--k == 0) return root->val;
+    int rans = kthSmallest(root->right, k);
+
+    if(lans != -1 || rans != -1)
+        return lans == -1? rans : lans;
+    return -1;
+}
