@@ -372,3 +372,32 @@ int kthSmallest(TreeNode* root, int &k)
         return lans == -1? rans : lans;
     return -1;
 }
+
+// DAY 19 (99. Recover Binary Search Tree)=================================================================================================
+
+TreeNode* prev = new TreeNode(INT_MIN), *a = nullptr, *b = nullptr;
+void inorder(TreeNode* curr)
+{
+    if(!curr) return;
+
+    inorder(curr->left);
+
+    if(!a && curr->val < prev->val)
+    {
+        a = prev;
+        b = curr;
+    }
+    else if(curr->val < prev->val)
+        b = curr;
+
+    prev = curr;
+
+    inorder(curr->right);
+}
+
+void recoverTree(TreeNode* root) 
+{
+    inorder(root);
+
+    swap(a->val, b->val);
+}
