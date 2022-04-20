@@ -401,3 +401,33 @@ void recoverTree(TreeNode* root)
 
     swap(a->val, b->val);
 }
+
+// DAY 20 (173. Binary Search Tree Iterator)=================================================================================================
+
+stack<TreeNode*> st;
+void lefts(TreeNode* node)
+{
+    while(node)
+    {
+        st.push(node);
+        node = node->left;
+    }
+}
+
+BSTIterator(TreeNode* root) 
+{
+    lefts(root);
+}
+
+int next() 
+{
+    TreeNode* ans = st.top();
+    st.pop();
+    lefts(ans->right);
+    return ans->val;
+}
+
+bool hasNext() 
+{
+    return !st.empty();
+}
