@@ -468,3 +468,52 @@ public:
  * obj->remove(key);
  * bool param_3 = obj->contains(key);
  */
+
+// APPROACH 2 (Buckets -> 2D Mapping)
+
+class MyHashSet {
+    
+    int n;
+    vector<vector<int>> buckets;
+    int hash_value(int key)
+    {
+        return key % n;
+    }
+    
+public:
+    
+    MyHashSet() 
+    {
+        this->n = 10000;
+        this->buckets.assign(n, vector<int>());
+    }
+    
+    void add(int key) 
+    {
+        int i = hash_value(key);
+        if(find(buckets[i].begin(), buckets[i].end(), key) == buckets[i].end())
+            buckets[i].push_back(key);
+    }
+    
+    void remove(int key) 
+    {
+        int i = hash_value(key);
+        vector<int>::iterator itr = find(buckets[i].begin(), buckets[i].end(), key);
+        if(itr == buckets[i].end()) return;
+        buckets[i].erase(itr);
+    }
+    
+    bool contains(int key) 
+    {
+        int i = hash_value(key);
+        return (find(buckets[i].begin(), buckets[i].end(), key) != buckets[i].end());
+    }
+};
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet* obj = new MyHashSet();
+ * obj->add(key);
+ * obj->remove(key);
+ * bool param_3 = obj->contains(key);
+ */
