@@ -431,3 +431,40 @@ bool hasNext()
 {
     return !st.empty();
 }
+
+// DAY 21 (705. Design HashSet)=================================================================================================
+
+// APPROACH 1 (1D Mapping)
+
+class MyHashSet {
+public:
+    
+    vector<bool> set;
+    MyHashSet() 
+    {
+        set.assign(1e6+5, false);
+    }
+    
+    void add(int key) 
+    {
+        set[key] = true;
+    }
+    
+    void remove(int key) 
+    {
+        set[key] = false;
+    }
+    
+    bool contains(int key) 
+    {
+        return set[key];
+    }
+};
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet* obj = new MyHashSet();
+ * obj->add(key);
+ * obj->remove(key);
+ * bool param_3 = obj->contains(key);
+ */
