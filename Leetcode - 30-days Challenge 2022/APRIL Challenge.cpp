@@ -517,3 +517,69 @@ public:
  * obj->remove(key);
  * bool param_3 = obj->contains(key);
  */
+
+// DAY 22 (706. Design HashMap)=================================================================================================
+
+class MyHashMap {
+    
+    int n;
+    vector<vector<pair<int,int>>> buckets;
+    
+    int hash(int x)
+    {
+        return x % n;
+    }
+    
+public:
+    
+    MyHashMap() 
+    {
+        this->n = 1000;
+        buckets.resize(n, vector<pair<int,int>>());
+    }
+    
+    int find(int bucket, int key)
+    {
+        for(int i = 0; i < buckets[bucket].size(); i++)
+            if(buckets[bucket][i].first == key)
+                return i;
+        return -1;
+    }
+    
+    void put(int key, int value) 
+    {
+        int bucket = hash(key);
+        int i = find(bucket, key);
+        
+        if(i == -1) buckets[bucket].push_back({key, value});
+        else buckets[bucket][i] = {key, value};
+    }
+    
+    int get(int key) 
+    {
+        int bucket = hash(key);
+        int i = find(bucket, key);
+        
+        return (i == -1)? -1 : buckets[bucket][i].second;
+    }
+    
+    void remove(int key) 
+    {
+        int bucket = hash(key);
+        int i = find(bucket, key);
+        
+        if(i != -1) 
+        {
+            swap(buckets[bucket][i], buckets[bucket].back());
+            buckets[bucket].pop_back();
+        }
+    }
+};
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap* obj = new MyHashMap();
+ * obj->put(key,value);
+ * int param_2 = obj->get(key);
+ * obj->remove(key);
+ */
