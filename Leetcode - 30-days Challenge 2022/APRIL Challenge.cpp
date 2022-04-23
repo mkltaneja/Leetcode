@@ -583,3 +583,30 @@ public:
  * int param_2 = obj->get(key);
  * obj->remove(key);
  */
+
+// DAY 23 (535. Encode and Decode TinyURL)=================================================================================================
+
+unordered_map<string,string> enc;
+unordered_map<string,string> dec;
+string dict = "1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+// Encodes a URL to a shortened URL.
+string encode(string longUrl) 
+{
+    string res = "";
+
+    while(res.empty())
+    {
+        for(int i = 0; i < 10; i++)
+            res += dict[rand() % 62];
+        if(enc.count(res)) res = "";
+    }
+    enc[longUrl] = res;
+    dec[res] = longUrl;
+    return "http://tinyurl.com/" + res;
+}
+
+// Decodes a shortened URL to its original URL.
+string decode(string shortUrl) 
+{
+    return dec[shortUrl.substr(19)];
+}
