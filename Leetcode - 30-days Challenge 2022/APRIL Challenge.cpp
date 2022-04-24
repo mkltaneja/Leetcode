@@ -610,3 +610,43 @@ string decode(string shortUrl)
 {
     return dec[shortUrl.substr(19)];
 }
+
+// DAY 24 (1396. Design Underground System)=================================================================================================
+
+class UndergroundSystem {
+public:
+    
+    #define f first
+    #define s second
+    
+    unordered_map<int,pair<string, int>> mid;
+    map<string,pair<int, int>> mt;
+    UndergroundSystem() 
+    {
+        
+    }
+    
+    void checkIn(int id, string stationName, int t) 
+    {
+        mid[id] = {stationName, t};
+    }
+    
+    void checkOut(int id, string stationName, int t) 
+    {
+        mt[mid[id].f + " " + stationName].f += (t - mid[id].s);
+        mt[mid[id].f + " " + stationName].s++;
+    }
+    
+    double getAverageTime(string startStation, string endStation) 
+    {
+        return 1.0 * mt[startStation + " " + endStation].f / mt[startStation + " " + endStation].s;
+    }
+};
+
+/**
+ * Your UndergroundSystem object will be instantiated and called as such:
+ * UndergroundSystem* obj = new UndergroundSystem();
+ * obj->checkIn(id,stationName,t);
+ * obj->checkOut(id,stationName,t);
+ * double param_3 = obj->getAverageTime(startStation,endStation);
+ */
