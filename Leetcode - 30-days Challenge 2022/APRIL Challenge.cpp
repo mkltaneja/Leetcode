@@ -701,3 +701,34 @@ public:
 	    return Iterator::hasNext();
 	}
 };
+
+// DAY 26 (1584. Min Cost to Connect All Points)=================================================================================================
+
+int minCostConnectPoints(vector<vector<int>>& points) 
+{
+int n = points.size();
+
+vector<vector<pair<int,int>>> gp(n);
+for(int i = 0; i < n; i++)
+    for(int j = i+1; j < n; j++)
+	gp[i].push_back({j, abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1])});
+
+int ans = 0;
+priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+pq.push({0,0});
+vector<bool> vis(n,false);
+while(!pq.empty())
+{
+    auto tp = pq.top();
+    pq.pop();
+    if(vis[tp.second]) continue;
+    vis[tp.second] = true;
+    ans += tp.first;
+
+    for(int i = 0; i < n; i++)
+	if(!vis[i])
+	    pq.push({abs(points[i][0] - points[tp.second][0]) + abs(points[i][1] - points[tp.second][1]), i});
+}
+
+return ans;
+}
