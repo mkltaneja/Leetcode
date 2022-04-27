@@ -706,29 +706,89 @@ public:
 
 int minCostConnectPoints(vector<vector<int>>& points) 
 {
-int n = points.size();
+	int n = points.size();
 
-vector<vector<pair<int,int>>> gp(n);
-for(int i = 0; i < n; i++)
-    for(int j = i+1; j < n; j++)
-	gp[i].push_back({j, abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1])});
+	vector<vector<pair<int,int>>> gp(n);
+	for(int i = 0; i < n; i++)
+	    for(int j = i+1; j < n; j++)
+		gp[i].push_back({j, abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1])});
 
-int ans = 0;
-priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
-pq.push({0,0});
-vector<bool> vis(n,false);
-while(!pq.empty())
-{
-    auto tp = pq.top();
-    pq.pop();
-    if(vis[tp.second]) continue;
-    vis[tp.second] = true;
-    ans += tp.first;
+	int ans = 0;
+	priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+	pq.push({0,0});
+	vector<bool> vis(n,false);
+	while(!pq.empty())
+	{
+	    auto tp = pq.top();
+	    pq.pop();
+	    if(vis[tp.second]) continue;
+	    vis[tp.second] = true;
+	    ans += tp.first;
 
-    for(int i = 0; i < n; i++)
-	if(!vis[i])
-	    pq.push({abs(points[i][0] - points[tp.second][0]) + abs(points[i][1] - points[tp.second][1]), i});
+	    for(int i = 0; i < n; i++)
+		if(!vis[i])
+		    pq.push({abs(points[i][0] - points[tp.second][0]) + abs(points[i][1] - points[tp.second][1]), i});
+	}
+
+	return ans;
 }
 
-return ans;
-}
+// DAY 27 (1202. Smallest String With Swaps)=================================================================================================
+
+    vector<int> par, psize;
+    
+    int findpar(int u)
+    {
+        return par[u] == u? u : findpar(par[u]);
+    }
+    
+    void merge(int u, int v)
+    {
+        int pu = findpar(u);
+        int pv = findpar(v);
+        if(pu == pv) return;
+        
+        if(psize[pu] > psize[pv])
+        {
+            par[pv] = pu;
+            psize[pu] += psize[pv];
+        }
+        else
+        {
+            par[pu] = pv;
+            psize[pv] += psize[pu];
+        }
+        return;
+    }
+    
+    string smallestStringWithSwaps(string s, vector<vector<int>>& pairs) 
+    {
+        int n = s.size();
+        par.resize(n);
+        psize.assign(n,1);
+        for(int i = 0; i < n; i++)
+            par[i] = i;
+        
+        for(vector<int> e : pairs)
+            merge(e[0], e[1]);
+        
+        vector<vector<char>> childs1(n);
+        vector<vector<int>> childs2(n);
+        for(int i = 0; i < n; i++)
+        {
+            int p = findpar(i);
+            childs1[p].push_back(s[i]);
+            childs2[p].push_back(i);
+        }
+        
+        string ans = s;
+        for(int i = 0; i < n; i++)
+        {
+            sort(childs1[i].begin(), childs1[i].end());
+            sort(childs2[i].begin(), childs2[i].end());
+            for(int j = 0; j < childs1[i].size(); j++)
+                ans[childs2[i][j]] = childs1[i][j];
+        }
+        
+        return ans;
+    }
