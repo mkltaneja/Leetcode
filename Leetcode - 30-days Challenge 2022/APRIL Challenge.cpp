@@ -735,60 +735,114 @@ int minCostConnectPoints(vector<vector<int>>& points)
 
 // DAY 27 (1202. Smallest String With Swaps)=================================================================================================
 
-    vector<int> par, psize;
-    
-    int findpar(int u)
-    {
-        return par[u] == u? u : findpar(par[u]);
-    }
-    
-    void merge(int u, int v)
-    {
-        int pu = findpar(u);
-        int pv = findpar(v);
-        if(pu == pv) return;
-        
-        if(psize[pu] > psize[pv])
-        {
-            par[pv] = pu;
-            psize[pu] += psize[pv];
-        }
-        else
-        {
-            par[pu] = pv;
-            psize[pv] += psize[pu];
-        }
-        return;
-    }
-    
-    string smallestStringWithSwaps(string s, vector<vector<int>>& pairs) 
-    {
-        int n = s.size();
-        par.resize(n);
-        psize.assign(n,1);
-        for(int i = 0; i < n; i++)
-            par[i] = i;
-        
-        for(vector<int> e : pairs)
-            merge(e[0], e[1]);
-        
-        vector<vector<char>> childs1(n);
-        vector<vector<int>> childs2(n);
-        for(int i = 0; i < n; i++)
-        {
-            int p = findpar(i);
-            childs1[p].push_back(s[i]);
-            childs2[p].push_back(i);
-        }
-        
-        string ans = s;
-        for(int i = 0; i < n; i++)
-        {
-            sort(childs1[i].begin(), childs1[i].end());
-            sort(childs2[i].begin(), childs2[i].end());
-            for(int j = 0; j < childs1[i].size(); j++)
-                ans[childs2[i][j]] = childs1[i][j];
-        }
-        
-        return ans;
-    }
+vector<int> par, psize;
+
+int findpar(int u)
+{
+	return par[u] == u? u : findpar(par[u]);
+}
+
+void merge(int u, int v)
+{
+	int pu = findpar(u);
+	int pv = findpar(v);
+	if(pu == pv) return;
+
+	if(psize[pu] > psize[pv])
+	{
+		par[pv] = pu;
+		psize[pu] += psize[pv];
+	}
+	else
+	{
+		par[pu] = pv;
+		psize[pv] += psize[pu];
+	}
+	return;
+}
+
+string smallestStringWithSwaps(string s, vector<vector<int>>& pairs) 
+{
+	int n = s.size();
+	par.resize(n);
+	psize.assign(n,1);
+	for(int i = 0; i < n; i++)
+		par[i] = i;
+
+	for(vector<int> e : pairs)
+		merge(e[0], e[1]);
+
+	vector<vector<char>> childs1(n);
+	vector<vector<int>> childs2(n);
+	for(int i = 0; i < n; i++)
+	{
+		int p = findpar(i);
+		childs1[p].push_back(s[i]);
+		childs2[p].push_back(i);
+	}
+
+	string ans = s;
+	for(int i = 0; i < n; i++)
+	{
+		sort(childs1[i].begin(), childs1[i].end());
+		sort(childs2[i].begin(), childs2[i].end());
+		for(int j = 0; j < childs1[i].size(); j++)
+			ans[childs2[i][j]] = childs1[i][j];
+	}
+
+	return ans;
+}
+
+// DAY 28 (1631. Path With Minimum Effort)=================================================================================================
+
+
+int dir[4][2] = {{1,0},{0,1},{-1,0},{0,-1}};
+
+bool check(vector<vector<int>> &heights, int maxhdiff)
+{
+	int n = heights.size(), m = heights[0].size();
+	queue<int> que;
+	que.push(0);
+	vector<bool> vis(n*m, false);
+	vis[0] = true;
+
+	while(!que.empty())
+	{
+		int x = que.front();
+		que.pop();
+
+		int i = x / m;
+		int j = x % m;
+
+		if(i == n-1 && j == m-1)
+			return true;
+
+		for(int d = 0; d < 4; d++)
+		{
+			int r = i + dir[d][0];
+			int c = j + dir[d][1];
+
+			if(r >= 0 && r < n && c >= 0 && c < m && !vis[r*m+c] && abs(heights[r][c] - heights[i][j]) <= maxhdiff)
+			{
+				que.push(r*m + c);
+				vis[r*m + c] = true;
+			}
+		}
+	}
+
+	return false;
+}
+
+int minimumEffortPath(vector<vector<int>>& heights) 
+{
+	int n = heights.size(), m = heights[0].size();
+	int lo = 0, hi = 1e6;
+	while(lo < hi)
+	{
+		int mid = (lo + hi) / 2;
+		if(check(heights, mid))
+			hi = mid;
+		else lo = mid + 1;
+	}
+	return lo;
+}
