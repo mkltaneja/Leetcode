@@ -846,3 +846,41 @@ int minimumEffortPath(vector<vector<int>>& heights)
 	}
 	return lo;
 }
+
+// DAY 29 (785. Is Graph Bipartite?)=================================================================================================
+
+bool checkBipartite(int i, vector<int> &clr, vector<vector<int>> &graph)
+{
+	clr[i] = 0;
+
+	queue<int> que;
+	que.push(i);
+
+	while(!que.empty())
+	{
+		int u = que.front();
+		que.pop();
+
+		for(int v : graph[u])
+		{
+			if(clr[v] == -1)
+			{
+				que.push(v);
+				clr[v] = (clr[u] + 1) % 2;
+			}
+			else if(clr[v] == clr[u]) return false;
+		}
+	}
+	return true;
+}
+
+bool isBipartite(vector<vector<int>>& graph) 
+{
+	int n = graph.size();
+	vector<int> clr(n, -1);
+
+	for(int i = 0; i < n; i++)
+		if(clr[i] == -1 && !checkBipartite(i, clr, graph))
+			return false;
+	return true;
+}
