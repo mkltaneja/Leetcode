@@ -884,3 +884,48 @@ bool isBipartite(vector<vector<int>>& graph)
 			return false;
 	return true;
 }
+
+// DAY 30 (399. Evaluate Division)=================================================================================================
+
+double dfs(string num, string den, unordered_map<string,bool> &vis, unordered_map<string, vector<pair<string,double>>> &gp)
+{
+if(num == den) return 1;
+
+vis[num] = true;
+for(pair<string,double> p : gp[num])
+{
+    if(!vis[p.first])
+    {
+	double ans = dfs(p.first, den, vis, gp);
+	if(ans == -1) continue;
+	return ans * p.second;
+    }
+}
+return -1;
+}
+
+vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) 
+{
+unordered_map<string, vector<pair<string,double>>> gp;
+for(int i = 0; i < values.size(); i++)
+{
+    string num = equations[i][0];
+    string den = equations[i][1];
+    double val = values[i];
+
+    gp[num].push_back({den, val});
+    gp[den].push_back({num, 1.0/val});
+}
+
+vector<double> ans(queries.size(), -1.0);
+for(int i = 0; i < queries.size(); i++)
+{
+    string num = queries[i][0];
+    string den = queries[i][1];
+    unordered_map<string,bool> vis;
+    if(gp.count(num) && gp.count(den))
+	ans[i] = dfs(num, den, vis, gp);
+}
+
+return ans;
+}
