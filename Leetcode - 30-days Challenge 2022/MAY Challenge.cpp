@@ -32,3 +32,17 @@ bool backspaceCompare(string s, string t)
 
     return true;
 }
+
+// DAY 2 (905. Sort Array By Parity)=========================================================================================================================
+
+vector<int> sortArrayByParity(vector<int>& nums) 
+{
+    int i = 0, j = 0;
+    while(i < nums.size())
+    {
+        if(nums[i] & 1 ^ 1) 
+            swap(nums[i], nums[j++]);
+        i++;
+    }
+    return nums;
+}
