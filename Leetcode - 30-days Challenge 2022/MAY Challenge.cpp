@@ -146,3 +146,27 @@ public:
  * int param_3 = obj->top();
  * bool param_4 = obj->empty();
  */
+
+// DAY 6 (1209. Remove All Adjacent Duplicates in String II)=========================================================================================================================
+
+string removeDuplicates(string s, int k) 
+{
+    stack<pair<char, int>> st;
+    for(char c : s)
+    {
+        st.push((!st.empty() && st.top().first==c)? make_pair(c, st.top().second+1) : make_pair(c,1));
+        if(st.top().second == k)
+            while(!st.empty() && st.top().first == c)
+                st.pop();
+    }
+    string ans = "";
+    while(!st.empty())
+    {
+        ans += st.top().first;
+        st.pop();
+    }
+
+    reverse(ans.begin(), ans.end());
+
+    return ans;
+}
