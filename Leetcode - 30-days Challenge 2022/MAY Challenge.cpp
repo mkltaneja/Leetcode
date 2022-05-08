@@ -170,3 +170,28 @@ string removeDuplicates(string s, int k)
 
     return ans;
 }
+
+// DAY 7 (456. 132 Pattern)=========================================================================================================================
+
+bool find132pattern(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<int> mn(n);
+    mn[0] = nums[0];
+    for(int i = 1; i < n; i++)
+        mn[i] = min(mn[i-1], nums[i]);
+
+    stack<int> st;
+    for(int i = n-1; i >= 0; i--)
+    {
+        while(!st.empty() && st.top() < nums[i])
+        {
+            if(st.top() > mn[i])
+                return true;
+            st.pop();
+        }
+        st.push(nums[i]);
+    }
+
+    return false;
+}
