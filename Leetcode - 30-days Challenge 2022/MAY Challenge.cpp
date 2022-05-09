@@ -252,3 +252,25 @@ public:
  * NestedIterator i(nestedList);
  * while (i.hasNext()) cout << i.next();
  */
+
+// DAY 9 (17. Letter Combinations of a Phone Number)=========================================================================================================================
+
+vector<string> map = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+vector<string> ans;
+void dfs(int i, string tmp, string &dig)
+{
+    if(i == dig.size()) 
+    {
+        if(!tmp.empty()) ans.push_back(tmp);
+        return;
+    }        
+    for(int j = 0; j < map[dig[i]-'0'].size(); j++)
+        dfs(i+1, tmp+map[dig[i]-'0'][j], dig);
+}
+
+vector<string> letterCombinations(string digits) 
+{
+    dfs(0, "", digits);
+    return ans;
+}
