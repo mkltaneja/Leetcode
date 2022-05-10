@@ -274,3 +274,29 @@ vector<string> letterCombinations(string digits)
     dfs(0, "", digits);
     return ans;
 }
+
+// DAY 10 (216. Combination Sum III)=========================================================================================================================
+
+vector<vector<int>> ans;
+void dfs(vector<int> &curr, int last, int k, int n)
+{
+    if(k == 0 && n == 0)
+    {
+        ans.push_back(curr);
+        return;
+    }
+
+    for(int x = last; x <= 9 && n-x >= 0; x++)
+    {
+        curr.push_back(x);
+        dfs(curr, x+1, k-1, n-x);
+        curr.pop_back();
+    }
+}
+
+vector<vector<int>> combinationSum3(int k, int n) 
+{
+    vector<int> curr;
+    dfs(curr, 1, k, n);
+    return ans;
+}
