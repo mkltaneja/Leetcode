@@ -300,3 +300,23 @@ vector<vector<int>> combinationSum3(int k, int n)
     dfs(curr, 1, k, n);
     return ans;
 }
+
+// DAY 11 (1641. Count Sorted Vowel Strings)=========================================================================================================================
+
+int dfs(int x, int n, vector<vector<int>> &dp)
+{
+    if(n == 0) return dp[n][x] = 1;
+    if(dp[n][x]) return dp[n][x];
+
+    int ans = 0;
+    for(int y = x; y < 5; y++)
+        ans += dfs(y, n-1, dp);
+
+    return dp[n][x] = ans;
+}
+
+int countVowelStrings(int n) 
+{
+    vector<vector<int>> dp(n+1, vector<int>(5));
+    return dfs(0, n, dp);
+}
