@@ -320,3 +320,22 @@ int countVowelStrings(int n)
     vector<vector<int>> dp(n+1, vector<int>(5));
     return dfs(0, n, dp);
 }
+
+// DAY 12 (47. Permutations II)=========================================================================================================================
+
+vector<vector<int>> permuteUnique(vector<int>& nums) 
+{
+    sort(nums.begin(), nums.end());
+    set<vector<int>> st;
+    do 
+    {
+        st.insert(nums);
+    }
+    while(next_permutation(nums.begin(), nums.end()));
+
+    vector<vector<int>> ans;
+    for(vector<int> v : st)
+        ans.push_back(v);
+
+    return ans;
+}
