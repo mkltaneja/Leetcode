@@ -384,3 +384,54 @@ public:
         return root;
     }
 };
+
+// DAY 14 (743. Network Delay Time)=========================================================================================================================
+
+int bfs(int u, int n, vector<vector<pair<int,int>>> &graph)
+{
+    vector<int> vis(n+1, false);
+    queue<pair<int,int>> que;
+    que.push({u, 0});
+
+    vector<int> time(n+1, INT_MAX);
+    time[0] = -1;
+    time[u] = 0;
+    while(!que.empty())
+    {
+        int u = que.front().first;
+        int tsf = que.front().second;
+        que.pop();
+
+        for(pair<int,int> p : graph[u])
+        {
+            int v = p.first;
+            int t = p.second;
+
+            if(tsf + t < time[v])
+            {
+                time[v] = tsf + t;
+                que.push({v, tsf + t});
+            }
+        }
+    }
+
+    int maxtime = 0;
+    for(int t : time)
+    {
+        if(t == INT_MAX)
+            return -1;
+        maxtime = max(maxtime, t);
+    }
+
+    return maxtime;
+}
+
+int networkDelayTime(vector<vector<int>>& times, int n, int k) 
+{
+    vector<vector<pair<int,int>>> graph(n+1);
+    for(vector<int> edge : times)
+        graph[edge[0]].push_back({edge[1], edge[2]});
+
+
+    return bfs(k, n, graph);
+}
