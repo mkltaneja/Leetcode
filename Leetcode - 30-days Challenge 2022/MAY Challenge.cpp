@@ -435,3 +435,24 @@ int networkDelayTime(vector<vector<int>>& times, int n, int k)
 
     return bfs(k, n, graph);
 }
+
+// DAY 15 (1302. Deepest Leaves Sum)=========================================================================================================================
+
+int mxh = -1, sum = 0;
+void dfs(int h, TreeNode* node)
+{
+    if(!node) return;
+
+    if(h > mxh) mxh = h, sum = node->val;
+    else if(h == mxh) sum += node->val;
+
+    dfs(h+1, node->left);
+    dfs(h+1, node->right);
+}
+
+int deepestLeavesSum(TreeNode* root) 
+{
+    dfs(0, root);
+
+    return sum;
+}
