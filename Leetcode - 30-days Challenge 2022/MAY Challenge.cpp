@@ -456,3 +456,40 @@ int deepestLeavesSum(TreeNode* root)
 
     return sum;
 }
+
+// DAY 16 (1091. Shortest Path in Binary Matrix)=========================================================================================================================
+
+#define f first
+#define s second
+
+int shortestPathBinaryMatrix(vector<vector<int>>& grid) 
+{
+    int n = grid.size(), m = grid[0].size();
+    if(grid[0][0] == 1 || grid[n-1][m-1] == 1) return -1;
+
+    int dir[8][2] = {{1,0},{0,1},{1,1},{-1,0},{0,-1},{-1,-1},{1,-1},{-1,1}};
+
+    queue<pair<pair<int,int>,int>> que;
+    que.push({{0,0},1});
+
+    while(!que.empty())
+    {
+        auto tp = que.front();
+        que.pop();
+        int r = tp.f.f, c = tp.f.s;
+
+        if(r == n-1 && c == m-1) return tp.s;
+
+        for(int d = 0; d < 8; d++)
+        {
+            int x = r + dir[d][0], y = c + dir[d][1];
+            if(x >= 0 && y >= 0 && x < n && y < m && grid[x][y] == 0)
+            {
+                grid[x][y] = 1;
+                que.push({{x,y}, tp.s + 1});
+            }
+        }
+    }
+
+    return -1;
+}
