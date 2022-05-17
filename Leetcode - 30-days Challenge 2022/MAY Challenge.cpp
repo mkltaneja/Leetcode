@@ -493,3 +493,18 @@ int shortestPathBinaryMatrix(vector<vector<int>>& grid)
 
     return -1;
 }
+
+// DAY 17 (1379. Find a Corresponding Node of a Binary Tree in a Clone of That Tree)=========================================================================================================================
+
+TreeNode* getTargetCopy(TreeNode* original, TreeNode* cloned, TreeNode* target) 
+{
+    if(!cloned) return nullptr;
+    if(cloned->val == target->val) return cloned;
+
+    TreeNode* lans = getTargetCopy(original, cloned->left, target);
+    if(lans) return lans;
+    TreeNode* rans = getTargetCopy(original, cloned->right, target);
+    if(rans) return rans;
+
+    return nullptr;
+}
