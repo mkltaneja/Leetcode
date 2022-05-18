@@ -508,3 +508,48 @@ TreeNode* getTargetCopy(TreeNode* original, TreeNode* cloned, TreeNode* target)
 
     return nullptr;
 }
+
+// DAY 18 (1192. Critical Connections in a Network)=========================================================================================================================
+
+vector<vector<int>> graph;
+vector<int> disc;
+vector<int> low;
+vector<int> par;
+vector<vector<int>> ans;
+int time = 0;
+
+void tarjansAlgo(int u, vector<vector<int>> &graph)
+{
+    disc[u] = low[u] = time++;
+    for(int v : graph[u])
+    {
+        if(disc[v] == -1)
+        {
+            par[v] = u;
+            tarjansAlgo(v, graph);
+            low[u] = min(low[u], low[v]);
+            if(low[v] > disc[u])
+                ans.push_back({u, v});
+        }
+        else if(par[u] != v) low[u] = min(low[u], disc[v]);
+    }
+}
+
+vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) 
+{
+    graph.resize(n);
+    disc.resize(n,-1);
+    low.resize(n);
+    par.resize(n);
+    for(vector<int> e : connections)
+    {
+        graph[e[0]].push_back(e[1]);
+        graph[e[1]].push_back(e[0]);
+    }
+
+    for(int x = 0; x < n; x++)
+        if(disc[x] == -1)
+            tarjansAlgo(x, graph);
+
+    return ans;
+}
