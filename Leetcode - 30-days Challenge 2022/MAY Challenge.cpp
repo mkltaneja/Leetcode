@@ -591,3 +591,25 @@ int coinChange(vector<int>& coins, int amount)
 
     return dp[amount] == INT_MAX? -1 : dp[amount];
 }
+
+// DAY 22 (647. Palindromic Substrings)=========================================================================================================================
+
+int countSubstrings(string s) 
+{
+    int n = s.size();
+    vector<vector<bool>> ispal(n, vector<bool> (n, false));
+
+    int ans = 0;
+    for(int len = 1; len <= n; len++)
+    {
+        for(int i = 0, j = len-1; i < n && j < n; i++, j++)
+        {
+            if(len == 1) ispal[i][j] = true;
+            else if(len == 2) ispal[i][j] = (s[i] == s[j]);
+            else ispal[i][j] = (s[i] == s[j] && ispal[i+1][j-1]);
+
+            ans += ispal[i][j];
+        }
+    }
+    return ans;
+}
