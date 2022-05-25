@@ -613,3 +613,35 @@ int countSubstrings(string s)
     }
     return ans;
 }
+
+// DAY 23 (474. Ones and Zeroes)=========================================================================================================================
+
+int subseq(int i, int z, int o, int sz, int m, int n, vector<pair<int,int>> &p01, vector<vector<vector<int>>> &dp)
+{
+    if(i == sz) return 0;
+
+    if(dp[i][z][o] != -1) return dp[i][z][o];
+
+    int ans = 0;
+    if(z + p01[i].first <= m && o + p01[i].second <= n)
+        ans = max(ans,subseq(i+1, z +p01[i].first, o + p01[i].second, sz, m, n, p01, dp) + 1);
+    ans = max(ans, subseq(i+1, z, o, sz, m, n, p01, dp));
+
+    return dp[i][z][o] = ans;
+}
+
+int findMaxForm(vector<string>& strs, int m, int n) 
+{
+    int sz = strs.size();
+    vector<pair<int,int>> p01(sz);
+    for(int i = 0; i < sz; i++)
+    {
+        int z = 0, o = 0;
+        for(char c : strs[i])
+            z += c == '0', o += c == '1';
+        p01[i] = {z, o};
+    }
+
+    vector<vector<vector<int>>> dp(sz, vector<vector<int>> (m+1, vector<int>(n+1, -1)));
+    return subseq(0, 0, 0, sz, m, n, p01, dp);
+}
