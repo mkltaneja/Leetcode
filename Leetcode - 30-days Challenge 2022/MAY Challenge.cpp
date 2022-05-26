@@ -645,3 +645,16 @@ int findMaxForm(vector<string>& strs, int m, int n)
     vector<vector<vector<int>>> dp(sz, vector<vector<int>> (m+1, vector<int>(n+1, -1)));
     return subseq(0, 0, 0, sz, m, n, p01, dp);
 }
+
+// DAY 26 (191. Number of 1 Bits)=========================================================================================================================
+
+int hammingWeight(uint32_t n) 
+{
+    int ans = 0;
+    while(n)
+    {
+        n &= n-1;
+        ans++;
+    }
+    return ans;
+}
