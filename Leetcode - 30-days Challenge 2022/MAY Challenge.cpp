@@ -658,3 +658,32 @@ int hammingWeight(uint32_t n)
     }
     return ans;
 }
+
+// DAY 30 (29. Divide Two Integers)=========================================================================================================================
+
+int divide(int dividend, int divisor) 
+{
+    if(divisor == 0) return INT_MAX;
+    if(labs(divisor) > labs(dividend) || dividend == 0) return 0;
+
+    if(dividend == INT_MIN && divisor == -1) return INT_MAX;
+    if(dividend == INT_MIN && divisor == 1) return INT_MIN;
+
+    int ans = 0;
+    long dd = abs(dividend), ds = abs(divisor);
+    while(ds <= dd)
+    {
+        long mult = ds, cnt = 1;
+        while(mult+mult <= dd)
+        {
+            mult += mult;
+            cnt += cnt;
+        }
+        dd -= mult;
+        ans += cnt;
+    }
+    if((dividend > 0) ^ (divisor > 0))
+        ans = -ans;
+
+    return ans > INT_MAX? INT_MAX : ans;
+}
