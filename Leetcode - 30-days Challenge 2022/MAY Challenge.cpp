@@ -687,3 +687,29 @@ int divide(int dividend, int divisor)
 
     return ans > INT_MAX? INT_MAX : ans;
 }
+
+// DAY 31 (1461. Check If a String Contains All Binary Codes of Size K)=========================================================================================================================
+
+bool hasAllCodes(string s, int k) 
+{
+    int n = s.size();
+    if(k > n) return false;
+
+    int num = 0;
+    for(int i = 0; i < k; i++)
+    {
+        num = (num << 1) | (s[i]-'0');
+    }
+
+    vector<bool> isSet((1 << k), false);
+    int count = 0;
+    for(int i = k; i <= n; i++)
+    {
+        count += 1 - isSet[num];
+        isSet[num] = true;
+        num &= ~(1 << (k-1));
+        num = (num << 1) | (s[i] - '0');
+    }
+
+    return count == (1 << k);
+}
