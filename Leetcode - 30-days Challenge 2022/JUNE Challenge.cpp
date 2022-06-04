@@ -55,3 +55,38 @@ public:
  * NumMatrix* obj = new NumMatrix(matrix);
  * int param_1 = obj->sumRegion(row1,col1,row2,col2);
  */
+
+// DAY 4 (51. N-Queens)=========================================================================================================================
+
+vector<vector<string>> ans;
+void dfs(int i, int c, int ld, int rd, int n, vector<string> &board)
+{
+    if(i == n)
+    {
+        ans.push_back(board);
+        return;
+    }
+    for(int j = 0; j < n; j++)
+    {
+        if(!(c & (1 << j)) && !(ld & (1 << (i+j))) && !(rd & (1 << (i-j+n))))
+        {
+            c ^= (1 << j);
+            ld ^= (1 << (i+j));
+            rd ^= (1 << (i-j+n));
+            board[i][j] = 'Q';
+            dfs(i+1, c, ld, rd, n, board);
+            c ^= (1 << j);
+            ld ^= (1 << (i+j));
+            rd ^= (1 << (i-j+n));
+            board[i][j] = '.';
+        }
+    }
+}
+
+vector<vector<string>> solveNQueens(int n) 
+{
+    vector<string> board(n, string(n, '.'));
+    dfs(0, 0, 0, 0, n, board);
+
+    return ans;
+}
