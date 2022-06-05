@@ -90,3 +90,32 @@ vector<vector<string>> solveNQueens(int n)
 
     return ans;
 }
+
+// DAY 5 (52. N-Queens II)=========================================================================================================================
+
+int dfs(int i, int c, int ld, int rd, int n)
+{
+    if(i == n) return 1;
+
+    int ans = 0;
+    for(int j = 0; j < n; j++)
+    {
+        if(!(c & (1 << j)) && !(ld & (1 << (i + j))) && !(rd & (1 << (i - j + n))))
+        {
+            c ^= (1 << j);
+            ld ^= (1 << (i+j));
+            rd ^= (1 << (i-j+n));
+            ans += dfs(i+1, c, ld, rd, n);
+            c ^= (1 << j);
+            ld ^= (1 << (i+j));
+            rd ^= (1 << (i-j+n));
+        }
+    }
+
+    return ans;
+}
+
+int totalNQueens(int n) 
+{
+    return dfs(0, 0, 0, 0, n);
+}
