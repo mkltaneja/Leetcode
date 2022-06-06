@@ -119,3 +119,34 @@ int totalNQueens(int n)
 {
     return dfs(0, 0, 0, 0, n);
 }
+
+// DAY 6 (160. Intersection of Two Linked Lists)=========================================================================================================================
+
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) 
+{
+    ListNode* tailA = headA;
+
+    while(tailA && tailA->next) tailA = tailA->next;
+    tailA->next = headB;
+
+    ListNode* slow = headA, *fast = headA;
+
+    do {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    while(fast && fast->next && fast->next->next && slow != fast);
+
+    if(!fast || !fast->next || !fast->next->next) 
+    {
+        tailA->next = nullptr;
+        return nullptr;
+    }
+
+    slow = headA;
+    while(slow != fast) slow = slow->next, fast = fast->next;
+
+    tailA->next = nullptr;
+
+    return slow;
+}
