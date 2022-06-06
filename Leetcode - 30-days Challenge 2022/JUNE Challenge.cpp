@@ -122,6 +122,8 @@ int totalNQueens(int n)
 
 // DAY 6 (160. Intersection of Two Linked Lists)=========================================================================================================================
 
+// APPROACH 1
+
 ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) 
 {
     ListNode* tailA = headA;
@@ -149,4 +151,17 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
     tailA->next = nullptr;
 
     return slow;
+}
+
+// APPROACH 2 (Concise)
+
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) 
+{
+    ListNode* p1 = headA, *p2 = headB;
+    while(p1 != p2)
+    {
+        p1 = p1? p1->next : headB;
+        p2 = p2? p2->next : headA;
+    }
+    return p1;
 }
