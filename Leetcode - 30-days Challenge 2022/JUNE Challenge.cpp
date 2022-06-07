@@ -165,3 +165,11 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
     }
     return p1;
 }
+
+// DAY 7 (88. Merge Sorted Array)=========================================================================================================================
+
+void merge(vector<int>& nums1, int n, vector<int>& nums2, int m)
+{
+    while(n || m)
+        nums1[n+m] = ((n && m && (nums1[n-1] > nums2[m-1])) || (n && !m))? nums1[--n] : nums2[--m];
+}
