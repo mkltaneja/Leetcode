@@ -173,3 +173,21 @@ void merge(vector<int>& nums1, int n, vector<int>& nums2, int m)
     while(n || m)
         nums1[n+m] = ((n && m && (nums1[n-1] > nums2[m-1])) || (n && !m))? nums1[--n] : nums2[--m];
 }
+
+// DAY 8 (1332. Remove Palindromic Subsequences)=========================================================================================================================
+
+bool ispal(string &s)
+{
+    int i = 0, j = s.size() - 1;
+    while(i < j)
+        if(s[i++] != s[j--])
+            return false;
+    return true;
+}
+
+int removePalindromeSub(string s) 
+{
+    if(s.empty()) return 0;
+    if(ispal(s)) return 1;
+    return 2;
+}
