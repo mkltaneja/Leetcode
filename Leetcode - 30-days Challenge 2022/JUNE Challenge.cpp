@@ -191,3 +191,18 @@ int removePalindromeSub(string s)
     if(ispal(s)) return 1;
     return 2;
 }
+
+// DAY 9 (167. Two Sum II - Input Array Is Sorted)=========================================================================================================================
+
+vector<int> twoSum(vector<int>& numbers, int target) 
+{
+    int i = 0, j = numbers.size() - 1;
+    while(i < j)
+    {
+        int sum = numbers[i] + numbers[j];
+        if(sum == target) return {i+1, j+1};
+        if(sum < target) i++;
+        else j--;
+    }
+    return {0,0};
+}
