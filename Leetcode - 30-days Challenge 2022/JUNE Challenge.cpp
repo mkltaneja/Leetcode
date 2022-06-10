@@ -206,3 +206,18 @@ vector<int> twoSum(vector<int>& numbers, int target)
     }
     return {0,0};
 }
+
+// DAY 10 (3. Longest Substring Without Repeating Characters)=========================================================================================================================
+
+int lengthOfLongestSubstring(string s) 
+{
+    int ans = 0, mxi = -1;
+    vector<int> li(256, -1);
+    for(int i = 0; i < s.size(); i++)
+    {
+        mxi = max(mxi, li[s[i] - ' ']);
+        ans = max(ans, i - mxi);
+        li[s[i] - ' '] = i;
+    }
+    return ans;
+}
