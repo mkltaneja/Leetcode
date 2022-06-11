@@ -221,3 +221,23 @@ int lengthOfLongestSubstring(string s)
     }
     return ans;
 }
+
+// DAY 11 (1658. Minimum Operations to Reduce X to Zero)=========================================================================================================================
+
+int minOperations(vector<int>& nums, int x) 
+{
+    int tot = 0;
+    for(int num : nums)
+        tot += num;
+    int tar = tot - x;
+    if(tar < 0) return -1;
+
+    int i = 0, j = 0, sum = 0, ans = INT_MAX;
+    while(i < nums.size())
+    {
+        sum += nums[i++];
+        while(sum > tar) sum -= nums[j++];
+        if(sum == tar) ans = min(ans, (int)nums.size() - (i-j));
+    }
+    return ans == INT_MAX? -1 : ans;
+}
