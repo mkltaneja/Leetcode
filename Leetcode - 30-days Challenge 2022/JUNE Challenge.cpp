@@ -241,3 +241,24 @@ int minOperations(vector<int>& nums, int x)
     }
     return ans == INT_MAX? -1 : ans;
 }
+
+// DAY 12 (1695. Maximum Erasure Value)=========================================================================================================================
+
+int maximumUniqueSubarray(vector<int>& nums) 
+{
+    int score = 0, maxscore = 0;
+    unordered_map<int,int> mp;
+
+    for(int i = 0, j = 0; i < nums.size(); i++)
+    {
+        mp[nums[i]]++;
+        while(mp[nums[i]] == 2)
+        {
+            mp[nums[j]]--;
+            score -= nums[j++];
+        }
+        score += nums[i];
+        maxscore = max(maxscore, score);
+    }
+    return maxscore;
+}
