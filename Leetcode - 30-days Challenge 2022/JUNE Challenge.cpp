@@ -273,3 +273,31 @@ int minimumTotal(vector<vector<int>>& triangle)
             triangle[i][j] += min(triangle[i+1][j], triangle[i+1][j+1]);
     return triangle[0][0];
 }
+
+// DAY 14 (583. Delete Operation for Two Strings)=========================================================================================================================
+
+int maxComSubseq(int i, int j, int n, int m, string &s, string &t)
+{
+    vector<vector<int>> dp(n, vector<int>(m, 0));
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            int ip1 = i? dp[i-1][j] : 0;
+            int jp1 = j? dp[i][j-1] : 0;
+            int ijp1 = 0;
+            ijp1 = ((i && j)? dp[i-1][j-1] : 0) + ((s[i] == t[j])? 1 : 0);
+
+            dp[i][j] = max({ip1, jp1, ijp1});
+        }
+    }
+    return dp[n-1][m-1];
+}
+
+int minDistance(string word1, string word2) 
+{
+    int n = word1.size(), m = word2.size();
+    int mlen = maxComSubseq(0, 0, n, m, word1, word2);
+
+    return (n + m) - 2*mlen;
+}
