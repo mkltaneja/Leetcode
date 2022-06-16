@@ -304,6 +304,8 @@ int minDistance(string word1, string word2)
 
 // DAY 16 (5. Longest Palindromic Substring)=========================================================================================================================
 
+// APPROACH 1 -> O(n^2)
+
 string longestPalindrome(string s) 
 {
     int n = s.size();
@@ -320,4 +322,24 @@ string longestPalindrome(string s)
     }
 
     return s.substr(l, r);
+}
+
+// APPROACH 2 -> O(n)
+
+string longestPalindrome(string s) 
+{
+    int i = 0, n = s.size();
+    int st = 0, end = 0;
+    while(i < n)
+    {
+        int l = i;
+        while(i+1 < n && s[i] == s[i+1]) i++;
+        int r = i;
+        while(l-1 >= 0 && r+1 < n && s[l-1] == s[r+1]) l--, r++;
+
+        if(r - l + 1 > end - st + 1) st = l, end = r;
+        i++;
+    }
+
+    return s.substr(st, end-st+1);
 }
