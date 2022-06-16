@@ -301,3 +301,23 @@ int minDistance(string word1, string word2)
 
     return (n + m) - 2*mlen;
 }
+
+// DAY 16 (5. Longest Palindromic Substring)=========================================================================================================================
+
+string longestPalindrome(string s) 
+{
+    int n = s.size();
+    vector<vector<bool>> dp(n,vector<bool>(n));
+    int l = 0, r = 0;
+    for(int len = 1; len <= n; len++)
+    {
+        for(int i = 0, j = len-1; j < n; i++, j++)
+        {
+            dp[i][j] = (len == 1) || (len == 2 && s[i] == s[j]) || (len > 2 && s[i] == s[j] && dp[i+1][j-1]);
+            l = dp[i][j]? i : l;
+            r = dp[i][j]? len : r;
+        }
+    }
+
+    return s.substr(l, r);
+}
