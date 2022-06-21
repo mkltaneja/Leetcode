@@ -343,3 +343,41 @@ string longestPalindrome(string s)
 
     return s.substr(st, end-st+1);
 }
+
+// DAY 21 (1642. Furthest Building You Can Reach)=========================================================================================================================
+
+int furthestBuilding(vector<int>& heights, int bricks, int ladders) 
+{
+    priority_queue<int> pq;
+    int i = 0;
+    while(i < heights.size()-1)
+    {
+        int hdiff = heights[i+1] - heights[i];
+
+        if(hdiff <= 0) 
+        {
+            i++;
+            continue;
+        }
+
+        if(hdiff <= bricks)
+        {
+            bricks -= hdiff;
+            pq.push(hdiff);
+            i++;
+        }
+        else 
+        {
+            if(!ladders--) break;
+            if(pq.empty() || hdiff > pq.top())
+            {
+                i++;
+                continue;
+            }
+            bricks += pq.top();
+            pq.pop();
+        }
+    }
+
+    return i;
+}
