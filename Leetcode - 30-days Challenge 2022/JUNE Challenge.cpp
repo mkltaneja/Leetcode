@@ -381,3 +381,11 @@ int furthestBuilding(vector<int>& heights, int bricks, int ladders)
 
     return i;
 }
+
+// DAY 22 (215. Kth Largest Element in an Array)=========================================================================================================================
+
+int findKthLargest(vector<int>& nums, int k) 
+{
+    sort(nums.rbegin(), nums.rend());
+    return nums[k-1];
+}
