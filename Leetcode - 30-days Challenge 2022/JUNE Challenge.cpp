@@ -389,3 +389,29 @@ int findKthLargest(vector<int>& nums, int k)
     sort(nums.rbegin(), nums.rend());
     return nums[k-1];
 }
+
+// DAY 23 (630. Course Schedule III)=========================================================================================================================
+
+int scheduleCourse(vector<vector<int>>& courses) 
+{
+    sort(courses.begin(), courses.end(), [](auto const &a, auto const &b){
+        return a[1] == b[1]? a[0] < b[0] : a[1] < b[1];
+    });
+
+    int n = courses.size();
+    priority_queue<int> pq;
+    int t = 0;
+    for(int i = 0; i < n; i++)
+    {
+        int dur = courses[i][0], ld = courses[i][1];
+        t += dur;
+        pq.push(dur);
+
+        if(t > ld)
+        {
+            t -= pq.top();
+            pq.pop();
+        }
+    }
+    return pq.size();
+}
