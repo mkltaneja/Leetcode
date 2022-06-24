@@ -415,3 +415,31 @@ int scheduleCourse(vector<vector<int>>& courses)
     }
     return pq.size();
 }
+
+// DAY 24 (1354. Construct Target Array With Multiple Sums)=========================================================================================================================
+
+bool isPossible(vector<int>& target) 
+{
+    long tot = 0;
+    priority_queue<int> pq;
+    for(int x : target)
+    {
+        tot += x;
+        pq.push(x);
+    }
+
+    while(pq.top() != 1)
+    {
+        int mx = pq.top();
+        pq.pop();
+        tot -= mx;
+
+        if(tot <= 0 || mx-tot <= 0) 
+            return false;
+
+        mx %= tot;
+        tot += mx;
+        pq.push(mx > 0? mx : tot);
+    }
+    return true;
+}
