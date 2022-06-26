@@ -465,3 +465,25 @@ bool checkPossibility(vector<int>& nums)
     }
     return true;
 }
+
+// DAY 26 (1423. Maximum Points You Can Obtain from Cards)=========================================================================================================================
+
+int maxScore(vector<int>& cardPoints, int k) 
+{
+    int n = cardPoints.size();
+    int sum = 0;
+    for(int x : cardPoints)
+        sum += x;
+
+    int minsum = sum, currsum = 0;
+    int x = n-k;
+    for(int i = 0; i < n; i++)
+    {
+        currsum += cardPoints[i];
+        if(i >= x)
+            currsum -= cardPoints[i-x];
+        if(i >= x-1)
+            minsum = min(minsum, currsum);
+    }
+    return sum - minsum;
+}
