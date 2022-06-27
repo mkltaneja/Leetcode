@@ -487,3 +487,13 @@ int maxScore(vector<int>& cardPoints, int k)
     }
     return sum - minsum;
 }
+
+// DAY 27 (1689. Partitioning Into Minimum Number Of Deci-Binary Numbers)=========================================================================================================================
+
+int minPartitions(string n) 
+{
+    int ans = 0;
+    for(char c : n)
+        ans = max(ans, c-'0');
+    return ans;
+}
