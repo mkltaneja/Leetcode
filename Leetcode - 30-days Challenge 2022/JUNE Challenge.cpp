@@ -497,3 +497,28 @@ int minPartitions(string n)
         ans = max(ans, c-'0');
     return ans;
 }
+
+// DAY 28 (406. Queue Reconstruction by Height)=========================================================================================================================
+
+vector<vector<int>> reconstructQueue(vector<vector<int>>& people) 
+{
+    int n = people.size();
+    sort(people.begin(), people.end());
+
+    vector<vector<int>> que(n, vector<int>(2,-1));
+    for(int i = 0; i < n; i++)
+    {
+        int k = people[i][1];
+        for(int j = 0; j < n; j++)
+        {
+            if(k == 0 && que[j][0] == -1)
+            {
+                que[j] = people[i];
+                break;
+            }
+            else if(k && (que[j][0] == -1 || que[j][0] >= people[i][0]))
+                k--;
+        }
+    }
+    return que;
+}
