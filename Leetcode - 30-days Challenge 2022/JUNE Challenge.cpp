@@ -522,3 +522,14 @@ vector<vector<int>> reconstructQueue(vector<vector<int>>& people)
     }
     return que;
 }
+
+// DAY 29 (462. Minimum Moves to Equal Array Elements II)=========================================================================================================================
+
+int minMoves2(vector<int>& nums) 
+{
+    sort(nums.begin(), nums.end());
+    int ans = 0, med = nums[nums.size()/2];
+    for(int x : nums)
+        ans += abs(x - med);
+    return ans;
+}
