@@ -32,3 +32,25 @@ int maxArea(int h, int w, vector<int>& horizontalCuts, vector<int>& verticalCuts
 
     return (long)mxh * mxw % 1000000007;
 }
+
+//  DAY 3 (376. Wiggle Subsequence)========================================================================================================
+
+int wiggleMaxLength(vector<int>& nums) 
+{
+    int n = nums.size();
+    int ans = 1, i = 1;
+
+    while(i < n && nums[i] == nums[0]) i++;
+    if(i == n) return ans;
+
+    int up = nums[i] > nums[0];
+    while(i < n)
+    {
+        while(up && i < n && nums[i] >= nums[i-1]) i++;
+        while(!up && i < n && nums[i] <= nums[i-1]) i++;
+        up ^= 1;
+        ans++;
+    }
+
+    return ans;
+}
