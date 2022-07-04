@@ -54,3 +54,29 @@ int wiggleMaxLength(vector<int>& nums)
 
     return ans;
 }
+
+//  DAY 4 (135. Candy)========================================================================================================
+
+// APPROACH 1 --> O(n*logn)
+
+int candy(vector<int>& ratings) 
+{
+    int n = ratings.size();
+    vector<pair<int,int>> ri(n);
+    for(int i = 0; i < n; i++)
+        ri[i] = {ratings[i], i};
+
+    sort(ri.begin(), ri.end());
+    vector<int> candies(n);
+    int ans = 0;
+    for(int i = 0; i < n; i++)
+    {
+        int j = ri[i].second;
+        int lans = (j && ratings[j-1] < ratings[j])? candies[j-1] + 1 : 1;
+        int rans = (j+1 < n && ratings[j+1] < ratings[j])? candies[j+1] + 1 : 1;
+        candies[j] = max(lans, rans);
+        ans += candies[j];
+    }
+
+    return ans;
+}
