@@ -100,3 +100,36 @@ int candy(vector<int>& ratings)
 
     return ans;
 }
+
+// DAY 5 (128. Longest Consecutive Sequence)====================================================================================
+
+int longestConsecutive(vector<int>& nums) 
+{
+    unordered_map<int,int> mp;
+    for(int x : nums)
+    {
+        if(mp.count(x)) continue;
+        mp[x] = 1;
+        if(!mp.count(x-1) && !mp.count(x+1)) continue;
+        if(mp.count(x-1) && mp.count(x+1))
+        {
+            int lcnt = mp[x - (mp[x-1])];
+            int rcnt = mp[x + (mp[x+1])];
+            mp[x - (mp[x-1])] = lcnt + rcnt + 1;
+            mp[x + (mp[x+1])] = lcnt + rcnt + 1;
+        }
+        else 
+        {
+            if(mp.count(x-1))
+                mp[x] = ++mp[x - mp[x-1]];
+            else if(mp.count(x+1))
+                mp[x] = ++mp[x + (mp[x+1])];
+        }
+    }
+    
+    int ans = 0;
+    for(auto p : mp)
+        ans = max(ans, p.second);
+    
+    return ans;
+}
