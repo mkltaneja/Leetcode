@@ -525,6 +525,26 @@ int minDeletions(string s)
     return ans;
 }
 
+// APPROACH 2 (Without hashmap) --> time - O(n), space - O(1)
+
+int minDeletions(string s) 
+{
+    vector<int> map(26,0);
+    for(char c : s)
+        map[c-'a']++;
+    sort(map.rbegin(), map.rend());
+    
+    int prev = map[0];
+    int ans = s.size() - map[0];
+    for(int i = 1; i < 26; i++)
+    {
+        if(map[i] == 0 || prev == 0) break;
+        prev = min(map[i], prev-1);
+        ans -= prev;
+    }
+    return ans;
+}
+
 // DAY 29 (406. Queue Reconstruction by Height)=========================================================================================================================
 
 vector<vector<int>> reconstructQueue(vector<vector<int>>& people) 
