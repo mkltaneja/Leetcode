@@ -498,7 +498,34 @@ int minPartitions(string n)
     return ans;
 }
 
-// DAY 28 (406. Queue Reconstruction by Height)=========================================================================================================================
+// DAY 28 (1647. Minimum Deletions to Make Character Frequencies Unique)====================================================================
+
+// APPROACH 1 (Using Hashmap) --> time - O(n), space - O(n)
+
+int minDeletions(string s) 
+{
+    vector<int> map(26,0);
+    for(char c : s)
+        map[c-'a']++;
+    
+    unordered_map<int,int> cntmp;
+    for(int x : map)
+        if(x) cntmp[x]++;
+    
+    int ans = 0, i = 0;
+    for(int x : map)
+    {
+        if(cntmp[x] <= 1) continue;
+        
+        cntmp[x--]--, ans++;
+        while(cntmp[x])
+            x--, ans++;
+        if(x) cntmp[x] = 1;
+    }
+    return ans;
+}
+
+// DAY 29 (406. Queue Reconstruction by Height)=========================================================================================================================
 
 vector<vector<int>> reconstructQueue(vector<vector<int>>& people) 
 {
@@ -523,7 +550,7 @@ vector<vector<int>> reconstructQueue(vector<vector<int>>& people)
     return que;
 }
 
-// DAY 29 (462. Minimum Moves to Equal Array Elements II)=========================================================================================================================
+// DAY 30 (462. Minimum Moves to Equal Array Elements II)=========================================================================================================================
 
 int minMoves2(vector<int>& nums) 
 {
