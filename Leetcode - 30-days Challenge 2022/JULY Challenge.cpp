@@ -174,3 +174,43 @@ bool isInterleave(string s1, string s2, string s3)
     vector<vector<int>> dp(n+1, vector<int>(m+1, -1));
     return dfs(0, 0, 0, n, m, nm, s1, s2, s3, dp);
 }
+
+// DAY 8 (1473. Paint House III)===================================================================================================
+
+int dfs(int i, int nbr, int lastc, int m, int n, vector<vector<int>> &cost, vector<int> &houses, int target, vector<vector<vector<int>>> &dp)
+{
+    if(nbr > target) return -1;
+    if(i == m)
+    {
+        if(nbr == target) return 0;
+        return -1;
+    }
+    if(dp[i][nbr][lastc] != INT_MAX) return dp[i][nbr][lastc];
+    
+    if(houses[i])
+    {
+        if(houses[i] == lastc)
+            return dp[i][nbr][lastc] = dfs(i+1, nbr, houses[i], m, n, cost, houses, target, dp);
+        else return dp[i][nbr][lastc] = dfs(i+1, nbr+1, houses[i], m, n, cost, houses, target, dp);
+    }
+    else
+    {
+        int ans = INT_MAX;
+        for(int j = 0; j < n; j++)
+        {
+            int curr = 0;
+            if(j+1 == lastc)
+                curr = dfs(i+1, nbr, j+1, m, n, cost, houses, target, dp);
+            else curr = dfs(i+1, nbr+1, j+1, m, n, cost, houses, target, dp);
+            if(curr == -1) continue;
+            ans = min(ans, curr + cost[i][j]);
+        }
+        return dp[i][nbr][lastc] = ans == INT_MAX? -1 : ans;
+    }
+}
+
+int minCost(vector<int>& houses, vector<vector<int>>& cost, int m, int n, int target) 
+{
+    vector<vector<vector<int>>> dp(m, vector<vector<int>>(target+1, vector<int>(n+1, INT_MAX)));
+    return dfs(0, 0, 0, m, n, cost, houses, target, dp);
+}
