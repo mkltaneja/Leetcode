@@ -214,3 +214,20 @@ int minCost(vector<int>& houses, vector<vector<int>>& cost, int m, int n, int ta
     vector<vector<vector<int>>> dp(m, vector<vector<int>>(target+1, vector<int>(n+1, INT_MAX)));
     return dfs(0, 0, 0, m, n, cost, houses, target, dp);
 }
+
+// DAY 9 (1696. Jump Game VI)================================================================================================
+
+int maxResult(vector<int>& nums, int k) 
+{
+    int n = nums.size();
+    priority_queue<pair<int,int>> pq;
+    pq.push({nums[n-1], n-1});
+    for(int i = n-2; i >= 0; i--)
+    {
+        while(pq.top().second > i + k)
+            pq.pop();
+        nums[i] += pq.top().first;
+        pq.push({nums[i], i});
+    }
+    return nums[0];
+}
