@@ -243,3 +243,28 @@ int minCostClimbingStairs(vector<int>& cost)
     }
     return min(cost[0], cost[1]);
 }
+
+// DAY 11 (199. Binary Tree Right Side View)============================================================================================
+
+vector<int> rightSideView(TreeNode* root) 
+{
+    if(!root) return {};
+    
+    queue<TreeNode*> que;
+    que.push(root);
+    
+    vector<int> ans;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            TreeNode* node = que.front();
+            que.pop();
+            if(sz == 0) ans.push_back(node->val);
+            if(node->left) que.push(node->left);
+            if(node->right) que.push(node->right);
+        }
+    }
+    return ans;
+}
