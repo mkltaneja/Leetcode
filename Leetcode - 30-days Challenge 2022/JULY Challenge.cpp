@@ -268,3 +268,37 @@ vector<int> rightSideView(TreeNode* root)
     }
     return ans;
 }
+
+// DAY 12 (473. Matchsticks to Square)===============================================================================================
+
+bool findsum(int i, int sides, int sum, int vis, int tar, vector<int> &matchsticks)
+{
+    if(sides == 3) return true;
+    if(sum == tar) 
+        return findsum(0, sides+1, 0, vis, tar, matchsticks);
+    if(i == matchsticks.size()) return false;
+    
+    for(int j = i; j < matchsticks.size(); j++)
+    {
+        if(!(vis & (1 << j)) && sum + matchsticks[j] <= tar)
+        {
+            vis ^= (1 << j);
+            if(findsum(j+1, sides, sum+matchsticks[j], vis, tar, matchsticks))
+                return true;
+            vis ^= (1 << j);
+        }
+    }
+    
+    return false;
+}
+
+bool makesquare(vector<int>& matchsticks) 
+{
+    int sum = 0;
+    for(int x : matchsticks)
+        sum += x;
+    if(sum % 4) return false;
+    
+    int vis = 0;
+    return findsum(0, 0, 0, vis, sum/4, matchsticks);
+}
