@@ -302,3 +302,31 @@ bool makesquare(vector<int>& matchsticks)
     int vis = 0;
     return findsum(0, 0, 0, vis, sum/4, matchsticks);
 }
+
+// DAY 13 (102. Binary Tree Level Order Traversal)=====================================================================================
+
+vector<vector<int>> levelOrder(TreeNode* root) 
+{
+    if(!root) return {};
+    vector<vector<int>> ans;
+    
+    queue<TreeNode*> que;
+    que.push(root);
+    while(!que.empty())
+    {
+        int sz = que.size();
+        vector<int> lvl;
+        while(sz--)
+        {
+            TreeNode* node = que.front();
+            lvl.push_back(node->val);
+            que.pop();
+            
+            if(node->left) que.push(node->left);
+            if(node->right) que.push(node->right);
+        }
+        ans.push_back(lvl);
+    }
+    
+    return ans;
+}
