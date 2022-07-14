@@ -330,3 +330,29 @@ vector<vector<int>> levelOrder(TreeNode* root)
     
     return ans;
 }
+
+// DAY 14 (105. Construct Binary Tree from Preorder and Inorder Traversal)=============================================================================
+
+TreeNode* constructTree(int &i, int l, int r, vector<int> &pre, vector<int> &in, unordered_map<int,int> &mpi)
+{
+    if(r < l) return nullptr;
+    
+    TreeNode* node = new TreeNode(pre[i]);
+    int idx = mpi[pre[i++]];
+    
+    node->left = constructTree(i, l, idx-1, pre, in, mpi);
+    node->right = constructTree(i, idx+1, r, pre, in, mpi);
+    
+    return node;
+}
+
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) 
+{
+    int n = inorder.size();
+    unordered_map<int,int> mpi;
+    for(int i = 0; i < n; i++)
+        mpi[inorder[i]] = i;
+    
+    int i = 0;
+    return constructTree(i, 0, n-1, preorder, inorder, mpi);
+}
