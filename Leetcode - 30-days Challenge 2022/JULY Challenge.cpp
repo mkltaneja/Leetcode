@@ -409,3 +409,28 @@ int maxAreaOfIsland(vector<vector<int>> &grid)
 
     return maxarea;
 }
+
+// DAY 16 (576. Out of Boundary Paths)================================================================================================
+
+int mod = 1e9 + 7;
+int dfs(int i, int j, int n, int m, int M, vector<vector<vector<int>>> &dp)
+{
+    if (i == -1 || j == -1 || i == n || j == m)
+        return 1;
+    if (M == 0)
+        return 0;
+    if (dp[i][j][M] != -1)
+        return dp[i][j][M];
+
+    int u = dfs(i + 1, j, n, m, M - 1, dp);
+    int r = dfs(i, j + 1, n, m, M - 1, dp);
+    int d = dfs(i - 1, j, n, m, M - 1, dp);
+    int l = dfs(i, j - 1, n, m, M - 1, dp);
+    return dp[i][j][M] = ((u % mod + r % mod) % mod) + ((d % mod + l % mod) % mod) % mod;
+}
+
+int findPaths(int m, int n, int maxMove, int startRow, int startColumn)
+{
+    vector<vector<vector<int>>> dp(m, vector<vector<int>>(n, vector<int>(maxMove + 1, -1)));
+    return dfs(startRow, startColumn, m, n, maxMove, dp) % mod;
+}
