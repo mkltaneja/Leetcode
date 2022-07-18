@@ -434,3 +434,34 @@ int findPaths(int m, int n, int maxMove, int startRow, int startColumn)
     vector<vector<vector<int>>> dp(m, vector<vector<int>>(n, vector<int>(maxMove + 1, -1)));
     return dfs(startRow, startColumn, m, n, maxMove, dp) % mod;
 }
+
+// DAY 18 (1074. Number of Submatrices That Sum to Target)============================================================================================
+
+int numSubmatrixSumTarget(vector<vector<int>> &matrix, int target)
+{
+    int n = matrix.size();
+    int m = matrix[0].size();
+
+    for (int i = 0; i < n; i++)
+        for (int j = 1; j < m; j++)
+            matrix[i][j] += matrix[i][j - 1];
+
+    int ans = 0;
+    for (int p = 0; p < m; p++)
+    {
+        for (int j = p; j < m; j++)
+        {
+            unordered_map<int, int> sums;
+            sums[0] = 1;
+            int sum = 0;
+            for (int i = 0; i < n; i++)
+            {
+                sum += matrix[i][j] - (p ? matrix[i][p - 1] : 0);
+                ans += sums[sum - target];
+                sums[sum]++;
+            }
+        }
+    }
+
+    return ans;
+}
