@@ -483,3 +483,33 @@ vector<vector<int>> generate(int numRows)
     
     return ans;
 }
+
+// DAY 20 (792. Number of Matching Subsequences)=========================================================================================
+
+int numMatchingSubseq(string s, vector<string>& words) 
+{
+    vector<vector<int>> imap(26);
+    for(int i = 0; i < s.size(); i++)
+        imap[s[i]-'a'].push_back(i);
+    
+    int ans = 0;
+    for(int i = 0; i < words.size(); i++)
+    {
+        int lasti = -1, j = 0;
+        bool possible = true;
+        while(j < words[i].size())
+        {
+            int idx = words[i][j++]-'a';
+            auto itr = upper_bound(imap[idx].begin(), imap[idx].end(), lasti);
+            if(itr == imap[idx].end())
+            {
+                possible = false;
+                break;
+            }
+            lasti = *itr;
+        }
+        if(possible) ans++;
+    }
+    
+    return ans;
+}
