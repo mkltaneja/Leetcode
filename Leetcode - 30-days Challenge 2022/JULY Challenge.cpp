@@ -468,48 +468,87 @@ int numSubmatrixSumTarget(vector<vector<int>> &matrix, int target)
 
 // DAY 19 (118. Pascal's Triangle)==================================================================================================================
 
-vector<vector<int>> generate(int numRows) 
+vector<vector<int>> generate(int numRows)
 {
     vector<vector<int>> ans;
     ans.push_back({1});
-    
-    for(int i = 1; i < numRows; i++)
+
+    for (int i = 1; i < numRows; i++)
     {
         ans.push_back({1});
-        for(int j = 0; j < i-1; j++)
-            ans.back().push_back(ans[i-1][j] + ans[i-1][j+1]);
+        for (int j = 0; j < i - 1; j++)
+            ans.back().push_back(ans[i - 1][j] + ans[i - 1][j + 1]);
         ans.back().push_back(1);
     }
-    
+
     return ans;
 }
 
 // DAY 20 (792. Number of Matching Subsequences)=========================================================================================
 
-int numMatchingSubseq(string s, vector<string>& words) 
+int numMatchingSubseq(string s, vector<string> &words)
 {
     vector<vector<int>> imap(26);
-    for(int i = 0; i < s.size(); i++)
-        imap[s[i]-'a'].push_back(i);
-    
+    for (int i = 0; i < s.size(); i++)
+        imap[s[i] - 'a'].push_back(i);
+
     int ans = 0;
-    for(int i = 0; i < words.size(); i++)
+    for (int i = 0; i < words.size(); i++)
     {
         int lasti = -1, j = 0;
         bool possible = true;
-        while(j < words[i].size())
+        while (j < words[i].size())
         {
-            int idx = words[i][j++]-'a';
+            int idx = words[i][j++] - 'a';
             auto itr = upper_bound(imap[idx].begin(), imap[idx].end(), lasti);
-            if(itr == imap[idx].end())
+            if (itr == imap[idx].end())
             {
                 possible = false;
                 break;
             }
             lasti = *itr;
         }
-        if(possible) ans++;
+        if (possible)
+            ans++;
     }
-    
+
     return ans;
+}
+
+// DAY 21 (92. Reverse Linked List II)===============================================================================================
+
+ListNode *reverseBetween(ListNode *head, int left, int right)
+{
+    ListNode *curr = head, *prev = nullptr, *forw = head->next;
+    ListNode *revtail = curr, *prevRevhead = nullptr;
+    int i = 1;
+    while (true)
+    {
+        if (i < left)
+        {
+            prevRevhead = curr;
+            curr = curr->next;
+            forw = curr;
+            i++;
+            continue;
+        }
+
+        if (i == left)
+            revtail = curr;
+
+        forw = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = forw;
+
+        if (i == right)
+        {
+            revtail->next = curr;
+            if (prevRevhead)
+                prevRevhead->next = prev;
+            break;
+        }
+        i++;
+    }
+    return left == 1 ? prev : head;
 }
