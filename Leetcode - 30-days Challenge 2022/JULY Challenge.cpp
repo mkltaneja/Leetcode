@@ -552,3 +552,33 @@ ListNode *reverseBetween(ListNode *head, int left, int right)
     }
     return left == 1 ? prev : head;
 }
+
+// DAY 22 (86. Partition List)=============================================================================================
+
+ListNode *partition(ListNode *head, int x)
+{
+    ListNode *lessx = new ListNode(INT_MIN), *lessx_itr = lessx;
+    ListNode *morex = new ListNode(INT_MIN), *morex_itr = morex;
+    ListNode *itr = head;
+
+    while (itr)
+    {
+        if (itr->val < x)
+        {
+            lessx_itr->next = new ListNode(itr->val);
+            lessx_itr = lessx_itr->next;
+        }
+        else
+        {
+            morex_itr->next = new ListNode(itr->val);
+            morex_itr = morex_itr->next;
+        }
+        itr = itr->next;
+    }
+
+    morex = morex->next;
+    lessx_itr->next = morex;
+    lessx = lessx->next;
+
+    return lessx;
+}
