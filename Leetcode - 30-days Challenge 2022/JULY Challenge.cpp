@@ -600,3 +600,44 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
     }
     return false;
 }
+
+// DAY 26 (236. Lowest Common Ancestor of a Binary Tree)================================================================================
+
+TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
+{
+    if (!root)
+        return nullptr;
+    if (root == p || root == q)
+        return root;
+
+    TreeNode *lans = lowestCommonAncestor(root->left, p, q);
+    TreeNode *rans = lowestCommonAncestor(root->right, p, q);
+
+    return lans && rans ? root : (lans ? lans : rans);
+}
+
+// DAY 27 (114. Flatten Binary Tree to Linked List)===================================================================================================
+
+TreeNode *flatten_(TreeNode *root)
+{
+    if (!root || (!root->left && !root->right))
+        return root;
+
+    TreeNode *ltail = flatten_(root->left);
+    TreeNode *rtail = flatten_(root->right);
+
+    if (!ltail)
+        return rtail;
+
+    TreeNode *tail = root->right ? rtail : ltail;
+    ltail->right = root->right;
+    root->right = root->left;
+    root->left = nullptr;
+
+    return tail;
+}
+
+void flatten(TreeNode *root)
+{
+    flatten_(root);
+}
