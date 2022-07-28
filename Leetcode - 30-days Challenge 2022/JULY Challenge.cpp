@@ -641,3 +641,18 @@ void flatten(TreeNode *root)
 {
     flatten_(root);
 }
+
+// DAY 28 (242. Valid Anagram)========================================================================================================
+
+bool isAnagram(string s, string t)
+{
+    vector<int> cnt(26);
+    for (char c : s)
+        cnt[c - 'a']++;
+    for (char c : t)
+        cnt[c - 'a']--;
+    for (int x : cnt)
+        if (x)
+            return false;
+    return true;
+}
