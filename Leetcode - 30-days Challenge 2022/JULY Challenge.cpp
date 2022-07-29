@@ -656,3 +656,31 @@ bool isAnagram(string s, string t)
             return false;
     return true;
 }
+
+// DAY 29 (890. Find and Replace Pattern)============================================================================================
+
+    string map(string &s)
+    {
+        string res = "";
+        char curr = 'a';
+        vector<char> mp(26,'-');
+        for(char c : s)
+        {
+            if(mp[c-'a'] == '-')
+                mp[c-'a'] = curr++;
+            res += mp[c-'a'];
+        }
+        return res;
+    }
+    
+    vector<string> findAndReplacePattern(vector<string>& words, string pattern) 
+    {
+        string pat = map(pattern);
+        
+        vector<string> ans;
+        for(string word : words)
+            if(map(word) == pat)
+                ans.push_back(word);
+        
+        return ans;
+    }
