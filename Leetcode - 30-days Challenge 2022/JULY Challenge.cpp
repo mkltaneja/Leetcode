@@ -659,28 +659,63 @@ bool isAnagram(string s, string t)
 
 // DAY 29 (890. Find and Replace Pattern)============================================================================================
 
-    string map(string &s)
+string map(string &s)
+{
+    string res = "";
+    char curr = 'a';
+    vector<char> mp(26, '-');
+    for (char c : s)
     {
-        string res = "";
-        char curr = 'a';
-        vector<char> mp(26,'-');
-        for(char c : s)
+        if (mp[c - 'a'] == '-')
+            mp[c - 'a'] = curr++;
+        res += mp[c - 'a'];
+    }
+    return res;
+}
+
+vector<string> findAndReplacePattern(vector<string> &words, string pattern)
+{
+    string pat = map(pattern);
+
+    vector<string> ans;
+    for (string word : words)
+        if (map(word) == pat)
+            ans.push_back(word);
+
+    return ans;
+}
+
+// DAY 30 (916. Word Subsets)===================================================================================================
+
+vector<string> wordSubsets(vector<string> &words1, vector<string> &words2)
+{
+    vector<int> map(26, 0);
+    for (string s : words2)
+    {
+        vector<int> tmap(26, 0);
+        for (char c : s)
+            map[c - 'a'] = max(map[c - 'a'], ++tmap[c - 'a']);
+    }
+
+    vector<string> ans;
+    for (string s : words1)
+    {
+        vector<int> cmap(26);
+        bool isGood = true;
+        for (char c : s)
+            cmap[c - 'a']++;
+        for (int i = 0; i < 26; i++)
         {
-            if(mp[c-'a'] == '-')
-                mp[c-'a'] = curr++;
-            res += mp[c-'a'];
+            if (cmap[i] < map[i])
+            {
+                isGood = false;
+                break;
+            }
         }
-        return res;
+        if (!isGood)
+            continue;
+        ans.push_back(s);
     }
-    
-    vector<string> findAndReplacePattern(vector<string>& words, string pattern) 
-    {
-        string pat = map(pattern);
-        
-        vector<string> ans;
-        for(string word : words)
-            if(map(word) == pat)
-                ans.push_back(word);
-        
-        return ans;
-    }
+
+    return ans;
+}
