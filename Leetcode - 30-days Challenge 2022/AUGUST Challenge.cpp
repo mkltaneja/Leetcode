@@ -48,3 +48,66 @@ int kthSmallest(vector<vector<int>> &matrix, int k)
 
     return lo;
 }
+
+// DAY 3 (729. My Calendar I)=======================================================================================
+
+// APPROACH 1 (By finding just lower element)
+
+class MyCalendar
+{
+public:
+    set<pair<int, int>> st;
+    MyCalendar()
+    {
+    }
+
+    auto just_lower(int x)
+    {
+        int lo = 0, hi = st.size() - 1, ans = -1;
+        while (lo <= hi)
+        {
+            int mid = lo + ((hi - lo) >> 1);
+            auto itr = st.begin();
+            advance(itr, mid);
+            if (itr->first <= x)
+                lo = mid + 1, ans = mid;
+            else
+                hi = mid - 1;
+        }
+
+        if (ans == -1)
+            return st.end();
+        auto ansitr = st.begin();
+        advance(ansitr, ans);
+        return ansitr;
+    }
+
+    bool book(int start, int end)
+    {
+        if (st.empty())
+        {
+            st.insert({start, end});
+            return true;
+        }
+        auto x = just_lower(start);
+        if (x == st.end()) // no just_lower element found, so compare with just above ony
+        {
+            if (st.begin()->first < end)
+                return false;
+        }
+        else
+        {
+            if (x->second > start || (++x != st.end() && x->first < end))
+                return false;
+        }
+
+        st.insert({start, end});
+        return true;
+    }
+};
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
+ */
