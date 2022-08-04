@@ -111,3 +111,34 @@ public:
  * MyCalendar* obj = new MyCalendar();
  * bool param_1 = obj->book(start,end);
  */
+
+//  APPROACH 2 (By Finding lower_bound)
+
+class MyCalendar
+{
+public:
+#define f first
+#define s second
+    set<pair<int, int>> events;
+    MyCalendar()
+    {
+    }
+
+    bool book(int start, int end)
+    {
+        auto itr = events.lower_bound({start, end});
+        if (itr != events.end() && (*itr).f < end)
+            return false;
+        if (itr != events.begin() && (*--itr).s > start)
+            return false;
+
+        events.insert({start, end});
+        return true;
+    }
+};
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
+ */
