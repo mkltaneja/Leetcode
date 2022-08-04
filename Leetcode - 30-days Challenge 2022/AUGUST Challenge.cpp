@@ -142,3 +142,19 @@ public:
  * MyCalendar* obj = new MyCalendar();
  * bool param_1 = obj->book(start,end);
  */
+
+// DAY 4 (858. Mirror Reflection)==============================================================================
+
+int mirrorReflection(int p, int q)
+{
+    int mod = p % q;
+    int refs = (p + (q - 1)) / q;
+    int rooms = 1;
+    while (mod)
+    {
+        refs += ((p - (q - mod)) + (q - 1)) / q;
+        rooms++;
+        mod = (p - (q - mod)) % q;
+    }
+    return (refs & 1 ^ 1) ? 2 : (rooms & 1);
+}
