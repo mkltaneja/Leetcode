@@ -145,6 +145,8 @@ public:
 
 // DAY 4 (858. Mirror Reflection)==============================================================================
 
+// APPROACH 1 (Naive)
+
 int mirrorReflection(int p, int q)
 {
     int mod = p % q;
@@ -157,4 +159,15 @@ int mirrorReflection(int p, int q)
         mod = (p - (q - mod)) % q;
     }
     return (refs & 1 ^ 1) ? 2 : (rooms & 1);
+}
+
+// APPROACH 2 (By Finding LCM)
+
+int mirrorReflection(int p, int q)
+{
+    int lcm = p * q / __gcd(p, q);
+    int m = lcm / p;
+    int n = lcm / q;
+
+    return n & 1 ^ 1 ? 2 : m & 1;
 }
