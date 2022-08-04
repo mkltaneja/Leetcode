@@ -171,3 +171,13 @@ int mirrorReflection(int p, int q)
 
     return n & 1 ^ 1 ? 2 : m & 1;
 }
+
+// APPROACH 3 (Concise)
+
+int mirrorReflection(int p, int q)
+{
+    while ((p & 1 ^ 1) && (q & 1 ^ 1))
+        p >>= 1, q >>= 1;
+
+    return p & 1 ^ 1 ? 2 : q & 1;
+}
