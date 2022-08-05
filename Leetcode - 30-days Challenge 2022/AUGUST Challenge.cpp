@@ -181,3 +181,18 @@ int mirrorReflection(int p, int q)
 
     return p & 1 ^ 1 ? 2 : q & 1;
 }
+
+// DAY 5 (377. Combination Sum IV)=================================================================================
+
+int combinationSum4(vector<int> &nums, int target)
+{
+    sort(nums.begin(), nums.end());
+    vector<unsigned long long> dp(target + 1, 0);
+    dp[0] = 1;
+
+    for (int t = 1; t <= target; t++)
+        for (int i = 0; i < nums.size() && nums[i] <= t; i++)
+            dp[t] += dp[t - nums[i]];
+
+    return dp[target];
+}
