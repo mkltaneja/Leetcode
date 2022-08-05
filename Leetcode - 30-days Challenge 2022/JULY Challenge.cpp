@@ -603,6 +603,8 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
 
 // DAY 26 (236. Lowest Common Ancestor of a Binary Tree)================================================================================
 
+// APPROACH 1 (Naive)
+
 TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
 {
     if (!root)
@@ -614,6 +616,73 @@ TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
     TreeNode *rans = lowestCommonAncestor(root->right, p, q);
 
     return lans && rans ? root : (lans ? lans : rans);
+}
+
+// APPROACH 2 (Binary Lifting)
+
+unordered_map<TreeNode *, vector<TreeNode *>> par;
+unordered_map<TreeNode *, int> tin, tout;
+unordered_map<TreeNode *, int> level;
+int time = 0, lvl = 0;
+
+void dfs(TreeNode *p, TreeNode *u)
+{
+    if (!u)
+        return;
+
+    vector<TreeNode *> tmp(16, nullptr);
+    tmp[0] = p;
+    par[u] = tmp;
+    tin[u] = time++;
+    level[u] = lvl++;
+
+    dfs(u, u->left);
+    dfs(u, u->right);
+
+    tout[u] = time++;
+    lvl--;
+}
+
+bool isAncestor(TreeNode *u, TreeNode *v)
+{
+    return tin[u] <= tin[v] && tout[u] >= tout[v];
+}
+
+TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
+{
+    dfs(nullptr, root);
+    int n = par.size();
+
+    for (int l = 1; l <= 15; l++)
+        for (auto p : par)
+            if (par[p.first][l - 1])
+                par[p.first][l] = par[par[p.first][l - 1]][l - 1];
+
+    if (isAncestor(p, q))
+        return p;
+    if (isAncestor(q, p))
+        return q;
+
+    if (level[p] < level[q])
+        swap(p, q);
+    int d = level[p] - level[q];
+    int i = 0;
+    while (d)
+    {
+        if (d & 1)
+            p = par[p][i];
+        d >>= 1;
+        i++;
+    }
+
+    if (p == q)
+        return p;
+
+    for (int l = level[q]; l >= 0; l--)
+        if (par[p][l] != par[q][l])
+            p = par[p][l], q = par[q][l];
+
+    return par[p][0];
 }
 
 // DAY 27 (114. Flatten Binary Tree to Linked List)===================================================================================================
