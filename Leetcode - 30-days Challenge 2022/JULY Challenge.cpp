@@ -601,6 +601,37 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
     return false;
 }
 
+// DAY 25 (34. Find First and Last Position of Element in Sorted Array)=============================================================
+
+int lowerBound(int x, vector<int> &arr)
+{
+    int lo = 0, hi = arr.size();
+
+    while (lo < hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        if (arr[mid] < x)
+            lo = mid + 1;
+        else
+            hi = mid;
+    }
+
+    return lo;
+}
+
+vector<int> searchRange(vector<int> &nums, int target)
+{
+    if (nums.empty())
+        return {-1, -1};
+
+    int lb = lowerBound(target, nums);
+    if (lb == nums.size() || nums[lb] != target)
+        return {-1, -1};
+    int ub = lowerBound(target + 1, nums) - 1;
+
+    return {lb, ub};
+}
+
 // DAY 26 (236. Lowest Common Ancestor of a Binary Tree)================================================================================
 
 // APPROACH 1 (Naive)
