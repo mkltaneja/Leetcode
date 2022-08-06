@@ -1,4 +1,6 @@
 
+// APPROACH 1 (Using 2 hashmap2)
+
 long long taskSchedulerII(vector<int> &tasks, int space)
 {
     unordered_map<int, int> last;
@@ -18,4 +20,22 @@ long long taskSchedulerII(vector<int> &tasks, int space)
     }
 
     return tot + tasks.size();
+}
+
+// APPROACH 2 (Using 1 hashmap)
+
+long long taskSchedulerII(vector<int> &tasks, int space)
+{
+    unordered_map<int, long long> last;
+    long long days = 0;
+    for (int i = 0; i < tasks.size(); i++)
+    {
+        days++;
+        if (last.count(tasks[i]))
+            days = max(days, last[tasks[i]] + space + 1);
+
+        last[tasks[i]] = days;
+    }
+
+    return days;
 }
