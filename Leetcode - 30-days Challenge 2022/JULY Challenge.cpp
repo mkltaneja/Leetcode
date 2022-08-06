@@ -603,6 +603,8 @@ bool searchMatrix(vector<vector<int>> &matrix, int target)
 
 // DAY 25 (34. Find First and Last Position of Element in Sorted Array)=============================================================
 
+// APPROACH 1 (Using 2 loops for lb and ub) --> O(2*logn)
+
 int lowerBound(int x, vector<int> &arr)
 {
     int lo = 0, hi = arr.size();
@@ -628,6 +630,46 @@ vector<int> searchRange(vector<int> &nums, int target)
     if (lb == nums.size() || nums[lb] != target)
         return {-1, -1};
     int ub = lowerBound(target + 1, nums) - 1;
+
+    return {lb, ub};
+}
+
+// APPROACH 2 (Single loop) --> O(2*logn)
+
+vector<int> searchRange(vector<int> &nums, int target)
+{
+    int lo = 0, hi = nums.size() - 1;
+    int lb = -1, ub = -1;
+    while (lo <= hi)
+    {
+        int m = lo + ((hi - lo) >> 1);
+        if (nums[m] == target)
+        {
+            if (m - 1 == -1 || nums[m - 1] < nums[m])
+                lb = m;
+            if (m + 1 == nums.size() || nums[m] < nums[m + 1])
+                ub = m;
+
+            if (lb == -1)
+            {
+                hi = m - 1;
+                if (lo > hi)
+                    lo = 0;
+            }
+            else if (ub == -1)
+            {
+                lo = m + 1;
+                if (lo > hi)
+                    hi = nums.size() - 1;
+            }
+            else
+                break;
+        }
+        else if (nums[m] < target)
+            lo = m + 1;
+        else
+            hi = m - 1;
+    }
 
     return {lb, ub};
 }
