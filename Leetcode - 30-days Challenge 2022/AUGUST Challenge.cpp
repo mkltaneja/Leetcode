@@ -196,3 +196,46 @@ int combinationSum4(vector<int> &nums, int target)
 
     return dp[target];
 }
+
+// DAY 6 (1220. Count Vowels Permutation)===================================================================================
+
+int m = 1e9 + 7;
+
+unordered_map<char, int> mp;
+
+int dfs(int n, char u, unordered_map<char, vector<char>> &gp, vector<vector<int>> &dp)
+{
+    if (n == 1)
+        return 1;
+    if (dp[mp[u]][n] != -1)
+        return dp[mp[u]][n];
+
+    int ans = 0;
+    for (char v : gp[u])
+        ans = ans % m + dfs(n - 1, v, gp, dp) % m % m;
+
+    return dp[mp[u]][n] = ans % m;
+}
+
+int countVowelPermutation(int n)
+{
+    mp['a'] = 0;
+    mp['e'] = 1;
+    mp['i'] = 2;
+    mp['o'] = 3;
+    mp['u'] = 4;
+
+    unordered_map<char, vector<char>> gp;
+    gp['a'] = {'e'};
+    gp['e'] = {'a', 'i'};
+    gp['i'] = {'a', 'e', 'o', 'u'};
+    gp['o'] = {'i', 'u'};
+    gp['u'] = {'a'};
+
+    int ans = 0;
+    vector<vector<int>> dp(5, vector<int>(n + 1, -1));
+    for (auto p : gp)
+        ans = ans % m + dfs(n, p.first, gp, dp) % m % m;
+
+    return ans % m;
+}
