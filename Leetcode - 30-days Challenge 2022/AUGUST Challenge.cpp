@@ -199,6 +199,8 @@ int combinationSum4(vector<int> &nums, int target)
 
 // DAY 6 (1220. Count Vowels Permutation)===================================================================================
 
+// APPROACH 1 (Memoized) --> time = O(n*5), space = O(n*5)
+
 int m = 1e9 + 7;
 
 unordered_map<char, int> mp;
@@ -238,4 +240,26 @@ int countVowelPermutation(int n)
         ans = ans % m + dfs(n, p.first, gp, dp) % m % m;
 
     return ans % m;
+}
+
+// APPROACH 2 (No Space DP) --> time = O(n), space = O(1)
+
+int m = 1e9 + 7;
+int countVowelPermutation(int n)
+{
+    long pa, pe, pi, po, pu;
+    pa = pe = pi = po = pu = 1;
+
+    while (--n)
+    {
+        long a = pe % m;
+        long e = (pa + pi) % m;
+        long i = (pa + pe + po + pu) % m;
+        long o = (pi + pu) % m;
+        long u = pa % m;
+
+        pa = a, pe = e, pi = i, po = o, pu = u;
+    }
+
+    return (pa + pe + pi + po + pu) % m;
 }
