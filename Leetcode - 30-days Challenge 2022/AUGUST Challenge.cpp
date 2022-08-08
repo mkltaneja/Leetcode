@@ -263,3 +263,24 @@ int countVowelPermutation(int n)
 
     return (pa + pe + pi + po + pu) % m;
 }
+
+// DAY 9 (300. Longest Increasing Subsequence)===========================================================================
+
+int lengthOfLIS(vector<int>& nums) 
+{
+    vector<int> dp;
+    for(int i = 0; i < nums.size(); i++)
+    {
+        int lo = 0, hi = dp.size();
+        while(lo < hi)
+        {
+            int mid = lo + ((hi - lo)>>1);
+            if(dp[mid] < nums[i]) lo = mid + 1;
+            else hi = mid;
+        }
+        if(lo == dp.size()) dp.push_back(nums[i]);
+        else dp[lo] = nums[i];
+    }
+
+    return dp.size();
+}
