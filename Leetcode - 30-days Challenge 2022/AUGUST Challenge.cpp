@@ -264,7 +264,7 @@ int countVowelPermutation(int n)
     return (pa + pe + pi + po + pu) % m;
 }
 
-// DAY 9 (300. Longest Increasing Subsequence)===========================================================================
+// DAY 8 (300. Longest Increasing Subsequence)===========================================================================
 
 int lengthOfLIS(vector<int>& nums) 
 {
@@ -283,4 +283,44 @@ int lengthOfLIS(vector<int>& nums)
     }
 
     return dp.size();
+}
+
+// DAY 9 (823. Binary Trees With Factors)========================================================================================
+
+unordered_map<int,int> dp;
+int m = 1e9 + 7;
+
+int dfs(int u, unordered_map<long,vector<pair<int,int>>> &gp)
+{
+    if(dp.count(u)) return dp[u];
+    long ans = 0;
+
+    for(pair<int,int> v : gp[u])
+    {
+        long lans = dfs(v.first, gp) % m;
+        long rans = dfs(v.second, gp) % m;
+        long curr = (lans % m * rans % m) % m;
+        curr = curr * (v.first == v.second? 1 : 2) % m;
+        ans = ans % m + curr % m % m;
+    }
+
+    return dp[u] = (ans + 1) % m;
+}
+
+int numFactoredBinaryTrees(vector<int>& arr) 
+{
+    int n = arr.size();
+    unordered_set<int> st;
+    for(int x : arr) st.insert(x);
+
+    unordered_map<long,vector<pair<int,int>>> gp;
+    for(int i = 0; i < n; i++)
+        for(int j = i; j < n; j++)
+            if(st.count((long)arr[i] * arr[j]))
+                gp[(long)arr[i] * arr[j]].push_back({arr[i], arr[j]});
+
+    int ans = 0;
+    for(int x : arr)
+        ans = ans % m + dfs(x, gp) % m % m;
+    return ans % m;
 }
