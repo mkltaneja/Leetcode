@@ -287,6 +287,8 @@ int lengthOfLIS(vector<int>& nums)
 
 // DAY 9 (823. Binary Trees With Factors)========================================================================================
 
+// APPROACH 1 (Using Graphs) -> time - O(n*n), space - O(n)
+
 unordered_map<int,int> dp;
 int m = 1e9 + 7;
 
@@ -322,5 +324,30 @@ int numFactoredBinaryTrees(vector<int>& arr)
     int ans = 0;
     for(int x : arr)
         ans = ans % m + dfs(x, gp) % m % m;
+    return ans % m;
+}
+
+// APPROACH 2 (Mathematically) --> time - O((n * logn) + (n * sqrt(max(arr[i]))), space - O(n)
+
+int m = 1e9 + 7;
+int numFactoredBinaryTrees(vector<int>& arr) 
+{
+    int n = arr.size();
+    sort(arr.begin(), arr.end());
+
+    unordered_map<int,long> size;
+    int ans = 0;
+
+    for(int x : arr)
+    {
+        int mxf = sqrt(x);
+        int ways = 1;
+        for(int i = 0; arr[i] <= mxf; i++)
+            if(x % arr[i] == 0)
+                ways = ways % m + ((size[arr[i]] % m * size[x/arr[i]] % m) % m) % m * (arr[i] == x/arr[i]? 1 : 2) % m;
+        size[x] = ways;
+        ans = ans % m + ways % m % m;
+    }
+
     return ans % m;
 }
