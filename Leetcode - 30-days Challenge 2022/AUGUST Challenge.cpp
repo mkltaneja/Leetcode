@@ -351,3 +351,23 @@ int numFactoredBinaryTrees(vector<int>& arr)
 
     return ans % m;
 }
+
+// DAY 10 (108. Convert Sorted Array to Binary Search Tree)===================================================================================
+
+TreeNode* construct(int lo, int hi, vector<int> &nums)
+{
+    if(lo > hi) return nullptr;
+
+    int mid = lo + ((hi - lo) >> 1);
+    TreeNode* root = new TreeNode(nums[mid]);
+
+    root->left = construct(lo, mid-1, nums);
+    root->right = construct(mid+1, hi, nums);
+
+    return root;
+}
+
+TreeNode* sortedArrayToBST(vector<int>& nums) 
+{
+    return construct(0, nums.size()-1, nums);
+}
