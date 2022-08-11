@@ -371,3 +371,26 @@ TreeNode* sortedArrayToBST(vector<int>& nums)
 {
     return construct(0, nums.size()-1, nums);
 }
+
+// DAY 11 (98. Validate Binary Search Tree)====================================================================================================================
+
+bool inorder(long &prev, TreeNode* node)
+{
+    if(!node) return true;
+
+    bool lans = inorder(prev, node->left);
+
+    if(node->val <= prev) return false;
+    prev = node->val;
+
+    bool rans = inorder(prev, node->right);
+
+    return lans && rans;
+}
+
+bool isValidBST(TreeNode* root) 
+{
+    long prev = LONG_MIN;
+
+    return inorder(prev, root);
+}
