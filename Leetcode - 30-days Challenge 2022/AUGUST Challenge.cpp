@@ -374,6 +374,8 @@ TreeNode* sortedArrayToBST(vector<int>& nums)
 
 // DAY 11 (98. Validate Binary Search Tree)====================================================================================================================
 
+// APPROACH 1 (Checking in Inorder traversal)
+
 bool inorder(long &prev, TreeNode* node)
 {
     if(!node) return true;
@@ -393,4 +395,23 @@ bool isValidBST(TreeNode* root)
     long prev = LONG_MIN;
 
     return inorder(prev, root);
+}
+
+// APPROACH 2 (Checking in Preorder traversal)
+
+bool preorder(long mn, long mx, TreeNode* node)
+{
+    if(!node) return true;
+
+    if(node->val <= mn || node->val >= mx) return false;
+
+    bool lans = preorder(mn, node->val, node->left);
+    bool rans = preorder(node->val, mx, node->right);
+
+    return lans && rans;
+}
+
+bool isValidBST(TreeNode* root) 
+{
+    return preorder(LONG_MIN, LONG_MAX, root);
 }
