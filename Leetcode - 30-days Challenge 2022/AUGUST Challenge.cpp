@@ -418,6 +418,8 @@ bool isValidBST(TreeNode* root)
 
 // DAY 12 (235. Lowest Common Ancestor of a Binary Search Tree)=================================================================================
 
+// APPROACH 1 (Recursively)
+
 TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
 {
     if(!root) return root;
@@ -428,4 +430,21 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
         return lowestCommonAncestor(root->left, p, q);
 
     return root;
+}
+
+// APPROACH 2 (Iteratively)
+
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
+{
+    int mn = min(p->val, q->val);
+    int mx = max(p->val, q->val);
+
+    while(root)
+    {
+        if(root->val < mn) root = root->right;
+        else if(root->val > mx) root = root->left;
+        else return root;
+    }
+
+    return nullptr;
 }
