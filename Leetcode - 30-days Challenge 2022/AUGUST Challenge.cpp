@@ -496,3 +496,109 @@ vector<vector<string>> findLadders(string beginWord, string endWord, vector<stri
 
     return ans;
 }
+
+// APPROACH 2 (By Constructing Graph - BFS (to find all the possible parents) then DFS (to add all the paths)) [AC] -> time = O(n*n)
+
+int start = -1, end = -1, n = 0;
+vector<vector<int>> gp;
+vector<int> minDist;
+vector<vector<int>> parent;
+vector<vector<int>> paths;
+
+bool isConn(string x, string y)
+{
+    int diff = 0;
+    for(int i = 0; i < x.size(); i++)
+        diff += (x[i] != y[i]);
+    return diff == 1;
+}
+
+void bfs()
+{
+    queue<int> que;
+    que.push(start);
+    minDist[start] = 0;
+    parent[start] = {-1};
+
+    while(!que.empty())
+    {
+        int u = que.front();
+        que.pop();
+        if(u == end) continue;
+
+        for(int v : gp[u])
+        {
+            if(minDist[v] > minDist[u] + 1)
+            {
+                minDist[v] = minDist[u] + 1;
+                parent[v].clear();
+                parent[v].push_back(u);
+                que.push(v);
+            }
+            else if(minDist[v] == minDist[u] + 1)
+                parent[v].push_back(u);
+        }
+    }
+}
+
+void dfs(int v, vector<int> &path)
+{
+    if(v == -1)
+    {
+        paths.push_back(path);
+        return;
+    }
+
+    path.push_back(v);
+    for(int u : parent[v])
+        dfs(u, path);
+    path.pop_back();
+}
+
+vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) 
+{
+    n = wordList.size();
+    for(int i = 0; i < n; i++)
+    {
+        if(wordList[i] == beginWord) start = i;
+        else if(wordList[i] == endWord) end = i;
+    }
+
+    if(end == -1) return {};
+    if(start == -1) 
+    {
+        wordList.push_back(beginWord);
+        start = n++;
+    }
+
+    gp.resize(n);
+    parent.resize(n);
+    minDist.assign(n,INT_MAX);
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = i+1; j < n; j++)
+        {
+            if(isConn(wordList[i], wordList[j]))
+            {
+                gp[i].push_back(j);
+                gp[j].push_back(i);
+            }
+        }
+    }
+
+    bfs();
+    vector<int> path;
+    dfs(end, path);
+
+    vector<vector<string>> ans;
+    for(vector<int> path : paths)
+    {
+        reverse(path.begin(), path.end());
+        vector<string> curr;
+        for(int x : path)
+            curr.push_back(wordList[x]);
+        ans.push_back(curr);
+    }
+
+    return ans;
+}
