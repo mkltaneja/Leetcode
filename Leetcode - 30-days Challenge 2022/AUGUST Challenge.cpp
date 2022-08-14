@@ -448,3 +448,51 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
 
     return nullptr;
 }
+
+// DAY 14 (126. Word Ladder II)========================================================================================
+
+// APPROACH 1 (By storing the path in queue) [TLE] -> time = O(26 * m * n * n) [m = size of each word, n = size of wordList]
+
+vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) 
+{
+    unordered_map<string,int> time;
+    for(int i = 0; i < wordList.size(); i++)
+        time[wordList[i]] = INT_MAX;
+    time[beginWord] = 0;
+
+    if(!time.count(endWord)) return {};
+    vector<vector<string>> ans;
+
+    queue<pair<string, vector<string>>> que;
+    que.push({beginWord, {beginWord}});
+
+    while(!que.empty())
+    {
+        string tp = que.front().first;
+        vector<string> currs = que.front().second;
+        que.pop();
+        if(tp == endWord) 
+        {
+            ans.push_back(currs);
+            continue;
+        }
+
+        for(int i = 0; i < tp.size(); i++)
+        {
+            string next = tp;
+            for(char x = 'a'; x <= 'z'; x++)
+            {
+                if(x == tp[i]) continue;
+                next[i] = x;
+                if(!time.count(next) || time[next] < currs.size()) continue;
+
+                time[next] = currs.size();
+                currs.push_back(next);
+                que.push({next, currs});
+                currs.pop_back();
+            }
+        }
+    }
+
+    return ans;
+}
