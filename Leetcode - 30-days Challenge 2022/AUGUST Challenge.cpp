@@ -602,3 +602,30 @@ vector<vector<string>> findLadders(string beginWord, string endWord, vector<stri
 
     return ans;
 }
+
+// DAY 15 (13. Roman to Integer)=================================================================================================
+
+int romanToInt(string s) 
+{
+    int n = s.size();
+    unordered_map<char,int> mp;
+    mp['I'] = 1;
+    mp['V'] = 5;
+    mp['X'] = 10;
+    mp['L'] = 50;
+    mp['C'] = 100;
+    mp['D'] = 500;
+    mp['M'] = 1000;
+
+    int ans = 0;
+    char p = '#';
+    for(int i = n-1; i >= 0; i--)
+    {
+        if(p == '#' || mp[s[i]] >= mp[p])
+            ans += mp[s[i]];
+        else ans -= mp[s[i]];
+        p = s[i];
+    }
+
+    return ans;
+}
