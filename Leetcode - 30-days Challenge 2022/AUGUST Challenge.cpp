@@ -449,6 +449,38 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
     return nullptr;
 }
 
+// DAY 13 (30. Substring with Concatenation of All Words)=============================================================================
+
+bool check(string s, int m, unordered_map<string,int> mp)
+{
+    for(int i = 0; i < s.size(); i += m)
+    {
+        string x = s.substr(i, m);
+        if(mp[x]-- == 0) return false;
+    }
+    return true;
+}
+
+vector<int> findSubstring(string s, vector<string>& words) 
+{
+    int n = s.size();
+    int m = words[0].size();
+    int w = words.size() * m;
+
+    unordered_map<string,int> mp;
+    for(string word : words)
+        mp[word]++;
+
+    vector<int> ans;
+    for(int i = 0; i <= n - w; i++)
+    {
+        if(check(s.substr(i, w), m, mp))
+            ans.push_back(i);
+    }
+
+    return ans;
+}
+
 // DAY 14 (126. Word Ladder II)========================================================================================
 
 // APPROACH 1 (By storing the path in queue) [TLE] -> time = O(26 * m * n * n) [m = size of each word, n = size of wordList]
