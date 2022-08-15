@@ -583,6 +583,50 @@ ListNode *partition(ListNode *head, int x)
     return lessx;
 }
 
+// DAY 23 (315. Count of Smaller Numbers After Self)====================================================================
+
+vector<int> fentree;
+int getSmaller(int x)
+{
+    int ans = 0;
+    while(x)
+    {
+        ans += fentree[x];
+        x -= x & -x;
+    }
+    return ans;
+}
+
+void update(int x)
+{
+    while(x < fentree.size())
+    {
+        fentree[x]++;
+        x += x & -x;
+    }
+}
+
+vector<int> countSmaller(vector<int>& nums) 
+{
+    int mx = INT_MIN;
+    for(int &x : nums)
+    {
+        x += 10001;
+        mx = max(mx, x);
+    }
+
+    fentree.assign(mx+1, 0);
+
+    vector<int> ans(nums.size());
+    for(int i = nums.size()-1; i >= 0; i--)
+    {
+        ans[i] = getSmaller(nums[i]-1);
+        update(nums[i]);
+    }
+
+    return ans;
+}
+
 // DAY 24 (240. Search a 2D Matrix II)====================================================================================
 
 bool searchMatrix(vector<vector<int>> &matrix, int target)
