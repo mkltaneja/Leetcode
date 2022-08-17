@@ -676,3 +676,21 @@ int firstUniqChar(string s)
 
     return -1;
 }
+
+// DAY 17 (804. Unique Morse Code Words)============================================================================================
+
+int uniqueMorseRepresentations(vector<string>& words) 
+{
+    vector<string> map = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+
+    unordered_set<string> st;
+    for(string word : words)
+    {
+        string res = "";
+        for(char c : word)
+            res += map[c-'a'];
+        st.insert(res);
+    }
+
+    return st.size();
+}
