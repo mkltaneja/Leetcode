@@ -694,3 +694,23 @@ int uniqueMorseRepresentations(vector<string>& words)
 
     return st.size();
 }
+
+// DAY 18 (1338. Reduce Array Size to The Half)================================================================================================
+
+int minSetSize(vector<int>& arr) 
+{
+    int n = arr.size();
+    unordered_map<int,int> mp;
+    for(int x : arr) mp[x]++;
+
+    vector<int> cnts;
+    for(auto p : mp)
+        cnts.push_back(p.second);
+    sort(cnts.rbegin(), cnts.rend());
+
+    int ans = 0;
+    while(n > arr.size()/2)
+        n -= cnts[ans++];
+
+    return ans;
+}
