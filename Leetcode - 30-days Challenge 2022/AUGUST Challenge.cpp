@@ -714,3 +714,34 @@ int minSetSize(vector<int>& arr)
 
     return ans;
 }
+
+// DAY 19 (659. Split Array into Consecutive Subsequences)===========================================================================================================
+
+bool isPossible(vector<int>& nums) 
+{
+    unordered_map<int,int> cnt, nxt;
+    for(int x : nums)
+        cnt[x]++;
+
+    for(int x : nums)
+    {
+        if(cnt[x] == 0) continue;
+
+        if(nxt[x])
+        {
+            nxt[x]--;
+            cnt[x]--;
+            nxt[x+1]++;
+        }
+        else if(cnt[x] && cnt[x+1] && cnt[x+2])
+        {
+            cnt[x]--;
+            cnt[x+1]--;
+            cnt[x+2]--;
+            nxt[x+3]++;
+        }
+        else return false;
+    }
+
+    return true;
+}
