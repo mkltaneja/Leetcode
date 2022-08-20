@@ -745,3 +745,31 @@ bool isPossible(vector<int>& nums)
 
     return true;
 }
+
+// DAY 20 (871. Minimum Number of Refueling Stops)=============================================================================================
+
+int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) 
+{
+    int n = stations.size();
+    long lpos = 0, fuel = startFuel, stops = 0;
+    priority_queue<long> maxFuel;
+    for(int i = 0; i <= n; i++)
+    {
+        int x = i == n? target : stations[i][0];
+        int dist = x - lpos;
+        while(!maxFuel.empty() && dist > fuel)
+        {
+            fuel += maxFuel.top();
+            maxFuel.pop();
+            stops++;
+        }
+        if(dist > fuel) return -1;
+
+        fuel -= dist;
+        if(i == n) continue;
+        lpos = stations[i][0];
+        maxFuel.push(stations[i][1]);
+    }
+
+    return stops;
+}
