@@ -773,3 +773,48 @@ int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations)
 
     return stops;
 }
+
+// DAY 21 (936. Stamping The Sequence)=========================================================================================================
+
+int n, m;
+vector<int> reverse_stamp(string &target, string &stamp)
+{
+    vector<int> curr;
+    for(int i = 0; i < n; i++)
+    {
+        int j = i, k = 0;
+        bool nonstar = false;
+        while(j < n && k < m && (target[j] == stamp[k] || target[j] == '*'))
+        {
+            if(target[j] == stamp[k]) nonstar = true;
+            j++, k++;
+        }
+        if(k == m && nonstar) 
+        {
+            curr.push_back(i);
+            k = 0;
+            while(k < m)
+                target[i+k++] = '*';
+        }
+    }
+    return curr;
+}
+
+vector<int> movesToStamp(string stamp, string target) 
+{
+    n = target.size(), m = stamp.size();
+    string init = string(n, '*');
+
+    vector<int> ans;
+    while(target != init)
+    {
+        vector<int> curr = reverse_stamp(target, stamp);
+        if(curr.empty()) return {};
+
+        for(int i : curr)
+            ans.push_back(i);
+    }
+
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
