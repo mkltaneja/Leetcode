@@ -818,3 +818,10 @@ vector<int> movesToStamp(string stamp, string target)
     reverse(ans.begin(), ans.end());
     return ans;
 }
+
+// DAY 22 (342. Power of Four)=================================================================================
+
+bool isPowerOfFour(int n) 
+{
+    return (n > 0) && ((n & (n-1)) == 0) && (n & 0x55555555);
+}
