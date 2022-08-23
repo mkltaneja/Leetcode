@@ -825,3 +825,37 @@ bool isPowerOfFour(int n)
 {
     return (n > 0) && ((n & (n-1)) == 0) && (n & 0x55555555);
 }
+
+// DAY 23 (234. Palindrome Linked List)========================================================================
+
+bool isPalindrome(ListNode* head) 
+{
+    int n = 0;
+    ListNode* itr = head;
+    while(itr)
+    {
+        itr = itr->next;
+        n++;
+    }
+    int x = n/2;
+
+    ListNode* curr = head, *prev = nullptr, *forw = head;
+    while(x--)
+    {
+        forw = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = forw;
+    }
+
+    ListNode* h1 = prev;
+    ListNode* h2 = n&1? curr->next : curr;
+
+    while(h1 && h2 && h1->val == h2->val)
+    {
+        h1 = h1->next;
+        h2 = h2->next;
+    }
+
+    return !(h1 && h2);
+}
