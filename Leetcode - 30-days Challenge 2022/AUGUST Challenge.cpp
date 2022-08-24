@@ -859,3 +859,10 @@ bool isPalindrome(ListNode* head)
 
     return !(h1 && h2);
 }
+
+// DAY 25 (326. Power of Three)========================================================================================
+
+bool isPowerOfThree(int n) 
+{
+    return n > 0 && ((int)pow(3, 19) % n == 0);
+}
