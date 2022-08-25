@@ -866,3 +866,16 @@ bool isPowerOfThree(int n)
 {
     return n > 0 && ((int)pow(3, 19) % n == 0);
 }
+
+// DAY 26 (383. Ransom Note)==================================================================================
+
+bool canConstruct(string ransomNote, string magazine) 
+{
+    vector<int> map(26);
+    for(char c : magazine)
+        map[c-'a']++;
+    for(char c : ransomNote)
+        if(map[c-'a']-- == 0)
+            return false;
+    return true;
+}
