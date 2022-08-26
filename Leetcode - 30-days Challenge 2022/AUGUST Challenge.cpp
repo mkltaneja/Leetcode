@@ -879,3 +879,24 @@ bool canConstruct(string ransomNote, string magazine)
             return false;
     return true;
 }
+
+// DAY 26 (869. Reordered Power of 2)================================================================================
+
+bool reorderedPowerOf2(int n) 
+{
+    string nn = to_string(n);
+    string tmp = nn;
+    sort(nn.begin(), nn.end());
+    sort(tmp.rbegin(), tmp.rend());
+    int last = stoi(tmp);
+
+    long x = 1;
+    while(x <= last)
+    {
+        string curr = to_string(x);
+        sort(curr.begin(), curr.end());
+        if(curr == nn) return true;
+        x *= 2;
+    }
+    return false;
+}
