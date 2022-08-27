@@ -900,3 +900,33 @@ bool reorderedPowerOf2(int n)
     }
     return false;
 }
+
+// DAY 27 (363. Max Sum of Rectangle No Larger Than K)===================================================================
+
+int maxSumSubmatrix(vector<vector<int>>& matrix, int k) 
+{
+    int n = matrix.size(), m = matrix[0].size();
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < m; j++)
+            matrix[i][j] += j? matrix[i][j-1] : 0;
+
+    int ans = INT_MIN;
+    for(int st = 0; st < m; st++)
+    {
+        for(int end = st; end < m; end++)
+        {
+            set<int> psums = {0};
+            int sum = 0;
+            for(int i = 0; i < n; i++)
+            {
+                sum += matrix[i][end] - (st? matrix[i][st-1] : 0);
+                auto itr = psums.lower_bound(sum - k);
+                if(itr != psums.end())
+                    ans = max(ans, sum - *itr);
+                psums.insert(sum);
+            }
+        }
+    }
+
+    return ans;
+}
