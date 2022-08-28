@@ -930,3 +930,33 @@ int maxSumSubmatrix(vector<vector<int>>& matrix, int k)
 
     return ans;
 }
+
+// DAY 28 (1329. Sort the Matrix Diagonally)=========================================================================================
+
+vector<vector<int>> diagonalSort(vector<vector<int>>& mat) 
+{
+    int n = mat.size(), m = mat[0].size();
+    for(int i = n-1; i >= 0; i--)
+    {
+        vector<int> tmp;
+        for(int ii = i, j = 0; ii < n && j < m; ii++, j++)
+            tmp.push_back(mat[ii][j]);
+        sort(tmp.begin(), tmp.end());
+        for(int ii = i, j = 0, x = 0; ii < n && j < m; ii++, j++, x++)
+            mat[ii][j] = tmp[x];
+    }
+
+    for(int j = 1; j < m; j++)
+    {
+        vector<int> tmp;
+        for(int jj = j, i = 0; jj < m && i < n; jj++, i++)
+        {
+            tmp.push_back(mat[i][jj]);
+        }
+        sort(tmp.begin(), tmp.end());
+        for(int jj = j, i = 0, x = 0; jj < m && i < n; jj++, i++, x++)
+            mat[i][jj] = tmp[x];
+    }
+
+    return mat;
+}
