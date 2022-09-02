@@ -998,3 +998,42 @@ void rotate(vector<vector<int>>& matrix)
         for(int j = 0; j < m/2; j++)
             swap(matrix[i][j], matrix[i][m-j-1]);
 }
+
+// DAY 31 (417. Pacific Atlantic Water Flow)========================================================================
+
+void dfs(int i, int j, int n, int m, int prev, vector<vector<bool>> &vis, vector<vector<int>> &heights)
+{
+    if(i == n || j == m || i == -1 || j == -1 || vis[i][j] || heights[i][j] < prev) return;
+
+    vis[i][j] = true;
+    dfs(i+1, j, n, m, heights[i][j], vis, heights);
+    dfs(i, j+1, n, m, heights[i][j], vis, heights);
+    dfs(i-1, j, n, m, heights[i][j], vis, heights);
+    dfs(i, j-1, n, m, heights[i][j], vis, heights);
+}
+
+vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) 
+{
+    int n = heights.size(), m = heights[0].size();
+    vector<vector<int>> ans;
+    vector<vector<bool>> pacific(n, vector<bool>(m, false));
+    vector<vector<bool>> atlantic(n, vector<bool>(m, false));
+
+    for(int i = 0; i < n; i++)
+    {
+        dfs(i, 0, n, m, INT_MIN, pacific, heights);
+        dfs(i, m-1, n, m, INT_MIN, atlantic, heights);
+    }
+    for(int i = 0; i < m; i++)
+    {
+        dfs(0, i, n, m, INT_MIN, pacific, heights);
+        dfs(n-1, i, n, m, INT_MIN, atlantic, heights);
+    }
+
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < m; j++)
+            if(pacific[i][j] && atlantic[i][j])
+                ans.push_back({i,j});
+
+    return ans;
+}
