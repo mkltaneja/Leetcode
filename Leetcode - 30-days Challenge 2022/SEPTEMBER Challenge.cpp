@@ -41,3 +41,27 @@ vector<double> averageOfLevels(TreeNode* root)
 
     return ans;
 }
+
+// DAY 3 (967. Numbers With Same Consecutive Differences)============================================================================
+
+vector<int> ans;
+void dfs(int x, int n, int k)
+{
+    if(n == 0)
+    {
+        ans.push_back(x);
+        return;
+    }
+
+    if(x%10 - k >= 0)
+        dfs(x*10 + (x%10 - k), n-1, k);
+    if(k && x%10 + k <= 9)
+        dfs(x*10 + (x%10 + k), n-1, k);
+}
+
+vector<int> numsSameConsecDiff(int n, int k) 
+{
+    for(int x = 1; x <= 9; x++)
+        dfs(x, n-1, k);
+    return ans;
+}
