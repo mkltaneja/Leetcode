@@ -65,3 +65,48 @@ vector<int> numsSameConsecDiff(int n, int k)
         dfs(x, n-1, k);
     return ans;
 }
+
+// DAY 4 (987. Vertical Order Traversal of a Binary Tree)=======================================================================
+
+vector<vector<int>> verticalTraversal(TreeNode* root) 
+{
+    queue<pair<TreeNode*, int>> que;
+    que.push({root, 0});
+    map<int,vector<int>> mp;
+    mp[0].push_back(root->val);
+    while(!que.empty())
+    {
+        int sz = que.size();
+        map<int,vector<int>> tmp;
+        while(sz--)
+        {
+            TreeNode* node = que.front().first;
+            int vlvl = que.front().second;
+            que.pop();
+
+            if(node->left)
+            {
+                tmp[vlvl-1].push_back(node->left->val);
+                que.push({node->left, vlvl-1});
+            }
+            if(node->right)
+            {
+                tmp[vlvl+1].push_back(node->right->val);
+                que.push({node->right, vlvl+1});
+            }
+        }
+
+        for(auto &p : tmp)
+        {
+            sort(p.second.begin(), p.second.end());
+            for(int x : p.second)
+                mp[p.first].push_back(x);
+        }
+    }
+
+    vector<vector<int>> ans;
+    for(auto p : mp)
+        ans.push_back(p.second);
+
+    return ans;
+}
