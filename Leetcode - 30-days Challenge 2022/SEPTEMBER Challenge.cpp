@@ -161,3 +161,15 @@ public:
         return ans;
     }
 };
+
+// DAY 6 (814. Binary Tree Pruning)==========================================================================================
+
+TreeNode* pruneTree(TreeNode* root) 
+{
+    if(!root) return nullptr;
+
+    root->left = pruneTree(root->left);
+    root->right = pruneTree(root->right);
+
+    return (!root->val && !root->left && !root->right)? nullptr : root;
+}
