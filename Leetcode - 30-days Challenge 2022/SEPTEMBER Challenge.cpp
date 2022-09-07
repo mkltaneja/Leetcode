@@ -173,3 +173,33 @@ TreeNode* pruneTree(TreeNode* root)
 
     return (!root->val && !root->left && !root->right)? nullptr : root;
 }
+
+// DAY 7 (606. Construct String from Binary Tree)============================================================================
+
+string ans = "";
+void dfs(TreeNode* node)
+{
+    if(!node) return;
+    if(!node->left && !node->right)
+    {
+        ans += to_string(node->val);
+        return;
+    }
+
+    ans += to_string(node->val);
+    ans += "(";
+    dfs(node->left);
+    ans += ")";
+    if(node->right)
+    {
+        ans += "(";
+        dfs(node->right);
+        ans += ")";
+    }
+}
+
+string tree2str(TreeNode* root) 
+{
+    dfs(root);
+    return ans;
+}
