@@ -203,3 +203,38 @@ string tree2str(TreeNode* root)
     dfs(root);
     return ans;
 }
+
+// DAY 8 (94. Binary Tree Inorder Traversal)==========================================================================
+
+vector<int> inorderTraversal(TreeNode* root) 
+{
+    vector<int> ans;
+    while(root)
+    {
+        if(!root->left)
+        {
+            ans.push_back(root->val);
+            root = root->right;
+        }
+        else 
+        {
+            TreeNode* lr = root->left;
+            while(lr->right && lr->right != root)
+                lr = lr->right;
+
+            if(!lr->right)
+            {
+                lr->right = root;
+                root = root->left;
+            }
+            else 
+            {
+                ans.push_back(root->val);
+                root = root->right;
+                lr->right = nullptr;
+            }
+        }
+    }
+
+    return ans;
+}
