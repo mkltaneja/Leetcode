@@ -238,3 +238,23 @@ vector<int> inorderTraversal(TreeNode* root)
 
     return ans;
 }
+
+// DAY 9 (1996. The Number of Weak Characters in the Game)======================================================================================
+
+int numberOfWeakCharacters(vector<vector<int>>& properties) 
+{
+    int n = properties.size();
+    sort(properties.begin(), properties.end(), [](auto const &a, auto const &b){
+        return a[0] == b[0]? a[0] > b[0] : a[1] < b[1];
+    });
+
+    int maxdef = 0;
+    int ans = 0;
+    for(vector<int> v : properties)
+    {
+        if(maxdef > v[1]) ans++;
+        else maxdef = v[1];
+    }
+
+    return ans;
+}
