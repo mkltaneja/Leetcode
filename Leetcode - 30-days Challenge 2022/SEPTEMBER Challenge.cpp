@@ -275,3 +275,32 @@ int maxProfit(int k, vector<int>& prices)
 
     return dp0[k];
 }
+
+// DAY 11 (1383. Maximum Performance of a Team)==========================================================================================
+
+int m = 1e9 + 7;
+#define ull unsigned long long
+int maxPerformance(int n, vector<int>& speed, vector<int>& efficiency, int k) 
+{
+    vector<pair<int,int>> effspeed(n);
+    for(int i = 0; i < n; i++)
+        effspeed[i] = {efficiency[i], speed[i]};
+    sort(effspeed.begin(), effspeed.end());
+
+    ull ans = 0;
+    priority_queue<int, vector<int>, greater<int>> pq;
+    ull sum = 0;
+    for(int i = n-1; i >= 0; i--)
+    {
+        pq.push(effspeed[i].second);
+        sum += effspeed[i].second;
+        if(pq.size() > k) 
+        {
+            sum -= pq.top();
+            pq.pop();
+        }
+        ans = max(ans, sum * effspeed[i].first);
+    }
+
+    return ans % m;
+}
