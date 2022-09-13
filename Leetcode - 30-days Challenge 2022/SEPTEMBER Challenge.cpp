@@ -324,3 +324,27 @@ int bagOfTokensScore(vector<int>& tokens, int power)
 
     return score;
 }
+
+// DAY 13 (393. UTF-8 Validation)=========================================================================================
+
+bool validUtf8(vector<int>& data) 
+{
+    int cnt = 0;
+    for(int x : data)
+    {
+        if(cnt)
+        {
+            if((x >> 6) != 0b10) return false;
+            cnt--;
+        }
+        else 
+        {
+            if((x >> 3) == 0b11110) cnt = 3;
+            else if((x >> 4) == 0b1110) cnt = 2;
+            else if((x >> 5) == 0b110) cnt = 1;
+            else if(x >> 7) return false;
+        }
+    }
+
+    return !cnt;
+}
