@@ -304,3 +304,23 @@ int maxPerformance(int n, vector<int>& speed, vector<int>& efficiency, int k)
 
     return ans % m;
 }
+
+// DAY 12 (948. Bag of Tokens)====================================================================================================
+
+int bagOfTokensScore(vector<int>& tokens, int power) 
+{
+    sort(tokens.begin(), tokens.end());
+    int i = 0, j = tokens.size() - 1;
+    int score = 0;
+    int neg = 0;
+    while(i <= j)
+    {
+        if(power >= tokens[i])
+            power -= tokens[i++], score += 1-neg, neg = 0;
+        else if(score)
+            power += tokens[j--], neg++;
+        else return score;
+    }
+
+    return score;
+}
