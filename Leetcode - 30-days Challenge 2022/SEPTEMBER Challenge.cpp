@@ -348,3 +348,22 @@ bool validUtf8(vector<int>& data)
 
     return !cnt;
 }
+
+// DAY 14 (1457. Pseudo-Palindromic Paths in a Binary Tree)====================================================================================
+
+int dfs(int x, TreeNode* node)
+{
+    if(!node) return 0;
+
+    x ^= (1 << node->val);
+    if(!node->left && !node->right)
+    {
+        return !(x & (x-1));
+    }
+    return dfs(x, node->left) + dfs(x, node->right);
+}
+
+int pseudoPalindromicPaths (TreeNode* root) 
+{
+    return dfs(0, root);
+}
