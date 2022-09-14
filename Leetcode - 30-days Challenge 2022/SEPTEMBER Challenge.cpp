@@ -241,6 +241,8 @@ vector<int> inorderTraversal(TreeNode* root)
 
 // DAY 9 (1996. The Number of Weak Characters in the Game)======================================================================================
 
+// APPROACH 1 (Sorting) --> time = O(n*logn), space = O(1)
+
 int numberOfWeakCharacters(vector<vector<int>>& properties) 
 {
     int n = properties.size();
@@ -255,6 +257,28 @@ int numberOfWeakCharacters(vector<vector<int>>& properties)
         if(maxdef > v[1]) ans++;
         else maxdef = v[1];
     }
+
+    return ans;
+}
+
+// APPROACH 2 (Using extra space) -> time = O(maxAttack), space = O(n) [OPTIMIZED]
+
+int numberOfWeakCharacters(vector<vector<int>>& properties) 
+{
+    int maxatk = 0;
+    for(vector<int> prop : properties)
+        maxatk = max(maxatk, prop[0]);
+
+    vector<int> maxdef(maxatk+2);
+    for(vector<int> prop : properties)
+        maxdef[prop[0]] = max(maxdef[prop[0]], prop[1]);
+
+    for(int i = maxatk-1; i >= 0; i--)
+        maxdef[i] = max(maxdef[i], maxdef[i+1]);
+
+    int ans = 0;
+    for(vector<int> prop : properties)
+        ans += prop[1] < maxdef[prop[0]+1];
 
     return ans;
 }
