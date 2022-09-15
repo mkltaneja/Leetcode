@@ -394,6 +394,8 @@ int pseudoPalindromicPaths (TreeNode* root)
 
 // DAY 15 (2007. Find Original Array From Doubled Array)=======================================================================================
 
+// APPROACH 1 (Traversing in increasing order) time = O(n*logn), space = O(n)
+
 vector<int> findOriginalArray(vector<int>& changed) 
 {
     sort(changed.begin(), changed.end());
@@ -413,4 +415,32 @@ vector<int> findOriginalArray(vector<int>& changed)
         }
     }
     return mp.empty()? ans : vector<int>();
+}
+
+// APPROACH 2 (traversing from max element to 0) time = O(max(changed[i]) + n), space = O(n)
+
+vector<int> findOriginalArray(vector<int>& changed) 
+{
+    unordered_map<int,int> mp;
+    vector<int> ans;
+    int mx = 0;
+    for(int x : changed)
+        mp[x]++, mx = max(mx, x);
+
+    if(mp[0] & 1) return {};
+    for(int i = 0; i < mp[0]/2; i++)
+        ans.push_back(0);
+
+    for(int x = mx; x; x--)
+    {
+        if(!mp[x]) continue;
+
+        if((x & 1) || (mp[x/2] < mp[x])) return {};
+
+        mp[x/2] -= mp[x];
+        for(int i = 0; i < mp[x]; i++)
+            ans.push_back(x/2);
+    }
+
+    return ans;
 }
