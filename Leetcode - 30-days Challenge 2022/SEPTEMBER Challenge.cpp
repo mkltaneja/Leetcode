@@ -391,3 +391,26 @@ int pseudoPalindromicPaths (TreeNode* root)
 {
     return dfs(0, root);
 }
+
+// DAY 15 (2007. Find Original Array From Doubled Array)=======================================================================================
+
+vector<int> findOriginalArray(vector<int>& changed) 
+{
+    sort(changed.begin(), changed.end());
+    unordered_map<int,int> mp;
+    vector<int> ans;
+    for(int x : changed)
+        mp[x]++;
+    for(int x : changed)
+    {
+        if(mp.count(x) && mp.count(2*x))
+        {
+            ans.push_back(x);
+            if(--mp[x] == 0)
+                mp.erase(x);
+            if(--mp[2*x] == 0)
+                mp.erase(2*x);
+        }
+    }
+    return mp.empty()? ans : vector<int>();
+}
