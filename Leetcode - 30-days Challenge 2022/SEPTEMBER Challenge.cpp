@@ -444,3 +444,21 @@ vector<int> findOriginalArray(vector<int>& changed)
 
     return ans;
 }
+
+// DAY 16 (1770. Maximum Score from Performing Multiplication Operations)==================================================================================
+
+int maximumScore(vector<int>& nums, vector<int>& multipliers) 
+{
+    int n = nums.size(), m = multipliers.size();
+    vector<vector<int>> dp(m+1, vector<int>(m+1, 0));
+    for(int k = m-1; k >= 0; k--)
+    {
+        for(int i = k; i >= 0; i--)
+        {
+            int j = (n - k - 1) + i;
+            dp[k][i] = max(dp[k+1][i+1] + (nums[i] * multipliers[k]), 
+                           dp[k+1][i] + (nums[j] * multipliers[k]));
+        }
+    }
+    return dp[0][0];
+}
