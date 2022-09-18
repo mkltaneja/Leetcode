@@ -463,6 +463,61 @@ int maximumScore(vector<int>& nums, vector<int>& multipliers)
     return dp[0][0];
 }
 
+// DAY 17 (336. Palindrome Pairs)=================================================================================================
+
+#define f first
+#define s second
+
+bool ispal(int l, int r, string &s)
+{
+    while(l < r && s[l] == s[r])
+        l++, r--;
+    return l >= r;
+}
+
+vector<vector<int>> palindromePairs(vector<string>& words) 
+{
+    int n = words.size();
+    map<int,unordered_map<string,int>> mp;
+    for(int i = 0; i < n; i++)
+    {
+        string s = string(words[i].rbegin(), words[i].rend());
+        mp[words[i].size()][s] = i;
+    }
+
+    vector<vector<int>> ans;
+    for(int i = 0; i < n; i++)
+    {
+        int m = words[i].size();
+        for(auto &p : mp)
+        {
+            if(p.f > m) break;
+
+            if(p.f == m)
+            {
+                auto itr = p.s.find(words[i]);
+                if(itr != p.s.end() && (*itr).s != i)
+                    ans.push_back({i, (*itr).s});
+                continue;
+            }
+
+            if(ispal(0, m - p.f - 1, words[i]))
+            {
+                auto itr = p.s.find(words[i].substr(m - p.f));
+                if(itr != p.s.end())
+                    ans.push_back({(*itr).s, i});
+            }
+            if(ispal(p.f, m-1, words[i]))
+            {
+                auto itr = p.s.find(words[i].substr(0, p.f));
+                if(itr != p.s.end())
+                    ans.push_back({i, (*itr).s});
+            }
+        }
+    }
+    return ans;
+}
+
 // DAY 18 (42. Trapping Rain Water)====================================================================================================
 
 // APPROACH 1 (Using Stack) -> time = O(2*n), space = O(n)
