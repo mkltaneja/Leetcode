@@ -462,3 +462,25 @@ int maximumScore(vector<int>& nums, vector<int>& multipliers)
     }
     return dp[0][0];
 }
+
+// DAY 18 (42. Trapping Rain Water)====================================================================================================
+
+int trap(vector<int>& height) 
+{
+    stack<int> st;
+    int water = 0;
+    for(int i = 0; i < height.size(); i++)
+    {
+        while(!st.empty() && height[i] >= height[st.top()])
+        {
+            int x = height[st.top()];
+            st.pop();
+            if(st.empty()) break;
+            int h = min(height[i], height[st.top()]) - x;
+            water += h * (i - st.top() - 1);
+        }
+        st.push(i);
+    }
+
+    return water;
+}
