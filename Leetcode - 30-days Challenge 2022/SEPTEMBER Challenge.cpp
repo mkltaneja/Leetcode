@@ -465,6 +465,8 @@ int maximumScore(vector<int>& nums, vector<int>& multipliers)
 
 // DAY 18 (42. Trapping Rain Water)====================================================================================================
 
+// APPROACH 1 (Using Stack) -> time = O(2*n), space = O(n)
+
 int trap(vector<int>& height) 
 {
     stack<int> st;
@@ -480,6 +482,31 @@ int trap(vector<int>& height)
             water += h * (i - st.top() - 1);
         }
         st.push(i);
+    }
+
+    return water;
+}
+
+// APPROACH 2 (Taking maximum from left and right) -> time = O(n), space = O(1) [OPTIMIZED]
+
+int trap(vector<int>& height) 
+{
+    int n = height.size();
+    int lmax = height[0], rmax = height[n-1];
+    int l = 1, r = n-2;
+    int water = 0;
+    while(l <= r)
+    {
+        if(lmax < rmax)
+        {
+            lmax = max(lmax, height[l]);
+            water += lmax - height[l++];
+        }
+        else 
+        {
+            rmax = max(rmax, height[r]);
+            water += rmax - height[r--];
+        }
     }
 
     return water;
