@@ -566,3 +566,37 @@ int trap(vector<int>& height)
 
     return water;
 }
+
+// DAY 19 (609. Find Duplicate File in System)======================================================================================
+
+vector<vector<string>> findDuplicate(vector<string>& paths) 
+{
+    unordered_map<string,vector<string>> mp;
+    for(string &s : paths)
+    {
+        string path = "";
+        int i = 0;
+        while(s[i] != ' ')
+            path += s[i++];
+        i++;
+        while(i < s.size())
+        {
+            string fname = "", content = "";
+            while(s[i] != '(')
+                fname += s[i++];
+            i++;
+            while(s[i] != ')')
+                content += s[i++];
+            i += 2;
+
+            mp[content].push_back(path + "/" + fname);
+        }
+    }
+
+    vector<vector<string>> ans;
+    for(auto p : mp)
+        if(p.second.size() > 1)
+            ans.push_back(p.second);
+
+    return ans;
+}
