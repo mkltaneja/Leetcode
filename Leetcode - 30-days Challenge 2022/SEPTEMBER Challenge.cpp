@@ -600,3 +600,23 @@ vector<vector<string>> findDuplicate(vector<string>& paths)
 
     return ans;
 }
+
+// DAY 20 (718. Maximum Length of Repeated Subarray)===============================================================================
+
+int findLength(vector<int>& nums1, vector<int>& nums2) 
+{
+    int n = nums1.size(), m = nums2.size();
+    vector<vector<int>> dp(n, vector<int>(m,0));
+
+    int ans = 0;
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            dp[i][j] = nums1[i] == nums2[j]? ((i&&j)? dp[i-1][j-1] : 0) + 1 : 0;
+            ans = max(ans, dp[i][j]);
+        }
+    }
+
+    return ans;
+}
