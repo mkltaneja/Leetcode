@@ -620,3 +620,32 @@ int findLength(vector<int>& nums1, vector<int>& nums2)
 
     return ans;
 }
+
+// DAY 21 (985. Sum of Even Numbers After Queries)=====================================================================================
+
+vector<int> sumEvenAfterQueries(vector<int>& nums, vector<vector<int>>& queries) 
+{
+    int esum = 0;
+    for(int x : nums)
+        esum += (x&1^1)? x : 0;
+    vector<int> ans(queries.size());
+    int i = 0;
+    for(vector<int> q : queries)
+    {
+        if(nums[q[1]]&1)
+        {
+            if(q[0] & 1)
+                esum += q[0] + nums[q[1]];
+        }
+        else 
+        {
+            if(q[0] & 1)
+                esum -= nums[q[1]];
+            else esum += q[0];
+        }
+        nums[q[1]] += q[0];
+        ans[i++] = esum;
+    }
+
+    return ans;
+}
