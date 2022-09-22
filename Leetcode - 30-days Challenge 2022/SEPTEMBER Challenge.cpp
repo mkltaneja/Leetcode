@@ -649,3 +649,24 @@ vector<int> sumEvenAfterQueries(vector<int>& nums, vector<vector<int>>& queries)
 
     return ans;
 }
+
+// DAY 22 (557. Reverse Words in a String III)==================================================================================
+
+string reverseWords(string s) 
+{
+    int n = s.size();
+    string ans = "";
+    for(int i = 0; i < n; i++)
+    {
+        int j = i;
+        string tmp = "";
+        while(j < n && s[j] != ' ')
+            tmp += s[j++];
+        reverse(tmp.begin(), tmp.end());
+        ans += tmp;
+        ans += j == n? "" : " ";
+        i = j;
+    }
+
+    return ans;
+}
