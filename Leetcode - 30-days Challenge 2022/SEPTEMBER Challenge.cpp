@@ -670,3 +670,19 @@ string reverseWords(string s)
 
     return ans;
 }
+
+// DAY 23 (1680. Concatenation of Consecutive Binary Numbers)=============================================================================
+
+int mod = 1e9 + 7;
+int concatenatedBinary(int n) 
+{
+    long ans = 0;
+    long nxt = 1;
+    for(int i = 1; i <= n; i++)
+    {
+        if(i == nxt) nxt *= 2;
+        ans = (ans * nxt + i) % mod;
+    }
+
+    return ans;
+}
