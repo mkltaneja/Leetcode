@@ -686,3 +686,31 @@ int concatenatedBinary(int n)
 
     return ans;
 }
+
+// DAY 24 (113. Path Sum II)=====================================================================================================
+
+vector<vector<int>> ans;
+void dfs(TreeNode* node, int tar, vector<int> &curr)
+{
+    if(!node) return;
+    if(!node->left && !node->right)
+    {
+        if(tar - node->val) return;
+        curr.push_back(node->val);
+        ans.push_back(curr);
+        curr.pop_back();
+        return;
+    }
+
+    curr.push_back(node->val);
+    dfs(node->left, tar - node->val, curr);
+    dfs(node->right, tar - node->val, curr);
+    curr.pop_back();
+}
+
+vector<vector<int>> pathSum(TreeNode* root, int targetSum) 
+{
+    vector<int> curr;
+    dfs(root, targetSum, curr);
+    return ans;
+}
