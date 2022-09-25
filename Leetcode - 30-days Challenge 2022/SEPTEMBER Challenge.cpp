@@ -714,3 +714,69 @@ vector<vector<int>> pathSum(TreeNode* root, int targetSum)
     dfs(root, targetSum, curr);
     return ans;
 }
+
+// DAY 25 (622. Design Circular Queue)=============================================================================================
+
+class MyCircularQueue {
+public:
+    
+    int st, end, avail;
+    int n;
+    vector<int> que;
+    MyCircularQueue(int k) 
+    {
+        this->n = k;
+        this->avail = k;
+        this->que.resize(k);
+        this->st = 0;
+        this->end = -1;
+    }
+    
+    bool enQueue(int value) 
+    {
+        if(avail == 0) return false;
+        end = (end + 1) % n;
+        que[end] = value;
+        avail--;
+        return true;
+    }
+    
+    bool deQueue() 
+    {
+        if(avail == n) return false;
+        st = (st + 1) % n;
+        avail++;
+        return true;
+    }
+    
+    int Front() 
+    {
+        return avail == n? -1 : que[st];
+    }
+    
+    int Rear() 
+    {
+        return avail == n? -1 : que[end];
+    }
+    
+    bool isEmpty() 
+    {
+        return avail == n; 
+    }
+    
+    bool isFull() 
+    {
+        return avail == 0;
+    }
+};
+
+/**
+ * Your MyCircularQueue object will be instantiated and called as such:
+ * MyCircularQueue* obj = new MyCircularQueue(k);
+ * bool param_1 = obj->enQueue(value);
+ * bool param_2 = obj->deQueue();
+ * int param_3 = obj->Front();
+ * int param_4 = obj->Rear();
+ * bool param_5 = obj->isEmpty();
+ * bool param_6 = obj->isFull();
+ */
