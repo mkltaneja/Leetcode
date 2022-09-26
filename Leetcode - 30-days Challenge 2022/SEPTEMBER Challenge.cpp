@@ -780,3 +780,33 @@ public:
  * bool param_5 = obj->isEmpty();
  * bool param_6 = obj->isFull();
  */
+
+// DAY 26 (990. Satisfiability of Equality Equations)===============================================================================
+
+vector<int> par;
+int findpar(int u)
+{
+    return par[u] = par[u] == u? u : findpar(par[u]);
+}
+
+bool equationsPossible(vector<string>& equations) 
+{
+    par.resize(26);
+    for(int i = 0; i < 26; i++)
+        par[i] = i;
+
+    for(string s : equations)
+    {
+        if(s[1] == '=')
+        {
+            int p1 = findpar(s[0]-'a');
+            int p2 = findpar(s[3]-'a');
+            par[p1] = p2;
+        }
+    }
+    for(string s : equations)
+        if(s[1] == '!' && findpar(s[0]-'a') == findpar(s[3]-'a'))
+            return false;
+
+    return true;
+}
