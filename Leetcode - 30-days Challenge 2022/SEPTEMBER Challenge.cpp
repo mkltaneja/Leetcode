@@ -813,6 +813,8 @@ bool equationsPossible(vector<string>& equations)
 
 // DAY 27 (838. Push Dominoes)=======================================================================================
 
+// APPROACH 1 (Naive)
+
 string pushDominoes(string dominoes) 
 {
     int n = dominoes.size();
@@ -845,6 +847,38 @@ string pushDominoes(string dominoes)
             r = n-1;
         }
     }
+
+    return dominoes;
+}
+
+// APPROACH 2 (Calculating Net-Force)
+
+string pushDominoes(string dominoes) 
+{
+    int n = dominoes.size();
+    vector<int> nforce(n,0);
+    int f = 0;
+    for(int i = 0; i < n; i++)
+    {
+        if(dominoes[i] == 'L')
+            f = 0;
+        else if(dominoes[i] == 'R')
+            f = n;
+        else f = max(f-1, 0);
+        nforce[i] = f;
+    }
+    for(int i = n-1; i >= 0; i--)
+    {
+        if(dominoes[i] == 'L')
+            f = n;
+        else if(dominoes[i] == 'R')
+            f = 0;
+        else f = max(f-1, 0);
+        nforce[i] -= f;
+    }
+
+    for(int i = 0; i < n; i++)
+        dominoes[i] = nforce[i]? (nforce[i] > 0? 'R' : 'L') : '.';
 
     return dominoes;
 }
