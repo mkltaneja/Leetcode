@@ -810,3 +810,41 @@ bool equationsPossible(vector<string>& equations)
 
     return true;
 }
+
+// DAY 27 (838. Push Dominoes)=======================================================================================
+
+string pushDominoes(string dominoes) 
+{
+    int n = dominoes.size();
+    int r = n-1, l = -1;
+    for(int i = 0; i <= n; i++)
+    {
+        if(i < n && dominoes[i] == '.') continue;
+
+        if(i < n && dominoes[i] == 'R')
+        {
+            if(r != n-1)
+                for(int j = r+1; j < i; j++)
+                    dominoes[j] = 'R';
+            r = i;
+        }
+        else 
+        {
+            int tl = 0, tr = 0;
+            if(i == n) 
+                tr = i-r-1;
+            else if(r == n-1) 
+                tl = i-l-1;
+            else 
+                tl = tr = (i-r-1)/2;
+
+            for(int j = r+1; tr--;) dominoes[j++] = 'R';
+            for(int j = i-1; tl--;) dominoes[j--] = 'L';
+
+            l = i;
+            r = n-1;
+        }
+    }
+
+    return dominoes;
+}
