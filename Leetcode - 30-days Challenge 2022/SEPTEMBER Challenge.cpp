@@ -882,3 +882,25 @@ string pushDominoes(string dominoes)
 
     return dominoes;
 }
+
+// DAY 28 (19. Remove Nth Node From End of List)============================================================================
+
+ListNode* removeNthFromEnd(ListNode* head, int n) 
+{
+    int nn = 0;
+    ListNode* itr = head;
+    while(itr)
+        nn++, itr = itr->next;
+    n = nn - n;
+    ListNode* prev = nullptr, *curr = head, *nxt = curr->next;
+    while(n--)
+    {
+        prev = curr;
+        curr = nxt;
+        nxt = nxt->next;
+    }
+    if(prev) prev->next = nxt;
+    else head = nxt;
+
+    return head;
+}
