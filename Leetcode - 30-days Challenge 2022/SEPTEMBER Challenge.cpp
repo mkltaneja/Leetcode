@@ -904,3 +904,23 @@ ListNode* removeNthFromEnd(ListNode* head, int n)
 
     return head;
 }
+
+// DAY 29 (658. Find K Closest Elements)=========================================================================================
+
+vector<int> findClosestElements(vector<int>& arr, int k, int x) 
+{
+    queue<int> que;
+    for(int y : arr)
+    {
+        if(que.size() == k && abs(que.front() - x) > abs(y - x))
+            que.pop();
+        if(que.size() < k) que.push(y);
+    }
+    vector<int> ans;
+    while(!que.empty())
+    {
+        ans.push_back(que.front());
+        que.pop();
+    }
+    return ans;
+}
