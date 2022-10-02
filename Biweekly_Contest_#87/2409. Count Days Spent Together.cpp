@@ -57,3 +57,27 @@ public:
         return ans;
     }
 };
+
+// APPROACH 2 (Concise)
+
+class Solution {
+public:
+    int countDaysTogether(string arriveAlice, string leaveAlice, string arriveBob, string leaveBob) 
+    {
+        int days[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        for(int i = 1; i < 13; i++)
+            days[i] += days[i-1];
+        
+         auto day = [&](string &s)
+         {
+             int m = stoi(s.substr(0,2));
+             int d = stoi(s.substr(3));
+             return days[m-1] + d;
+         };
+        
+        int arrive = max(day(arriveAlice), day(arriveBob));
+        int leave = min(day(leaveAlice), day(leaveBob));
+        
+        return max(0, leave-arrive+1);
+    }
+};
