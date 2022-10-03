@@ -36,3 +36,28 @@ int numRollsToTarget(int n, int k, int target)
     vector<vector<ll>> dp(n+1, vector<ll>(target+1, -1));
     return dfs(n, k, target, dp) % mod;
 }
+
+// DAY 3 (1578. Minimum Time to Make Rope Colorful)=============================================================================
+
+int minCost(string colors, vector<int>& neededTime) 
+{
+    int n = colors.size();
+    int ans = 0;
+    for(int i = 0; i < n; )
+    {
+        int j = i+1;
+        int mxt = neededTime[i];
+        int sumt = neededTime[i];
+        bool same = false;
+        while(j < n && colors[j] == colors[i])
+        {
+            sumt += neededTime[j];
+            mxt = max(mxt, neededTime[j++]);
+            same = true;
+        }
+        ans += same? sumt - mxt : 0;
+        i = j;
+    }
+
+    return ans;
+}
