@@ -61,3 +61,14 @@ int minCost(string colors, vector<int>& neededTime)
 
     return ans;
 }
+
+// DAY 4 (112. Path Sum)===============================================================================================
+
+bool hasPathSum(TreeNode* root, int targetSum) 
+{
+    if(!root) return false;
+    if(!root->left && !root->right) 
+        return (targetSum - root->val) == 0;
+    return hasPathSum(root->left, targetSum - root->val) || 
+            hasPathSum(root->right, targetSum - root->val);
+}
