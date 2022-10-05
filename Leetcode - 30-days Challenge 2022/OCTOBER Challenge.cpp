@@ -72,3 +72,28 @@ bool hasPathSum(TreeNode* root, int targetSum)
     return hasPathSum(root->left, targetSum - root->val) || 
             hasPathSum(root->right, targetSum - root->val);
 }
+
+// DAY 5 (623. Add One Row to Tree)=========================================================================================
+
+TreeNode* dfs(int p, TreeNode* root, int val, int depth, int left)
+{
+    if(depth == 1)
+    {
+        TreeNode* nroot = new TreeNode(val);
+        if(left)
+            nroot->left = root;
+        else nroot->right = root;
+        return nroot;
+    }
+    if(!root) return root;
+
+    root->left = dfs(root->val, root->left, val, depth-1, 1);
+    root->right = dfs(root->val, root->right, val, depth-1, 0);
+
+    return root;
+}
+
+TreeNode* addOneRow(TreeNode* root, int val, int depth) 
+{
+    return dfs(-1, root, val, depth, 1);
+}
