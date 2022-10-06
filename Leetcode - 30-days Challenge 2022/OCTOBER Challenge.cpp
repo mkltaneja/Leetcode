@@ -97,3 +97,52 @@ TreeNode* addOneRow(TreeNode* root, int val, int depth)
 {
     return dfs(-1, root, val, depth, 1);
 }
+
+// DAY 6 (981. Time Based Key-Value Store)=====================================================================================
+
+class TimeMap {
+public:
+
+    unordered_map<string,vector<pair<int,string>>> mp;
+    TimeMap() 
+    {
+        
+    }
+    
+    void set(string key, string value, int timestamp) 
+    {
+        mp[key].push_back({timestamp, value});
+    }
+    
+    string get(string key, int timestamp) 
+    {
+        if(!mp.count(key)) return "";
+
+        vector<pair<int,string>> &vals = mp[key];
+        
+        int lo = 0, hi = vals.size();
+        
+        if(timestamp < vals[lo].first) return "";
+        if(timestamp >= vals[hi-1].first) return vals[hi-1].second;
+
+        while(lo < hi)
+        {
+            int mid = lo + ((hi - lo)>>1);
+            if(vals[mid].first == timestamp) return vals[mid].second;
+            if(vals[mid].first > timestamp)
+                hi = mid;
+            else lo = mid + 1;
+        }
+        int ub = lo - 1;
+
+        if(ub != -1) return vals[ub].second;
+        return "";
+    }
+};
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap* obj = new TimeMap();
+ * obj->set(key,value,timestamp);
+ * string param_2 = obj->get(key,timestamp);
+ */
