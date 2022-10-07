@@ -146,3 +146,36 @@ public:
  * obj->set(key,value,timestamp);
  * string param_2 = obj->get(key,timestamp);
  */
+
+// DAY 7 (732. My Calendar III)===================================================================================================
+
+class MyCalendarThree {
+public:
+
+    map<int,int> mp;
+    MyCalendarThree() 
+    {
+        
+    }
+    
+    int book(int start, int end) 
+    {
+        int ans = 0;
+        mp[start]++;
+        mp[end]--;
+        int cnt = 0;
+        for(auto &p : mp)
+        {
+            cnt += p.second;
+            ans = max(ans, cnt);
+        }
+
+        return ans;
+    }
+};
+
+/**
+ * Your MyCalendarThree object will be instantiated and called as such:
+ * MyCalendarThree* obj = new MyCalendarThree();
+ * int param_1 = obj->book(start,end);
+ */
