@@ -179,3 +179,43 @@ public:
  * MyCalendarThree* obj = new MyCalendarThree();
  * int param_1 = obj->book(start,end);
  */
+
+// DAY 8 (16. 3Sum Closest)===========================================================================================
+
+int threeSumClosest(vector<int>& nums, int target) 
+{
+    int n = nums.size();
+    int ans = 50000;
+    sort(nums.begin(), nums.end());
+    for(int i = 0; i < n-2; i++)
+    {
+        int sum1 = nums[i] + nums[n-2] + nums[n-1];
+        if(sum1 < target)
+        {
+            if(abs(target - sum1) < abs(target - ans))
+                ans = sum1;
+            continue;
+        }
+        int sum2 = nums[i] + nums[i+1] + nums[i+2];
+        if(sum2 > target)
+        {
+            if(abs(target - sum2) < abs(target - ans))
+                ans = sum2;
+            continue;
+        }
+        if(i && nums[i] == nums[i-1]) continue;
+
+        int l = i+1, r = n-1;
+        while(l < r)
+        {
+            int curr = nums[i] + nums[l] + nums[r];
+            if(abs(target - curr) < abs(target - ans))
+                ans = curr;
+
+            if(curr < target) l++;
+            else r--;
+        }
+    }
+
+    return ans;
+}
