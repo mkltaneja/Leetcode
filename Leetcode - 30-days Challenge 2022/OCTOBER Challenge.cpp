@@ -219,3 +219,29 @@ int threeSumClosest(vector<int>& nums, int target)
 
     return ans;
 }
+
+// DAY 9 (653. Two Sum IV - Input is a BST)===========================================================================================
+
+void inorder(TreeNode* node, vector<int> &sor)
+{
+    if(!node) return;
+    inorder(node->left, sor);
+    sor.push_back(node->val);
+    inorder(node->right, sor);
+}
+
+bool findTarget(TreeNode* root, int k) 
+{
+    vector<int> sor;
+    inorder(root, sor);
+    int l = 0, r = sor.size()-1;
+    while(l < r)
+    {
+        int sum = sor[l] + sor[r];
+        if(sum == k) return true;
+        if(sum < k) l++;
+        else r--;
+    }
+
+    return false;
+}
