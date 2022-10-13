@@ -291,3 +291,17 @@ int largestPerimeter(vector<int>& nums)
             return nums[i] + nums[i+1] + nums[i+2];
     return 0;
 }
+
+// DAY 13 (237. Delete Node in a Linked List)========================================================================================
+
+void deleteNode(ListNode* node) 
+{
+    ListNode* prev = nullptr;
+    while(node->next)
+    {
+        node->val = node->next->val;
+        prev = node;
+        node = node->next;
+    }
+    prev->next = nullptr;
+}
