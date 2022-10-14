@@ -305,3 +305,21 @@ void deleteNode(ListNode* node)
     }
     prev->next = nullptr;
 }
+
+// DAY 14 (2095. Delete the Middle Node of a Linked List)===========================================================================
+
+ListNode* deleteMiddle(ListNode* head) 
+{
+    ListNode* slow = head, *fast = head, *prev = nullptr;
+    while(fast && fast->next)
+    {
+        prev = slow;
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    if(prev) prev->next = slow->next;
+    else return nullptr;
+
+    return head;
+}
