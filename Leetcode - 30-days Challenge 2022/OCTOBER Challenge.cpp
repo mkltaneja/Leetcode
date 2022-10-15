@@ -323,3 +323,34 @@ ListNode* deleteMiddle(ListNode* head)
 
     return head;
 }
+
+// DAY 15 (1531. String Compression II)============================================================================================
+
+int dp[101][101][101][27];
+class Solution {
+public:
+    int subseq(int i, int k, int pcnt, int pchar, string &s)
+    {
+        if(k < 0) return INT_MAX;
+        if(i == s.size()) return 0;
+        if(dp[i][k][pcnt][pchar] != -1)
+            return dp[i][k][pcnt][pchar];
+        
+        int del = subseq(i+1, k-1, pcnt, pchar, s);
+        int keep = 0;
+        if(s[i]-'a' == pchar)
+        {
+            int inc = (pcnt == 1 || pcnt == 9 || pcnt == 99);
+            keep = subseq(i+1, k, pcnt+1, pchar, s) + inc;
+        }
+        else keep = subseq(i+1, k, 1, s[i]-'a', s) + 1;
+
+        return dp[i][k][pcnt][pchar] = min(del, keep);
+    }
+
+    int getLengthOfOptimalCompression(string s, int k) 
+    {
+        memset(dp, -1, sizeof(dp));
+        return subseq(0, k, 0, 26, s);
+    }
+};
