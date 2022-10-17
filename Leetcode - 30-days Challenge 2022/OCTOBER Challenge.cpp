@@ -354,3 +354,15 @@ public:
         return subseq(0, k, 0, 26, s);
     }
 };
+
+// DAY 17 (1832. Check if the Sentence Is Pangram)======================================================================================
+
+bool checkIfPangram(string sentence) 
+{
+    int all = (1 << 26) - 1;
+    int x = 0;
+    for(char c : sentence)
+        x |= (1 << (c-'a'));
+
+    return (x & all) == all;
+}
