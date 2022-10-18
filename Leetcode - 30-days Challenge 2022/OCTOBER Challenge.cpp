@@ -366,3 +366,25 @@ bool checkIfPangram(string sentence)
 
     return (x & all) == all;
 }
+
+// DAY 18 (38. Count and Say)=====================================================================================================
+
+string countAndSay(int n) 
+{
+    string res = "1";
+    for(int x = 2; x <= n; x++)
+    {
+        int i = 0;
+        string say = "";
+        while(i < res.size())
+        {
+            int j = i;
+            while(j < res.size() && res[j] == res[i]) j++;
+            say += to_string(j-i) + res[i];
+            i = j;
+        }
+        res = say;
+    }
+
+    return res;
+}
