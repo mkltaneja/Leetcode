@@ -388,3 +388,36 @@ string countAndSay(int n)
 
     return res;
 }
+
+// DAY 19 (692. Top K Frequent Words)============================================================================================
+
+#define f first
+#define s second
+
+struct comp 
+{
+    bool operator()(pair<int,string> &a, pair<int,string> &b)
+    {
+        return a.f == b.f? a.s > b.s : a.f < b.f;
+    }
+};
+
+vector<string> topKFrequent(vector<string>& words, int k) 
+{
+    unordered_map<string,int> cnt;
+    for(string &s : words)
+        cnt[s]++;
+
+    priority_queue<pair<int,string>, vector<pair<int,string>>, comp> pq;
+    for(auto &p : cnt)
+        pq.push({p.s, p.f});
+
+    vector<string> ans;
+    while(k--)
+    {
+        ans.push_back(pq.top().s);
+        pq.pop();
+    }
+
+    return ans;
+}
