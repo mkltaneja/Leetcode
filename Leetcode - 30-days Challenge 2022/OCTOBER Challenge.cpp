@@ -421,3 +421,27 @@ vector<string> topKFrequent(vector<string>& words, int k)
 
     return ans;
 }
+
+// DAY 20 (12. Integer to Roman)================================================================================================
+
+string intToRoman(int num) 
+{
+    unordered_map<int,string> mp1, mp2;
+    mp1[1] = "IVX", mp1[2] = "XLC", mp1[3] = "CDM", mp1[4] = "MMM";
+    mp2[1] = "0", mp2[2] = "00", mp2[3] = "000", mp2[4] = "10", mp2[5] = "1", 
+    mp2[6] = "01", mp2[7] = "001", mp2[8] = "0001", mp2[9] = "20";
+
+    int p = 1;
+    string ans = "";
+    while(num)
+    {
+        int x = num % 10;
+        for(char &c : mp2[x])
+            ans += mp1[p][c-'0'];
+        num /= 10;
+        p++;
+    }
+
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
