@@ -445,3 +445,33 @@ string intToRoman(int num)
     reverse(ans.begin(), ans.end());
     return ans;
 }
+
+// DAY 22 (76. Minimum Window Substring)==========================================================================================
+
+string minWindow(string s, string t) 
+{
+    int n = s.size(), m = t.size();
+    unordered_map<char,int> mpt, mps;
+    for(char c : t)
+        mpt[c]++;
+
+    int j = 0, match = 0, st = -1, end = n;
+    for(int i = 0; i < n; i++)
+    {
+        if(mpt.count(s[i]))
+        {
+            if(mps[s[i]]++ < mpt[s[i]])
+                match++;
+        }
+        while(match == m)
+        {
+            if(i - j + 1 < end - st + 1)
+                st = j, end = i;
+            if(mps.count(s[j]) && --mps[s[j]] < mpt[s[j]])
+                match--;
+            j++;
+        }
+    }
+
+    return st == -1? "" : s.substr(st, end-st+1);
+}
