@@ -32,3 +32,19 @@ public:
         return tot > 0;
     }
 };
+
+// APPROACH 2 (Mathematically)
+
+class Solution {
+public:
+    
+    int time(string t)
+    {
+        return (t[0]-'0')*1000 + (t[1]-'0')*100 + (t[3]-'0')*10 + (t[4]-'0');
+    }
+    
+    bool haveConflict(vector<string>& event1, vector<string>& event2) 
+    {
+        return max(time(event1[0]), time(event2[0])) <= min(time(event1[1]), time(event2[1]));
+    }
+};
