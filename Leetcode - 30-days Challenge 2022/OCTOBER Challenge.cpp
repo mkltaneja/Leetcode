@@ -475,3 +475,26 @@ string minWindow(string s, string t)
 
     return st == -1? "" : s.substr(st, end-st+1);
 }
+
+// DAY 23 (645. Set Mismatch)============================================================================================
+
+vector<int> findErrorNums(vector<int>& nums) 
+{
+    int rep = 0, miss = 0;
+    for(int i = 0; i < nums.size(); i++)
+    {
+        if(nums[abs(nums[i])-1] < 0) 
+            rep = abs(nums[i]);
+        else nums[abs(nums[i])-1] *= -1;
+    }
+    for(int i = 0; i < nums.size(); i++)
+    {
+        if(nums[i] > 0)
+        {
+            miss = i+1;
+            break;
+        }
+    }
+
+    return {rep, miss};
+}
