@@ -498,3 +498,50 @@ vector<int> findErrorNums(vector<int>& nums)
 
     return {rep, miss};
 }
+
+// DAY 24 (1239. Maximum Length of a Concatenated String with Unique Characters)============================================================
+
+int countBits(int x)
+{
+    int cnt = 0;
+    while(x)
+    {
+        x -= x & -x;
+        cnt++;
+    }
+    return cnt;
+}
+
+int maxLength(vector<string>& arr) 
+{
+    vector<int> dp;
+    int ans = 0;
+
+    for(string &s : arr)
+    {
+        int x = 0;
+        bool valid = true;
+        for(char &c : s)
+        {
+            if(x & (1 << (c-'a')))
+            {
+                valid = false;
+                break;
+            }
+            x |= (1 << (c-'a'));
+        }
+        if(!valid) continue;
+
+        int cntx = countBits(x);
+        for(int i = dp.size()-1; i >= 0; i--)
+        {
+            if(dp[i] & x) continue;
+            dp.push_back(dp[i] | x);
+            ans = max(ans, countBits(dp[i]) + cntx);
+        }
+        dp.push_back(x);
+        ans = max(ans, cntx);
+    }
+
+    return ans;
+}
