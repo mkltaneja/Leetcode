@@ -545,3 +545,23 @@ int maxLength(vector<string>& arr)
 
     return ans;
 }
+
+// DAY 25 (1662. Check If Two String Arrays are Equivalent)========================================================================
+
+bool arrayStringsAreEqual(vector<string>& word1, vector<string>& word2) 
+{
+    int i = 0, ii = 0, j = 0, jj = 0;
+    while(ii < word1.size() && jj < word2.size())
+    {
+        if(i == word1[ii].size() || j == word2[jj].size()) 
+        {
+            if(i == word1[ii].size()) ii++, i = 0;
+            if(j == word2[jj].size()) jj++, j = 0;
+            continue;
+        }
+
+        if(word1[ii][i] != word2[jj][j]) return false;
+        i++, j++;
+    }
+    return ii == word1.size() && jj == word2.size();
+}
