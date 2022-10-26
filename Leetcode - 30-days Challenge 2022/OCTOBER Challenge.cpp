@@ -565,3 +565,24 @@ bool arrayStringsAreEqual(vector<string>& word1, vector<string>& word2)
     }
     return ii == word1.size() && jj == word2.size();
 }
+
+// DAY 26 (523. Continuous Subarray Sum)===================================================================================
+
+bool checkSubarraySum(vector<int>& nums, int k) 
+{
+    unordered_map<int,int> mp;
+    int sum = 0;
+    mp[sum] = -1;
+    for(int i = 0; i < nums.size(); i++)
+    {
+        sum += nums[i];
+        if(mp.count(sum % k))
+        {
+            if(mp[sum % k] < i-1) 
+                return true;
+        }
+        else 
+            mp[sum % k] = i;
+    }
+    return false;
+}
