@@ -586,3 +586,33 @@ bool checkSubarraySum(vector<int>& nums, int k)
     }
     return false;
 }
+
+// DAY 27 (835. Image Overlap)===========================================================================================
+
+int largestOverlap(vector<vector<int>>& img1, vector<vector<int>>& img2) 
+{
+    int n = img1.size();
+    vector<vector<int>> shift(2*n, vector<int>(2*n, 0));
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < n; j++)
+        {
+            if(img1[i][j] == 0) continue;
+            for(int x = 0; x < n; x++)
+            {
+                for(int y = 0; y < n; y++)
+                {
+                    if(img2[x][y] == 0) continue;
+                    shift[i-x+n][j-y+n]++;
+                }
+            }
+        }
+    }
+
+    int maxWindow = 0;
+    for(int i = 0; i < 2*n; i++)
+        for(int j = 0; j < 2*n; j++)
+            maxWindow = max(maxWindow, shift[i][j]);
+
+    return maxWindow;
+}
