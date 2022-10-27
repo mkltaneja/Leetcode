@@ -589,6 +589,8 @@ bool checkSubarraySum(vector<int>& nums, int k)
 
 // DAY 27 (835. Image Overlap)===========================================================================================
 
+// APPROACH 1 --> O(n^4)
+
 int largestOverlap(vector<vector<int>>& img1, vector<vector<int>>& img2) 
 {
     int n = img1.size();
@@ -613,6 +615,54 @@ int largestOverlap(vector<vector<int>>& img1, vector<vector<int>>& img2)
     for(int i = 0; i < 2*n; i++)
         for(int j = 0; j < 2*n; j++)
             maxWindow = max(maxWindow, shift[i][j]);
+
+    return maxWindow;
+}
+
+// APPROACH 2 --> O(n^3)
+
+int countOnBits(int x)
+{
+    int cnt = 0;
+    while(x)
+    {
+        x -= x & -x;
+        cnt++;
+    }
+    return cnt;
+}
+
+int largestOverlap(vector<vector<int>>& img1, vector<vector<int>>& img2) 
+{
+    int n = img1.size();
+    vector<unsigned long> bits1, bits2;
+    for(int i = 0; i < n; i++)
+    {
+        unsigned long b1 = 0, b2 = 0;
+        for(int j = 0; j < n; j++)
+        {
+            b1 = (b1 << 1) | img1[i][j];
+            b2 = (b2 << 1) | img2[i][j];
+        }
+        bits1.push_back(b1);
+        bits2.push_back(b2);
+    }
+
+    int maxWindow = 0;
+    for(int i = -n+1; i < n; i++)
+    {
+        for(int j = -n+1; j < n; j++)
+        {
+            int overlap = 0;
+            for(int k = 0; k < n; k++)
+            {
+                if(k+i < 0 || k+i >= n) continue;
+                overlap += j < 0? countOnBits(bits1[k] & (bits2[k+i] << -j)) : 
+                    countOnBits(bits1[k] & (bits2[k+i] >> j));
+            }
+            maxWindow = max(maxWindow, overlap);
+        }
+    }
 
     return maxWindow;
 }
