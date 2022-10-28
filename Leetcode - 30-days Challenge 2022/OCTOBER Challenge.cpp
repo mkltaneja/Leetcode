@@ -666,3 +666,22 @@ int largestOverlap(vector<vector<int>>& img1, vector<vector<int>>& img2)
 
     return maxWindow;
 }
+
+// DAY 28 (49. Group Anagrams)==============================================================================
+
+vector<vector<string>> groupAnagrams(vector<string>& strs) 
+{
+    vector<vector<string>> ans;
+    unordered_map<string,vector<string>> mp;
+    for(string &s : strs)
+    {
+        string tmp = s;
+        sort(tmp.begin(), tmp.end());
+        mp[tmp].push_back(s);
+    }
+
+    for(auto p : mp)
+        ans.push_back(p.second);
+
+    return ans;
+}
