@@ -685,3 +685,24 @@ vector<vector<string>> groupAnagrams(vector<string>& strs)
 
     return ans;
 }
+
+// DAY 29 (2136. Earliest Possible Day of Full Bloom)=============================================================
+
+int earliestFullBloom(vector<int>& plantTime, vector<int>& growTime) 
+{
+    int n = plantTime.size();
+    vector<pair<int,int>> gp(n);
+    for(int i = 0; i < n; i++)
+        gp[i] = {growTime[i], plantTime[i]};
+    sort(gp.rbegin(), gp.rend());
+
+    int ans = 0;
+    int lastPlant = 0;
+    for(int i = 0; i < n; i++)
+    {
+        lastPlant += gp[i].second;
+        ans = max(ans, lastPlant+gp[i].first);
+    }
+
+    return ans;
+}
