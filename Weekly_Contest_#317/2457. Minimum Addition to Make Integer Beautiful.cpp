@@ -1,3 +1,6 @@
+
+// APPROACH 1 --> time = O(log10(n) * 2^log10(n))
+
 class Solution {
 public:
     #define ll long long
@@ -49,6 +52,37 @@ public:
             p *= 10;
         }
         
+        return -1;
+    }
+};
+
+// APPROACH 2 -> time = (log10(n)^2) [OPTIMIZED]
+class Solution {
+public:
+    #define ll long long
+    
+    int sod(long long x)
+    {
+        int sum = 0;
+        while(x)
+        {
+            sum += x%10;
+            x /= 10;
+        }
+        return sum;
+    }
+    
+    long long makeIntegerBeautiful(long long n, int target) 
+    {
+        if(sod(n) <= target) return 0;
+        ll p = 10, tmp = n;
+        while(tmp)
+        {
+            ll k = p - n%p;
+            if(sod(n + k) <= target) return k;
+            p *= 10;
+            tmp /= 10;
+        }
         return -1;
     }
 };
