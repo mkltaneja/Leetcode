@@ -706,3 +706,55 @@ int earliestFullBloom(vector<int>& plantTime, vector<int>& growTime)
 
     return ans;
 }
+
+// DAY 30 (1293. Shortest Path in a Grid with Obstacles Elimination)=============================================================
+
+#define f first
+#define s second
+class conf
+{
+    public:
+    int i, j, k, x;
+    conf(int i, int j, int k, int x)
+    {
+        this->i = i;
+        this->j = j;
+        this->k = k;
+        this->x = x;
+    }
+};
+
+int shortestPath(vector<vector<int>>& grid, int k) 
+{
+    int n = grid.size(), m = grid[0].size();
+    vector<vector<vector<int>>>vis(n,vector<vector<int>>(m,vector<int>(k+1,0)));
+
+    int dir[4][2] = {{1,0}, {0,1}, {-1,0}, {0,-1}};
+    queue<conf*> que;
+    que.push(new conf(0, 0, k, 0));
+
+    while(!que.empty())
+    {
+        conf* tp = que.front();
+        que.pop();
+
+        if(tp->i == n-1 && tp->j == m-1)
+            return tp->x;
+
+        for(int d = 0; d < 4; d++)
+        {
+            int x = tp->i + dir[d][0], y = tp->j + dir[d][1];
+            if(x >= 0 && x < n && y >= 0 && y < m)
+            {
+                int kk = tp->k - grid[x][y];
+                if(kk >= 0 && !vis[x][y][kk])
+                {
+                    vis[x][y][kk] = 1;
+                    que.push(new conf(x, y, kk, tp->x + 1));
+                }
+            }
+        }
+    }
+
+    return -1;
+}
