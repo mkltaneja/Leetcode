@@ -1,3 +1,6 @@
+
+// APPROACH 1 (time OPTIMIZED)
+
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -50,6 +53,61 @@ public:
             }
             else ans.push_back(mxh[dep[x]].f + dep[x] - 1);
         }
+        
+        return ans;
+    }
+};
+
+// APPROACH 2 (Space OPTIMIZED)
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    #define f first
+    #define s second
+    
+    int ht[100005][2];
+    int res[100005];
+    
+    int dfs(TreeNode* node)
+    {
+        if(!node) return 0;
+        int l = dfs(node->left);
+        int r = dfs(node->right);
+        
+        ht[node->val][0] = l;
+        ht[node->val][1] = r;
+        
+        return max(l, r) + 1;
+    }
+    
+    void dfs(TreeNode* node, int mxh, int dep)
+    {
+        if(!node) return;
+        
+        res[node->val] = max(mxh, dep-1);
+        
+        dfs(node->left, max(mxh, ht[node->val][1] + dep), dep+1);
+        dfs(node->right, max(mxh, ht[node->val][0] + dep), dep+1);
+    }
+    
+    vector<int> treeQueries(TreeNode* root, vector<int>& queries) 
+    {
+        dfs(root);
+        dfs(root, 0, 0);
+        
+        vector<int> ans;
+        for(int x : queries)
+            ans.push_back(res[x]);
         
         return ans;
     }
