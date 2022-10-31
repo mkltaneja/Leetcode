@@ -761,6 +761,8 @@ int shortestPath(vector<vector<int>>& grid, int k)
 
 // DAY 31 (766. Toeplitz Matrix)=================================================================================
 
+// APPROAC 1 (Naive)
+
 bool isToeplitzMatrix(vector<vector<int>>& matrix) 
 {
     int n = matrix.size(), m = matrix[0].size();
@@ -768,6 +770,25 @@ bool isToeplitzMatrix(vector<vector<int>>& matrix)
         for(int j = 0; j < m; j++)
             if(i && j && matrix[i][j] != matrix[i-1][j-1])
                 return false;
+
+    return true;
+}
+
+// APPROACH 2 (Solving Follow-up question) --> Using extra space
+
+bool isToeplitzMatrix(vector<vector<int>>& matrix) 
+{
+    int n = matrix.size(), m = matrix[0].size();
+    vector<int> diag(n+m-1, -1);
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(diag[i-j + m-1] != -1 && diag[i-j + m-1] != matrix[i][j])
+                return false;
+            diag[i-j + m-1] = matrix[i][j];
+        }
+    }
 
     return true;
 }
