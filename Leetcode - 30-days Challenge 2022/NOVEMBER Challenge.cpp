@@ -63,3 +63,32 @@ int minMutation(string start, string end, vector<string>& bank)
 
     return -1;
 }
+
+// DAY 3 (2131. Longest Palindrome by Concatenating Two Letter Words)===================================================================================
+
+int longestPalindrome(vector<string>& words) 
+{
+    int match = 0, mid = 0;
+    unordered_map<string,int> mp;
+    for(string &s : words)
+    {
+        string opp = string() + s[1] + s[0];
+        if(mp[opp]) 
+        {
+            match++;
+            mp[opp]--;
+        }
+        else mp[s]++;
+    }
+    for(auto &p : mp)
+    {
+        if(!p.second) continue;
+        if(p.first[0] == p.first[1])
+        {
+            mid++;
+            break;
+        }
+    }
+
+    return match*4 + mid*2;
+}
