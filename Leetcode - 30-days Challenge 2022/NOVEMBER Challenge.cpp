@@ -92,3 +92,24 @@ int longestPalindrome(vector<string>& words)
 
     return match*4 + mid*2;
 }
+
+// DAY 4 (345. Reverse Vowels of a String)=======================================================================================================
+
+string reverseVowels(string s) 
+{
+    auto isVowel = [&](char c){
+        c = tolower(c);
+        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+    };
+
+    int i = 0, j = s.size()-1;
+    while(i < j)
+    {
+        while(i < j && !isVowel(tolower(s[i]))) i++;
+        while(i < j && !isVowel(tolower(s[j]))) j--;
+
+        swap(s[i++], s[j--]);
+    }
+
+    return s;
+}
