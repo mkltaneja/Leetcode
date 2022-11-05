@@ -355,6 +355,37 @@ public:
     }
 };
 
+// DAY 16 (1335. Minimum Difficulty of a Job Schedule)=============================================================================
+
+// APPROACH 1 (Memoized)
+
+int dfs(int i, int d, vector<int> &jd, vector<vector<int>> &dp)
+{
+    if(!d && i == jd.size()) return 0;
+    if(!d || d > jd.size()-i) return INT_MAX;
+
+    if(dp[i][d] != -1) return dp[i][d];
+
+    int ans = INT_MAX;
+    int mx = INT_MIN;
+    for(int j = i; j <= (int)jd.size()-d; j++)
+    {
+        mx = max(mx, jd[j]);
+        int ret = dfs(j+1, d-1, jd, dp);
+        ret = ret == INT_MAX? ret : ret + mx;
+        ans = min(ans, ret);
+    }
+
+    return dp[i][d] = ans;
+}
+
+int minDifficulty(vector<int>& jobDifficulty, int d) 
+{
+    vector<vector<int>> dp(jobDifficulty.size(), vector<int>(d+1, -1));
+    int ans = dfs(0, d, jobDifficulty, dp);
+    return ans == INT_MAX? -1 : ans;
+}
+
 // DAY 17 (1832. Check if the Sentence Is Pangram)======================================================================================
 
 bool checkIfPangram(string sentence) 
