@@ -386,6 +386,33 @@ int minDifficulty(vector<int>& jobDifficulty, int d)
     return ans == INT_MAX? -1 : ans;
 }
 
+// APPROACH 2 (Tabulated)
+
+int minDifficulty(vector<int>& jobDifficulty, int d) 
+{
+    int n = jobDifficulty.size();
+    if(n < d) return -1;
+
+    vector<vector<int>> dp(d+1, vector<int>(n+1, INT_MAX));
+    for(int i = 0; i < n; i++)
+        dp[1][i] = i? max(dp[1][i-1], jobDifficulty[i]) : jobDifficulty[i];
+
+    for(int day = 2; day <= d; day++)
+    {
+        for(int i = day-1; i < n; i++)
+        {
+            int mx = INT_MIN, ans = INT_MAX;
+            for(int j = i; j >= day-1; j--)
+            {
+                mx = max(mx, jobDifficulty[j]);
+                dp[day][i] = min(dp[day][i], dp[day-1][j-1] + mx);
+            }
+        }
+    }
+
+    return dp[d][n-1] == INT_MAX? -1 : dp[d][n-1];
+}
+
 // DAY 17 (1832. Check if the Sentence Is Pangram)======================================================================================
 
 bool checkIfPangram(string sentence) 
