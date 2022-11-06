@@ -184,3 +184,19 @@ vector<string> findWords(vector<vector<char>>& board, vector<string>& words)
 
     return ans;
 }
+
+// DAY 6 (899. Orderly Queue)===========================================================================================
+
+string orderlyQueue(string s, int k) 
+{
+    if(k > 1)
+    {
+        sort(s.begin(), s.end());
+        return s;
+    }
+
+    string ans = string(s.size(), 'z');
+    for(int i = 0; i < s.size(); i++)
+        ans = min(ans, s.substr(i) + s.substr(0,i));
+    return ans;
+}
