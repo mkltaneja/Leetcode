@@ -200,3 +200,17 @@ string orderlyQueue(string s, int k)
         ans = min(ans, s.substr(i) + s.substr(0,i));
     return ans;
 }
+
+// DAY 7 (1323. Maximum 69 Number)========================================================================================
+
+int maximum69Number (int num) 
+{
+    int tmp = num, p = 1, x = 0;
+    while(tmp)
+    {
+        if(tmp%10 == 6) x = p;
+        p *= 10;
+        tmp /= 10;
+    }
+    return num + 3*x;
+}
