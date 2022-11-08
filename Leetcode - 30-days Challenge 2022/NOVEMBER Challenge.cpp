@@ -214,3 +214,33 @@ int maximum69Number (int num)
     }
     return num + 3*x;
 }
+
+// DAY 8 (1544. Make The String Great)==================================================================================
+
+string makeGood(string s) 
+{
+    stack<char> st;
+    for(char c : s)
+    {
+        char low = tolower(c);
+        char up = toupper(c);
+
+        if(st.empty())
+            st.push(c);
+        else if(st.top() == low && c == up)
+            st.pop();
+        else if(st.top() == up && c == low)
+            st.pop();
+        else st.push(c);
+    }
+
+    string ans = "";
+    while(!st.empty())
+    {
+        ans += st.top();
+        st.pop();
+    }
+    reverse(ans.begin(), ans.end());
+
+    return ans;
+}
