@@ -244,3 +244,36 @@ string makeGood(string s)
 
     return ans;
 }
+
+// DAY 9 (901. Online Stock Span)================================================================================
+
+class StockSpanner {
+public:
+
+    #define f first
+    #define s second
+    stack<pair<int,int>> st; // {price, days}
+    StockSpanner() 
+    {
+        
+    }
+    
+    int next(int price) 
+    {
+        int days = 1;
+        while(!st.empty() && st.top().f <= price)
+        {
+            days += st.top().s;
+            st.pop();
+        }
+        st.push({price, days});
+
+        return days;
+    }
+};
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */
