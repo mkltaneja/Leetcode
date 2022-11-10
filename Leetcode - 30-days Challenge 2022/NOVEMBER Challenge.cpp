@@ -277,3 +277,26 @@ public:
  * StockSpanner* obj = new StockSpanner();
  * int param_1 = obj->next(price);
  */
+
+// DAY 10 (1047. Remove All Adjacent Duplicates In String)=================================================================
+
+string removeDuplicates(string s) 
+{
+    stack<char> st;
+    for(char &c : s)
+    {
+        if(!st.empty() && st.top() == c)
+            st.pop();
+        else st.push(c);
+    }
+
+    string ans = "";
+    while(!st.empty())
+    {
+        ans += st.top();
+        st.pop();
+    }
+    reverse(ans.begin(), ans.end());
+
+    return ans;
+}
