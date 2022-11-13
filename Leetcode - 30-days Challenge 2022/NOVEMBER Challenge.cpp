@@ -316,3 +316,30 @@ int removeDuplicates(vector<int>& nums)
 
     return k;
 }
+
+// DAY 13 (151. Reverse Words in a String)=====================================================================================
+
+string reverseWords(string s) 
+{
+    string ans = "";
+    stack<string> words;
+    int i = 0, n = s.size();
+    while(i < n)
+    {
+        int j = i;
+        string tmp = "";
+        while(j < n && s[j] != ' ') tmp += s[j++];
+        i = ++j;
+        if(tmp.empty()) continue;
+        words.push(tmp);
+    }
+
+    while(!words.empty())
+    {
+        ans += words.top() + " ";
+        words.pop();
+    }
+    ans.pop_back();
+
+    return ans;
+}
