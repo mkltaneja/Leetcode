@@ -343,3 +343,35 @@ string reverseWords(string s)
 
     return ans;
 }
+
+// DAY 15 (222. Count Complete Tree Nodes)====================================================================================
+
+int goDeep(TreeNode* node)
+{
+    int h = 0;
+    TreeNode* l = node, *r = node;
+    while(l && r)
+    {
+        h++;
+        l = l->left;
+        r = r->right;
+    }
+    return (!l && !r)? (1 << h)-1 : 0;
+}
+
+int dfs(TreeNode* node)
+{
+    if(!node) return 0;
+
+    int count = goDeep(node);
+    if(count) return count;
+    int lans = dfs(node->left);
+    int rans = dfs(node->right);
+
+    return lans + rans + 1;
+}
+
+int countNodes(TreeNode* root) 
+{
+    return dfs(root);
+}
