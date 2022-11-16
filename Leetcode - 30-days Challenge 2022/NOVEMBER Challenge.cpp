@@ -375,3 +375,32 @@ int countNodes(TreeNode* root)
 {
     return dfs(root);
 }
+
+// DAY 16 (374. Guess Number Higher or Lower)=================================================================================
+
+/** 
+ * Forward declaration of guess API.
+ * @param  num   your guess
+ * @return 	     -1 if num is higher than the picked number
+ *			      1 if num is lower than the picked number
+ *               otherwise return 0
+ * int guess(int num);
+ */
+
+class Solution {
+public:
+    int guessNumber(int n) 
+    {
+        int st = 1, end = n;
+        while(st < end)
+        {
+            int num = st + (end - st)/2;
+            int g = guess(num);
+            if(g == 0) return num;
+            if(g == -1) end = num - 1;
+            if(g == 1) st = num + 1;
+        }
+
+        return st;
+    }
+};
