@@ -425,3 +425,14 @@ int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, i
 
     return a1 + a2 - a3;
 }
+
+// DAY 18 (263. Ugly Number)============================================================================================
+
+bool isUgly(int n) 
+{
+    if(n == 0) return 0;
+    for(int x : {2, 3, 5})
+        while(n % x == 0)
+            n /= x;
+    return n == 1;
+}
