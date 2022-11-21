@@ -436,3 +436,48 @@ bool isUgly(int n)
             n /= x;
     return n == 1;
 }
+
+// DAY 21 (1926. Nearest Exit from Entrance in Maze)========================================================================
+
+#define f first
+#define s second
+
+int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) 
+{
+    int n = maze.size(), m = maze[0].size();
+    queue<pair<int,int>> que;
+    que.push({entrance[0], entrance[1]});
+    maze[entrance[0]][entrance[1]] = '#';
+
+    int dir[4][2] = {{1,0},{0,1},{-1,0},{0,-1}};
+
+    int lvl = 0;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            int i = que.front().f, j = que.front().s;
+            que.pop();
+
+            for(int d = 0; d < 4; d++)
+            {
+                int x = i + dir[d][0];
+                int y = j + dir[d][1];
+                if(x == -1 || x == n || y == -1 || y == m)
+                {
+                    if(i != entrance[0] || j != entrance[1])
+                        return lvl;
+                }
+                else if(maze[x][y] == '.')
+                {
+                    maze[x][y] = '#';
+                    que.push({x, y});
+                }
+            }
+        }
+        lvl++;
+    }
+
+    return -1;
+}
