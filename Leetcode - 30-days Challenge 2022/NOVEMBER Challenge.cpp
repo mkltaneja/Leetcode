@@ -481,3 +481,38 @@ int nearestExit(vector<vector<char>>& maze, vector<int>& entrance)
 
     return -1;
 }
+
+// DAY 22 (279. Perfect Squares)=============================================================================================
+
+int numSquares(int n) 
+{
+    vector<int> sqs;
+    for(int x = 1; x*x <= n; x++)
+        sqs.push_back(x*x);
+
+    queue<int> que;
+    que.push(n);
+    int lvl = 0;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            int tp = que.front();
+            que.pop();
+
+            for(int x : sqs)
+            {
+                if(tp - x >= 0)
+                {
+                    if(tp - x == 0) return lvl + 1;
+                    que.push(tp - x);
+                }
+                else break;
+            }
+        }
+        lvl++;
+    }
+
+    return -1;
+}
