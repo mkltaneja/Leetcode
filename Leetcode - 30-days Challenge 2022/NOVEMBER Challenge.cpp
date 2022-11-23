@@ -516,3 +516,30 @@ int numSquares(int n)
 
     return -1;
 }
+
+// DAY 23 (36. Valid Sudoku)==============================================================================================
+
+bool isValidSudoku(vector<vector<char>>& board) 
+{
+    vector<int> row(9,0), col(9,0), mat(9,0);
+    for(int i = 0; i < 9; i++)
+    {
+        for(int j = 0; j < 9; j++)
+        {
+            if(board[i][j] == '.') continue;
+            int x = 1 << (board[i][j] - '0');
+            if(row[i] & x)
+                return false;
+            if(col[j] & x)
+                return false;
+            if(mat[((i/3) * 3) + (j/3)] & x)
+                return false;
+
+            row[i] |= x;
+            col[j] |= x;
+            mat[((i/3) * 3) + (j/3)] |= x;
+        }
+    }
+
+    return true;
+}
