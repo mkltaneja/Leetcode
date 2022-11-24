@@ -543,3 +543,31 @@ bool isValidSudoku(vector<vector<char>>& board)
 
     return true;
 }
+
+// DAY 24 (79. Word Search)=================================================================================================
+
+bool dfs(int i, int j, int n, int m, int x, vector<vector<char>> &board, string &word)
+{
+    if(i == n || j == m || i == -1 || j == -1 || board[i][j] != word[x]) return false;
+    if(x == word.size()-1) return true;
+
+    char c = board[i][j];
+    board[i][j] = '#';
+    bool ans = dfs(i+1, j, n, m, x+1, board, word) || 
+            dfs(i, j+1, n, m, x+1, board, word) || 
+            dfs(i-1, j, n, m, x+1, board, word) || 
+            dfs(i, j-1, n, m, x+1, board, word);
+    board[i][j] = c;
+
+    return ans;
+}
+
+bool exist(vector<vector<char>>& board, string word) 
+{
+    int n = board.size(), m = board[0].size();
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < m; j++)
+            if(dfs(i, j, n, m, 0, board, word))
+                return true;
+    return false;
+}
