@@ -571,3 +571,43 @@ bool exist(vector<vector<char>>& board, string word)
                 return true;
     return false;
 }
+
+// DAY 25 (907. Sum of Subarray Minimums)================================================================================
+
+int mod = 1e9 + 7;
+int sumSubarrayMins(vector<int>& arr) 
+{
+    int n = arr.size();
+    vector<int> nsl(n, -1), nsr(n, n);
+    stack<int> st;
+    for(int i = 0; i < n; i++)
+    {
+        while(!st.empty() && arr[st.top()] >= arr[i])
+        {
+            nsr[st.top()] = i;
+            st.pop();
+        }
+        st.push(i);
+    }
+    while(!st.empty()) st.pop();
+    for(int i = n-1; i >= 0; i--)
+    {
+        while(!st.empty() && arr[st.top()] > arr[i])
+        {
+            nsl[st.top()] = i;
+            st.pop();
+        }
+        st.push(i);
+    }
+
+    long ans = 0;
+    for(int i = 0; i < n; i++)
+    {
+        cout<<nsl[i]<<", "<<nsr[i]<<endl;
+        long lcnt = i - nsl[i];
+        long rcnt = nsr[i] - i;
+        ans = ((ans % mod) + ((lcnt * rcnt * arr[i]) % mod)) % mod;
+    }
+
+    return ans;
+}
