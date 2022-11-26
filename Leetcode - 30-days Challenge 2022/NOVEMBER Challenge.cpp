@@ -611,3 +611,40 @@ int sumSubarrayMins(vector<int>& arr)
 
     return ans;
 }
+
+// DAY 26 (1235. Maximum Profit in Job Scheduling)========================================================================================
+
+int lowerBound(int x, int i, vector<vector<int>> &stend)
+{
+    int lo = i, hi = stend.size();
+    while(lo < hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        if(stend[mid][0] < x) lo = mid + 1;
+        else hi = mid;
+    }
+    return lo;
+}
+
+int subseq(int i, int n, vector<vector<int>> &stend, vector<int> &dp)
+{
+    if(i == n) return 0;
+    if(dp[i] != -1) return dp[i];
+
+    int lb = lowerBound(stend[i][1], i+1, stend);
+    return dp[i] = max(subseq(lb, n, stend, dp) + stend[i][2],
+                subseq(i+1, n, stend, dp));
+}
+
+int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) 
+{
+    int n = startTime.size();
+    vector<vector<int>> stend(n,vector<int>(3));
+    for(int i = 0; i < n; i++)
+        stend[i] = {startTime[i], endTime[i], profit[i]};
+    sort(stend.begin(), stend.end());
+
+    vector<int> dp(n, -1);
+
+    return subseq(0, n, stend, dp);
+}
