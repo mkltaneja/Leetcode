@@ -648,3 +648,27 @@ int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& pro
 
     return subseq(0, n, stend, dp);
 }
+
+// DAY 27 (446. Arithmetic Slices II - Subsequence)=======================================================================================
+
+int numberOfArithmeticSlices(vector<int>& nums) 
+{
+    int n = nums.size();
+    unordered_map<int,unordered_map<long,int>> mp;
+    int seqCnt = 0;
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < i; j++)
+        {
+            long d = (long)nums[i] - nums[j];
+            mp[i][d]++;
+            if(mp[j].count(d))
+            {
+                mp[i][d] += mp[j][d];
+                seqCnt += mp[j][d];
+            }
+        }
+    }
+
+    return seqCnt;
+}
