@@ -672,3 +672,25 @@ int numberOfArithmeticSlices(vector<int>& nums)
 
     return seqCnt;
 }
+
+// DAY 28 (2225. Find Players With Zero or One Losses)============================================================================
+
+vector<vector<int>> findWinners(vector<vector<int>>& matches) 
+{
+    unordered_map<int,int> lost;
+    for(vector<int> &v : matches)
+    {
+        if(!lost.count(v[0]))
+            lost[v[0]] = 0;
+        lost[v[1]]++;
+    }
+    vector<vector<int>> ans(2);
+    for(auto &p : lost)
+        if(p.second == 0 || p.second == 1) 
+            ans[p.second].push_back(p.first);
+
+    sort(ans[0].begin(), ans[0].end());
+    sort(ans[1].begin(), ans[1].end());
+
+    return ans;
+}
