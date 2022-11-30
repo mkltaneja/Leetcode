@@ -437,6 +437,36 @@ bool isUgly(int n)
     return n == 1;
 }
 
+// DAY 20 (224. Basic Calculator)=======================================================================================
+
+int calculate_helper(int &i, string &s)
+{
+    int n = s.size();
+    int x = 0, pol = 1, ans = 0;
+    for(; i < n && s[i] != ')'; i++)
+    {
+        if(s[i] == ' ') continue;
+        if(s[i] == '(')
+            ans += pol*calculate_helper(++i, s);
+        else if(s[i] == '+' || s[i] == '-')
+        {
+            ans += pol * x;
+            x = 0;
+            pol = (s[i] == '+')? 1 : -1;
+        }
+        else 
+            x = x*10 + (s[i]-'0');
+    }
+
+    return ans + (pol * x);
+}
+
+int calculate(string s) 
+{
+    int i = 0;
+    return calculate_helper(i, s);
+}
+
 // DAY 21 (1926. Nearest Exit from Entrance in Maze)========================================================================
 
 #define f first
