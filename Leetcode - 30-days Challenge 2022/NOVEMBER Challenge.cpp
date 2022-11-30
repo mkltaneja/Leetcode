@@ -741,3 +741,22 @@ public:
  * bool param_2 = obj->remove(val);
  * int param_3 = obj->getRandom();
  */
+
+// DAY 30 (1207. Unique Number of Occurrences)======================================================================================
+
+bool uniqueOccurrences(vector<int>& arr) 
+{
+    unordered_map<int,int> cnt;
+    vector<int> vis(1001,0);
+    for(int &x : arr)
+        cnt[x]++;
+
+    for(auto &p : cnt)
+    {
+        if(vis[p.second])
+            return false;
+        vis[p.second] = 1;
+    }
+
+    return true;
+}
