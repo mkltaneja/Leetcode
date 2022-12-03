@@ -42,3 +42,23 @@ bool closeStrings(string word1, string word2)
 
     return (unique1 == unique2) && (map1 == map2);
 }
+
+// DAY 3 (451. Sort Characters By Frequency)=====================================================================================
+
+string frequencySort(string s) 
+{
+    unordered_map<char,int> mp;
+    vector<pair<int,char>> map;
+    for(char &c : s)
+        mp[c]++;
+    for(auto &p : mp)
+        map.push_back({p.second, p.first});
+    sort(map.rbegin(), map.rend());
+
+    string ans = "";
+    for(int i = 0; i < map.size(); i++)
+        while(map[i].first--)
+            ans += map[i].second;
+
+    return ans;
+}
