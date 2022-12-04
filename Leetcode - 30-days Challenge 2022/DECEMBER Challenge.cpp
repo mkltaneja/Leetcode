@@ -62,3 +62,31 @@ string frequencySort(string s)
 
     return ans;
 }
+
+// DAY (2256. Minimum Average Difference)========================================================================================
+
+int minimumAverageDifference(vector<int>& nums) 
+{
+    int n = nums.size();
+    long lsum = 0, rsum = 0, mn = INT_MAX;
+    for(int x : nums)
+        lsum += x;
+
+    int ans = -1;
+    for(int i = n-1; i >= 0; i--)
+    {
+        long ravg = i != n-1? (rsum / (n-i-1)) : 0;
+        long lavg = lsum / (i+1);
+        rsum += nums[i];
+        lsum -= nums[i];
+
+        long curr = abs(lavg - ravg);
+        if(curr <= mn)
+        {
+            mn = curr;
+            ans = i;
+        }
+    }
+
+    return ans;
+}
