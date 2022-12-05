@@ -90,3 +90,17 @@ int minimumAverageDifference(vector<int>& nums)
 
     return ans;
 }
+
+// DAY 5 (876. Middle of the Linked List)==================================================================================
+
+ListNode* middleNode(ListNode* head) 
+{
+    ListNode* mid = head, *fast = head;
+    while(fast && fast->next)
+    {
+        mid = mid->next;
+        fast = fast->next->next;
+    }
+
+    return mid;
+}
