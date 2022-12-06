@@ -104,3 +104,23 @@ ListNode* middleNode(ListNode* head)
 
     return mid;
 }
+
+// DAY 6 (328. Odd Even Linked List)====================================================================================
+
+ListNode* oddEvenList(ListNode* head) 
+{
+    if(!head || !head->next) return head;
+
+    ListNode* oddHead = head, *evenHead = head->next;
+    ListNode *odd = oddHead, *even = evenHead;
+    while(odd->next && even->next)
+    {
+        odd->next = odd->next->next;
+        odd = odd->next;
+        even->next = even->next->next;
+        even = even->next;
+    }
+    odd->next = evenHead;
+
+    return head;
+}
