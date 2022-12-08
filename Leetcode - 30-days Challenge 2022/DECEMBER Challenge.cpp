@@ -136,3 +136,24 @@ int rangeSumBST(TreeNode* root, int low, int high)
         return rangeSumBST(root->left, low, high);
     return rangeSumBST(root->left, low, high) + rangeSumBST(root->right, low, high) + root->val;
 }
+
+// DAY 8 (872. Leaf-Similar Trees)===================================================================================
+
+void addLeaves(TreeNode* root, vector<int> &leaves)
+{
+    if(!root) return;
+
+    if(!root->left && !root->right) leaves.push_back(root->val);
+
+    addLeaves(root->left, leaves);
+    addLeaves(root->right, leaves);
+}
+
+bool leafSimilar(TreeNode* root1, TreeNode* root2) 
+{
+    vector<int> leaves1, leaves2;
+    addLeaves(root1, leaves1);
+    addLeaves(root2, leaves2);
+
+    return leaves1 == leaves2;
+}
