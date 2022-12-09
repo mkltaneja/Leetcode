@@ -157,3 +157,26 @@ bool leafSimilar(TreeNode* root1, TreeNode* root2)
 
     return leaves1 == leaves2;
 }
+
+// DAY 9 (1026. Maximum Difference Between Node and Ancestor)=======================================================================
+
+#define f first
+#define s second
+
+int maxDiff = -1e6;
+void dfs(TreeNode* node, int mn, int mx)
+{
+    if(!node) return;
+
+    mn = min(mn, node->val);
+    mx = max(mx, node->val);
+    dfs(node->left, mn, mx);
+    dfs(node->right, mn, mx);
+    maxDiff = max({maxDiff, abs(node->val - mn), abs(mx - node->val)});
+}
+
+int maxAncestorDiff(TreeNode* root) 
+{
+    dfs(root, root->val, root->val);
+    return maxDiff;
+}
