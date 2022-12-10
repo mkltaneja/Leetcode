@@ -180,3 +180,34 @@ int maxAncestorDiff(TreeNode* root)
     dfs(root, root->val, root->val);
     return maxDiff;
 }
+
+// DAY 10 (1339. Maximum Product of Splitted Binary Tree)============================================================================
+
+long maxProd = 0, sum = 0;
+
+int sumDFS(TreeNode* node)
+{
+    if(!node) return 0;
+    return sumDFS(node->left) + sumDFS(node->right) + node->val;
+}
+
+int split(TreeNode* node)
+{
+    if(!node) return 0;
+
+    int lsum = split(node->left);
+    int rsum = split(node->right);
+    long currSum = lsum + rsum + node->val;
+    long restSum = sum - (lsum + rsum + node->val);
+
+    maxProd = max(maxProd, currSum * restSum);
+
+    return currSum;
+}
+
+int maxProduct(TreeNode* root) 
+{
+    sum = sumDFS(root);
+    split(root);
+    return maxProd % (1000000007);
+}
