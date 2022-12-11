@@ -211,3 +211,25 @@ int maxProduct(TreeNode* root)
     split(root);
     return maxProd % (1000000007);
 }
+
+// DAY 11 (124. Binary Tree Maximum Path Sum)=======================================================================================
+
+#define MN -30000001
+
+int maxSum = MN;
+int maxPathSum_helper(TreeNode* node)
+{
+    if(!node) return MN;
+
+    int lsum = max(maxPathSum_helper(node->left), 0);
+    int rsum = max(maxPathSum_helper(node->right), 0);
+    maxSum = max({maxSum, lsum + node->val + rsum});
+
+    return node->val + max({lsum, rsum});
+}
+
+int maxPathSum(TreeNode* root) 
+{
+    maxPathSum_helper(root);
+    return maxSum;
+}
