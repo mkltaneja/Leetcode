@@ -233,3 +233,20 @@ int maxPathSum(TreeNode* root)
     maxPathSum_helper(root);
     return maxSum;
 }
+
+// DAY 12 (70. Climbing Stairs)=================================================================================================
+
+int climbStairs(int n) 
+{
+    if(n <= 1) return n;
+    int ans = 1;
+    int downDown = 1, down = 1;
+    for(int i = 2; i <= n; i++)
+    {
+        ans = down + downDown;
+        downDown = down;
+        down = ans;
+    }
+
+    return ans;
+}
