@@ -250,3 +250,24 @@ int climbStairs(int n)
 
     return ans;
 }
+
+// DAY 13 (931. Minimum Falling Path Sum)=======================================================================================
+
+int minFallingPathSum(vector<vector<int>>& matrix) 
+{
+    int n = matrix.size(), m = matrix[0].size();
+    vector<vector<int>> dp(n, vector<int>(m+1, INT_MAX));
+
+    int ans = INT_MAX;
+    for(int i = n-1; i >= 0; i--)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            int nextStep = i == n-1? 0 : min({(j? dp[i+1][j-1] : INT_MAX), dp[i+1][j], dp[i+1][j+1]});
+            dp[i][j] = matrix[i][j] + nextStep;
+            if(i == 0) ans = min(ans, dp[i][j]);
+        }
+    }
+
+    return ans;
+}
