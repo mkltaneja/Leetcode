@@ -284,3 +284,25 @@ int rob(vector<int>& nums)
 
     return dp[0];
 }
+
+// DAY 15 (1143. Longest Common Subsequence)============================================================================================
+
+int longestCommonSubsequence(string text1, string text2) 
+{
+    int n = text1.size(), m = text2.size();
+    vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+    int ans = 0;
+    for(int i = n-1; i >= 0; i--)
+    {
+        for(int j = m-1; j >= 0; j--)
+        {
+            int ip1 = dp[i+1][j];
+            int jp1 = dp[i][j+1];
+            int ijp1 = dp[i+1][j+1];
+            dp[i][j] = text1[i] == text2[j]? max({ip1, jp1, ijp1+1}) : max(ip1, jp1);
+            ans = max(ans, dp[i][j]);
+        }
+    }
+
+    return ans;
+}
