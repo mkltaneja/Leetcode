@@ -362,3 +362,38 @@ public:
  * int param_3 = obj->peek();
  * bool param_4 = obj->empty();
  */
+
+// DAY 17 (150. Evaluate Reverse Polish Notation)=======================================================================
+
+int evalRPN(vector<string>& tokens) 
+{
+    stack<long> st;
+    auto isNum = [&](char &c){
+        return (c >= '0' && c <= '9');
+    };
+    for(string &token: tokens)
+    {
+        if(isNum(token[0]) || (token.size() > 1 && isNum(token[1])))
+            st.push(stoi(token));
+        else 
+        {
+            long x = st.top();
+            st.pop();
+            long y = st.top();
+            st.pop();
+
+            if(token == "+")
+                st.push(y+x);
+            else if(token == "-")
+                st.push(y-x);
+            else if(token == "*")
+                st.push(y*x);
+            else if(token == "/")
+                st.push(y/x);
+        }
+        cout<<token<<", ";
+    }
+    cout<<endl;
+
+    return st.top();
+}
