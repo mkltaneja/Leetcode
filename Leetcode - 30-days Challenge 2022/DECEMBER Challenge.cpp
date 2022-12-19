@@ -417,3 +417,31 @@ vector<int> dailyTemperatures(vector<int>& temperatures)
 
     return ans;
 }
+
+// DAY 19 (1971. Find if Path Exists in Graph)=====================================================================
+
+vector<int> par;
+int findpar(int x)
+{
+    return par[x] == x? x : findpar(par[x]);
+}
+
+void merge(int x, int y)
+{
+    int px = findpar(x);
+    int py = findpar(y);
+    if(px == py) return;
+
+    par[px] = py;
+}
+
+bool validPath(int n, vector<vector<int>>& edges, int source, int destination) 
+{
+    par.resize(n+1);
+    for(int i = 0; i <= n; i++)
+        par[i] = i;
+    for(vector<int> &e : edges)
+        merge(e[0], e[1]);
+
+    return findpar(source) == findpar(destination);
+}
