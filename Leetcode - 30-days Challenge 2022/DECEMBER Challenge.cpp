@@ -445,3 +445,33 @@ bool validPath(int n, vector<vector<int>>& edges, int source, int destination)
 
     return findpar(source) == findpar(destination);
 }
+
+// DAY 20 (841. Keys and Rooms)======================================================================================
+
+bool canVisitAllRooms(vector<vector<int>>& rooms) 
+{
+    int n = rooms.size();
+
+    vector<int> vis(n);
+    queue<int> que;
+    que.push(0);
+    vis[0] = 1;
+
+    while(!que.empty())
+    {
+        for(int key : rooms[que.front()])
+        {
+            if(!vis[key])
+            {
+                que.push(key);
+                vis[key] = 1;
+            }
+        }
+        que.pop();
+    }
+
+    for(int i = 0; i < n; i++)
+        if(!vis[i])
+            return false;
+    return true;
+}
