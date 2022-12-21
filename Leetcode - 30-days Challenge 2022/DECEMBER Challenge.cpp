@@ -475,3 +475,42 @@ bool canVisitAllRooms(vector<vector<int>>& rooms)
             return false;
     return true;
 }
+
+// DAY 21 (886. Possible Bipartition)==================================================================================
+
+
+vector<vector<int>> gp;
+vector<int> color;
+
+bool isBipartite(int u, int clr)
+{
+    if(color[u] == (clr^1)) return false;
+    if(color[u] != -1) return true;
+
+    color[u] = clr;
+
+    for(int v : gp[u])
+        if(!isBipartite(v, clr ^ 1))
+            return false;
+
+    return true;
+}
+
+bool possibleBipartition(int n, vector<vector<int>>& dislikes) 
+{
+    gp.resize(n+1);
+    color.assign(n+1, -1);
+
+    for(vector<int> &dislike : dislikes)
+    {
+        int u = dislike[0], v = dislike[1];
+        gp[u].push_back(v);
+        gp[v].push_back(u);
+    }
+
+    for(int i = 1; i <= n; i++)
+        if(color[i] == -1 && !isBipartite(i, 0))
+            return false;
+
+    return true;
+}
