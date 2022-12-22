@@ -514,3 +514,49 @@ bool possibleBipartition(int n, vector<vector<int>>& dislikes)
 
     return true;
 }
+
+// DAY 23 (834. Sum of Distances in Tree)====================================================================================
+
+vector<int> cnt;
+vector<int> ans;
+vector<vector<int>> gp;
+
+void dfsPost(int u, int p)
+{
+    for(int v : gp[u])
+    {
+        if(v == p) continue;
+
+        dfsPost(v, u);
+        cnt[u] += cnt[v];
+        ans[u] += cnt[v] + ans[v];
+    }
+}
+
+void dfsPre(int u, int p)
+{
+    for(int v : gp[u])
+    {
+        if(v == p) continue;
+
+        ans[v] = (ans[u] - cnt[v]) + (gp.size() - cnt[v]);
+        dfsPre(v, u);
+    }
+}
+
+vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) 
+{
+    cout<<n<<endl;
+    cnt.assign(n, 1);
+    ans.assign(n, 0);
+    gp.resize(n);
+    for(int i = 0; i < edges.size(); i++)
+    {
+        gp[edges[i][0]].push_back(edges[i][1]);
+        gp[edges[i][1]].push_back(edges[i][0]);
+    }
+    dfsPost(0, -1);
+    dfsPre(0, -1);
+
+    return ans;
+}
