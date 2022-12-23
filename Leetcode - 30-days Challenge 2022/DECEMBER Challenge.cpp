@@ -560,3 +560,21 @@ vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges)
 
     return ans;
 }
+
+// DAY 23 (309. Best Time to Buy and Sell Stock with Cooldown)===================================================================================
+
+// dp0 = max value with not holding any stock
+// dp1 = max value with holding some stocks
+int maxProfit(vector<int>& prices) 
+{
+    int dp0 = 0, pdp0 = 0, dp1 = INT_MIN;
+    for(int &x : prices)
+    {
+        int temp = dp0;
+        dp0 = max(dp0, dp1 + x);
+        dp1 = max(dp1, pdp0 - x);
+        pdp0 = temp;
+    }
+
+    return dp0;
+}
