@@ -578,3 +578,24 @@ int maxProfit(vector<int>& prices)
 
     return dp0;
 }
+
+// DAY 24 (790. Domino and Tromino Tiling)==================================================================================
+
+int mod = 1e9 + 7;
+int numTilings(int n) 
+{
+    if(n <= 2) return n;
+
+    long ans = 0;
+    long a = 1, b = 1, c = 2;
+
+    for(int i = 3; i <= n; i++)
+    {
+        ans = (c*2 + a) % mod;
+        a = b;
+        b = c;
+        c = ans;
+    }
+
+    return ans;
+}
