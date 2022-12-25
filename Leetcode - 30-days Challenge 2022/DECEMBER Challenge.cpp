@@ -599,3 +599,23 @@ int numTilings(int n)
 
     return ans;
 }
+
+// DAY 25 (2389. Longest Subsequence With Limited Sum)=====================================================================
+
+vector<int> answerQueries(vector<int>& nums, vector<int>& queries) 
+{
+    int n = nums.size();
+    sort(nums.begin(), nums.end());
+    vector<int> psum(n);
+    for(int i = 0; i < n; i++)
+        psum[i] += nums[i] + (i? psum[i-1] : 0);
+
+    vector<int> ans;
+    for(int q : queries)
+    {
+        int lb = upper_bound(psum.begin(), psum.end(), q) - psum.begin();
+        ans.push_back(lb);
+    }
+
+    return ans;
+}
