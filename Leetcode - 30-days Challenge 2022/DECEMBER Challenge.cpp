@@ -619,3 +619,18 @@ vector<int> answerQueries(vector<int>& nums, vector<int>& queries)
 
     return ans;
 }
+
+// DAY 26 (55. Jump Game)===================================================================================
+
+bool canJump(vector<int>& nums) 
+{
+    int maxJump = 0;
+    int n = nums.size();
+    for(int i = 0; i < n; i++)
+    {
+        maxJump = max(maxJump-1, nums[i]);
+        if(i != n-1 && maxJump == 0) return false;
+    }
+
+    return true;
+}
