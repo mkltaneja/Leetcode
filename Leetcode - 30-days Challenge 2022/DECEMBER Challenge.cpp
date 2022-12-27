@@ -634,3 +634,20 @@ bool canJump(vector<int>& nums)
 
     return true;
 }
+
+// DAY 27 (2279. Maximum Bags With Full Capacity of Rocks)===========================================================
+
+int maximumBags(vector<int>& capacity, vector<int>& rocks, int additionalRocks) 
+{
+    int n = capacity.size();
+    vector<int> remaining(n);
+    for(int i = 0; i < n; i++)
+        remaining[i] = capacity[i] - rocks[i];
+    sort(remaining.begin(), remaining.end());
+
+    int ans = 0;
+    while(ans < n && additionalRocks >= remaining[ans])
+        additionalRocks -= min(remaining[ans++], additionalRocks);
+
+    return ans;
+}
