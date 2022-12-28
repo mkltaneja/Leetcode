@@ -651,3 +651,28 @@ int maximumBags(vector<int>& capacity, vector<int>& rocks, int additionalRocks)
 
     return ans;
 }
+
+// DAY 28 (1962. Remove Stones to Minimize the Total)=================================================================
+
+// APPROACH 1 (Using Heap) --> Space = O(n), Time = O(n*logn)
+
+int minStoneSum(vector<int>& piles, int k) 
+{
+    priority_queue<int> pq;
+    int ans = 0;
+    for(int &x : piles)
+    {
+        pq.push(x);
+        ans += x;
+    }
+
+    while(k--)
+    {
+        int tp = pq.top();
+        ans -= tp/2;
+        pq.pop();
+        pq.push((tp+1)/2);
+    }
+
+    return ans;
+}
