@@ -676,3 +676,28 @@ int minStoneSum(vector<int>& piles, int k)
 
     return ans;
 }
+
+// APPROACH 2 (Storing count of elements and moving backwards) --> Space = O(MX), Time = O(MX)
+
+int MX = 1e5 + 5;
+int minStoneSum(vector<int>& piles, int k) 
+{
+    vector<int> cnt(MX, 0);
+    int ans = 0;
+    for(int &x : piles)
+    {
+        cnt[x]++;
+        ans += x;
+    }
+
+    for(int x = MX-1; x && k > 0; x--)
+    {
+        while(cnt[x]-- && k--)
+        {
+            cnt[(x+1)/2]++;
+            ans -= x/2;
+        }
+    }
+
+    return ans;
+}
