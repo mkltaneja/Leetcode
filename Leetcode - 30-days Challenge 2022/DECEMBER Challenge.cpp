@@ -701,3 +701,39 @@ int minStoneSum(vector<int>& piles, int k)
 
     return ans;
 }
+
+// DAY 29 (1834. Single-Threaded CPU)============================================================================================
+
+vector<int> getOrder(vector<vector<int>>& tasks) 
+{
+    int n = tasks.size();
+    vector<vector<int>> tasks_idx(n, vector<int> (3));
+    for(int i = 0; i < n; i++)
+        tasks_idx[i] = {tasks[i][0], tasks[i][1], i};
+    sort(tasks_idx.begin(), tasks_idx.end());
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+
+    int time = 0;
+    int i = 0;
+    vector<int> ans;
+    while(i < n)
+    {
+        while(i < n && tasks_idx[i][0] <= time)
+            pq.push({tasks_idx[i][1], tasks_idx[i++][2]});
+
+        if(pq.empty())
+            pq.push({tasks_idx[i][1], tasks_idx[i++][2]});
+
+        time = max(time, tasks[pq.top().second][0]) + pq.top().first;
+        ans.push_back(pq.top().second);
+        pq.pop();
+    }
+
+    while(!pq.empty())
+    {
+        ans.push_back(pq.top().second);
+        pq.pop();
+    }
+
+    return ans;
+}
