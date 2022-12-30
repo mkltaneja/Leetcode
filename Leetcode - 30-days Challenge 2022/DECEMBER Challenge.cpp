@@ -737,3 +737,29 @@ vector<int> getOrder(vector<vector<int>>& tasks)
 
     return ans;
 }
+
+// DAY 30 (797. All Paths From Source to Target)==================================================================================
+
+vector<vector<int>> ans;
+
+void dfs(int u, int dest, vector<vector<int>> &gp, vector<int> &path)
+{
+    path.push_back(u);
+    if(u == dest)
+    {
+        ans.push_back(path);
+        path.pop_back();
+        return;
+    }
+    for(int v : gp[u])
+        dfs(v, dest, gp, path);
+    path.pop_back();
+}
+
+vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) 
+{
+    int n = graph.size();
+    vector<int> path;
+    dfs(0, n-1, graph, path);
+    return ans;
+}
