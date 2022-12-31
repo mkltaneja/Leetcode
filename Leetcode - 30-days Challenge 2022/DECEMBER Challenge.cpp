@@ -763,3 +763,41 @@ vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph)
     dfs(0, n-1, graph, path);
     return ans;
 }
+
+// DAY 31 (980. Unique Paths III)======================================================================================================
+
+int dfs(int i, int j, int n, int m, int rem, vector<vector<int>> &grid)
+{
+    if(i == -1 || j == -1 || i == n || j == m || grid[i][j] == -1)
+        return 0;
+    if(grid[i][j] == 2)
+        return !rem;
+
+    grid[i][j] = -1;
+    int ans = dfs(i+1, j, n, m, rem-1, grid) + 
+                dfs(i, j+1, n, m, rem-1, grid) + 
+                dfs(i-1, j, n, m, rem-1, grid) + 
+                dfs(i, j-1, n, m, rem-1, grid);
+    grid[i][j] = 0;
+
+    return ans;
+}
+
+int uniquePathsIII(vector<vector<int>>& grid) 
+{
+    int si = -1, sj = -1;
+    int avail = 1;
+    int n = grid.size(), m = grid[0].size();
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(grid[i][j] == 1) 
+                si = i, sj = j;
+            else if(grid[i][j] == 0)
+                avail++;
+        }
+    }
+
+    return dfs(si, sj, n, m, avail, grid);
+}
