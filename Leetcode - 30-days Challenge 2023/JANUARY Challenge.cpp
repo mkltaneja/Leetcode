@@ -23,3 +23,19 @@ bool wordPattern(string pattern, string s)
 
     return j == s.size()+1;
 }
+
+// DAY 2 (520. Detect Capital)==================================================================================
+
+bool isCap(char &c)
+{
+    return c >= 'A' && c <= 'Z';
+}
+
+bool detectCapitalUse(string word) 
+{
+    int caps = 0;
+    for(char &c : word)
+        if(isCap(c))
+            caps++;
+    return caps == word.size() || caps == 0 || (caps == 1 && isCap(word[0]));
+}
