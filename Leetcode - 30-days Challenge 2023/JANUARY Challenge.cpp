@@ -39,3 +39,24 @@ bool detectCapitalUse(string word)
             caps++;
     return caps == word.size() || caps == 0 || (caps == 1 && isCap(word[0]));
 }
+
+// DAY 3 (944. Delete Columns to Make Sorted)====================================================================
+
+int minDeletionSize(vector<string>& strs) 
+{
+    int dels = 0;
+    int n = strs.size(), m = strs[0].size();
+    for(int i = 0; i < m; i++)
+    {
+        for(int j = 1; j < n; j++)
+        {
+            if(strs[j][i] < strs[j-1][i])
+            {
+                dels++;
+                break;
+            }
+        }
+    }
+
+    return dels;
+}
