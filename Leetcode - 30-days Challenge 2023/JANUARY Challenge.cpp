@@ -60,3 +60,21 @@ int minDeletionSize(vector<string>& strs)
 
     return dels;
 }
+
+// DAY 4 (2244. Minimum Rounds to Complete All Tasks)=====================================================================
+
+int minimumRounds(vector<int>& tasks) 
+{
+    unordered_map<int,int> mp;
+    for(int &x : tasks)
+        mp[x]++;
+
+    int ans = 0;
+    for(auto &p : mp)
+    {
+        if(p.second == 1) return -1;
+        ans += (p.second/3) + (p.second%3 > 0);
+    }
+
+    return ans;
+}
