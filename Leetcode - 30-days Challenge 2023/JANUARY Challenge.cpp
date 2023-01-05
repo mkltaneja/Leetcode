@@ -78,3 +78,20 @@ int minimumRounds(vector<int>& tasks)
 
     return ans;
 }
+
+// DAY 5 (452. Minimum Number of Arrows to Burst Balloons)===================================================================
+
+int findMinArrowShots(vector<vector<int>>& points) 
+{
+    sort(points.begin(), points.end());
+    int currEnd = INT_MAX, i = 0, n = points.size(), arrows = 0;
+    while(i < n)
+    {
+        while(i < n && points[i][0] <= currEnd)
+            currEnd = min(currEnd, points[i++][1]);
+        if(i < n) currEnd = points[i][1];
+        arrows++;
+    }
+
+    return arrows;
+}
