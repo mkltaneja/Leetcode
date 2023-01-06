@@ -95,3 +95,26 @@ int findMinArrowShots(vector<vector<int>>& points)
 
     return arrows;
 }
+
+// DAY 6 (1833. Maximum Ice Cream Bars)======================================================================================
+
+int maxIceCream(vector<int>& costs, int coins) 
+{
+    int maxCost = 0, n = costs.size();
+    for(int &x : costs)
+        maxCost = max(maxCost, x);
+
+    vector<int> costCount(maxCost+1, 0);
+    for(int &x : costs)
+        costCount[x]++;
+
+    int iceCreams = 0;
+    for(int i = 1; i <= maxCost && coins >= i; i++)
+    {
+        int count = min(coins/i, costCount[i]);
+        iceCreams += count;
+        coins -= count * i;
+    }
+
+    return iceCreams;
+}
