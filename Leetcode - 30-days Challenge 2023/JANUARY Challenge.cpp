@@ -118,3 +118,31 @@ int maxIceCream(vector<int>& costs, int coins)
 
     return iceCreams;
 }
+
+// DAY 7 (134. Gas Station)=========================================================================================
+
+int canCompleteCircuit(vector<int>& gas, vector<int>& cost) 
+{
+    int n = gas.size();
+    int i = 0, prevSum = 0, currSum = 0, totSum = 0;
+    int ans = -1;
+    while(i < n)
+    {
+        int val = gas[i] - cost[i];
+        currSum += val;
+        if(currSum < 0) 
+        {
+            ans = -1;
+            currSum = 0;
+        }
+        else if(ans == -1) 
+        {
+            ans = i;
+            prevSum = totSum;
+        }
+        totSum += val;
+        i++;
+    }
+
+    return (ans == -1 || (currSum + prevSum < 0))? -1 : ans;
+}
