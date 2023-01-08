@@ -146,3 +146,29 @@ int canCompleteCircuit(vector<int>& gas, vector<int>& cost)
 
     return (ans == -1 || (currSum + prevSum < 0))? -1 : ans;
 }
+
+// DAY 8 (149. Max Points on a Line)========================================================================================
+
+double findSlope(vector<int> &a, vector<int> &b)
+{
+    double yd = b[1] - a[1];
+    double xd = b[0] - a[0];
+    return (yd < 0 && xd == 0)? abs(yd/xd) : yd/xd;
+}
+
+int maxPoints(vector<vector<int>>& points) 
+{
+    int maxPoints = 0;
+    int n = points.size();
+    for(int i = 0; i < n; i++)
+    {
+        unordered_map<double,int> mp;
+        for(int j = i+1; j < n; j++)
+        {
+            double slope = findSlope(points[i], points[j]);
+            maxPoints = max(maxPoints, ++mp[slope]);
+        }
+    }
+
+    return maxPoints+1;
+}
