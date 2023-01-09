@@ -172,3 +172,38 @@ int maxPoints(vector<vector<int>>& points)
 
     return maxPoints+1;
 }
+
+// DAY 9 144. Binary Tree Preorder Traversal)==============================================================================
+
+vector<int> preorderTraversal(TreeNode* root) 
+{
+    vector<int> ans;
+    TreeNode* itr = root;
+    while(itr)
+    {
+        if(!itr->left)
+        {
+            ans.push_back(itr->val);
+            itr = itr->right;
+        }
+        else 
+        {
+            TreeNode* tmp = itr->left;
+            while(tmp->right && tmp->right != itr)
+                tmp = tmp->right;
+            if(tmp->right)
+            {
+                tmp->right = nullptr;
+                itr = itr->right;
+            }
+            else 
+            {
+                ans.push_back(itr->val);
+                tmp->right = itr;
+                itr = itr->left;
+            }
+        }
+    }
+
+    return ans;
+}
