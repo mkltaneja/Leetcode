@@ -219,3 +219,35 @@ bool isSameTree(TreeNode* p, TreeNode* q)
     return isSameTree(p->left, q->left) &&
             isSameTree(p->right, q->right);
 }
+
+// DAY 11 (1443. Minimum Time to Collect All Apples in a Tree)=======================================================
+
+int dfs(int p, int u, int &totalDistance, vector<vector<int>> &graph, vector<bool> &hasApple)
+{
+    int currApples = hasApple[u];
+    for(int v : graph[u])
+    {
+        if(v != p)
+        {
+            int subtreeApples = dfs(u, v, totalDistance, graph, hasApple);
+            if(subtreeApples == 0)
+                totalDistance -= 2;
+            currApples += subtreeApples;
+        }
+    }
+
+    return currApples;
+}
+
+int minTime(int n, vector<vector<int>>& edges, vector<bool>& hasApple) 
+{
+    vector<vector<int>> graph(n);
+    for(vector<int> &e : edges)
+    {
+        graph[e[0]].push_back(e[1]);
+        graph[e[1]].push_back(e[0]);
+    }
+    int totalDistance = 2*(n-1);
+    dfs(-1, 0, totalDistance, graph, hasApple);
+    return totalDistance;
+}
