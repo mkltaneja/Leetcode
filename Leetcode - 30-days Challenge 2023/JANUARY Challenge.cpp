@@ -251,3 +251,39 @@ int minTime(int n, vector<vector<int>>& edges, vector<bool>& hasApple)
     dfs(-1, 0, totalDistance, graph, hasApple);
     return totalDistance;
 }
+
+// DAY 12 (1519. Number of Nodes in the Sub-Tree With the Same Label)===============================================================
+
+vector<int> ans;
+vector<int> dfs(int parpar, int par, vector<vector<int>> &graph, string &labels)
+{
+    vector<int> currLabels(26, 0);
+    currLabels[labels[par]-'a']++;
+    for(int child : graph[par])
+    {
+        if(child != parpar)
+        {
+            vector<int> subtreeLabels = dfs(par, child, graph, labels);
+            for(int i = 0; i < 26; i++)
+                currLabels[i] += subtreeLabels[i];
+        }
+    }
+    ans[par] = currLabels[labels[par]-'a'];
+
+    return currLabels;
+}
+
+vector<int> countSubTrees(int n, vector<vector<int>>& edges, string labels) 
+{
+    ans.resize(n);
+    vector<vector<int>> graph(n);
+    for(vector<int> &e : edges)
+    {
+        graph[e[0]].push_back(e[1]);
+        graph[e[1]].push_back(e[0]);
+    }
+
+    dfs(-1, 0, graph, labels);
+
+    return ans;
+}
