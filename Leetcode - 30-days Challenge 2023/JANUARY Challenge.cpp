@@ -287,3 +287,44 @@ vector<int> countSubTrees(int n, vector<vector<int>>& edges, string labels)
 
     return ans;
 }
+
+// DAY 13 (2246. Longest Path With Different Adjacent Character)===========================================================================
+
+int ans = 0;
+int dfs(int parPar, int par, vector<vector<int>> &graph, string &s)
+{
+    int max1 = 0, max2 = 0;
+    for(int child : graph[par])
+    {
+        if(child == parPar) continue;
+        int childMax = dfs(par, child, graph, s);
+        if(s[child] != s[par])
+        {
+            if(childMax > max1)
+            {
+                max2 = max1;
+                max1 = childMax;
+            }
+            else if(childMax > max2)
+                max2 = childMax;
+        }
+    }
+
+    ans = max(ans, max1 + max2 + 1);
+    return max1 + 1;
+}
+
+int longestPath(vector<int>& parent, string s) 
+{
+    int n = parent.size();
+    vector<vector<int>> graph(n);
+    for(int i = 1; i < n; i++)
+    {
+        graph[parent[i]].push_back(i);
+        graph[i].push_back(parent[i]);
+    }
+
+    dfs(-1, 0, graph, s);
+
+    return ans;
+}
