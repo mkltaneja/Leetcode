@@ -328,3 +328,41 @@ int longestPath(vector<int>& parent, string s)
 
     return ans;
 }
+
+// DAY 14 (1061. Lexicographically Smallest Equivalent String)=====================================================================
+
+vector<int> par;
+int findPar(int u)
+{
+    return u == par[u]? u : findPar(par[u]);
+}
+
+void union_(int u, int v)
+{
+    int pu = findPar(u);
+    int pv = findPar(v);
+
+    if(pu == pv) return;
+
+    if(pu < pv) par[pv] = pu;
+    else par[pu] = pv;
+}
+
+string smallestEquivalentString(string s1, string s2, string baseStr) 
+{
+    par.resize(26);
+    for(int i = 0; i < 26; i++)
+        par[i] = i;
+
+    for(int i = 0; i < s1.size(); i++)
+    {
+        int u = s1[i]-'a', v = s2[i]-'a';
+        union_(u, v);
+    }
+
+    string ans = "";
+    for(char &c : baseStr)
+        ans += char(findPar(c-'a')+'a');
+
+    return ans;
+}
