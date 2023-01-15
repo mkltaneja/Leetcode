@@ -366,3 +366,61 @@ string smallestEquivalentString(string s1, string s2, string baseStr)
 
     return ans;
 }
+
+// DAY 15 (2421. Number of Good Paths)==============================================================================
+
+#define f first
+#define s second
+
+vector<int> par;
+int findPar(int u)
+{
+    return par[u] = (par[u] == u)? u : findPar(par[u]);
+}
+
+int numberOfGoodPaths(vector<int>& vals, vector<vector<int>>& edges) 
+{
+    int n = vals.size();
+    par.resize(n);
+    vector<pair<int,int>> vls(n);
+    vector<vector<int>> gp(n);
+
+    for(int i = 0; i < n; i++)
+    {
+        par[i] = i;
+        vls[i] = {vals[i], i};
+    }
+    sort(vls.begin(), vls.end());
+
+    for(vector<int> &e : edges)
+    {
+        gp[e[0]].push_back(e[1]);
+        gp[e[1]].push_back(e[0]);
+    }
+
+    int paths = 0;
+    for(int i = 0; i < n; )
+    {
+        int j = i;
+        while(j < n && vls[j].f == vls[i].f)
+        {
+            for(int v : gp[vls[j].s])
+            {
+                if(vals[v] > vls[j].f) continue;
+
+                int p1 = findPar(v);
+                int p2 = findPar(vls[j].s);
+
+                if(p1 == p2) continue;
+                par[p1] = p2;
+            }
+            j++;
+        }
+
+        unordered_map<int,int> reach;
+        while(i < j)
+            paths += reach[findPar(vls[i++].s)]++;
+    }
+
+    return paths + n;
+}
