@@ -424,3 +424,64 @@ int numberOfGoodPaths(vector<int>& vals, vector<vector<int>>& edges)
 
     return paths + n;
 }
+
+// DAY 16 (57. Insert Interval)=========================================================================================
+
+bool doesOverlap(int currSt, int currEnd, int newSt, int newEnd)
+{
+    return (newSt >= currSt && newSt <= currEnd) ||
+            (newEnd >= currSt && newEnd <= currEnd) || 
+            (currSt >= newSt && currEnd <= newEnd);
+}
+
+void merge(int &i, int n, vector<vector<int>> &intervals, int newSt, int newEnd, vector<vector<int>> &ans)
+{
+    int currSt = min(intervals[i][0], newSt);
+    int currEnd = max(intervals[i][1], newEnd);
+    while(i < n && currEnd >= intervals[i][0])
+    {
+        currEnd = max(currEnd, intervals[i++][1]);
+    }
+    i--;
+
+    ans.push_back({currSt, currEnd});
+}
+
+bool liesAfter(int &i, int n, vector<vector<int>> &intervals, int newSt, int newEnd)
+{
+    return (i < n-1) && (newSt > intervals[i][1] && newEnd < intervals[i+1][0]);
+}
+
+vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) 
+{
+    int n = intervals.size();
+    int newSt = newInterval[0], newEnd = newInterval[1];
+    if(n == 0) return {{newSt, newEnd}};
+
+    sort(intervals.begin(), intervals.end());
+
+    if(newEnd < intervals[0][0])
+    {
+        intervals.insert(intervals.begin(), {newSt, newEnd});
+        return intervals;
+    }
+    if(newSt > intervals[n-1][1])
+    {
+        intervals.push_back({newSt, newEnd});
+        return intervals;
+    }
+
+    vector<vector<int>> ans;
+    for(int i = 0; i < n; i++)
+    {
+        int currSt = intervals[i][0], currEnd = intervals[i][1];
+
+        if(doesOverlap(currSt, currEnd, newSt, newEnd))
+            merge(i, n, intervals, newSt, newEnd, ans);
+        else ans.push_back({currSt, currEnd});
+        if(liesAfter(i, n, intervals, newSt, newEnd))
+            ans.push_back({newSt, newEnd});
+    }
+
+    return ans;
+}
