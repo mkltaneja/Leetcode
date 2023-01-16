@@ -427,6 +427,8 @@ int numberOfGoodPaths(vector<int>& vals, vector<vector<int>>& edges)
 
 // DAY 16 (57. Insert Interval)=========================================================================================
 
+// METHOD 1 (More STRUCTURAL)
+
 bool doesOverlap(int currSt, int currEnd, int newSt, int newEnd)
 {
     return (newSt >= currSt && newSt <= currEnd) ||
@@ -482,6 +484,33 @@ vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInter
         if(liesAfter(i, n, intervals, newSt, newEnd))
             ans.push_back({newSt, newEnd});
     }
+
+    return ans;
+}
+
+// METHOD 2 (More OPTIMIZED)
+
+vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) 
+{
+    int n = intervals.size();
+    int newSt = newInterval[0], newEnd = newInterval[1];
+    vector<vector<int>> ans;
+
+    sort(intervals.begin(), intervals.end());
+
+    int i = 0;
+    while(i < n && intervals[i][1] < newSt)
+        ans.push_back(intervals[i++]);
+
+    while(i < n && intervals[i][0] <= newEnd)
+    {
+        newSt = min(newSt, intervals[i][0]);
+        newEnd = max(newEnd, intervals[i++][1]);
+    }
+    ans.push_back({newSt, newEnd});
+
+    while(i < n)
+        ans.push_back(intervals[i++]);
 
     return ans;
 }
