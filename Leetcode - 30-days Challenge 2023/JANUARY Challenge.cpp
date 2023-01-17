@@ -514,3 +514,25 @@ vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInter
 
     return ans;
 }
+
+// DAY 17 (926. Flip String to Monotone Increasing)==============================================================================
+
+int minFlipsMonoIncr(string s) 
+{
+    int n = s.size();
+    int count0 = 0, count1 = 0;
+    for(int c : s)
+        count0 += c == '0';
+
+    int minFlips = n;
+    minFlips = min(minFlips, count0 + count1);
+    for(char &c : s)
+    {
+        count1 += c == '1';
+        count0 -= c == '0';
+        minFlips = min(minFlips, count0 + count1);
+    }
+    minFlips = min(minFlips, count0 + count1);
+
+    return minFlips;
+}
