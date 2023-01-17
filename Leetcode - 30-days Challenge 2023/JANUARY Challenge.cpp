@@ -517,22 +517,40 @@ vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInter
 
 // DAY 17 (926. Flip String to Monotone Increasing)==============================================================================
 
+// APPROACH 1 (Storing count) --> time = O(2*N)
+
 int minFlipsMonoIncr(string s) 
 {
     int n = s.size();
-    int count0 = 0, count1 = 0;
+    int flip0 = 0, flip1 = 0;
     for(int c : s)
-        count0 += c == '0';
+        flip0 += c == '0';
 
     int minFlips = n;
-    minFlips = min(minFlips, count0 + count1);
+    minFlips = min(minFlips, flip0 + flip1);
     for(char &c : s)
     {
-        count1 += c == '1';
-        count0 -= c == '0';
-        minFlips = min(minFlips, count0 + count1);
+        flip1 += c == '1';
+        flip0 -= c == '0';
+        minFlips = min(minFlips, flip0 + flip1);
     }
-    minFlips = min(minFlips, count0 + count1);
 
     return minFlips;
+}
+
+// APPROACH 2 (Without storing count) --> time = O(N)
+
+int minFlipsMonoIncr(string s) 
+{
+    int n = s.size();
+    int flip0 = 0, flip1 = 0;
+
+    for(char &c : s)
+    {
+        int x = c-'0';
+        flip1 = min(flip0, flip1) + !x;
+        flip0 += x;
+    }
+
+    return min(flip0, flip1);
 }
