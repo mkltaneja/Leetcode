@@ -554,3 +554,28 @@ int minFlipsMonoIncr(string s)
 
     return min(flip0, flip1);
 }
+
+// DAY 18 (918. Maximum Sum Circular Subarray)=====================================================================================
+
+int maxSumSubarray(vector<int> &nums, int sign)
+{
+    int currSum = 0, maxSum = -1e9;
+    for(int x : nums)
+    {
+        currSum = sign*x + max(currSum, 0);
+        maxSum = max(maxSum, currSum);
+    }
+
+    return maxSum;
+}
+
+int maxSubarraySumCircular(vector<int>& nums) 
+{
+    int totSum = 0;
+    for(int x : nums)
+        totSum += x;
+
+    int maxSS = maxSumSubarray(nums, 1);
+    int minSS = maxSumSubarray(nums, -1);
+    return maxSS < 0? maxSS : max(maxSS, totSum + minSS);
+}
