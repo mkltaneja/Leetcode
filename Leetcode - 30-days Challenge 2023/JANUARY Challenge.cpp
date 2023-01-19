@@ -579,3 +579,20 @@ int maxSubarraySumCircular(vector<int>& nums)
     int minSS = maxSumSubarray(nums, -1);
     return maxSS < 0? maxSS : max(maxSS, totSum + minSS);
 }
+
+// DAY 19 (974. Subarray Sums Divisible by K)==================================================================================
+
+int subarraysDivByK(vector<int>& nums, int k) 
+{
+    unordered_map<int,int> remCount;
+    int sum = 0;
+    remCount[0] = 1;
+    int ans = 0;
+    for(int x : nums)
+    {
+        sum += x;
+        ans += remCount[(sum % k + k) % k]++;
+    }
+
+    return ans;
+}
