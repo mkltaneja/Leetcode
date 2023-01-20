@@ -596,3 +596,33 @@ int subarraysDivByK(vector<int>& nums, int k)
 
     return ans;
 }
+
+// DAY 20 (491. Non-decreasing Subsequences)=====================================================================================
+
+vector<vector<int>> ans;
+set<vector<int>> uni;
+
+void subseq(int i, int prev, vector<int> &nums, vector<int> &curr)
+{
+    if(curr.size() > 1) uni.insert(curr);
+    if(i == nums.size()) return;
+
+    if(nums[i] >= prev)
+    {
+        curr.push_back(nums[i]);
+        subseq(i+1, nums[i], nums, curr);
+        curr.pop_back();
+    }
+    subseq(i+1, prev, nums, curr);
+}
+
+vector<vector<int>> findSubsequences(vector<int>& nums) 
+{
+    vector<int> tmp;
+    subseq(0, -101, nums, tmp);
+
+    for(vector<int> v : uni)
+        ans.push_back(v);
+
+    return ans;
+}
