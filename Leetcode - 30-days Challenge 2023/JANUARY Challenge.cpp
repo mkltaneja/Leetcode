@@ -626,3 +626,38 @@ vector<vector<int>> findSubsequences(vector<int>& nums)
 
     return ans;
 }
+
+// DAY 21 (93. Restore IP Addresses)=========================================================================================
+
+vector<string> ans;
+void dfs(int i, int curr, int dots, string &fin, string &s)
+{
+    if((((s.size() - i) + dots) / (dots + 1)) > 3) return;
+    if(i == s.size() && dots == 0)
+    {
+        ans.push_back(fin);
+        return;
+    }
+
+    fin += s[i];
+    curr = curr*10 + (s[i]-'0');
+    if(curr <= 255)
+    {
+        if(dots && i < s.size()-1)
+        {
+            fin += ".";
+            dfs(i+1, 0, dots-1, fin, s);
+            fin.pop_back();
+        }
+        if(curr || i == s.size()-1) dfs(i+1, curr, dots, fin, s);
+    }
+    fin.pop_back();
+}
+
+vector<string> restoreIpAddresses(string s) 
+{
+    string tmp = "";
+    dfs(0, 0, 3, tmp, s);
+
+    return ans;
+}
