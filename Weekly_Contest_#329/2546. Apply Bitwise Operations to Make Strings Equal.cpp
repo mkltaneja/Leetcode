@@ -1,3 +1,6 @@
+
+// METOHD 1 (Naive - counted 1s, checked for 0s, checked for 1s) --> time = O(3*n)
+
 class Solution {
 public:
     bool makeStringsEqual(string s, string target) 
@@ -27,5 +30,18 @@ public:
         }
         
         return true;
+    }
+};
+
+// METOHD 2 (OPTIMIZED) --> time = O(n)
+
+class Solution {
+public:
+    bool makeStringsEqual(string s, string target) 
+    {
+        if(s == target) return true;
+        
+        string zero = string(s.size(), '0');
+        return (s != zero) && (target != zero);
     }
 };
