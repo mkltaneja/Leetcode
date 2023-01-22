@@ -661,3 +661,44 @@ vector<string> restoreIpAddresses(string s)
 
     return ans;
 }
+
+// DAY 22 (131. Palindrome Partitioning)================================================================================
+
+vector<vector<string>> ans;
+
+bool isPal(string &x)
+{
+    int i = 0, j = x.size()-1;
+    while(i < j && x[i] == x[j])
+        i++, j--;
+    return i >= j;
+}
+
+void dfs(int i, string &curr, string &s, vector<string> &part)
+{
+    if(i == s.size())
+    {
+        ans.push_back(part);
+        return;
+    }
+
+    curr += s[i];
+    if(isPal(curr))
+    {
+        part.push_back(curr);
+        string ncurr = "";
+        dfs(i+1, ncurr, s, part);
+        part.pop_back();
+    }
+    if(i != s.size()-1)
+        dfs(i+1, curr, s, part);
+    curr.pop_back();
+}
+
+vector<vector<string>> partition(string s) 
+{
+    string tmp = "";
+    vector<string> part;
+    dfs(0, tmp, s, part);
+    return ans;
+}
