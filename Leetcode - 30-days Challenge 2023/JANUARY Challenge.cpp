@@ -702,3 +702,49 @@ vector<vector<string>> partition(string s)
     dfs(0, tmp, s, part);
     return ans;
 }
+
+// DAY 24 (909. Snakes and Ladders)=====================================================================================
+
+int snakesAndLadders(vector<vector<int>>& board) 
+{
+    int n = board.size();
+    vector<int> board2(n*n);
+    int right = 1;
+    for(int i = n-1, x = 0; i >= 0; i--)
+    {
+        for(int j = right? 0 : n-1; right? (j < n) : (j >= 0); j += right? 1 : -1)
+            board2[x++] = board[i][j];
+        right ^= 1;
+    }
+
+    queue<int> que;
+    que.push(0);
+    vector<bool> vis(n*n, false);
+    vis[0] = true;
+    int moves = 0;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            int curr = que.front();
+            que.pop();
+            if(curr == n*n-1) 
+                return moves;
+
+            for(int x = 1; x <= 6 && curr + x < n*n; x++)
+            {
+                int nxt = curr + x;
+                if(vis[nxt]) continue;
+                    vis[nxt] = true;
+                if(board2[nxt] == -1)
+                    que.push(nxt);
+                else que.push(board2[nxt]-1);
+            }
+        }
+        moves++;
+    }
+
+
+    return -1;
+}
