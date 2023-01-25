@@ -703,6 +703,30 @@ vector<vector<string>> partition(string s)
     return ans;
 }
 
+// DAY 23 (997. Find the Town Judge)=====================================================================================
+
+int findJudge(int n, vector<vector<int>>& trust) 
+{
+    vector<int> trustCount(n+1,0);
+    for(vector<int> &t : trust)
+    {
+        trustCount[t[0]]--;
+        trustCount[t[1]]++;
+    }
+
+    int ans = -1;
+    for(int i = 1; i <= n; i++)
+    {
+        if(trustCount[i] == n-1)
+        {
+            if(ans != -1) return -1;
+            ans = i;
+        }
+    }
+
+    return ans;
+}
+
 // DAY 24 (909. Snakes and Ladders)=====================================================================================
 
 int snakesAndLadders(vector<vector<int>>& board) 
