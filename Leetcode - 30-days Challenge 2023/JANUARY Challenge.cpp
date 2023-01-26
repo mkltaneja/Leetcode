@@ -809,3 +809,45 @@ int closestMeetingNode(vector<int>& edges, int node1, int node2)
 
     return ans;
 }
+
+// DAY 26 (787. Cheapest Flights Within K Stops)===============================================================================
+
+#define pii pair<int,int>
+#define f first
+#define s second
+
+int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) 
+{
+    vector<vector<pii>> gp(n);
+    for(vector<int> &flight : flights)
+        gp[flight[0]].push_back({flight[1], flight[2]});
+
+    vector<int> minDist(n, INT_MAX);
+    minDist[src] = 0;
+
+    queue<pii> que;
+    que.push({src, 0});
+    int stops = 0;
+
+    while(!que.empty() && stops <= k)
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            pii u = que.front();
+            que.pop();
+
+            for(pii v : gp[u.f])
+            {
+                if(u.s + v.s < minDist[v.f])
+                {
+                    minDist[v.f] = u.s + v.s;
+                    que.push({v.f, u.s + v.s});
+                }
+            }
+        }
+        stops++;
+    }
+
+    return minDist[dst] == INT_MAX? -1 : minDist[dst];
+}
