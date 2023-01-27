@@ -851,3 +851,59 @@ int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int
 
     return minDist[dst] == INT_MAX? -1 : minDist[dst];
 }
+
+// DAY 27 (472. Concatenated Words)==========================================================================================
+
+class Trie
+{
+    public:
+    vector<Trie*> child;
+    bool wordEnd;
+    Trie()
+    {
+        this->child.assign(26, nullptr);
+        this->wordEnd = false;
+    }
+};
+Trie* head = new Trie();
+
+void insert(string &word)
+{
+    Trie* itr = head;
+    for(int i = 0; i < word.size(); i++)
+    {
+        if(!itr->child[word[i]-'a'])
+            itr->child[word[i]-'a'] = new Trie();
+        itr = itr->child[word[i]-'a'];
+    }
+    itr->wordEnd = true;
+}
+
+bool concatExist(int i, int words, Trie* itr, string &word)
+{
+    if(i == word.size()) return (itr == head && words > 1);
+    if(!itr->child[word[i]-'a']) return false;
+
+    if(itr->child[word[i]-'a']->wordEnd)
+        if(concatExist(i+1, words+1, head, word))
+            return true;
+    if(concatExist(i+1, words, itr->child[word[i]-'a'], word))
+        return true;
+
+    return false;
+}
+
+vector<string> findAllConcatenatedWordsInADict(vector<string>& words) 
+{
+    for(string &word : words)
+        insert(word);
+    vector<string> ans;
+    for(string &word : words)
+    {
+        Trie* itr = head;
+        if(concatExist(0, 0, itr, word))
+            ans.push_back(word);
+    }
+
+    return ans;
+}
