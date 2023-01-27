@@ -854,6 +854,8 @@ int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int
 
 // DAY 27 (472. Concatenated Words)==========================================================================================
 
+// APPROACH 1 (Naive) --> time = O(m*2^n) [m = words.size(), n = words[i].size()]
+
 class Trie
 {
     public:
@@ -902,6 +904,67 @@ vector<string> findAllConcatenatedWordsInADict(vector<string>& words)
     {
         Trie* itr = head;
         if(concatExist(0, 0, itr, word))
+            ans.push_back(word);
+    }
+
+    return ans;
+}
+
+// APPROACH 2 (Using DP) --> time = O(m*n) [m = words.size(), n = words[i].size()]
+
+class Trie
+{
+    public:
+    vector<Trie*> child;
+    bool wordEnd;
+    Trie()
+    {
+        this->child.assign(26, nullptr);
+        this->wordEnd = false;
+    }
+};
+Trie* head = new Trie();
+
+void insert(string &word)
+{
+    Trie* itr = head;
+    for(int i = 0; i < word.size(); i++)
+    {
+        if(!itr->child[word[i]-'a'])
+            itr->child[word[i]-'a'] = new Trie();
+        itr = itr->child[word[i]-'a'];
+    }
+    itr->wordEnd = true;
+}
+
+int concatExist(int i, int words, string &word, vector<int> &dp)
+{
+    if(dp[i] != -1) return dp[i];
+    if(i == word.size() && words > 1) return dp[i] = 1;
+
+    Trie* itr = head;
+    for(int j = i; j < word.size(); j++)
+    {
+        if(!itr->child[word[j]-'a']) 
+            return dp[i] = 0;
+
+        itr = itr->child[word[j]-'a'];
+        if(itr->wordEnd && concatExist(j+1, words+1, word, dp))
+            return dp[i] = 1;
+    }
+
+    return dp[i] = 0;
+}
+
+vector<string> findAllConcatenatedWordsInADict(vector<string>& words) 
+{
+    for(string &word : words)
+        insert(word);
+    vector<string> ans;
+    for(string &word : words)
+    {
+        vector<int> dp(word.size()+1, -1);
+        if(concatExist(0, 0, word, dp))
             ans.push_back(word);
     }
 
