@@ -970,3 +970,48 @@ vector<string> findAllConcatenatedWordsInADict(vector<string>& words)
 
     return ans;
 }
+
+// DAY 28 (352. Data Stream as Disjoint Intervals)=================================================================================
+
+class SummaryRanges {
+public:
+
+    set<int> vals;
+    SummaryRanges() 
+    {
+        
+    }
+    
+    void addNum(int value) 
+    {
+        vals.insert(value);
+    }
+    
+    vector<vector<int>> getIntervals() 
+    {
+        vector<vector<int>> intervals;
+        int left = *vals.begin();
+        int right = *vals.begin();
+        for(auto itr = ++vals.begin(); itr != vals.end(); itr++)
+        {
+            int val = *itr;
+            if(val - right == 1)
+                right = val;
+            else 
+            {
+                intervals.push_back({left, right});
+                left = right = val;
+            }
+        }
+        intervals.push_back({left, right});
+
+        return intervals;
+    }
+};
+
+/**
+ * Your SummaryRanges object will be instantiated and called as such:
+ * SummaryRanges* obj = new SummaryRanges();
+ * obj->addNum(value);
+ * vector<vector<int>> param_2 = obj->getIntervals();
+ */
