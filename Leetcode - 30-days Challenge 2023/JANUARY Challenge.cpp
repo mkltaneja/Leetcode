@@ -1015,3 +1015,123 @@ public:
  * obj->addNum(value);
  * vector<vector<int>> param_2 = obj->getIntervals();
  */
+
+// DAY 29 (460. LFU Cache)=================================================================================================================
+
+class LFUCache {
+private:
+
+    class Node
+    {
+        public:
+        int key, val, freq;
+        Node* next, *prev;
+        Node(int key, int val)
+        {
+            this->key = key;
+            this->val = val;
+            this->freq = 1;
+            this->next = nullptr;
+            this->prev = nullptr;
+        }
+    };
+
+    void addInList(int freq, Node* node)
+    {
+        Node* head = nullptr, *tail = nullptr;
+        if(!fList.count(freq))
+        {
+            head = node;
+            tail = node;
+        }
+        else
+        {
+            head = fList[freq];
+            tail = head->prev;
+            node->prev = tail;
+            node->next = head;
+        }
+        head->prev = node;
+        tail->next = node;
+        fList[freq] = node;
+    }
+
+    void removeFromList(int freq, Node* node)
+    {
+        if(node->next == node) // when there is just one node in fList[freq]
+        {
+            fList[freq] = nullptr;
+            fList.erase(freq);
+            if(freq == minFreq) 
+                minFreq++;
+            return;
+        }
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+        if(fList[freq] == node) // if node is the list head
+            fList[freq] = node->next;
+        node->next = nullptr;
+        node->prev = nullptr;
+    }
+
+
+public:
+
+    int cap, minFreq;
+    unordered_map<int,Node*> mp; // pointer to the key node
+    unordered_map<int,Node*> fList; // pointer to head of circular doubly ll with freq f
+
+    LFUCache(int capacity) 
+    {
+        this->cap = capacity;
+        this->minFreq = 0;
+    }
+    
+    int get(int key) 
+    {
+        if(!mp.count(key)) return -1;
+
+        Node* node = mp[key];
+        removeFromList(node->freq, node);
+        addInList(++node->freq, node);
+
+        return node->val;
+    }
+    
+    void put(int key, int value) 
+    {
+        if(!cap) return;
+
+        if(!mp.count(key))
+        {
+            Node* node = new Node(key, value);
+            mp[key] = node;
+
+            if(mp.size() > cap)
+            {
+                mp.erase(fList[minFreq]->prev->key);
+                removeFromList(minFreq, fList[minFreq]->prev);
+            }
+
+            addInList(1, node);
+            minFreq = 1;
+        }
+        else 
+        {
+            Node* node = mp[key];
+            node->key = key;
+            node->val = value;
+
+            removeFromList(node->freq, node);
+            
+            addInList(++node->freq, node);
+        }
+    }
+};
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
