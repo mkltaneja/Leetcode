@@ -801,3 +801,22 @@ int uniquePathsIII(vector<vector<int>>& grid)
 
     return dfs(si, sj, n, m, avail, grid);
 }
+
+// DAY 30 (1137. N-th Tribonacci Number)================================================================================
+
+int tribonacci(int n) 
+{
+    int a = 0, b = 1, c = 1, ans = 1;
+    if(n < 3)
+        return n? ans : a;
+
+    for(int i = 3; i <= n; i++)
+    {
+        ans = a + b + c;
+        a = b;
+        b = c;
+        c = ans;
+    }
+
+    return ans;
+}
