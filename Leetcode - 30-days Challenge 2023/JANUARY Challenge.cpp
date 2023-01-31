@@ -1135,3 +1135,44 @@ public:
  * int param_1 = obj->get(key);
  * obj->put(key,value);
  */
+
+// DAY 31 (1626. Best Team With No Conflicts)======================================================================================
+
+#define f first
+#define s second
+
+int subseq(int i, int mxi, int mx, vector<pair<int,int>> &as)
+{
+    if(i == -1) return 0;
+
+    int inc = 0;
+    if(as[i].s <= mx || as[i].f == as[mxi].f)
+        inc = subseq(i-1, i, as[i].s, as) + as[i].s;
+    int exc = subseq(i-1, mxi, mx, as);
+
+    return max(inc, exc);
+}
+
+int bestTeamScore(vector<int>& scores, vector<int>& ages) 
+{
+    int n = ages.size();
+    vector<pair<int,int>> age_score(n);
+    for(int i = 0; i < n; i++)
+        age_score[i] = {ages[i], scores[i]};
+
+    sort(age_score.begin(), age_score.end());
+
+    vector<int> dp(n);
+    int ans = 0;
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = i; j >= 0; j--)
+        {
+            if(age_score[j].s > age_score[i].s) continue;
+            dp[i] = max(dp[i], dp[j] + age_score[i].s);
+        }
+        ans = max(ans, dp[i]);
+    }
+
+    return ans;
+}
