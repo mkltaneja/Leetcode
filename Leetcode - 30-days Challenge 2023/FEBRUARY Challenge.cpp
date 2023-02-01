@@ -1,5 +1,7 @@
 // DAY 1 (1071. Greatest Common Divisor of Strings)=============================================================================
 
+// APPROACH 1 (Finding prime factors)
+
 int gcd(int x, int y)
 {
     while(x)
@@ -44,4 +46,14 @@ string gcdOfStrings(string str1, string str2)
     }
 
     return "";
+}
+
+// APPROACH 2 (GCD Approach)
+
+string gcdOfStrings(string str1, string str2) 
+{
+    if(str1.size() < str2.size())
+        return gcdOfStrings(str2, str1);
+    if(str2.empty()) return str1;
+    return str1.substr(0,str2.size()) == str2? gcdOfStrings(str1.substr(str2.size()), str2) : "";
 }
