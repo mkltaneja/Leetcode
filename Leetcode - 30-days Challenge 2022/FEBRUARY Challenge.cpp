@@ -746,3 +746,28 @@ vector<string> summaryRanges(vector<int>& nums)
     }
     return ans;
 }
+
+// DAY 2 (953. Verifying an Alien Dictionary)===================================================================
+
+int loc[26];
+string nonAlien(string &word)
+{
+    for(char &c : word)
+        c = char(loc[c-'a']+'a');
+    return word;
+}
+
+bool isAlienSorted(vector<string>& words, string order) 
+{
+    for(int i = 0; i < 26; i++)
+        loc[order[i]-'a'] = i;
+    string pWord = "";
+    for(int i = 0; i < words.size(); i++)
+    {
+        string currWord = nonAlien(words[i]);
+        if(currWord < pWord) return false;
+        pWord = currWord;
+    }
+
+    return true;
+}
