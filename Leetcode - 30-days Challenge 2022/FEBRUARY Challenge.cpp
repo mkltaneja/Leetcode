@@ -771,3 +771,33 @@ bool isAlienSorted(vector<string>& words, string order)
 
     return true;
 }
+
+// DAY 3 (6. Zigzag Conversion)======================================================================================
+
+string convert(string s, int numRows) 
+{
+    if(numRows == 1) return s;
+    vector<string> rows(numRows);
+    int x = 0;
+    bool inc = true;
+    for(char c : s)
+    {
+        rows[x].push_back(c);
+        if(inc)
+        {
+            if(++x == numRows-1)
+                inc = false;
+        }
+        else 
+        {
+            if(--x == 0)
+                inc = true;
+        }
+    }
+
+    string ans = "";
+    for(string x : rows)
+        ans += x;
+
+    return ans;
+}
