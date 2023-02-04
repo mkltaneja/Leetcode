@@ -57,3 +57,30 @@ string gcdOfStrings(string str1, string str2)
     if(str2.empty()) return str1;
     return str1.substr(0,str2.size()) == str2? gcdOfStrings(str1.substr(str2.size()), str2) : "";
 }
+
+// DAY 4 (567. Permutation in String)=================================================================================
+
+bool checkInclusion(string s1, string s2) 
+{
+    int n = s1.size(), m = s2.size();
+    vector<int> mp1(26,0);
+    unordered_map<char,int> mp2;
+    for(char &c : s1)
+        mp1[c-'a']++;
+
+    for(int i = 0; i < 26; i++)
+        if(mp1[i])
+            mp2[char(i+'a')] = -mp1[i];
+
+    for(int i = 0; i < m; i++)
+    {
+        if(++mp2[s2[i]] == 0)
+            mp2.erase(s2[i]);
+        if(i >= n)
+            if(--mp2[s2[i - n]] == 0)
+                mp2.erase(s2[i - n]);
+        if(mp2.empty()) return true;
+    }
+
+    return false;
+}
