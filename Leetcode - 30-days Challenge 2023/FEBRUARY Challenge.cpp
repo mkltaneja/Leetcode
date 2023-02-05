@@ -84,3 +84,27 @@ bool checkInclusion(string s1, string s2)
 
     return false;
 }
+
+// DAY 5 (438. Find All Anagrams in a String)===============================================================================
+
+vector<int> findAnagrams(string s, string p) 
+{
+    int n = s.size(), m = p.size();
+    unordered_map<char,int> mp;
+    for(char c : p)
+        mp[c]--;
+
+    vector<int> ans;
+    for(int i = 0; i < n; i++)
+    {
+        if(++mp[s[i]] == 0)
+            mp.erase(s[i]);
+        if(i >= m)
+            if(--mp[s[i-m]] == 0)
+                mp.erase(s[i-m]);
+        if(mp.size() == 0)
+            ans.push_back(i-m+1);
+    }
+
+    return ans;
+}
