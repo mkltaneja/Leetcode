@@ -122,3 +122,25 @@ vector<int> shuffle(vector<int>& nums, int n)
 
     return ans;
 }
+
+// DAY 7 (904. Fruit Into Baskets)=================================================================================
+
+int totalFruit(vector<int>& fruits) 
+{
+    int n = fruits.size();
+    vector<int> typeCnt(n,0);
+    int tot = 0, ans = 0;
+    for(int i = 0, j = 0; i < n; i++)
+    {
+        if(typeCnt[fruits[i]]++ == 0)
+            tot++;
+        while(j < i && tot > 2)
+        {
+            if(--typeCnt[fruits[j++]] == 0)
+                tot--;
+        }
+        ans = max(ans, i-j+1);
+    }
+
+    return ans;
+}
