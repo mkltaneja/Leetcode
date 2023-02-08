@@ -144,3 +144,17 @@ int totalFruit(vector<int>& fruits)
 
     return ans;
 }
+
+// DAY 8 (45. Jump Game II)=====================================================================
+
+int jump(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<int> dp(n, 1e4+1);
+    dp[n-1] = 0;
+    for(int i = n-2; i >= 0; i--)
+        for(int j = i+1; j < n && j <= i+nums[i]; j++)
+            dp[i] = min(dp[i], dp[j]+1);
+
+    return dp[0];
+}
