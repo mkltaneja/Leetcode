@@ -147,6 +147,8 @@ int totalFruit(vector<int>& fruits)
 
 // DAY 8 (45. Jump Game II)=====================================================================
 
+// APPROACH 1 (Finding min jumps required for every position) --> time = O(n^2)
+
 int jump(vector<int>& nums) 
 {
     int n = nums.size();
@@ -157,4 +159,23 @@ int jump(vector<int>& nums)
             dp[i] = min(dp[i], dp[j]+1);
 
     return dp[0];
+}
+
+// APPROACH 2 (By taking maxJump position everytime) --> time = O(n)
+
+int jump(vector<int>& nums) 
+{
+    int n = nums.size();
+    int minJumps = 0, maxPos = 0, prevPos = 0;
+    for(int i = 0; i < n-1; i++)
+    {
+        maxPos = max(maxPos, i + nums[i]);
+        if(prevPos == i)
+        {
+            prevPos = maxPos;
+            minJumps++;
+        }
+    }
+
+    return minJumps;
 }
