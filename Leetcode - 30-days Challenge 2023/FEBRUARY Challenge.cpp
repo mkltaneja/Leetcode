@@ -179,3 +179,27 @@ int jump(vector<int>& nums)
 
     return minJumps;
 }
+
+// DAY 9 (2306. Naming a Company)=======================================================================
+
+long long distinctNames(vector<string>& ideas) 
+{
+    vector<unordered_set<string>> suffix(26);
+    for(string &s : ideas)
+        suffix[s[0]-'a'].insert(s.substr(1));
+
+    long long ans = 0;
+    for(int i = 0; i < 26; i++)
+    {
+        for(int j = i+1; j < 26; j++)
+        {
+            long long cnt = 0;
+            for(string suf : suffix[i])
+                if(suffix[j].count(suf))
+                    cnt++;
+            ans += 2 * (suffix[i].size() - cnt) * (suffix[j].size() - cnt);
+        }
+    }
+
+    return ans;
+}
