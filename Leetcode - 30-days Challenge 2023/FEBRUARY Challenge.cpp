@@ -203,3 +203,46 @@ long long distinctNames(vector<string>& ideas)
 
     return ans;
 }
+
+// DAY 10 (1162. As Far from Land as Possible)===============================================================
+
+#define f first
+#define s second
+int maxDistance(vector<vector<int>>& grid) 
+{
+    int n = grid.size(), m = grid[0].size();
+    queue<pair<int,int>> que;
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < m; j++)
+            if(grid[i][j])
+                que.push({i, j});
+
+    int dir[4][2] = {{1,0},{0,1},{-1,0},{0,-1}};
+
+    int dist = -1;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            int i = que.front().f;
+            int j = que.front().s;
+            que.pop();
+
+            for(int d = 0; d < 4; d++)
+            {
+                int x = i + dir[d][0];
+                int y = j + dir[d][1];
+                if(x == -1 || y == -1 || x == n || y == m || grid[x][y] != 0)
+                    continue;
+
+                grid[x][y] = -1;
+                que.push({x, y});
+            }
+        }
+
+        dist++;
+    }
+
+    return dist? dist : -1;
+}
