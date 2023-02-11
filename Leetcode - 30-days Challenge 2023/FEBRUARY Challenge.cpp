@@ -246,3 +246,68 @@ int maxDistance(vector<vector<int>>& grid)
 
     return dist? dist : -1;
 }
+
+// DAY 11 (1129. Shortest Path with Alternating Colors)===========================================================================
+
+#define f first
+#define s second
+vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vector<vector<int>>& blueEdges) 
+{
+    vector<vector<int>> redGraph(n), blueGraph(n);
+    for(vector<int> &v : redEdges)
+        redGraph[v[0]].push_back(v[1]);
+    for(vector<int> &v : blueEdges)
+        blueGraph[v[0]].push_back(v[1]);
+
+    queue<pair<int,int>> que;
+    que.push({0, -1}); // -1 = no color, 0 = red, 1 = blue
+
+    vector<int> minDist(n, -1);
+    vector<bool> redVis(n, false), blueVis(n, false);
+    minDist[0] = 0;
+    redVis[0] = true;
+    blueVis[0] = true;
+
+    int dist = 0;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            int par = que.front().f;
+            int color = que.front().s;
+            que.pop();
+
+            if(color == 0 || color == -1)
+            {
+                for(int child : blueGraph[par])
+                {
+                    if(blueVis[child] == false)
+                    {
+                        if(minDist[child] == -1)
+                            minDist[child] = dist + 1;
+                        blueVis[child] = true;
+                        que.push({child, 1});
+                    }
+                }
+            }
+
+            if(color == 1 || color == -1)
+            {
+                for(int child : redGraph[par])
+                {
+                    if(redVis[child] == false)
+                    {
+                        if(minDist[child] == -1)
+                            minDist[child] = dist + 1;
+                        redVis[child] = true;
+                        que.push({child, 0});
+                    }
+                }
+            }
+        }
+        dist++;
+    }
+
+    return minDist;
+}
