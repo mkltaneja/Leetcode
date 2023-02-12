@@ -311,3 +311,42 @@ vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vecto
 
     return minDist;
 }
+
+// DAY 12 (2477. Minimum Fuel Cost to Report to the Capital)========================================================================
+
+#define ll long long
+
+ll fuel = 0;
+ll totSeats, totCars = 0;
+vector<vector<int>> graph;
+
+int dfs(int p, int u)
+{
+    ll count = 1;
+    for(int v : graph[u])
+        if(v != p)
+            count += dfs(u, v);
+
+    fuel += (ll)totCars;
+    ll newCars = (count + totSeats - 1) / totSeats;
+    totCars = newCars;
+
+    if(totCars == 0)
+        return count;
+    return count;
+}
+
+long long minimumFuelCost(vector<vector<int>>& roads, int seats) 
+{
+    int n = roads.size()+1;
+    totSeats = seats;
+    graph.resize(n);
+    for(vector<int> &road : roads)
+    {
+        graph[road[0]].push_back(road[1]);
+        graph[road[1]].push_back(road[0]);
+    }
+
+    dfs(-1, 0);
+    return fuel;
+}
