@@ -350,3 +350,11 @@ long long minimumFuelCost(vector<vector<int>>& roads, int seats)
     dfs(-1, 0);
     return fuel;
 }
+
+// DAY 13 (1523. Count Odd Numbers in an Interval Range)=================================================================
+
+int countOdds(int low, int high) 
+{
+    int n = high - low + 1;
+    return (n + (low&1)) /2;
+}
