@@ -358,3 +358,26 @@ int countOdds(int low, int high)
     int n = high - low + 1;
     return (n + (low&1)) /2;
 }
+
+// DAY 14 (67. Add Binary)=================================================================================================
+
+string addBinary(string a, string b) 
+{
+    int carry = 0;
+    int i = a.size()-1, j = b.size()-1;
+    string ans = "";
+    while(i >= 0 || j >= 0)
+    {
+        int x = i >= 0? (a[i--]-'0') : 0;
+        int y = j >= 0? (b[j--]-'0') : 0;
+        int sum = x + y + carry;
+        int curr = sum & 1;
+        carry = sum >> 1;
+        ans += char(curr + '0');
+    }
+    if(carry) ans += "1";
+
+    reverse(ans.begin(), ans.end());
+
+    return ans;
+}
