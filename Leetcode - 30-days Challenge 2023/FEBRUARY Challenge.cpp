@@ -381,3 +381,27 @@ string addBinary(string a, string b)
 
     return ans;
 }
+
+// DAY 15 (989. Add to Array-Form of Integer)================================================================================
+
+vector<int> addToArrayForm(vector<int>& num, int k) 
+{
+    int carry = 0;
+    int i = num.size()-1;
+    while((k || carry) && i >= 0)
+    {
+        int sum = num[i] + (k%10) + carry;
+        k /= 10;
+        carry = sum / 10;
+        num[i--] = sum % 10;
+    }
+    while(k || carry)
+    {
+        int sum = k%10 + carry;
+        num.insert(num.begin(), sum%10);
+        k /= 10;
+        carry = sum/10;
+    }
+
+    return num;
+}
