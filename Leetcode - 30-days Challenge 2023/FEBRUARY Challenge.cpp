@@ -412,3 +412,41 @@ int maxDepth(TreeNode* root)
 {
     return root? (max(maxDepth(root->left), maxDepth(root->right)) + 1) : 0;
 }
+
+// DAY 17 (783. Minimum Distance Between BST Nodes)================================================================================
+
+int minDiffInBST(TreeNode* root) 
+{
+    int prev = -1e6;
+    int minDiff = INT_MAX;
+    while(root)
+    {
+        TreeNode* left = root->left;
+        if(!left)
+        {
+            minDiff = min(minDiff, root->val - prev);
+            prev = root->val;
+            root = root->right;
+        }
+        else
+        {
+            TreeNode* right = left;
+            while(right->right && right->right != root)
+                right = right->right;
+            if(!right->right)
+            {
+                right->right = root;
+                root = left;
+            }
+            else
+            {
+                right->right = nullptr;
+                minDiff = min(minDiff, root->val - prev);
+                prev = root->val;
+                root = root->right;
+            }
+        }
+    }
+
+    return minDiff;
+}
