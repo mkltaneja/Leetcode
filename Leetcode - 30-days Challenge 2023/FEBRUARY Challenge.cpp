@@ -450,3 +450,21 @@ int minDiffInBST(TreeNode* root)
 
     return minDiff;
 }
+
+// DAY 18 (226. Invert Binary Tree)============================================================================================
+
+void swap(TreeNode* &nodeL, TreeNode* &nodeR)
+{
+    TreeNode* tmp = nodeL;
+    nodeL = nodeR;
+    nodeR = tmp;
+}
+
+TreeNode* invertTree(TreeNode* root) 
+{
+    if(!root) return nullptr;
+    swap(root->left, root->right);
+    invertTree(root->left);
+    invertTree(root->right);
+    return root;
+}
