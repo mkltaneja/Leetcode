@@ -468,3 +468,33 @@ TreeNode* invertTree(TreeNode* root)
     invertTree(root->right);
     return root;
 }
+
+// DAY 19 (103. Binary Tree Zigzag Level Order Traversal)======================================================================
+
+vector<vector<int>> zigzagLevelOrder(TreeNode* root) 
+{
+    vector<vector<int>> ans;
+    if(!root) return ans;
+
+    queue<TreeNode*> que;
+    que.push(root);
+    int lvl = 0;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        vector<int> lvlNodes;
+        while(sz--)
+        {
+            TreeNode* node = que.front();
+            que.pop();
+            lvlNodes.push_back(node->val);
+            if(node->left) que.push(node->left);
+            if(node->right) que.push(node->right);
+        }
+        if(lvl++ & 1) 
+            reverse(lvlNodes.begin(), lvlNodes.end());
+        ans.push_back(lvlNodes);
+    }
+
+    return ans;
+}
