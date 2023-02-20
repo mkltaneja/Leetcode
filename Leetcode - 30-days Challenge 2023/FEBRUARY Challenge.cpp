@@ -498,3 +498,20 @@ vector<vector<int>> zigzagLevelOrder(TreeNode* root)
 
     return ans;
 }
+
+// DAY 20 (35. Search Insert Position)========================================================================================
+
+int searchInsert(vector<int>& nums, int target) 
+{
+    int lo = 0, hi = nums.size()-1;
+    while(lo <= hi)
+    {
+        int mid = lo + ((hi - lo)>>1);
+        if(nums[mid] == target)
+            return mid;
+        if(nums[mid] < target)
+            lo = mid + 1;
+        else hi = mid - 1;
+    }
+    return lo;
+}
