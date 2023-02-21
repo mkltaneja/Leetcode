@@ -515,3 +515,34 @@ int searchInsert(vector<int>& nums, int target)
     }
     return lo;
 }
+
+// DAY 21 (540. Single Element in a Sorted Array)============================================================================
+
+int singleNonDuplicate(vector<int>& nums) 
+{
+    int n = nums.size(), lo = 0, hi = n-1;
+    while(lo <= hi)
+    {
+        int mid = lo + ((hi - lo)>>1);
+        int prev = mid? nums[mid-1] : INT_MIN;
+        int nxt = mid+1 < n? nums[mid+1] : INT_MAX;
+
+        if(prev != nums[mid] && nxt != nums[mid])
+            return nums[mid];
+
+        if(mid&1)
+        {
+            if(nums[mid] == prev)
+                lo = mid + 1;
+            else hi = mid - 1;
+        }
+        else 
+        {
+            if(nums[mid] == nxt)
+                lo = mid + 2;
+            else hi = mid - 2;
+        }
+    }
+
+    return -1;
+}
