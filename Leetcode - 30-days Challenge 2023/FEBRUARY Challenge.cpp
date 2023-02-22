@@ -579,3 +579,33 @@ int shipWithinDays(vector<int>& weights, int days)
 
     return lo;
 }
+
+// APPROACH 2 (Finding next upper using upper_bound) --> time = O(logn*logm)
+
+bool check(int minW, int days, vector<int> &psum)
+{
+    int i = 1;
+    while(i < psum.size() && days--)
+        i = upper_bound(psum.begin()+i, psum.end(), minW + psum[i-1]) - psum.begin();
+
+    return days >= 0;
+}
+
+int shipWithinDays(vector<int>& weights, int days) 
+{
+    int n = weights.size();
+    vector<int> psum(n+1,0);
+    for(int i = 0; i < n; i++)
+        psum[i+1] = weights[i] + psum[i];
+    int lo = 1, hi = INT_MAX;
+    while(lo < hi)
+    {
+        int mid = lo + ((hi - lo)>>1);
+        int sum = 0;
+        bool possible = check(mid, days, psum);
+        if(possible) hi = mid;
+        else lo = mid + 1;
+    }
+
+    return lo;
+}
