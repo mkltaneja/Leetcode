@@ -546,3 +546,36 @@ int singleNonDuplicate(vector<int>& nums)
 
     return -1;
 }
+
+// DAY 22 (1011. Capacity To Ship Packages Within D Days)===================================================================
+
+// APPROAC 1 (Finding the next upper linearly) --> time = O(n*logm)
+
+bool check(int minW, int days, vector<int> &weights)
+{
+    int sum = 0;
+    for(int x : weights)
+    {
+        if(x > minW || days == 0) return false;
+        if(sum + x > minW) sum = x, days--;
+        else sum += x;
+    }
+    days--;
+
+    return days >= 0? true : false;
+}
+
+int shipWithinDays(vector<int>& weights, int days) 
+{
+    int lo = 1, hi = INT_MAX;
+    while(lo < hi)
+    {
+        int mid = lo + ((hi - lo)>>1);
+        int sum = 0;
+        bool possible = check(mid, days, weights);
+        if(possible) hi = mid;
+        else lo = mid + 1;
+    }
+
+    return lo;
+}
