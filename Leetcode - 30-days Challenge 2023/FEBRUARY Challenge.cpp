@@ -609,3 +609,32 @@ int shipWithinDays(vector<int>& weights, int days)
 
     return lo;
 }
+
+// DAY 23 (502. IPO)=====================================================================================================
+
+#define f first
+#define s second
+int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) 
+{
+    int n = capital.size();
+    vector<pair<int,int>> capProf(n);
+    for(int i = 0; i < n; i++)
+        capProf[i] = {capital[i], profits[i]};
+    sort(capProf.begin(), capProf.end());
+
+    priority_queue<int> pq;
+    int i = 0;
+    while(i < n && w >= capProf[i].f)
+        pq.push(capProf[i++].s);
+
+    while(!pq.empty() && k--)
+    {
+        w += pq.top();
+        pq.pop();
+
+        while(i < n && w >= capProf[i].f)
+            pq.push(capProf[i++].s);
+    }
+
+    return w;
+}
