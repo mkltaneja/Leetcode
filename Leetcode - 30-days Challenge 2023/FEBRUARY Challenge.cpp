@@ -638,3 +638,31 @@ int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capita
 
     return w;
 }
+
+// DAY 24 (1675. Minimize Deviation in Array)===================================================================================
+
+int minimumDeviation(vector<int>& nums) 
+{
+    priority_queue<int> pq;
+    int mn = INT_MAX;
+    for(int x : nums)
+    {
+        x *= (x&1)? 2 : 1;
+        mn = min(mn, x);
+        pq.push(x);
+    }
+
+    int ans = pq.top() - mn;
+    while(pq.top()&1^1)
+    {
+        int x = pq.top();
+        pq.pop();
+
+        x >>= 1;
+        mn = min(mn, x);
+        pq.push(x);
+        ans = min(ans, pq.top() - mn);
+    }
+
+    return ans;
+}
