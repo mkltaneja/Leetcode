@@ -666,3 +666,16 @@ int minimumDeviation(vector<int>& nums)
 
     return ans;
 }
+
+// DAY 25 (121. Best Time to Buy and Sell Stock)===============================================================================
+
+int maxProfit(vector<int>& prices) 
+{
+    int minBuy = INT_MAX, ans = 0;
+    for(int x : prices)
+    {
+        ans = max(ans, x - minBuy);
+        minBuy = min(minBuy, x);
+    }
+    return ans;
+}
