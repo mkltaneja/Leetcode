@@ -704,3 +704,76 @@ int minDistance(string word1, string word2)
 
     return dp[n][m];
 }
+
+// DAY 27 (427. Construct Quad Tree)===============================================================================
+
+/*
+// Definition for a QuadTree node.
+class Node {
+public:
+    bool val;
+    bool isLeaf;
+    Node* topLeft;
+    Node* topRight;
+    Node* bottomLeft;
+    Node* bottomRight;
+    
+    Node() {
+        val = false;
+        isLeaf = false;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf, Node* _topLeft, Node* _topRight, Node* _bottomLeft, Node* _bottomRight) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = _topLeft;
+        topRight = _topRight;
+        bottomLeft = _bottomLeft;
+        bottomRight = _bottomRight;
+    }
+};
+*/
+
+class Solution {
+public:
+
+    Node* dfs(int rowSt, int colSt, int rowEnd, int colEnd, int x, vector<vector<int>> &grid)
+    {
+        if(x == 1)
+            return new Node(grid[rowSt][colSt], true);
+        
+        int rowMid = (rowSt + rowEnd) / 2;
+        int colMid = (colSt + colEnd) / 2;
+        Node* topLeft = dfs(rowSt, colSt, rowMid, colMid, x/2, grid);
+        Node* topRight = dfs(rowSt, colMid, rowMid, colEnd, x/2, grid);
+        Node* bottomLeft = dfs(rowMid, colSt, rowEnd, colMid, x/2, grid);
+        Node* bottomRight = dfs(rowMid, colMid, rowEnd, colEnd, x/2, grid);
+
+        int tlVal = topLeft->isLeaf? topLeft->val : 2;
+        int trVal = topRight->isLeaf? topRight->val : 3;
+        int blVal = bottomLeft->isLeaf? bottomLeft->val : 4;
+        int brVal = bottomRight->isLeaf? bottomRight->val : 5;
+
+        if(tlVal == trVal && tlVal == blVal && tlVal == brVal)
+            return new Node(tlVal, true);
+        return new Node(0, false, topLeft, topRight, bottomLeft, bottomRight);
+    }
+
+    Node* construct(vector<vector<int>>& grid) 
+    {
+        return dfs(0, 0, grid.size(), grid.size(), grid.size(), grid);
+    }
+};
