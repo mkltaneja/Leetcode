@@ -777,3 +777,26 @@ public:
         return dfs(0, 0, grid.size(), grid.size(), grid.size(), grid);
     }
 };
+
+// DAY 28 (652. Find Duplicate Subtrees)===================================================================================
+
+vector<TreeNode*> ans;
+unordered_map<string, int> vis;
+string dfs(TreeNode* node)
+{
+    if(!node) return "";
+
+    string curr = "";
+    curr += "(" + dfs(node->left) + to_string(node->val) + dfs(node->right) + ")";
+
+    if(vis[curr]++ == 1)
+        ans.push_back(node);
+
+    return curr;
+}
+
+vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) 
+{
+    dfs(root);
+    return ans;
+}
