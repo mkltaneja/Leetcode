@@ -72,3 +72,29 @@ vector<int> sortArray(vector<int>& nums)
     heapSort(nums);
     return nums;
 }
+
+// DAY 2 (443. String Compression)=======================================================================================
+
+int compress(vector<char>& chars)
+{
+    int p = 0, i = 0, n = chars.size();
+    while(i < n)
+    {
+        int j = i;
+        while(j < n && chars[j] == chars[i]) j++;
+        chars[p++] = chars[i];
+        int len = j-i;
+        if(len > 1)
+        {
+            string lenstr = to_string(len);
+            int k = 0;
+            while(k < lenstr.size())
+                chars[p++] = lenstr[k++];
+        }
+        i = j;
+    }
+    while(chars.size() > p)
+        chars.pop_back();
+
+    return chars.size();
+}
