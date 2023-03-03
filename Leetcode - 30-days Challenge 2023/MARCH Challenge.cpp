@@ -98,3 +98,26 @@ int compress(vector<char>& chars)
 
     return chars.size();
 }
+
+// DAY 3 (28. Find the Index of the First Occurrence in a String)=============================================================================
+
+int strStr(string haystack, string needle) 
+{
+    string comb = needle + "#" + haystack;
+    int n = comb.size();
+    vector<int> zarray(n);
+    int i = 1, len = 0;
+    while(i < n)
+    {
+        if(comb[i] == comb[len]) 
+            zarray[i++] = ++len;
+        else
+        {
+            if(len) len = zarray[len-1];
+            else i++;
+        }
+        if(len == needle.size()) return i - 2*needle.size() - 1;
+    }
+
+    return -1;
+}
