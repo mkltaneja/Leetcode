@@ -121,3 +121,22 @@ int strStr(string haystack, string needle)
 
     return -1;
 }
+
+// DAY 4 (2444. Count Subarrays With Fixed Bounds)========================================================================================
+
+long long countSubarrays(vector<int>& nums, int minK, int maxK) 
+{
+    long long ans = 0, lastmx = -1, lastmn = -1, p = -1;
+    for(int i = 0; i < nums.size(); i++)
+    {
+        if(nums[i] == maxK)
+            lastmx = i;
+        if(nums[i] == minK)
+            lastmn = i;
+        if(nums[i] > maxK || nums[i] < minK)
+            lastmx = lastmn = p = i;
+        int mni = min(lastmx, lastmn);
+        ans += mni - p;
+    }
+    return ans;
+}
