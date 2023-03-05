@@ -142,7 +142,7 @@ long long countSubarrays(vector<int>& nums, int minK, int maxK)
 }
 
 // DAY 5 (1345. Jump Game IV)=================================================================================================
-    
+
 int minJumps(vector<int>& arr) 
 {
     unordered_map<int,vector<int>> mp;
@@ -152,8 +152,8 @@ int minJumps(vector<int>& arr)
 
     vector<int> vis(n,0);
     queue<int> que;
-    que.push(n-1);
-    vis[n-1] = 1;
+    que.push(0);
+    vis[0] = 1;
     int ans = 0;
     while(!que.empty())
     {
@@ -163,18 +163,18 @@ int minJumps(vector<int>& arr)
             int u = que.front();
             que.pop();
 
-            if(u == 0) return ans;
+            if(u == n-1) return ans;
 
-            for(int v : mp[arr[u]])
+            for(int &v : mp[arr[u]])
             {
                 if(!vis[v])
                 {
-                    if(v == 0) return ans + 1;
+                    if(v == n-1) return ans + 1;
                     que.push(v);
                     vis[v] = 1;
                 }
             }
-
+            mp[arr[u]].clear();
             for(int d : {-1, 1})
             {
                 if(u + d >= 0 && u + d < n && !vis[u+d])
