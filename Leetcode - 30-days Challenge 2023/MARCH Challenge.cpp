@@ -190,3 +190,20 @@ int minJumps(vector<int>& arr)
 
     return ans;
 }
+
+// DAY 6 (1539. Kth Missing Positive Number)=================================================================================
+
+int findKthPositive(vector<int>& arr, int k) 
+{
+    int lo = 0, hi = arr.size();
+    while(lo < hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+
+        if(arr[mid] - (mid + 1) < k)
+            lo = mid + 1;
+        else hi = mid;
+    }
+
+    return lo + k;
+}
