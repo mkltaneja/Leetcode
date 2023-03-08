@@ -207,3 +207,29 @@ int findKthPositive(vector<int>& arr, int k)
 
     return lo + k;
 }
+
+// DAY 7 (875. Koko Eating Bananas)=========================================================================================
+
+int checkTime(vector<int> &piles, int k)
+{
+    int time = 0;
+    for(int x : piles)
+        time += (x + k - 1) / k;
+    return time;
+}
+
+int minEatingSpeed(vector<int>& piles, int h) 
+{
+    int n = piles.size();
+    int lo = 1, hi = *max_element(piles.begin(), piles.end());
+
+    while(lo < hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        int time = checkTime(piles, mid);
+        if(time <= h) hi = mid;
+        else lo = mid + 1;
+    }
+
+    return lo;
+}
