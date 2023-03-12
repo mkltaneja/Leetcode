@@ -233,3 +233,34 @@ int minEatingSpeed(vector<int>& piles, int h)
 
     return lo;
 }
+
+// DAY 12 (23. Merge k Sorted Lists)=========================================================================================
+
+ListNode* mergeKLists(vector<ListNode*>& lists) 
+{
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+    int k = lists.size();
+    for(int i = 0; i < k; i++)
+    {
+        if(!lists[i]) continue;
+        pq.push({lists[i]->val, i});
+    }
+
+    ListNode* head = new ListNode(INT_MIN), *itr = head;
+    while(!pq.empty())
+    {
+        int x = pq.top().first;
+        int i = pq.top().second;
+        pq.pop();
+
+        itr->next = new ListNode(x);
+        itr = itr->next;
+        if(lists[i]->next)
+        {
+            lists[i] = lists[i]->next;
+            pq.push({lists[i]->val, i});
+        }
+    }
+
+    return head->next;
+}
