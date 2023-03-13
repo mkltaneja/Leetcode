@@ -264,3 +264,20 @@ ListNode* mergeKLists(vector<ListNode*>& lists)
 
     return head->next;
 }
+
+// DAY 13 (101. Symmetric Tree)===============================================================================================
+
+bool isSymmetricHelper(TreeNode* lptr, TreeNode* rptr)
+{
+    if(!lptr && !rptr) return true;
+    if(!lptr || !rptr) return false;
+    if(lptr->val != rptr->val) return false;
+
+    return isSymmetricHelper(lptr->left, rptr->right)
+        && isSymmetricHelper(lptr->right, rptr->left);
+}
+
+bool isSymmetric(TreeNode* root) 
+{
+    return isSymmetricHelper(root->left, root->right);
+}
