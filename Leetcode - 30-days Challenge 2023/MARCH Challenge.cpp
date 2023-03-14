@@ -281,3 +281,25 @@ bool isSymmetric(TreeNode* root)
 {
     return isSymmetricHelper(root->left, root->right);
 }
+
+// DAY 14 (129. Sum Root to Leaf Numbers)======================================================================================
+
+int ans = 0;
+void dfs(TreeNode* node, long curr)
+{
+    if(!node) return;
+    if(!node->left && !node->right)
+    {
+        ans += curr*10 + node->val;
+        return;
+    }
+
+    dfs(node->left, curr*10 + node->val);
+    dfs(node->right, curr*10 + node->val);
+}
+
+int sumNumbers(TreeNode* root) 
+{
+    dfs(root, 0);
+    return ans;
+}
