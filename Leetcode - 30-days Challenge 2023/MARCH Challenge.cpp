@@ -303,3 +303,24 @@ int sumNumbers(TreeNode* root)
     dfs(root, 0);
     return ans;
 }
+
+// DAY 15 (958. Check Completeness of a Binary Tree)==============================================================================
+
+int countNodes(TreeNode* node)
+{
+    return node? countNodes(node->left) + countNodes(node->right) + 1 : 0;
+}
+
+bool dfs(TreeNode* node, int idx, int tot)
+{
+    if(!node) return true;
+    if(idx > tot) return false;
+
+    return dfs(node->left, 2*idx, tot) && dfs(node->right, 2*idx+1, tot);
+}
+
+bool isCompleteTree(TreeNode* root) 
+{
+    int tot = countNodes(root);
+    return dfs(root, 1, tot);
+}
