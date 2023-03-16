@@ -324,3 +324,32 @@ bool isCompleteTree(TreeNode* root)
     int tot = countNodes(root);
     return dfs(root, 1, tot);
 }
+
+// DAY 16 (106. Construct Binary Tree from Inorder and Postorder Traversal)============================================================
+
+unordered_map<int,int> mp;
+
+TreeNode* construct(int &i, int l, int r, vector<int> &post)
+{
+    if(i == -1 || l > r) return nullptr;
+
+    TreeNode* curr = new TreeNode(post[i]);
+    int x = mp[post[i--]];
+
+    if(l == r) return curr;
+
+    curr->right = construct(i, x+1, r, post);
+    curr->left = construct(i, l, x-1, post);
+
+    return curr;
+}
+
+TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) 
+{
+    int n = inorder.size();
+    for(int i = 0; i < n; i++)
+        mp[inorder[i]] = i;
+
+    int i = n-1;
+    return construct(i, 0, n-1, postorder);
+}
