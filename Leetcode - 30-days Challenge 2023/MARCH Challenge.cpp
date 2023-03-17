@@ -353,3 +353,71 @@ TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder)
     int i = n-1;
     return construct(i, 0, n-1, postorder);
 }
+
+// DAY 17 (208. Implement Trie (Prefix Tree))================================================================================
+
+class Node
+{
+    public:
+    vector<Node*> trie;
+    bool wordEnd;
+    Node()
+    {
+        trie.assign(26, nullptr);
+        this->wordEnd = false;
+    }
+};
+
+class Trie {
+public:
+
+    Node* root;
+    Trie() 
+    {
+        root = new Node();
+    }
+    
+    void insert(string word) 
+    {
+        Node* tmp = root;
+        for(char c : word)
+        {
+            if(!tmp->trie[c-'a'])
+                tmp->trie[c-'a'] = new Node();
+            tmp = tmp->trie[c-'a'];
+        }
+        tmp->wordEnd = true;
+    }
+    
+    bool search(string word) 
+    {
+        Node* tmp = root;
+        for(char c : word)
+        {
+            if(!tmp->trie[c-'a'])
+                return false;
+            tmp = tmp->trie[c-'a'];
+        }
+        return tmp->wordEnd;
+    }
+    
+    bool startsWith(string prefix) 
+    {
+        Node* tmp = root;
+        for(char c : prefix)
+        {
+            if(!tmp->trie[c-'a'])
+                return false;
+            tmp = tmp->trie[c-'a'];
+        }
+        return true;
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
