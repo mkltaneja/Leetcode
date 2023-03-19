@@ -421,3 +421,69 @@ public:
  * bool param_2 = obj->search(word);
  * bool param_3 = obj->startsWith(prefix);
  */
+
+// DAY 20 (211. Design Add and Search Words Data Structure)==============================================================================
+
+class trie
+{
+    public:
+    vector<trie*> t;
+    bool wordEnd;
+    trie()
+    {
+        this->t.assign(26, nullptr);
+        this->wordEnd = false;
+    }
+};
+
+class WordDictionary {
+public:
+
+    trie* root;
+    WordDictionary() 
+    {
+        this->root = new trie();
+    }
+    
+    void addWord(string word) 
+    {
+        trie* tmp = root;
+        for(char c : word)
+        {
+            if(!tmp->t[c-'a'])
+                tmp->t[c-'a'] = new trie();
+            tmp = tmp->t[c-'a'];
+        }
+        tmp->wordEnd = true;
+    }
+
+    bool searchHelper(int i, trie* curr, string &word)
+    {
+        if(i == word.size()) return curr->wordEnd;
+        if(word[i] != '.')
+        {
+            if(curr->t[word[i]-'a'])
+                return searchHelper(i+1, curr->t[word[i]-'a'], word);
+            else return false;
+        }
+        else 
+        {
+            for(int j = 0; j < 26; j++)
+                if(curr->t[j] && searchHelper(i+1, curr->t[j], word))
+                    return true;
+            return false;
+        }
+    }
+    
+    bool search(string word) 
+    {
+        return searchHelper(0, root, word);
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
