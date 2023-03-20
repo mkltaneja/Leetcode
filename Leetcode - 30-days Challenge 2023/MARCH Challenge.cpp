@@ -422,7 +422,49 @@ public:
  * bool param_3 = obj->startsWith(prefix);
  */
 
-// DAY 20 (211. Design Add and Search Words Data Structure)==============================================================================
+// DAY 18 (1472. Design Browser History)=============================================================================================
+
+class BrowserHistory {
+public:
+
+    vector<string> history;
+    int currPage;
+    BrowserHistory(string homepage) 
+    {
+        history.push_back(homepage);
+        currPage = 0;
+    }
+    
+    void visit(string url) 
+    {
+        while(history.size() > currPage+1)
+            history.pop_back();
+        history.push_back(url);
+        currPage++;
+    }
+    
+    string back(int steps) 
+    {
+        currPage = max(0, currPage - steps);
+        return history[currPage];
+    }
+    
+    string forward(int steps) 
+    {
+        currPage = min((int)history.size()-1, currPage + steps);
+        return history[currPage];
+    }
+};
+
+/**
+ * Your BrowserHistory object will be instantiated and called as such:
+ * BrowserHistory* obj = new BrowserHistory(homepage);
+ * obj->visit(url);
+ * string param_2 = obj->back(steps);
+ * string param_3 = obj->forward(steps);
+ */
+
+// DAY 19 (211. Design Add and Search Words Data Structure)==============================================================================
 
 class trie
 {
