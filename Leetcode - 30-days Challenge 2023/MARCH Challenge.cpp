@@ -487,3 +487,22 @@ public:
  * obj->addWord(word);
  * bool param_2 = obj->search(word);
  */
+
+// DAY 20 (605. Can Place Flowers)=====================================================================================
+
+bool canPlaceFlowers(vector<int>& flowerbed, int n) 
+{
+    int avail = 0, z = 1;
+    for(int i = 0; i < flowerbed.size(); i++)
+    {
+        if(flowerbed[i] == 0)
+            z++;
+        else 
+        {
+            avail += (z - 1) / 2;
+            z = 0;
+        }
+    }
+
+    return (avail + z/2) >= n;
+}
