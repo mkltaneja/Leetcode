@@ -548,3 +548,25 @@ bool canPlaceFlowers(vector<int>& flowerbed, int n)
 
     return (avail + z/2) >= n;
 }
+
+// DAY 21 (2348. Number of Zero-Filled Subarrays)===================================================================
+
+long long zeroFilledSubarray(vector<int>& nums) 
+{
+    int n = nums.size();
+    long long ans = 0;
+    for(int i = 0; i < n; )
+    {
+        if(nums[i] != 0)
+        {
+            i++;
+            continue;
+        }
+        int j = i;
+        while(j < n && nums[j] == 0)
+            ans += (++j) - i;
+        i = j;
+    }
+
+    return ans;
+}
