@@ -570,3 +570,39 @@ long long zeroFilledSubarray(vector<int>& nums)
 
     return ans;
 }
+
+// DAY 22 (2492. Minimum Score of a Path Between Two Cities)=======================================================
+
+vector<vector<vector<int>>> gp;
+unordered_set<int> vis;
+int minDist = INT_MAX;
+void findMinDist(int u)
+{
+    for(vector<int> &v : gp[u])
+    {
+        if(!vis.count(v[2]))
+        {
+            vis.insert(v[2]);
+            minDist = min(minDist, v[1]);
+            findMinDist(v[0]);
+        }
+    }
+}
+
+int minScore(int n, vector<vector<int>>& roads) 
+{
+    gp.resize(n+1);
+    int edgeCode = 0;
+    for(vector<int> &road : roads)
+    {
+        int u = road[0];
+        int v = road[1];
+        int w = road[2];
+        gp[u].push_back({v, w, edgeCode});
+        gp[v].push_back({u, w, edgeCode++});
+    }
+
+    findMinDist(1);
+
+    return minDist;
+}
