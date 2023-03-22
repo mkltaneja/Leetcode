@@ -573,6 +573,8 @@ long long zeroFilledSubarray(vector<int>& nums)
 
 // DAY 22 (2492. Minimum Score of a Path Between Two Cities)=======================================================
 
+// APPROACH 1 (DFS on Edges)
+
 vector<vector<vector<int>>> gp;
 unordered_set<int> vis;
 int minDist = INT_MAX;
@@ -605,4 +607,35 @@ int minScore(int n, vector<vector<int>>& roads)
     findMinDist(1);
 
     return minDist;
+}
+
+// APPROACH 2 (Using DSU) --> MUCH OPTIMIZED
+
+vector<int> par;
+int findPar(int u)
+{
+    return par[u] == u? u : findPar(par[u]);
+}
+
+int minScore(int n, vector<vector<int>>& roads) 
+{
+    par.resize(n+1);
+    for(int i = 1; i <= n; i++)
+        par[i] = i;
+    vector<int> minDist(n+1, INT_MAX);
+    for(vector<int> &road : roads)
+    {
+        int u = road[0];
+        int v = road[1];
+        int w = road[2];
+
+        int pu = findPar(u);
+        int pv = findPar(v);
+        if(pu > pv) swap(pu, pv);
+        par[pv] = pu;
+
+        minDist[pu] = min({minDist[pu], minDist[pv], w});
+    }
+
+    return minDist[findPar(n)];
 }
