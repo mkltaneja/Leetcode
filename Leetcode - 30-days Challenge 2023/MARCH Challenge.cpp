@@ -639,3 +639,32 @@ int minScore(int n, vector<vector<int>>& roads)
 
     return minDist[findPar(n)];
 }
+
+// DAY 23 (1319. Number of Operations to Make Network Connected)====================================================================
+
+vector<int> par;
+int findPar(int u)
+{
+    return par[u] = (par[u] == u)? u : findPar(par[u]);
+}
+
+int makeConnected(int n, vector<vector<int>>& connections) 
+{
+    if(connections.size() < n-1) return -1;
+    par.resize(n);
+    int ans = n - 1;
+    for(int i = 0; i < n; i++) par[i] = i;
+
+    for(vector<int> &connection : connections)
+    {
+        int p1 = findPar(connection[0]);
+        int p2 = findPar(connection[1]);
+        if(p1 == p2)
+            continue;
+        ans--;
+        if(p1 > p2) swap(p1, p2);
+        par[p2] = p1;
+    }
+
+    return ans;
+}
