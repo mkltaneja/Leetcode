@@ -668,3 +668,29 @@ int makeConnected(int n, vector<vector<int>>& connections)
 
     return ans;
 }
+
+// DAY 24 (1466. Reorder Routes to Make All Paths Lead to the City Zero)===================================================================
+
+int rev = 0;
+void dfs(int p, int u, vector<vector<vector<int>>> &gp)
+{
+    for(vector<int> &v : gp[u])
+    {
+        if(v[0] == p) continue;
+        rev += v[1];
+        dfs(u, v[0], gp);
+    }
+}
+
+int minReorder(int n, vector<vector<int>>& connections) 
+{
+    vector<vector<vector<int>>> gp(n);
+    for(vector<int> &e : connections)
+    {
+        gp[e[0]].push_back({e[1], 1}); // gp[x][2] = 1 : valid edge
+        gp[e[1]].push_back({e[0], 0}); // gp[x][2] = 0 : invalid edge
+    }
+
+    dfs(-1, 0, gp);
+    return rev;
+}
