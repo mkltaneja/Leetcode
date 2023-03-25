@@ -694,3 +694,45 @@ int minReorder(int n, vector<vector<int>>& connections)
     dfs(-1, 0, gp);
     return rev;
 }
+
+// DAY 25 (2316. Count Unreachable Pairs of Nodes in an Undirected Graph)=============================================================================
+
+vector<vector<int>> gp;
+int dfs(int u, vector<bool> &vis)
+{
+    vis[u] = true;
+    int count = 0;
+    for(int v : gp[u])
+        if(!vis[v])
+            count += dfs(v, vis);
+    return count + 1;
+}
+
+long long unreachablePairs(int tsum, vector<int> &comps)
+{
+    long long ans = 0;
+    for(int x : comps)
+    {
+        tsum -= x;
+        ans += (long long) tsum * x;
+    }
+    return ans;
+}
+
+long long countPairs(int n, vector<vector<int>>& edges) 
+{
+    vector<int> comps;
+    gp.resize(n);
+    for(vector<int> &e : edges)
+    {
+        gp[e[0]].push_back(e[1]);
+        gp[e[1]].push_back(e[0]);
+    }
+
+    vector<bool> vis(n);
+    for(int i = 0; i < n; i++)
+        if(!vis[i])
+            comps.push_back(dfs(i, vis));
+
+    return unreachablePairs(n, comps);
+}
