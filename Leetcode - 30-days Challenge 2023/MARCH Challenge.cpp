@@ -697,6 +697,8 @@ int minReorder(int n, vector<vector<int>>& connections)
 
 // DAY 25 (2316. Count Unreachable Pairs of Nodes in an Undirected Graph)=============================================================================
 
+// APPROACH 1 (DFS)
+
 vector<vector<int>> gp;
 int dfs(int u, vector<bool> &vis)
 {
@@ -735,4 +737,52 @@ long long countPairs(int n, vector<vector<int>>& edges)
             comps.push_back(dfs(i, vis));
 
     return unreachablePairs(n, comps);
+}
+
+// APPROACH 2 (DSU)
+
+vector<vector<int>> gp;
+vector<int> par;
+vector<int> parSize;
+
+int findPar(int u)
+{
+    return par[u] = (par[u] == u)? u : findPar(par[u]);
+}
+
+void unionBySize(int u, int v)
+{
+    int pu = findPar(u);
+    int pv = findPar(v);
+
+    if(pu == pv) return;
+    if(pu > pv) swap(pu, pv);
+
+    par[pv] = pu;
+    parSize[pu] += parSize[pv];
+}
+
+long long countPairs(int n, vector<vector<int>>& edges) 
+{
+    vector<int> comps;
+    gp.resize(n);
+    par.resize(n);
+    parSize.assign(n, 1);
+    for(int i = 0; i < n; i++)
+        par[i] = i;
+    for(vector<int> &e : edges)
+    {
+        gp[e[0]].push_back(e[1]);
+        gp[e[1]].push_back(e[0]);
+        unionBySize(e[0], e[1]);
+    }
+
+    long long ans = 0;
+    for(int i = 0; i < n; i++)
+    {
+        int pi = findPar(i);
+        ans += n - parSize[findPar(i)];
+    }
+
+    return ans/2;
 }
