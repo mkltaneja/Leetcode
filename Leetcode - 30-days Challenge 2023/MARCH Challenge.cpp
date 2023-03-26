@@ -786,3 +786,29 @@ long long countPairs(int n, vector<vector<int>>& edges)
 
     return ans/2;
 }
+
+// DAY 26 (2360. Longest Cycle in a Graph)============================================================================
+
+int maxCycle = -1;
+int longestCycle(vector<int>& edges) 
+{
+    int n = edges.size();
+    vector<int> visTime(n, 0);
+    int time = 1;
+    for(int u = 0; u < n; u++)
+    {
+        if(visTime[u]) continue;
+
+        int v = u;
+        int startTime = time;
+        while(v != -1 && visTime[v] == 0)
+        {
+            visTime[v] = time++;
+            v = edges[v];
+        }
+        if(v != -1 && visTime[v] >= startTime)
+            maxCycle = max(maxCycle, time - visTime[v]);
+    }
+
+    return maxCycle;
+}
