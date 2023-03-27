@@ -813,3 +813,22 @@ int longestCycle(vector<int>& edges)
     return maxCycle;
 }
 
+// DAY 27 (64. Minimum Path Sum)==============================================================================================
+
+int minPathSum(vector<vector<int>>& grid) 
+{
+    int n = grid.size(), m = grid[0].size();
+    vector<vector<int>> dp(n, vector<int>(m, 0));
+    for(int i = n-1; i >= 0; i--)
+    {
+        for(int j = m-1; j >= 0; j--)
+        {
+            int down = i == n-1? INT_MAX : dp[i+1][j];
+            int right = j == m-1? INT_MAX : dp[i][j+1];
+            int restPathMin = min(right, down);
+            dp[i][j] = grid[i][j] + (restPathMin == INT_MAX? 0 : restPathMin);
+        }
+    }
+
+    return dp[0][0];
+}
