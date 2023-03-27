@@ -234,6 +234,55 @@ int minEatingSpeed(vector<int>& piles, int h)
     return lo;
 }
 
+// DAY 10 (382. Linked List Random Node)===================================================================
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+
+    ListNode* head = nullptr;
+    int n = 0;
+    Solution(ListNode* head) 
+    {
+        this->head = head;
+        ListNode* tmp = head;
+        while(tmp)
+        {
+            n++;
+            tmp = tmp->next;
+        }
+    }
+    
+    int getRandom() 
+    {
+        int x = rand() % n;
+        ListNode* tmp = head;
+        int ans = tmp->val;
+        while(x--)
+        {
+            tmp = tmp->next;
+            ans = tmp->val;
+        }
+        
+        return ans;
+    }
+};
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution* obj = new Solution(head);
+ * int param_1 = obj->getRandom();
+ */
+
 // DAY 12 (23. Merge k Sorted Lists)=========================================================================================
 
 ListNode* mergeKLists(vector<ListNode*>& lists) 
