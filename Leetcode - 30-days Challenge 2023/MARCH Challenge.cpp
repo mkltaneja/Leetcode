@@ -234,6 +234,29 @@ int minEatingSpeed(vector<int>& piles, int h)
     return lo;
 }
 
+// DAY 9 (142. Linked List Cycle II)======================================================================
+
+ListNode *detectCycle(ListNode *head) 
+{
+    ListNode* slow = head, *fast = head;
+    while(fast && fast->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+        if(slow == fast) break;
+    }
+    if(!fast || !fast->next) return nullptr;
+
+    slow = head;
+    while(slow != fast)
+    {
+        fast = fast->next;
+        slow = slow->next;
+    }
+
+    return fast;
+}
+
 // DAY 10 (382. Linked List Random Node)===================================================================
 
 /**
