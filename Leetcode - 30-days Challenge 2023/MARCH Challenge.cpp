@@ -904,3 +904,27 @@ int minPathSum(vector<vector<int>>& grid)
 
     return dp[0][0];
 }
+
+// DAY 28 (983. Minimum Cost For Tickets)============================================================================
+
+int mincostTickets(vector<int>& days, vector<int>& costs) 
+{
+    int N = 365;
+    vector<int> minCost(N+2, 0);
+    for(int day = N, j = days.size()-1; day; day--)
+    {
+        if(j == -1 || days[j] < day)
+        {
+            minCost[day] = minCost[day+1];
+            continue;
+        }
+        int oneDayPassCost = costs[0] + ((day + 1 <= N+1)? minCost[day + 1] : 0);
+        int sevenDayPassCost = costs[1] + ((day + 7 <= N+1)? minCost[day + 7] : 0);
+        int thirtyDayPassCost = costs[2] + ((day + 30 <= N+1)? minCost[day + 30] : 0);
+
+        minCost[day] = min({oneDayPassCost, sevenDayPassCost, thirtyDayPassCost});
+        j--;
+    }
+
+    return minCost[1];
+}
