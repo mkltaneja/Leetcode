@@ -931,6 +931,8 @@ int mincostTickets(vector<int>& days, vector<int>& costs)
 
 // DAY 30 (1402. Reducing Dishes)=======================================================================================
 
+// APPROACH 1 (Using DP (Memoization)) --> time = O(n^2)
+
 int dfs(int i, int x, vector<int>& satisfaction, vector<vector<int>> &dp)
 {
     if(i == satisfaction.size()) return 0;
@@ -945,4 +947,19 @@ int maxSatisfaction(vector<int>& satisfaction)
     sort(satisfaction.begin(), satisfaction.end());
     vector<vector<int>> dp(n, vector<int>(n+1, INT_MIN));
     return dfs(0, 1, satisfaction, dp);
+}
+
+// APPROACH 2 (Mathematically) --> time = O(n)
+
+int maxSatisfaction(vector<int>& satisfaction) 
+{
+    sort(satisfaction.rbegin(), satisfaction.rend());
+    int sum = 0, ans = 0;
+    for(int x : satisfaction)
+    {
+        ans = max(ans, ans + sum + x);
+        sum += x;
+    }
+
+    return ans;
 }
