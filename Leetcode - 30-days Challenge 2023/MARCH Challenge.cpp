@@ -928,3 +928,21 @@ int mincostTickets(vector<int>& days, vector<int>& costs)
 
     return minCost[1];
 }
+
+// DAY 30 (1402. Reducing Dishes)=======================================================================================
+
+int dfs(int i, int x, vector<int>& satisfaction, vector<vector<int>> &dp)
+{
+    if(i == satisfaction.size()) return 0;
+    if(dp[i][x] != INT_MIN) return dp[i][x];
+    return dp[i][x] = max(dfs(i+1, x+1, satisfaction, dp) + x * satisfaction[i],
+                dfs(i+1, x, satisfaction, dp));
+}
+
+int maxSatisfaction(vector<int>& satisfaction) 
+{
+    int n = satisfaction.size();
+    sort(satisfaction.begin(), satisfaction.end());
+    vector<vector<int>> dp(n, vector<int>(n+1, INT_MIN));
+    return dfs(0, 1, satisfaction, dp);
+}
