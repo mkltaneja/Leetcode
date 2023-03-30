@@ -963,3 +963,28 @@ int maxSatisfaction(vector<int>& satisfaction)
 
     return ans;
 }
+
+// DAY 30 (87. Scramble String)===================================================================================================
+
+unordered_map<string,bool> dp;
+bool isScramble(string s1, string s2) 
+{
+
+    if(s1 == s2) return true;
+
+    int n = s1.size();
+    string key = s1 + " " + s2;
+    if(dp.count(key)) return dp[key];
+
+    for(int i = 1; i < s1.size(); i++)
+    {
+        if(isScramble(s1.substr(0, i), s2.substr(0, i)) && 
+            isScramble(s1.substr(i), s2.substr(i)))
+            return dp[key] = true;
+        if(isScramble(s1.substr(0, i), s2.substr(n-i)) && 
+            isScramble(s1.substr(i), s2.substr(0, n-i)))
+            return dp[key] = true;
+    }
+
+    return dp[key] = false;
+}
