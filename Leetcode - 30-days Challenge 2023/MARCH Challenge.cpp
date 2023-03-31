@@ -988,3 +988,44 @@ bool isScramble(string s1, string s2)
 
     return dp[key] = false;
 }
+
+// DAY 31 (1444. Number of Ways of Cutting a Pizza)==============================================================================
+
+int mod = 1e9 + 7;
+int dfs(int i, int j, int n, int m, int k, vector<vector<int>> &psum, vector<vector<vector<int>>> &dp)
+{
+    if(psum[i][j] == 0) return 0;
+    if(k == 0) return 1;
+    if(dp[i][j][k] != -1) return dp[i][j][k];
+
+    int ways = 0;
+    for(int ii = i+1; ii < n; ii++)
+    {
+        if(psum[i][j] - psum[ii][j] > 0)
+            ways = ways % mod + dfs(ii, j, n, m, k-1, psum, dp) % mod % mod;
+    }
+    for(int jj = j+1; jj < m; jj++)
+    {
+        if(psum[i][j] - psum[i][jj] > 0)
+            ways = ways % mod + dfs(i, jj, n, m, k-1, psum, dp) % mod % mod;
+    }
+
+    return dp[i][j][k] = ways;
+}
+
+int ways(vector<string>& pizza, int k) 
+{
+    int n = pizza.size(), m = pizza[0].size();
+    vector<vector<int>> psum(n+1, vector<int>(m+1,0));
+    for(int i = n-1; i >= 0; i--)
+    {
+        for(int j = m-1; j >= 0; j--)
+        {
+            psum[i][j] = (pizza[i][j] == 'A') + 
+                psum[i+1][j] + psum[i][j+1] - psum[i+1][j+1];
+        }
+    }
+
+    vector<vector<vector<int>>> dp(n, vector<vector<int>> (m, vector<int> (k, -1)));
+    return dfs(0, 0, n, m, k-1, psum, dp);
+}
