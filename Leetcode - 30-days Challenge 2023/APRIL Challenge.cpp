@@ -16,3 +16,23 @@ int search(vector<int>& nums, int target)
 
     return -1;
 }
+
+// DAY 2 (2300. Successful Pairs of Spells and Potions)==========================================================
+
+#define ll long long
+vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success) 
+{
+    int n = spells.size(), m = potions.size();
+    vector<int> ans(n);
+
+    sort(potions.begin(), potions.end());
+
+    for(int i = 0; i < n; i++)
+    {
+        ll req = (success + spells[i] - 1) / spells[i];
+        int lb = lower_bound(potions.begin(), potions.end(), req) - potions.begin();
+        ans[i] = m - lb;
+    }
+
+    return ans;
+}
