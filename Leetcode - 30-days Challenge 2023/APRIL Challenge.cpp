@@ -36,3 +36,21 @@ vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long
 
     return ans;
 }
+
+// DAY 3 (881. Boats to Save People)===========================================================================
+
+int numRescueBoats(vector<int>& people, int limit) 
+{
+    sort(people.begin(), people.end());
+    int lo = 0, hi = people.size()-1;
+    int boats = 0;
+    while(lo <= hi)
+    {
+        if(people[lo] + people[hi] > limit)
+            hi--;
+        else lo++, hi--;
+        boats++;
+    }
+
+    return boats;
+}
