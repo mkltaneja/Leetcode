@@ -54,3 +54,22 @@ int numRescueBoats(vector<int>& people, int limit)
 
     return boats;
 }
+
+// DAY 4 (2405. Optimal Partition of String)================================================================
+
+int partitionString(string s) 
+{
+    int subs = 1;
+    vector<int> mp(26,0);
+    for(int i = 0, j = 0; i < s.size(); i++)
+    {
+        if(mp[s[i]-'a'])
+        {
+            mp.assign(26,0);
+            subs++;
+        }
+        mp[s[i]-'a']++;
+    }
+
+    return subs;
+}
