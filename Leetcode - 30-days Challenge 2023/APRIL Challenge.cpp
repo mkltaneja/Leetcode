@@ -133,3 +133,42 @@ int closedIsland(vector<vector<int>>& grid)
 
     return ans;
 }
+
+// DAY 7 (1020. Number of Enclaves)============================================================================
+
+int n, m;
+int dfs(int i, int j, bool &canReachBoundary, vector<vector<int>> &grid)
+{
+    if(i == -1 || j == -1 || i == n || j == m)
+    {
+        canReachBoundary = true;
+        return 0;
+    }
+    if(!grid[i][j]) return 0;
+
+    grid[i][j] = 0;
+
+    return dfs(i+1, j, canReachBoundary, grid) + 
+            dfs(i, j+1, canReachBoundary, grid) + 
+            dfs(i-1, j, canReachBoundary, grid) + 
+            dfs(i, j-1, canReachBoundary, grid) + 1;
+}
+
+int numEnclaves(vector<vector<int>>& grid) 
+{
+    n = grid.size(), m = grid[0].size();
+
+    int cells = 0;
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(!grid[i][j]) continue;
+            bool canReachBoundary = false;
+            int count = dfs(i, j, canReachBoundary,  grid);
+            cells += canReachBoundary? 0 : count;
+        }
+    }
+
+    return cells;
+}
