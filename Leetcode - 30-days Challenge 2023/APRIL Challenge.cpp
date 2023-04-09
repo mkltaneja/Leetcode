@@ -215,3 +215,43 @@ public:
         return root;
     }
 };
+
+// DAY 9 (1857. Largest Color Value in a Directed Graph)================================================================
+
+int largestPathValue(string colors, vector<vector<int>>& edges) 
+{
+    int n = colors.size();
+    vector<int> inDeg(n,0);
+    vector<vector<int>> gp(n);
+    for(vector<int> &e : edges)
+    {
+        gp[e[0]].push_back(e[1]);
+        inDeg[e[1]]++;
+    }
+
+    queue<int> que;
+    vector<vector<int>> dp(n, vector<int> (26, 0));
+    for(int i = 0; i < n; i++)
+        if(inDeg[i] == 0)
+            que.push(i);
+
+    int visCnt = 0;
+    int maxColor = 0;
+    while(!que.empty())
+    {
+        int u = que.front();
+        que.pop();
+        visCnt++;
+        maxColor = max(maxColor, ++dp[u][colors[u]-'a']);
+
+        for(int v : gp[u])
+        {
+            for(int c = 0; c < 26; c++)
+                dp[v][c] = max(dp[v][c], dp[u][c]);
+            if(--inDeg[v] == 0)
+                que.push(v);
+        }
+    }
+
+    return visCnt == n? maxColor : -1;
+}
