@@ -255,3 +255,28 @@ int largestPathValue(string colors, vector<vector<int>>& edges)
 
     return visCnt == n? maxColor : -1;
 }
+
+// DAY 10 (20. Valid Parentheses)================================================================================
+
+bool isValid(string s) 
+{
+    stack<char> st;
+    for(char &c : s)
+    {
+        if(c == '(' || c == '{' || c == '[')
+            st.push(c);
+        else 
+        {
+            if(st.empty()) return false;
+            if(c == ')' && st.top() != '(')
+                return false;
+            if(c == '}' && st.top() != '{')
+                return false;
+            if(c == ']' && st.top() != '[')
+                return false;
+            st.pop();
+        }
+    }
+
+    return st.empty();
+}
