@@ -302,3 +302,32 @@ string removeStars(string s)
     reverse(ans.begin(), ans.end());
     return ans;
 }
+
+// DAY 12 (71. Simplify Path)=================================================================================
+
+string simplifyPath(string path) 
+{
+    int n = path.size();
+    vector<string> st;
+    for(int i = 0; i < n; i++)
+    {
+        int j = i;
+        string curr = "";
+        while(j < n && path[j] != '/')
+            curr += path[j++];
+
+        if(curr == "..")
+        {
+            if(!st.empty())
+                st.pop_back();
+        }
+        else if(!curr.empty() && curr != ".")
+            st.push_back(curr);
+        i = j;
+    }
+    string ans = "";
+    for(string &s : st)
+        ans += "/" + s;
+
+    return ans.empty()? "/" : ans;
+}
