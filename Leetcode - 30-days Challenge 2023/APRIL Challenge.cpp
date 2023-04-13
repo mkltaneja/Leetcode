@@ -331,3 +331,22 @@ string simplifyPath(string path)
 
     return ans.empty()? "/" : ans;
 }
+
+// DAY 13 (946. Validate Stack Sequences)==========================================================================
+
+bool validateStackSequences(vector<int>& pushed, vector<int>& popped) 
+{
+    int n = pushed.size();
+    stack<int> st;
+    for(int i = 0, j = 0; i < n && j < n; i++)
+    {
+        st.push(pushed[i]);
+        while(!st.empty() && j < n && st.top() == popped[j])
+        {
+            st.pop();
+            j++;
+        }
+    }
+
+    return st.empty();
+}
