@@ -350,3 +350,27 @@ bool validateStackSequences(vector<int>& pushed, vector<int>& popped)
 
     return st.empty();
 }
+
+// DAY 14 (516. Longest Palindromic Subsequence)=====================================================================
+
+int longestPalindromeSubseq(string s) 
+{
+    int n = s.size();
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+    for(int len = 1; len <= n; len++)
+    {
+        for(int i = 0, j = len-1; j < n; i++, j++)
+        {
+            if(len == 1)
+            {
+                dp[i][j] = 1;
+                continue;
+            }
+            int x = i+1 < n? dp[i+1][j] : 0;
+            int y = j? dp[i][j-1] : 0;
+            int z = (i+1 < n && j) && (s[i] == s[j])? dp[i+1][j-1] + 2 : 0;
+            dp[i][j] = max({x, y, z});
+        }
+    }
+    return dp[0][n-1];
+}
