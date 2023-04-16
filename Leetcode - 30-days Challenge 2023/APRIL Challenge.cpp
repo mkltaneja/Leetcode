@@ -397,3 +397,27 @@ int maxValueOfCoins(vector<vector<int>>& piles, int k)
     vector<vector<int>> dp(piles.size(), vector<int>(k+1, -1));
     return dfs(0, k, piles, dp);
 }
+
+// DAY 16 (1639. Number of Ways to Form a Target String Given a Dictionary)=======================================================
+
+int mod = 1e9 + 7;
+
+int numWays(vector<string>& words, string target) 
+{
+    int n = words[0].size(), m = target.size();
+    vector<vector<int>> charCnt(n, vector<int>(26, 0));
+
+    vector<int> dp(m+1, 0);
+    dp[0] = 1;
+    for(string &s : words)
+        for(int i = 0; i < n; i++)
+            charCnt[i][s[i]-'a']++;
+
+    for(int i = 0; i < n; i++)
+        for(int j = m-1; j >= 0; j--)
+            dp[j+1] = ((dp[j+1] % mod) + 
+            ((long)dp[j] % mod) * 
+            (charCnt[i][target[j]-'a'] % mod)) % mod;
+
+    return dp[m];
+}
