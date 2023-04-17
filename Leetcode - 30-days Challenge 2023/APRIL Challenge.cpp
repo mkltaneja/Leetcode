@@ -421,3 +421,23 @@ int numWays(vector<string>& words, string target)
 
     return dp[m];
 }
+
+// DAY 17 (1431. Kids With the Greatest Number of Candies)=========================================================================
+
+vector<bool> kidsWithCandies(vector<int>& candies, int extraCandies) 
+{
+    int maxCandies = 0;
+    for(int iCandies : candies)
+        maxCandies = max(maxCandies, iCandies);
+
+    vector<bool> ans;
+    for(int iCandies : candies)
+    {
+        if(iCandies + extraCandies >= maxCandies)
+            ans.push_back(true);
+        else
+            ans.push_back(false);
+    }
+
+    return ans;
+}
