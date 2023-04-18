@@ -441,3 +441,16 @@ vector<bool> kidsWithCandies(vector<int>& candies, int extraCandies)
 
     return ans;
 }
+
+// DAY 18 (1768. Merge Strings Alternately)=================================================================================
+
+string mergeAlternately(string word1, string word2) 
+{
+    int i = 0, j = 0, k = 0, n = word1.size(), m = word2.size();
+    string ans = "";
+    while(i < n && j < m)
+        ans += ((k++) & 1)? word2[j++] : word1[i++];
+    ans += i < n? word1.substr(i, n) : word2.substr(j, m);
+
+    return ans;
+}
