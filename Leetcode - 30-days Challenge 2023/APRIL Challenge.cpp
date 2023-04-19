@@ -454,3 +454,34 @@ string mergeAlternately(string word1, string word2)
 
     return ans;
 }
+
+// DAY 19 (1372. Longest ZigZag Path in a Binary Tree)======================================================================
+
+// APPROACH 1 (Using DP)
+
+map<pair<TreeNode*, int>, int> dp;
+
+int zigZag(TreeNode* node, int dir)
+{
+    if(dp.count({node, dir})) return dp[{node, dir}];
+
+    return !node? 0 : dp[{node, dir}] = 
+        ((dir == 1? zigZag(node->left, -1) : zigZag(node->right, 1)) + 1);
+}
+
+int maxLen = 0;
+void dfs(TreeNode* node)
+{
+    if(!node) return;
+
+    maxLen = max({maxLen, zigZag(node->left, -1), zigZag(node->right, 1)});
+
+    dfs(node->left);
+    dfs(node->right);
+}
+
+int longestZigZag(TreeNode* root) 
+{
+    dfs(root);
+    return maxLen;
+}
