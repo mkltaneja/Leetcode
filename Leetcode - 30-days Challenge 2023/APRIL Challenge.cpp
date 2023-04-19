@@ -457,7 +457,7 @@ string mergeAlternately(string word1, string word2)
 
 // DAY 19 (1372. Longest ZigZag Path in a Binary Tree)======================================================================
 
-// APPROACH 1 (Using DP)
+// APPROACH 1 (Using DP) --> Amortized O(N)
 
 map<pair<TreeNode*, int>, int> dp;
 
@@ -484,4 +484,24 @@ int longestZigZag(TreeNode* root)
 {
     dfs(root);
     return maxLen;
+}
+
+// APPROACH 2 (Simple DFS) --> O(N) [OPTIMZIED]
+
+int ans = 0;
+int dfs(TreeNode* node, bool takeLeftAns)
+{
+    if(!node) return -1;
+
+    int lans = dfs(node->left, false) + 1;
+    int rans = dfs(node->right, true) + 1;
+    ans = max({ans, lans, rans});
+
+    return takeLeftAns? lans : rans;
+}
+
+int longestZigZag(TreeNode* root) 
+{
+    dfs(root, true);
+    return ans;
 }
