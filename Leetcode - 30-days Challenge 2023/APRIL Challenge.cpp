@@ -505,3 +505,31 @@ int longestZigZag(TreeNode* root)
     dfs(root, true);
     return ans;
 }
+
+// DAY 20 (662. Maximum Width of Binary Tree)===================================================================================
+
+#define f first
+#define s second
+#define ull unsigned long long
+
+unordered_map<int,ull> minLeft;
+ull maxWidth = 0;
+
+void dfs(int d, ull x, TreeNode* node)
+{
+    if(!node) return;
+
+    if(!minLeft.count(d))
+        minLeft[d] = x;
+
+    maxWidth = max(maxWidth, x - minLeft[d] + 1);
+
+    dfs(d+1, 2*x, node->left);
+    dfs(d+1, 2*x+1, node->right);
+}
+
+int widthOfBinaryTree(TreeNode* root) 
+{
+    dfs(0, 0, root);
+    return maxWidth;
+}
