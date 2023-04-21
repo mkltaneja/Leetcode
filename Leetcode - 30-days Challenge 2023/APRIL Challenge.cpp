@@ -533,3 +533,28 @@ int widthOfBinaryTree(TreeNode* root)
     dfs(0, 0, root);
     return maxWidth;
 }
+
+// DAY 21 (879. Profitable Schemes)=============================================================================================
+
+int mod = 1e9 + 7;
+int dfs(int i, int prof, int n, int minP, vector<int>& group, vector<int>& profit, vector<vector<vector<int>>> &dp)
+{
+    if(n < 0) return 0;
+
+    if(i == group.size()) return prof >= minP;
+    if(dp[i][prof][n] != -1)
+        return dp[i][prof][n];
+
+    return 
+        dp[i][prof][n] = 
+        ((dfs(i+1, prof + min(minP - prof, profit[i]), n - group[i], 
+            minP, group, profit, dp)) % mod
+        + (dfs(i+1, prof, n, minP, group, profit, dp) % mod)) % mod;
+}
+
+int profitableSchemes(int n, int minProfit, vector<int>& group, vector<int>& profit) 
+{
+    int m = group.size();
+    vector<vector<vector<int>>> dp(m, vector<vector<int>> (minProfit+1, vector<int> (n+1, -1)));
+    return dfs(0, 0, n, minProfit, group, profit, dp);
+}
