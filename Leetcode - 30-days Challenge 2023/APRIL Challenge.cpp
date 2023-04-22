@@ -558,3 +558,31 @@ int profitableSchemes(int n, int minProfit, vector<int>& group, vector<int>& pro
     vector<vector<vector<int>>> dp(m, vector<vector<int>> (minProfit+1, vector<int> (n+1, -1)));
     return dfs(0, 0, n, minProfit, group, profit, dp);
 }
+
+// DAY 22 (1312. Minimum Insertion Steps to Make a String Palindrome)==============================================================
+
+int minInsertions(string s) 
+{
+    int n = s.size();
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+    int maxComSubseq = 1;
+    for(int len = 1; len <= n; len++)
+    {
+        for(int i = 0, j = len-1; j < n; i++, j++)
+        {
+            if(len == 1)
+            {
+                dp[i][j] = 1;
+                continue;
+            }
+            int exci = dp[i+1][j];
+            int excj = dp[i][j-1];
+            int excij = s[i] == s[j]? (dp[i+1][j-1] + 2) : 0;
+
+            dp[i][j] = max({exci, excj, excij});
+            maxComSubseq = max(maxComSubseq, dp[i][j]);
+        }
+    }
+
+    return n - maxComSubseq;
+}
