@@ -609,3 +609,25 @@ int numberOfArrays(string s, int k)
 
     return dp[0];
 }
+
+// DAY 24 (1046. Last Stone Weight)===================================================================================
+
+int lastStoneWeight(vector<int>& stones) 
+{
+    priority_queue<int> pq;
+    for(int stone : stones)
+        pq.push(stone);
+
+    while(pq.size() > 1)
+    {
+        int stone1 = pq.top();
+        pq.pop();
+        int stone2 = pq.top();
+        pq.pop();
+
+        int rem = stone1 - stone2;
+        pq.push(rem);
+    }
+
+    return pq.top();
+}
