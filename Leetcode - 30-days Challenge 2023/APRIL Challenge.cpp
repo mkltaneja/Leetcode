@@ -631,3 +631,41 @@ int lastStoneWeight(vector<int>& stones)
 
     return pq.top();
 }
+
+// DAY 25 (2336. Smallest Number in Infinite Set)==================================================================
+
+class SmallestInfiniteSet {
+public:
+
+    set<int> st;
+    int last = 1;
+    SmallestInfiniteSet() 
+    {
+        
+    }
+    
+    int popSmallest() 
+    {
+        if(st.empty()) st.insert(last++);
+
+        int ans = *st.begin();
+        st.erase(st.begin());
+        return ans;
+    }
+    
+    void addBack(int num) 
+    {
+        if(num <= last && !st.count(num))
+        {
+            if(num == last) last++;
+            st.insert(num);
+        }
+    }
+};
+
+/**
+ * Your SmallestInfiniteSet object will be instantiated and called as such:
+ * SmallestInfiniteSet* obj = new SmallestInfiniteSet();
+ * int param_1 = obj->popSmallest();
+ * obj->addBack(num);
+ */
