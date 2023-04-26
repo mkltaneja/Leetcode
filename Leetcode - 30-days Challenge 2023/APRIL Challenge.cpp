@@ -669,3 +669,21 @@ public:
  * int param_1 = obj->popSmallest();
  * obj->addBack(num);
  */
+
+// DAY 26 (258. Add Digits)=========================================================================================
+
+int addDigits(int num) 
+{
+    while(num/10)
+    {
+        int sum = 0;
+        while(num)
+        {
+            sum += num % 10;
+            num /= 10;
+        }
+        num = sum;
+    }
+
+    return num;
+}
