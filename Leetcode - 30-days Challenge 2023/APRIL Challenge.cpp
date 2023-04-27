@@ -687,3 +687,10 @@ int addDigits(int num)
 
     return num;
 }
+
+// DAY 27 (319. Bulb Switcher)===================================================================================
+
+int bulbSwitch(int n) 
+{
+    return sqrt(n);
+}
