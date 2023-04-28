@@ -694,3 +694,40 @@ int bulbSwitch(int n)
 {
     return sqrt(n);
 }
+
+// DAY 28 (839. Similar String Groups)=============================================================================
+
+bool areSimilar(string &s, string &t)
+{
+    int difCnt = 0;
+    for(int i = 0; i < s.size(); i++)
+        if(s[i] != t[i])
+            difCnt++;
+    return (difCnt == 0 || difCnt == 2);
+}
+
+void dfs(int i, vector<string> &strs, vector<bool> &vis)
+{
+    vis[i] = true;
+    for(int j = 0; j < strs.size(); j++)
+    {
+        if(vis[j]) continue;
+        if(areSimilar(strs[i], strs[j]))
+            dfs(j, strs, vis);
+    }
+}
+
+int numSimilarGroups(vector<string>& strs) 
+{
+    int n = strs.size();
+    vector<bool> vis(n, false);
+    int groups = 0;
+    for(int i = 0; i < n; i++)
+    {
+        if(vis[i]) continue;
+        groups++;
+        dfs(i, strs, vis);
+    }
+
+    return groups;
+}
