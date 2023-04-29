@@ -731,3 +731,67 @@ int numSimilarGroups(vector<string>& strs)
 
     return groups;
 }
+
+// DAY 29 (1697. Checking Existence of Edge Length Limited Paths)=========================================================================
+
+class DSU
+{
+    public:
+
+    vector<int> par;
+    vector<int> rank;
+    int n;
+    DSU(int n)
+    {
+        this->n = n;
+        this->par.resize(n);
+        this->rank.assign(n, 1);
+        for(int i = 0; i < n; i++)
+            par[i] = i;
+    }
+
+    int findPar(int u)
+    {
+        return par[u] = par[u] == u? u : findPar(par[u]);
+    }
+
+    void _union(int u, int v)
+    {
+        int pu = findPar(u);
+        int pv = findPar(v);
+
+        if(pu == pv) return;
+
+        if(rank[pu] > rank[pv])
+            par[pv] = pu;
+        else par[pu] = pv;
+        rank[pu] += (rank[pu] == rank[pv]);
+    }
+};
+
+vector<bool> distanceLimitedPathsExist(int n, vector<vector<int>>& edgeList, vector<vector<int>>& queries) 
+{
+    DSU dsu(n);
+    for(int i = 0; i < queries.size(); i++)
+        queries[i].push_back(i);
+
+    sort(queries.begin(), queries.end(), [](vector<int> &a, vector<int> &b){
+        return a[2] < b[2];
+    });
+    sort(edgeList.begin(), edgeList.end(), [](vector<int> &a, vector<int> &b){
+        return a[2] < b[2];
+    });
+
+    int i = 0;
+    vector<bool> ans(queries.size(), false);
+    for(vector<int> &q : queries)
+    {
+        while(i < edgeList.size() && edgeList[i][2] < q[2])
+            dsu._union(edgeList[i][0], edgeList[i++][1]);
+
+        if(dsu.findPar(q[0]) == dsu.findPar(q[1]))
+            ans[q[3]] = true;
+    }
+
+    return ans;
+}
