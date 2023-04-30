@@ -795,3 +795,93 @@ vector<bool> distanceLimitedPathsExist(int n, vector<vector<int>>& edgeList, vec
 
     return ans;
 }
+
+// DAY 30 (1579. Remove Max Number of Edges to Keep Graph Fully Traversable)=============================================================
+
+class DSU
+{
+    public:
+    int n;
+    vector<int> par;
+    vector<int> parSize;
+    DSU(int n)
+    {
+        this->n = n;
+        this->par.assign(n, 0);
+        this->parSize.assign(n, 1);
+
+        for(int i = 0; i < n; i++)
+            par[i] = i;
+    }
+
+    int findPar(int u)
+    {
+        return par[u] = par[u] == u? u : findPar(par[u]);
+    }
+
+    void merge(int pu, int pv)
+    {
+        if(parSize[pu] > parSize[pv])
+        {
+            par[pv] = pu;
+            parSize[pu] += parSize[pv];
+        }
+        else
+        {
+            par[pu] = pv;
+            parSize[pv] += parSize[pu];
+        }
+    }
+};
+
+int maxNumEdgesToRemove(int n, vector<vector<int>>& edges) 
+{
+    DSU dsuBob(n+1);
+    DSU dsuAlice(n+1);
+    int rem = 0;
+    for(auto &e : edges)
+    {
+        int t = e[0];
+        int u = e[1];
+        int v = e[2];
+
+        if(t != 3) continue;
+
+        int pu = dsuBob.findPar(u);
+        int pv = dsuBob.findPar(v);
+
+        if(pu == pv) rem++;
+        else 
+        {
+            dsuBob.merge(pu, pv);
+            dsuAlice.merge(pu, pv);
+        }                
+    }
+
+    for(auto &e : edges)
+    {
+        int t = e[0];
+        int u = e[1];
+        int v = e[2];
+
+        if(t == 1)
+        {
+            int pu = dsuBob.findPar(u);
+            int pv = dsuBob.findPar(v);
+
+            if(pu == pv) rem++;
+            else dsuBob.merge(pu, pv);
+        }
+        else if(t == 2)
+        {
+            int pu = dsuAlice.findPar(u);
+            int pv = dsuAlice.findPar(v);
+
+            if(pu == pv) rem++;
+            else dsuAlice.merge(pu, pv);
+        }
+    }
+
+    return (dsuBob.parSize[dsuBob.findPar(1)] == n && 
+        dsuAlice.parSize[dsuAlice.findPar(1)] == n)? rem : -1;
+}
