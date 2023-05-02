@@ -13,3 +13,14 @@ double average(vector<int>& salary)
 
     return 1.0*sumSalary / (salary.size()-2);
 }
+
+// DAY 2 (1822. Sign of the Product of an Array)==========================================================================================
+
+int arraySign(vector<int>& nums) 
+{
+    int ans = 1;
+    for(int x : nums)
+        ans *= (x == 0)? 0 : (x > 0? 1 : -1);
+
+    return ans;
+}
