@@ -24,3 +24,26 @@ int arraySign(vector<int>& nums)
 
     return ans;
 }
+
+// DAY 3 (2215. Find the Difference of Two Arrays)==================================================================================
+
+vector<vector<int>> findDifference(vector<int>& nums1, vector<int>& nums2) 
+{
+    int n = nums1.size(), m = nums2.size();
+
+    unordered_set<int> st1, st2;
+    for(int x : nums1)
+        st1.insert(x);
+    for(int x : nums2)
+        st2.insert(x);
+
+    vector<vector<int>> answer(2);
+    for(int x : st1)
+        if(!st2.count(x))
+            answer[0].push_back(x);
+    for(int x : st2)
+        if(!st1.count(x))
+            answer[1].push_back(x);
+
+    return answer;
+}
