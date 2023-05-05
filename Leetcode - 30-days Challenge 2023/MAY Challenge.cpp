@@ -47,3 +47,25 @@ vector<vector<int>> findDifference(vector<int>& nums1, vector<int>& nums2)
 
     return answer;
 }
+
+// DAY 5 (1456. Maximum Number of Vowels in a Substring of Given Length)=====================================================================
+
+bool isVowel(char c)
+{
+    return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
+}
+
+int maxVowels(string s, int k) 
+{
+    int ans = 0;
+    unordered_map<char,int> cnt;
+    for(int i = 0; i < s.size(); i++)
+    {
+        if(isVowel(s[i]))
+            cnt[s[i]]++;
+        if(i >= k && isVowel(s[i-k]))
+            cnt[s[i-k]]--;
+        ans = max({ans, cnt['a'] + cnt['e'] + cnt['i'] + cnt['o'] + cnt['u']});
+    }
+    return ans;
+}
