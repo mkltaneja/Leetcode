@@ -142,3 +142,29 @@ vector<int> spiralOrder(vector<vector<int>>& matrix)
 
     return ans;
 }
+
+// DAY 10 (59. Spiral Matrix II)==========================================================================================
+
+vector<vector<int>> generateMatrix(int n) 
+{
+    vector<vector<int>> ans(n, vector<int> (n));
+    int x = 1, sr = 0, sc = 0, er = n-1, ec = n-1;
+
+    while(x <= n*n)
+    {
+        for(int c = sc; c <= ec && x <= n*n; c++)
+            ans[sr][c] = x++;
+        sr++;
+        for(int r = sr; r <= er && x <= n*n; r++)
+            ans[r][ec] = x++;
+        ec--;
+        for(int c = ec; c >= sc && x <= n*n; c--)
+            ans[er][c] = x++;
+        er--;
+        for(int r = er; r >= sr && x <= n*n; r--)
+            ans[r][sc] = x++;
+        sc++;
+    }
+
+    return ans;
+}
