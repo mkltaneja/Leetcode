@@ -105,7 +105,7 @@ int numSubseq(vector<int>& nums, int target)
     return ans;
 }
 
-// DAY 9 (1572. Matrix Diagonal Sum)======================================================================================
+// DAY 8 (1572. Matrix Diagonal Sum)======================================================================================
 
 int diagonalSum(vector<vector<int>>& mat) 
 {
@@ -114,4 +114,31 @@ int diagonalSum(vector<vector<int>>& mat)
     for(int i = 0; i < n; i++)
         sum += mat[i][i] + mat[i][n-i-1];
     return sum - ((n&1)? mat[n/2][n/2] : 0);
+}
+
+// DAY 9 (54. Spiral Matrix)============================================================================================
+
+vector<int> spiralOrder(vector<vector<int>>& matrix) 
+{
+    int n = matrix.size(), m = matrix[0].size();
+    vector<int> ans(n*m);
+    int x = 1, sr = 0, sc = 0, er = n-1, ec = m-1, k = 0;
+
+    while(x <= n*m)
+    {
+        for(int c = sc; c <= ec && x <= n*m; c++, x++)
+            ans[k++] = matrix[sr][c];
+        sr++;
+        for(int r = sr; r <= er && x <= n*m; r++, x++)
+            ans[k++] = matrix[r][ec];
+        ec--;
+        for(int c = ec; c >= sc && x <= n*m; c--, x++)
+            ans[k++] = matrix[er][c];
+        er--;
+        for(int r = er; r >= sr && x <= n*m; r--, x++)
+            ans[k++] = matrix[r][sc];
+        sc++;
+    }
+
+    return ans;
 }
