@@ -168,3 +168,25 @@ vector<vector<int>> generateMatrix(int n)
 
     return ans;
 }
+
+// DAY 11 (1035. Uncrossed Lines)=================================================================================================
+
+int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2) 
+{
+    int n = nums1.size(), m = nums2.size();
+
+    vector<vector<int>> dp(n, vector<int> (m, 0));
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            int x = i? dp[i-1][j] : 0;
+            int y = j? dp[i][j-1] : 0;
+            int z = nums1[i] == nums2[j]? ((i && j)? dp[i-1][j-1] + 1 : 1) : 0;
+
+            dp[i][j] = max({x, y, z});
+        }
+    }
+
+    return dp[n-1][m-1];
+}
