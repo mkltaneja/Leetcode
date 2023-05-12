@@ -212,3 +212,19 @@ int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2)
 
     return dp[n-1][m-1];
 }
+
+// DAY 12 (2140. Solving Questions With Brainpower)====================================================================================
+
+#define ll long long
+long long mostPoints(vector<vector<int>>& questions) 
+{
+    int n = questions.size();
+    vector<ll> dp(n+1, 0);
+    for(int i = n-1; i >= 0; i--)
+    {
+        ll inc = i+questions[i][1]+1 < n? dp[i+questions[i][1]+1] : 0;
+        dp[i] = max(dp[i+1], inc + questions[i][0]);
+    }
+
+    return dp[0];
+}
