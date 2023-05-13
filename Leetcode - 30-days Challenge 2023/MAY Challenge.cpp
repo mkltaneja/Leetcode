@@ -228,3 +228,25 @@ long long mostPoints(vector<vector<int>>& questions)
 
     return dp[0];
 }
+
+// DAY 13 (2466. Count Ways To Build Good Strings)=========================================================================================
+
+int mod = 1e9 + 7;
+int countGoodStrings(int low, int high, int zero, int one) 
+{
+    vector<int> dp(high+1, 0);
+    dp[0] = 1;
+    for(int len = min(zero, one); len <= high; len++)
+    {
+        if(len >= zero)
+            dp[len] = (dp[len] % mod + dp[len-zero] % mod) % mod;
+        if(len >= one)
+            dp[len] = (dp[len] % mod + dp[len-one] % mod) % mod;
+    }
+
+    int ans = 0;
+    for(int len = low; len <= high; len++)
+        ans = (ans % mod + dp[len] % mod) % mod;
+
+    return ans;
+}
