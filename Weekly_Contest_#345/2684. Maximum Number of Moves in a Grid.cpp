@@ -1,3 +1,6 @@
+
+// APPROACH 1 (BFS)
+
 class Solution {
 public:
     
@@ -47,6 +50,32 @@ public:
             }
             ans += added;
         }
+        
+        return ans;
+    }
+};
+
+// APPROACH 2 (DFS) --> [OPTIMIZED]
+
+class Solution {
+public:
+    int maxMoves(vector<vector<int>>& grid) 
+    {
+        int n = grid.size(), m = grid[0].size();
+        vector<vector<int>> dp(n, vector<int> (m, 0));
+        for(int j = m-2; j >= 0; j--)
+        {
+            for(int i = 0; i < n; i++)
+            {
+                if(i && grid[i-1][j+1] > grid[i][j]) dp[i][j] = max(dp[i][j], dp[i-1][j+1] + 1);
+                if(grid[i][j+1] > grid[i][j]) dp[i][j] = max(dp[i][j], dp[i][j+1] + 1);
+                if(i+1 < n && grid[i+1][j+1] > grid[i][j]) dp[i][j] = max(dp[i][j], dp[i+1][j+1] + 1);
+            }
+        }
+        
+        int ans = 0;
+        for(int i = 0; i < n; i++)
+            ans = max(ans, dp[i][0]);
         
         return ans;
     }
