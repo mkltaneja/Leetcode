@@ -250,3 +250,43 @@ int countGoodStrings(int low, int high, int zero, int one)
 
     return ans;
 }
+
+// DAY 14 (1799. Maximize Score After N Operations)====================================================================================
+
+int gcd(int x, int y)
+{
+    return y % x == 0? x : gcd(y % x, x);
+}
+
+int dfs(int i, int x, int mask, vector<vector<int>> &pairs, vector<int> &dp)
+{
+    if(i == pairs.size())
+        return 0;
+    if(dp[mask] != -1) 
+        return dp[mask];
+
+    int inc = 0;
+    if(!(mask & ((1 << pairs[i][1]) | (1 << pairs[i][2]))))
+    {
+        mask ^= (1 << pairs[i][1]) | (1 << pairs[i][2]);
+        inc = dfs(0, x+1, mask, pairs, dp) + (pairs[i][0] * x);
+        mask ^= (1 << pairs[i][1]) | (1 << pairs[i][2]);
+    }
+
+    int exc = dfs(i+1, x, mask, pairs, dp);
+
+    return dp[mask] = max(inc, exc);
+}
+
+int maxScore(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<vector<int>> pairs;
+    for(int i = 0; i < n; i++)
+        for(int j = i+1; j < n; j++)
+            pairs.push_back({gcd(nums[i], nums[j]), i, j});
+
+    int mask = 0;
+    vector<int> dp(1 << 14, -1);
+    return dfs(0, 1, mask, pairs, dp);
+}
