@@ -290,3 +290,47 @@ int maxScore(vector<int>& nums)
     vector<int> dp(1 << 14, -1);
     return dfs(0, 1, mask, pairs, dp);
 }
+
+// DAY 15 (1721. Swapping Nodes in a Linked List)================================================================================
+
+ListNode* swapNodes(ListNode* head, int k) 
+{
+    int n = 0;
+    ListNode* tmp = head;
+    while(tmp)
+    {
+        tmp = tmp->next;
+        n++;
+    }
+
+    int kk = n-k+1;
+    if(k == kk) return head;
+    if(kk < k) swap(k, kk);
+
+    ListNode *prev1 = nullptr, *prev2 = nullptr;
+    ListNode *node1 = head, *node2 = head;
+
+    while(--kk)
+    {
+        if(--k > 0)
+        {
+            prev1 = node1;
+            node1 = node1->next;
+        }
+        prev2 = node2;
+        node2 = node2->next;
+    }
+
+    ListNode* tmpNxt = node1->next;
+    if(prev1) prev1->next = node2;
+    node1->next = node2->next;
+
+    if(tmpNxt != node2)
+    {
+        prev2->next = node1;
+        node2->next = tmpNxt;
+    }
+    else node2->next = node1;
+
+    return head == node1? node2 : head;
+}
