@@ -334,3 +334,24 @@ ListNode* swapNodes(ListNode* head, int k)
 
     return head == node1? node2 : head;
 }
+
+// DAY 16 (24. Swap Nodes in Pairs)===============================================================================
+
+ListNode* swapPairs(ListNode* head) 
+{
+    ListNode *prev = nullptr, *curr = head;
+    while(curr && curr->next)
+    {
+        ListNode *nxt = curr->next->next;
+
+        if(prev) prev->next = curr->next;
+        else head = curr->next;
+        curr->next->next = curr;
+        curr->next = nxt;
+
+        prev = curr;
+        curr = curr->next;
+    }
+
+    return head;
+}
