@@ -355,3 +355,48 @@ ListNode* swapPairs(ListNode* head)
 
     return head;
 }
+
+// DAY 17 (2130. Maximum Twin Sum of a Linked List)======================================================================
+
+ListNode* findMid(ListNode *head)
+{
+    ListNode *fast = head, *slow = head;
+    while(fast->next->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+    return slow;
+}
+
+ListNode* reverse(ListNode* head)
+{
+    ListNode *curr = head, *prev = nullptr, *forw = head;
+    while(curr)
+    {
+        forw = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = forw;
+    }
+    return prev;
+}
+
+int pairSum(ListNode* head) 
+{
+    ListNode *mid = findMid(head);
+    ListNode *midNxt = mid->next;
+    mid->next = nullptr;
+
+    ListNode *head2 = reverse(midNxt);
+
+    int maxSum = 0;
+    while(head)
+    {
+        maxSum = max(maxSum, head->val + head2->val);
+        head = head->next;
+        head2 = head2->next;
+    }
+
+    return maxSum;
+}
