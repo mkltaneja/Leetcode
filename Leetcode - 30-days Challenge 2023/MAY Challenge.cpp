@@ -416,3 +416,31 @@ vector<int> findSmallestSetOfVertices(int n, vector<vector<int>>& edges)
 
     return ans;
 }
+
+// DAY 19 (785. Is Graph Bipartite?)========================================================================================
+
+bool dfs(int u, int parColor, vector<int> &color, vector<vector<int>> &gp)
+{
+    if(color[u] == -1) 
+        color[u] = parColor ^ 1;
+    else if(color[u] == parColor)
+        return false;
+    else return true;
+
+    for(int v : gp[u])
+        if(!dfs(v, color[u], color, gp))
+            return false;
+    return true;
+}
+
+bool isBipartite(vector<vector<int>>& graph) 
+{
+    int n = graph.size();
+    vector<int> color(n, -1);
+
+    for(int i = 0; i < n; i++)
+        if(color[i] == -1)
+            if(!dfs(i, 0, color, graph))
+                return false;
+    return true;
+}
