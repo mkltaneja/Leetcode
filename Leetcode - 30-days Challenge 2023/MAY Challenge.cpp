@@ -484,7 +484,7 @@ vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& v
     return ans;
 }
 
-// DAY 22 (934. Shortest Bridge)=============================================================================
+// DAY 21 (934. Shortest Bridge)=============================================================================
 
 void addFirstIsland(int i, int j, int n, int m, vector<vector<int>> &grid, queue<pair<int,int>> &que)
 {        
@@ -578,4 +578,29 @@ int shortestBridge(vector<vector<int>>& grid)
         dist++;
     }
     return dist - 2;
+}
+
+// DAY 22 (347. Top K Frequent Elements)==========================================================================
+
+vector<int> topKFrequent(vector<int>& nums, int k) 
+{
+    unordered_map<int,int> cnt;
+    for(int x : nums)
+        cnt[x]++;
+
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+    for(auto p : cnt)
+    {
+        pq.push({p.second, p.first});
+        if(pq.size() > k) pq.pop();
+    }
+
+    vector<int> ans;
+    while(k--)
+    {
+        ans.push_back(pq.top().second);
+        pq.pop();
+    }
+
+    return ans;
 }
