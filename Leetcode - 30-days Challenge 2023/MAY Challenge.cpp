@@ -483,3 +483,99 @@ vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& v
 
     return ans;
 }
+
+// DAY 22 (934. Shortest Bridge)=============================================================================
+
+void addFirstIsland(int i, int j, int n, int m, vector<vector<int>> &grid, queue<pair<int,int>> &que)
+{        
+    grid[i][j] = -1;
+    int surroundedLand = 0;
+
+    if(i+1 < n)
+    {
+        if(grid[i+1][j] != 0)
+        {
+            surroundedLand++;
+            if(grid[i+1][j] == 1)
+                addFirstIsland(i+1, j, n, m, grid, que);
+        }
+    }
+    if(j+1 < m)
+    {
+        if(grid[i][j+1] != 0)
+        {
+            surroundedLand++;
+            if(grid[i][j+1] == 1)
+                addFirstIsland(i, j+1, n, m, grid, que);
+        }
+    }
+    if(i-1 >= 0)
+    {
+        if(grid[i-1][j] != 0)
+        {
+            surroundedLand++;
+            if(grid[i-1][j] == 1)
+                addFirstIsland(i-1, j, n, m, grid, que);
+        }
+    }
+    if(j-1 >= 0)
+    {
+        if(grid[i][j-1] != 0)
+        {
+            surroundedLand++;
+            if(grid[i][j-1] == 1)
+                addFirstIsland(i, j-1, n, m, grid, que);
+        }
+    }
+
+    if(surroundedLand != 4)
+        que.push({i, j});
+}
+
+int shortestBridge(vector<vector<int>>& grid) 
+{
+    int n = grid.size(), m = grid[0].size();
+    queue<pair<int,int>> que;
+    for(int i = 0; i < n; i++)
+    {
+        bool foundIsland = false;
+        for(int j = 0; j < m; j++)
+        {
+            if(grid[i][j] == 1)
+            {
+                addFirstIsland(i, j, n, m, grid, que);
+                foundIsland = true;
+                break;
+            }
+        }
+        if(foundIsland) break;
+    }
+
+    int dir[4][2] = {{1,0},{0,1},{-1,0},{0,-1}};
+    int dist = 0;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            int i = que.front().first;
+            int j = que.front().second;
+            que.pop();
+
+            for(int d = 0; d < 4; d++)
+            {
+                int r = i + dir[d][0];
+                int c = j + dir[d][1];
+
+                if(r == -1 || c == -1 || r == n || c == m || grid[r][c] == -1)
+                    continue;
+                if(grid[r][c] == 1) return dist;
+
+                que.push({r, c});
+                grid[r][c] = -1;
+            }
+        }
+        dist++;
+    }
+    return dist - 2;
+}
