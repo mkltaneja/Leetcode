@@ -636,3 +636,35 @@ public:
  * KthLargest* obj = new KthLargest(k, nums);
  * int param_1 = obj->add(val);
  */
+
+// DAY 24 (2542. Maximum Subsequence Score)==========================================================================
+
+#define ll long long
+#define f first
+#define s second
+
+long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) 
+{
+    int n = nums1.size();
+    vector<pair<int,int>> numsComb(n);
+    for(int i = 0; i < n; i++)
+        numsComb[i] = {nums2[i], nums1[i]};
+    sort(numsComb.begin(), numsComb.end());
+
+    ll maxAns = -1, sum = 0;
+    priority_queue<int, vector<int>, greater<int>> pq;
+    for(int i = n-1; i >= 0; i--)
+    {
+        sum += numsComb[i].s;
+        pq.push(numsComb[i].s);
+        if(pq.size() > k)
+        {
+            sum -= pq.top();
+            pq.pop();
+        }
+        if(pq.size() == k)
+            maxAns = max(maxAns, sum * numsComb[i].f);
+    }
+
+    return maxAns;
+}
