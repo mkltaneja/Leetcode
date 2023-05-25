@@ -668,3 +668,30 @@ long long maxScore(vector<int>& nums1, vector<int>& nums2, int k)
 
     return maxAns;
 }
+
+// DAY 25 (837. New 21 Game)===============================================================================================
+
+double new21Game(int n, int k, int maxPts) 
+{
+    if(k == 0 || n >= k + maxPts)
+        return 1.0;
+
+    vector<double> dp(n+1, 0.0);
+    dp[0] = 1.0;
+    double runningSum = dp[0];
+    for(int i = 1; i <= n; i++)
+    {
+        dp[i] = 1.0 * runningSum/maxPts;
+
+        if(i < k)
+            runningSum += dp[i];
+        if(i >= maxPts)
+            runningSum -= dp[i-maxPts];
+    }
+
+    double ans = 0.0;
+    for(int i = k; i <= n; i++)
+        ans += dp[i];
+
+    return ans;
+}
