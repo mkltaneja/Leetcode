@@ -695,3 +695,32 @@ double new21Game(int n, int k, int maxPts)
 
     return ans;
 }
+
+// DAY 26 (1140. Stone Game II)=========================================================================
+
+int dfs(int i, bool isAlice, int m, vector<int> &piles, vector<vector<vector<int>>> &dp)
+{
+    if(i == piles.size()) 
+        return 0;
+    if(dp[i][m][isAlice] != -1)
+        return dp[i][m][isAlice];
+
+    int ans = isAlice? 0 : 1e7;
+    int stones = 0;
+    for(int x = 1; x <= min(2*m, (int)piles.size()-i); x++)
+    {
+        stones += piles[i+x-1];
+        if(isAlice)
+            ans = max(ans, dfs(i+x, false, max(m, x), piles, dp) + stones);
+        else
+            ans = min(ans, dfs(i+x, true, max(m, x), piles, dp));
+    }
+    return dp[i][m][isAlice] = ans;
+}
+
+int stoneGameII(vector<int>& piles) 
+{
+    int n = piles.size();
+    vector<vector<vector<int>>> dp(n, vector<vector<int>>(n+1, vector<int> (2, -1)));
+    return dfs(0, true, 1, piles, dp);
+}
