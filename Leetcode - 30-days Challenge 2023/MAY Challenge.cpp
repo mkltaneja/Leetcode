@@ -727,6 +727,8 @@ int stoneGameII(vector<int>& piles)
 
 // DAY 27 (1406. Stone Game III)====================================================================================
 
+// APPROACH 1 (Using 2D DP)
+
 int dfs(int i, int n, bool isAlice, vector<int> &stones, vector<vector<int>> &dp)
 {
     if(i >= n) return 0;
@@ -756,4 +758,32 @@ string stoneGameIII(vector<int>& stoneValue)
     int maxBob = totSum - maxAlice;
 
     return maxAlice > maxBob? "Alice" : (maxBob > maxAlice? "Bob" : "Tie");
+}
+
+// APPROACH 2 (Using 1D DP)
+
+int dfs(int i, int n, vector<int> &stones, vector<int> &dp)
+{
+    if(i >= n) return 0;
+    if(dp[i] != -1) return dp[i];
+
+    int oneStone = dfs(i+1, n, stones, dp);
+    int twoStones = dfs(i+2, n, stones, dp);
+    int threeStones = dfs(i+3, n, stones, dp);
+
+    int tillFirst = stones[i];
+    int tillSecond = (i+1 < n? stones[i+1] : 0) + tillFirst;
+    int tillThird = (i+2 < n? stones[i+2] : 0) + tillSecond;
+
+    return dp[i] = max({tillFirst - oneStone, tillSecond - twoStones, tillThird - threeStones});
+}
+
+string stoneGameIII(vector<int>& stoneValue) 
+{
+    int n = stoneValue.size();
+    vector<int> dp(n, -1);
+
+    int ans = dfs(0, n, stoneValue, dp);
+
+    return ans > 0? "Alice" : ans < 0? "Bob" : "Tie";
 }
