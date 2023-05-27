@@ -805,3 +805,23 @@ string stoneGameIII(vector<int>& stoneValue)
 
     return dp[0] > 0? "Alice" : dp[0] < 0? "Bob" : "Tie";
 }
+
+// METHOD 3 (OPTIMIZED Tabulation )
+
+string stoneGameIII(vector<int>& stoneValue) 
+{
+    int n = stoneValue.size();
+    vector<int> dp(3, 0);
+    for(int i = n-1; i >= 0; i--)
+    {
+        int curr = stoneValue[i] - dp[(i+1) % 3];
+        if(i+2 <= n)
+            curr = max(curr, stoneValue[i] + stoneValue[i+1] - dp[(i+2) % 3]);
+        if(i+3 <= n)
+            curr = max(curr, stoneValue[i] + stoneValue[i+1] + stoneValue[i+2] - dp[(i+3) % 3]);
+
+        dp[i % 3] = curr;
+    }
+
+    return dp[0] > 0? "Alice" : dp[0] < 0? "Bob" : "Tie";
+}
