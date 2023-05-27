@@ -724,3 +724,36 @@ int stoneGameII(vector<int>& piles)
     vector<vector<vector<int>>> dp(n, vector<vector<int>>(n+1, vector<int> (2, -1)));
     return dfs(0, true, 1, piles, dp);
 }
+
+// DAY 27 (1406. Stone Game III)====================================================================================
+
+int dfs(int i, int n, bool isAlice, vector<int> &stones, vector<vector<int>> &dp)
+{
+    if(i >= n) return 0;
+    if(dp[i][isAlice] != -1) return dp[i][isAlice];
+
+    int oneStone = dfs(i+1, n, !isAlice, stones, dp);
+    int twoStones = dfs(i+2, n, !isAlice, stones, dp);
+    int threeStones = dfs(i+3, n, !isAlice, stones, dp);
+    int tillFirst = stones[i];
+    int tillSecond = (i+1 < n? stones[i+1] : 0) + tillFirst;
+    int tillThird = (i+2 < n? stones[i+2] : 0) + tillSecond;
+
+    return dp[i][isAlice] = isAlice? 
+        max({oneStone + tillFirst, twoStones + tillSecond, threeStones + tillThird})
+        : min({oneStone, twoStones, threeStones});
+}
+
+string stoneGameIII(vector<int>& stoneValue) 
+{
+    int n = stoneValue.size();
+    int totSum = 0;
+    for(int val : stoneValue)
+        totSum += val;
+
+    vector<vector<int>> dp(n, vector<int> (2, -1));
+    int maxAlice = dfs(0, n, true, stoneValue, dp);
+    int maxBob = totSum - maxAlice;
+
+    return maxAlice > maxBob? "Alice" : (maxBob > maxAlice? "Bob" : "Tie");
+}
