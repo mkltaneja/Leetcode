@@ -1,5 +1,5 @@
 
-// APPROACH 1 (Dividing strings in half and taking minimum of all 1s and all 2s)
+// APPROACH 1 (Dividing strings in half and taking minimum of all 1s and all 2s) --> O(5*n)
 
 class Solution {
 public:
@@ -37,5 +37,22 @@ public:
         ll x = makeAllSame(s1, '0') + makeAllSame(s2, '0');
         ll y = makeAllSame(s1, '1') + makeAllSame(s2, '1');
         return min(x, y);
+    }
+};
+
+// APPROACH 2 (All left same in left window) --> O(n) [OPTIMIZED]
+
+class Solution {
+public:
+    #define ll long long
+    
+    long long minimumCost(string s) 
+    {
+        int n = s.size();
+        ll minCost = 0;
+        for(int i = 0; i+1 < n; i++)
+            if(s[i] != s[i+1])
+                minCost += (ll)min(i+1, n-(i+1));
+        return minCost;
     }
 };
