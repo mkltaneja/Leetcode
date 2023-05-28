@@ -854,3 +854,36 @@ int minCost(int n, vector<int>& cuts)
     vector<vector<int>> dp(n+1, vector<int> (n+1, -1));
     return minCostCuts(0, cuts.size()-1, cuts, dp);
 }
+
+// METHOD 2 (Tabulated)
+
+int minCostCuts(int m, vector<int> &cuts, vector<vector<int>> &dp)
+{
+    for(int len = 1; len <= m; len++)
+    {
+        for(int left = 0, right = len; right < m; left++, right++)
+        {
+            if(len == 1)
+                dp[left][right] = 0;
+            else
+            {
+                int minCost = INT_MAX;
+                for(int x = left+1; x < right; x++)
+                    minCost = min(minCost, dp[left][x] + dp[x][right]);
+                dp[left][right] = minCost + (cuts[right] - cuts[left]);
+            }
+        }
+    }
+
+    return dp[0][m-1];
+}
+
+int minCost(int n, vector<int>& cuts) 
+{
+    sort(cuts.begin(), cuts.end());
+    cuts.insert(cuts.begin(), 0);
+    cuts.push_back(n);
+    int m = cuts.size();
+    vector<vector<int>> dp(m+1, vector<int> (m+1, 0));
+    return minCostCuts(m, cuts, dp);
+}
