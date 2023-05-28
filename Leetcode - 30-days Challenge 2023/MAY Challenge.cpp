@@ -825,3 +825,32 @@ string stoneGameIII(vector<int>& stoneValue)
 
     return dp[0] > 0? "Alice" : dp[0] < 0? "Bob" : "Tie";
 }
+
+// DAY 28 (1547. Minimum Cost to Cut a Stick)==================================================================
+
+// METHOD 1 (Memoized) [TLE]
+
+int minCostCuts(int left, int right, vector<int> &cuts, vector<vector<int>> &dp)
+{
+    if(left+1 == right) return 0;
+    if(dp[left][right] != -1) 
+        dp[left][right];
+
+    int ans = INT_MAX;
+    for(int x = left+1; x < right; x++)
+    {
+        ans = min(ans, 
+                minCostCuts(left, x, cuts, dp) + 
+                minCostCuts(x, right, cuts, dp));
+    }
+    return dp[left][right] = ans + (cuts[right] - cuts[left]);
+}
+
+int minCost(int n, vector<int>& cuts) 
+{
+    sort(cuts.begin(), cuts.end());
+    cuts.insert(cuts.begin(), 0);
+    cuts.push_back(n);
+    vector<vector<int>> dp(n+1, vector<int> (n+1, -1));
+    return minCostCuts(0, cuts.size()-1, cuts, dp);
+}
