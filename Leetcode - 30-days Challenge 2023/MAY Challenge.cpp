@@ -887,3 +887,33 @@ int minCost(int n, vector<int>& cuts)
     vector<vector<int>> dp(m+1, vector<int> (m+1, 0));
     return minCostCuts(m, cuts, dp);
 }
+
+// DAY 29 (1603. Design Parking System)=================================================================================
+
+class ParkingSystem {
+public:
+
+    int parkingSpace[3];
+    ParkingSystem(int big, int medium, int small) 
+    {
+        this->parkingSpace[0] = big;
+        this->parkingSpace[1] = medium;
+        this->parkingSpace[2] = small;
+    }
+    
+    bool addCar(int carType) 
+    {
+        if(parkingSpace[carType-1] > 0)
+        {
+            parkingSpace[carType-1]--;
+            return true;
+        }
+        return false;
+    }
+};
+
+/**
+ * Your ParkingSystem object will be instantiated and called as such:
+ * ParkingSystem* obj = new ParkingSystem(big, medium, small);
+ * bool param_1 = obj->addCar(carType);
+ */
