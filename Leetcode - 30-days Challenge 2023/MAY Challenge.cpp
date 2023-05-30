@@ -917,3 +917,58 @@ public:
  * ParkingSystem* obj = new ParkingSystem(big, medium, small);
  * bool param_1 = obj->addCar(carType);
  */
+
+// DAY 30 (705. Design HashSet)======================================================================================
+
+class MyHashSet {
+public:
+
+    int m = 1e5;
+    vector<vector<int>> arr;
+    MyHashSet() 
+    {
+        arr.resize(m);
+    }
+    
+    void add(int key) 
+    {
+        if(contains(key)) return;
+        
+        int hash = key % m;
+        arr[hash].push_back(key);
+    }
+    
+    void remove(int key) 
+    {
+        int hash = key % m;
+        int found = false;
+        for(int i = 0; i < arr[hash].size(); i++)
+        {
+            if(arr[hash][i] == key)
+            {
+                found = true;
+                swap(arr[hash][i], arr[hash].back());
+                break;
+            }
+        }
+
+        if(found) arr[hash].pop_back();
+    }
+    
+    bool contains(int key) 
+    {
+        int hash = key % m;
+        for(int i = 0; i < arr[hash].size(); i++)
+            if(arr[hash][i] == key)
+                return true;
+        return false;
+    }
+};
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet* obj = new MyHashSet();
+ * obj->add(key);
+ * obj->remove(key);
+ * bool param_3 = obj->contains(key);
+ */
