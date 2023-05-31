@@ -972,3 +972,55 @@ public:
  * obj->remove(key);
  * bool param_3 = obj->contains(key);
  */
+
+// DAY 31 (1396. Design Underground System)==============================================================================
+
+class UndergroundSystem {
+public:
+
+    #define f first
+    #define s second
+
+    unordered_map<int, pair<string,int>> customerStartStationMap;
+    unordered_map<string, pair<int,int>> startEndMap;
+
+    UndergroundSystem() {
+        
+    }
+    
+    void checkIn(int id, string stationName, int t) 
+    {
+        customerStartStationMap[id] = {stationName, t};
+    }
+    
+    void checkOut(int id, string stationName, int t) 
+    {
+        if(!customerStartStationMap.count(id)) return;
+
+        string startStation = customerStartStationMap[id].f;
+        string endStation = stationName;
+        int checkinTime = customerStartStationMap[id].s;
+        int checkoutTime = t;
+
+        int timeSum = startEndMap[startStation + "->" + endStation].f;
+        int timeCnt = startEndMap[startStation + "->" + endStation].s;
+
+        startEndMap[startStation + "->" + endStation].f += checkoutTime - checkinTime;
+        startEndMap[startStation + "->" + endStation].s += 1;
+    }
+    
+    double getAverageTime(string startStation, string endStation) 
+    {
+        int timeSum = startEndMap[startStation + "->" + endStation].f;
+        int timeCnt = startEndMap[startStation + "->" + endStation].s;
+        return 1.0 * timeSum / timeCnt;
+    }
+};
+
+/**
+ * Your UndergroundSystem object will be instantiated and called as such:
+ * UndergroundSystem* obj = new UndergroundSystem();
+ * obj->checkIn(id,stationName,t);
+ * obj->checkOut(id,stationName,t);
+ * double param_3 = obj->getAverageTime(startStation,endStation);
+ */
