@@ -86,3 +86,24 @@ int maximumDetonation(vector<vector<int>>& bombs)
 
     return maxBombs;
 }
+
+// DAY 3 (1376. Time Needed to Inform All Employees)===================================================================================
+
+int totTime_dfs(int u, vector<int> &manager, vector<int> &informTime)
+{
+    if(manager[u] == -1)
+        return informTime[u];
+
+    informTime[u] += totTime_dfs(manager[u], manager, informTime);
+    manager[u] = -1;
+
+    return informTime[u];
+}
+
+int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informTime) 
+{
+    int time = 0;
+    for(int u = 0; u < n; u++)
+        time = max(time, totTime_dfs(u, manager, informTime));
+    return time;
+}
