@@ -107,3 +107,46 @@ int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informTim
         time = max(time, totTime_dfs(u, manager, informTime));
     return time;
 }
+
+// DAY 4 (547. Number of Provinces)============================================================================
+
+class DSU
+{
+    public:
+    int n;
+    vector<int> par;
+    DSU(int n)
+    {
+        this->n = n;
+        this->par.resize(n);
+        for(int i = 0; i < n; i++)
+            par[i] = i;
+    }
+
+    int findPar(int u)
+    {
+        return par[u] = par[u] == u? u : findPar(par[u]);
+    }
+    void merge(int u, int v)
+    {
+        int pu = findPar(u), pv = findPar(v);
+        if(pu == pv) return;
+        par[pv] = pu;
+    }
+};
+
+int findCircleNum(vector<vector<int>>& isConnected) 
+{
+    int n = isConnected.size();
+    DSU dsu(n);
+    for(int i = 0; i < n; i++)
+        for(int j = i+1; j < n; j++)
+            if(isConnected[i][j])
+                dsu.merge(i, j);
+
+    unordered_set<int> pars;
+    for(int u = 0; u < n; u++)
+        pars.insert(dsu.findPar(u));
+
+    return pars.size();
+}
