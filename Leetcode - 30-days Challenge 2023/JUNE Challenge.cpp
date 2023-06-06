@@ -153,18 +153,30 @@ int findCircleNum(vector<vector<int>>& isConnected)
 
 // DAY 5 (1232. Check If It Is a Straight Line)=======================================================================
 
-  double getSlope(vector<int> &coordinate1, vector<int> &coordinate2)
-  {
-      int x1 = coordinate1[0], y1 = coordinate1[1];
-      int x2 = coordinate2[0], y2 = coordinate2[1];
-      return x1 == x2? INT_MAX : (1.0 * (y2 - y1) / (x2 - x1));
-  }
+double getSlope(vector<int> &coordinate1, vector<int> &coordinate2)
+{
+    int x1 = coordinate1[0], y1 = coordinate1[1];
+    int x2 = coordinate2[0], y2 = coordinate2[1];
+    return x1 == x2? INT_MAX : (1.0 * (y2 - y1) / (x2 - x1));
+}
 
-  bool checkStraightLine(vector<vector<int>>& coordinates) 
-  {
-      double slope = getSlope(coordinates[0], coordinates[1]);
-      for(int i = 1; i+1 < coordinates.size(); i++)
-          if(getSlope(coordinates[i], coordinates[i+1]) != slope)
-              return false;
-      return true;
-  }
+bool checkStraightLine(vector<vector<int>>& coordinates) 
+{
+    double slope = getSlope(coordinates[0], coordinates[1]);
+    for(int i = 1; i+1 < coordinates.size(); i++)
+        if(getSlope(coordinates[i], coordinates[i+1]) != slope)
+            return false;
+    return true;
+}
+
+// DAY 6 (1502. Can Make Arithmetic Progression From Sequence)============================================================
+
+bool canMakeArithmeticProgression(vector<int>& arr) 
+{
+    sort(arr.begin(), arr.end());
+    int d = arr[1] - arr[0];
+    for(int i = 1; i+1 < arr.size(); i++)
+        if(arr[i+1] - arr[i] != d)
+            return false;
+    return true;
+}
