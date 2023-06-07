@@ -180,3 +180,23 @@ bool canMakeArithmeticProgression(vector<int>& arr)
             return false;
     return true;
 }
+
+// DAY 7 (1318. Minimum Flips to Make a OR b Equal to c)==================================================================
+
+int minFlips(int a, int b, int c) 
+{
+    int flips = 0;
+    while(a || b || c)
+    {
+        if(c & 1)
+            flips += ((a & 1 ^ 1) && (b & 1 ^ 1))? 1 : 0;
+        else 
+            flips += (a & 1) + (b & 1);
+
+        a >>= 1;
+        b >>= 1;
+        c >>= 1;
+    }
+
+    return flips;
+}
