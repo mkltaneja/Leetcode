@@ -200,3 +200,25 @@ int minFlips(int a, int b, int c)
 
     return flips;
 }
+
+// DAY 8 (1351. Count Negative Numbers in a Sorted Matrix)================================================================
+
+int countNegatives(vector<vector<int>>& grid) 
+{
+    int n = grid.size(), m = grid[0].size();
+    int stRow = 0, stCol = m-1, endRow = n, endCol = m;
+
+    int negs = 0;
+    while(stRow < endRow && stCol >= 0)
+    {
+        if(grid[stRow][stCol] >= 0)
+            stRow++;
+        else 
+        {
+            negs += (endRow - stRow) * (endCol - stCol);
+            endCol = stCol--;
+        }
+    }
+
+    return negs;
+}
