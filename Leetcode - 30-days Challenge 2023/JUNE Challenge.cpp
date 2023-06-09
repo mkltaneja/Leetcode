@@ -222,3 +222,21 @@ int countNegatives(vector<vector<int>>& grid)
 
     return negs;
 }
+
+// DAY 9 (744. Find Smallest Letter Greater Than Target)========================================================
+
+
+char nextGreatestLetter(vector<char>& letters, char target)
+{
+    int n = letters.size();
+    int lo = 0, hi = n;
+    while(lo < hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        if(letters[mid] <= target)
+            lo = mid + 1;
+        else hi = mid;
+    }
+
+    return letters[lo == n? 0 : lo];
+}
