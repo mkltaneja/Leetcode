@@ -240,3 +240,53 @@ char nextGreatestLetter(vector<char>& letters, char target)
 
     return letters[lo == n? 0 : lo];
 }
+
+// DAY 11 (1146. Snapshot Array)====================================================================================
+
+class SnapshotArray {
+public:
+
+    int n, snap_id;
+    vector<vector<vector<int>>> snapIds_vs_val;
+    SnapshotArray(int length) 
+    {
+        this->n = length;
+        this->snapIds_vs_val.resize(n);
+        this->snap_id = 0;
+        for(int i = 0; i < n; i++)
+            snapIds_vs_val[i].push_back({0, 0}); // {snap_id, val}
+    }
+    
+    void set(int index, int val) 
+    {
+        if(snapIds_vs_val[index].back()[0] == snap_id)
+            snapIds_vs_val[index].back()[1] = val;
+        else snapIds_vs_val[index].push_back({snap_id, val});
+    }
+    
+    int snap() 
+    {
+        return snap_id++;
+    }
+    
+    int get(int index, int snap_id) 
+    {
+        int lo = 0, hi = snapIds_vs_val[index].size();
+        while(lo < hi)
+        {
+            int mid = lo + ((hi - lo) >> 1);
+            if(snapIds_vs_val[index][mid][0] <= snap_id)
+                lo = mid + 1;
+            else hi = mid;
+        }
+        return snapIds_vs_val[index][--lo][1];
+    }
+};
+
+/**
+ * Your SnapshotArray object will be instantiated and called as such:
+ * SnapshotArray* obj = new SnapshotArray(length);
+ * obj->set(index,val);
+ * int param_2 = obj->snap();
+ * int param_3 = obj->get(index,snap_id);
+ */
