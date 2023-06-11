@@ -241,6 +241,43 @@ char nextGreatestLetter(vector<char>& letters, char target)
     return letters[lo == n? 0 : lo];
 }
 
+// DAY 10 (1802. Maximum Value at a Given Index in a Bounded Array)==========================================================================
+
+bool checkMid(int x, int n, int index, int maxSum)
+{
+    long sum = 0;
+    if(x <= index)
+        sum += 1l * x * (x+1) / 2 + (index - x + 1);
+    else sum += 1l * (x - index + x) * (index + 1) / 2;
+
+    long psum = sum;
+
+    if(x <= n - index - 1)
+        sum += 1l * (x - 1) * x / 2 + ((n - index - 1) - (x - 1));
+    else sum += 1l * ((x - 1) + (x - (n - index - 1))) * (n - index - 1) / 2;
+
+    return sum <= maxSum;
+}
+
+
+int maxValue(int n, int index, int maxSum) 
+{
+    int lo = 1, hi = maxSum, ans = -1;
+
+    while(lo <= hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        if(checkMid(mid, n, index, maxSum))
+        {
+            ans = mid;
+            lo = mid + 1;
+        }
+        else hi = mid - 1;
+    }
+
+    return ans;
+}
+
 // DAY 11 (1146. Snapshot Array)====================================================================================
 
 class SnapshotArray {
