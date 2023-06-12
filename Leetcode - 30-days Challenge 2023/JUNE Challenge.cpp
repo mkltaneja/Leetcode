@@ -327,3 +327,24 @@ public:
  * int param_2 = obj->snap();
  * int param_3 = obj->get(index,snap_id);
  */
+
+// DAY 12 (228. Summary Ranges)====================================================================================================
+
+vector<string> summaryRanges(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<string> ans;
+    for(int i = 0; i < n; )
+    {
+        int st = nums[i];
+        int j = i+1;
+        while(j < n && nums[j] == nums[j-1] + 1)
+            j++;
+
+        if(j == i+1) ans.push_back(to_string(st));
+        else ans.push_back(to_string(st) + "->" + to_string(nums[j-1]));
+        i = j;
+    }
+
+    return ans;
+}
