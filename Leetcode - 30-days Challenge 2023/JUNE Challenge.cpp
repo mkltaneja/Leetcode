@@ -348,3 +348,22 @@ vector<string> summaryRanges(vector<int>& nums)
 
     return ans;
 }
+
+// DAY 13 (2352. Equal Row and Column Pairs)=====================================================
+
+int equalPairs(vector<vector<int>>& grid) 
+{
+    int n = grid.size(), ans = 0;
+    map<vector<int>, int> mp;
+    for(int i = 0; i < n; i++)
+        mp[grid[i]]++;
+    for(int i = 0; i < n; i++)
+    {
+        vector<int> col(n);
+        for(int j = 0; j < n; j++)
+            col[j] = grid[j][i];
+        ans += mp[col];
+    }
+
+    return ans;
+}
