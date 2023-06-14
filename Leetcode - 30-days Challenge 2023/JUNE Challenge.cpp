@@ -367,3 +367,39 @@ int equalPairs(vector<vector<int>>& grid)
 
     return ans;
 }
+
+// DAY 14 (530. Minimum Absolute Difference in BST)=======================================================================
+
+int getMinimumDifference(TreeNode* root) 
+{
+    int prevVal = -1e6, minDiff = 1e6;
+    while(root)
+    {
+        if(!root->left)
+        {
+            minDiff = min(minDiff, root->val - prevVal);
+            prevVal = root->val;
+            root = root->right;
+        }
+        else 
+        {
+            TreeNode* left = root->left;
+            while(left->right && left->right != root)
+                left = left->right;
+            if(!left->right)
+            {
+                left->right = root;
+                root = root->left;
+            }
+            else 
+            {
+                minDiff = min(minDiff, root->val - prevVal);
+                prevVal = root->val;
+                root = root->right;
+                left->right = nullptr;
+            }
+        }
+    }
+
+    return minDiff;
+}
