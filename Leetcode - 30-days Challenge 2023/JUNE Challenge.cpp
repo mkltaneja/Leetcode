@@ -403,3 +403,37 @@ int getMinimumDifference(TreeNode* root)
 
     return minDiff;
 }
+
+// DAY 15 (1161. Maximum Level Sum of a Binary Tree)============================================================================
+
+int maxLevelSum(TreeNode* root) 
+{
+    int maxSum = INT_MIN, minLvl = INT_MAX, lvl = 1;
+    queue<TreeNode*> que;
+    que.push(root);
+    while(!que.empty())
+    {
+        int sz = que.size();
+        int currSum = 0;
+        while(sz--)
+        {
+            TreeNode* node = que.front();
+            que.pop();
+
+            currSum += node->val;
+
+            if(node->left)
+                que.push(node->left);
+            if(node->right)
+                que.push(node->right);
+        }
+        if(currSum > maxSum)
+        {
+            maxSum = currSum;
+            minLvl = lvl;
+        }
+        lvl++;
+    }
+
+    return minLvl;
+}
