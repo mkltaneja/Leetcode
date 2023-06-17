@@ -437,3 +437,32 @@ int maxLevelSum(TreeNode* root)
 
     return minLvl;
 }
+
+// DAY 17 (1187. Make Array Strictly Increasing)============================================================================
+
+int dfs(int i, int previ, int prev, int n, int m, vector<int> &a, vector<int> &b, vector<vector<int>> &dp)
+{
+    if(i == n) return 0;
+
+    previ = upper_bound(b.begin() + previ, b.end(), prev) - b.begin();
+    if(dp[i][previ] != -1) return dp[i][previ];
+    if(previ == m && a[i] <= prev) return 1e5;
+
+    int replace = 1e5, same = 1e5;
+
+    if(previ != m)
+        replace = dfs(i+1, previ+1, b[previ], n, m, a, b, dp) + 1;
+    if(a[i] > prev)
+        same = dfs(i+1, previ, a[i], n, m, a, b, dp);
+    
+    return dp[i][previ] = min(replace, same);
+}
+
+int makeArrayIncreasing(vector<int>& arr1, vector<int>& arr2) 
+{
+    int n = arr1.size(), m = arr2.size();
+    sort(arr2.begin(), arr2.end());
+    vector<vector<int>> dp(n, vector<int>(m+1, -1));
+    int ans = dfs(0, 0, -1, n, m, arr1, arr2, dp);
+    return ans >= 1e5? -1 : ans;
+}
