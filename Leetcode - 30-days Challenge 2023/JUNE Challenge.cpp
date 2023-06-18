@@ -466,3 +466,43 @@ int makeArrayIncreasing(vector<int>& arr1, vector<int>& arr2)
     int ans = dfs(0, 0, -1, n, m, arr1, arr2, dp);
     return ans >= 1e5? -1 : ans;
 }
+
+// DAY 18 (2328. Number of Increasing Paths in a Grid)===================================================================
+
+int mod = 1e9 + 7;
+int ans = 0;
+int dfs(int i, int j, int n, int m, int prev, vector<vector<int>> &grid, vector<vector<int>> &dp)
+{
+    if(i == -1 || j == -1 || i == n || j == m || grid[i][j] <= prev)
+        return 0;
+    if(dp[i][j] != -1)
+        return dp[i][j];
+    
+    prev = grid[i][j];
+    int ip1 = dfs(i+1, j, n, m, prev, grid, dp);
+    int jp1 = dfs(i, j+1, n, m, prev, grid, dp);
+    int im1 = dfs(i-1, j, n, m, prev, grid, dp);
+    int jm1 = dfs(i, j-1, n, m, prev, grid, dp);
+
+    int curr = ((ip1 % mod + jp1 % mod) % mod + 
+        (im1 % mod + jm1 % mod) % mod) % mod;
+
+    return dp[i][j] = (curr + 1) % mod;
+}
+
+int countPaths(vector<vector<int>>& grid)
+{
+    int n = grid.size(), m = grid[0].size();
+    vector<vector<int>> dp(n, vector<int> (m, -1));
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(dp[i][j] == -1)
+                dfs(i, j, n, m, -1, grid, dp);
+            ans = (ans % mod + dp[i][j] % mod) % mod;
+        }
+    }
+
+    return ans;
+}
