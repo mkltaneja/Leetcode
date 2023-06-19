@@ -506,3 +506,17 @@ int countPaths(vector<vector<int>>& grid)
 
     return ans;
 }
+
+// DAY 19 (1732. Find the Highest Altitude)=====================================================================================
+
+int largestAltitude(vector<int>& gain) 
+{
+    int h = 0, maxh = 0;
+    for(int g : gain)
+    {
+        h += g;
+        maxh = max(maxh, h);
+    }
+
+    return maxh;
+}
