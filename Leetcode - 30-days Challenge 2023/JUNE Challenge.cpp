@@ -520,3 +520,19 @@ int largestAltitude(vector<int>& gain)
 
     return maxh;
 }
+
+// DAY 20 (2090. K Radius Subarray Averages)===================================================================================
+
+vector<int> getAverages(vector<int>& nums, int k) 
+{
+    long sum = 0, n = nums.size();
+    vector<int> ans(n, -1);
+    for(int i = 0; i < n; i++)
+    {
+        sum += nums[i];
+        if(i >= 2*k+1) sum -= nums[i - (2*k+1)];
+        if(i >= 2*k)
+            ans[i-k] = sum / (2*k+1);
+    }
+    return ans;
+}
