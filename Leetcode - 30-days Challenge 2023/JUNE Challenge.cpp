@@ -536,3 +536,37 @@ vector<int> getAverages(vector<int>& nums, int k)
     }
     return ans;
 }
+
+// DAY 21 (2448. Minimum Cost to Make Array Equal)=============================================================================
+
+#define ll long long
+long long minCost(vector<int>& nums, vector<int>& cost) 
+{
+    int n = nums.size();
+    vector<vector<int>> numsCost(n, vector<int>(2));
+    ll lSum = 0, rSum = 0, lCost = 0, rCost = 0;
+    for(int i = 0; i < n; i++)
+    {
+        numsCost[i] = {nums[i], cost[i]};
+        rSum += cost[i];
+        rCost += (ll)nums[i] * cost[i];
+    }
+    sort(numsCost.begin(), numsCost.end());
+    
+    ll ans = LONG_LONG_MAX, prevDist = 0;
+    for(int i = 0; i < n; i++)
+    {
+        int dist = numsCost[i][0] - prevDist;
+        prevDist = numsCost[i][0];
+
+        lCost += lSum * dist;
+        rCost -= rSum * dist;
+
+        lSum += numsCost[i][1];
+        rSum -= numsCost[i][1];
+
+        ans = min(ans, lCost + rCost);
+    }
+
+    return ans;
+}
