@@ -570,3 +570,17 @@ long long minCost(vector<int>& nums, vector<int>& cost)
 
     return ans;
 }
+
+// DAY 22 (714. Best Time to Buy and Sell Stock with Transaction Fee)====================================================================
+
+int maxProfit(vector<int>& prices, int fee) 
+{
+    int buyMax = INT_MIN, sellMax = 0;
+    for(int x : prices)
+    {
+        int prevBuyMax = buyMax;
+        buyMax = max(buyMax, sellMax - x - fee);
+        sellMax = max(sellMax, prevBuyMax + x);
+    }
+    return sellMax;
+}
