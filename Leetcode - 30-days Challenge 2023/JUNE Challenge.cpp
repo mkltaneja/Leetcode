@@ -584,3 +584,27 @@ int maxProfit(vector<int>& prices, int fee)
     }
     return sellMax;
 }
+
+// DAY 23 (1027. Longest Arithmetic Subsequence)=====================================================================================
+
+int longestArithSeqLength(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<unordered_map<int,int>> diffMax(n);
+    int maxLen = 0;
+    for(int i = 1; i < n; i++)
+    {
+        for(int j = 0; j < i; j++)
+        {
+            int diff = nums[i] - nums[j];
+            int diff_i = diffMax[i][diff];
+            int diff_j = diffMax[j][diff];
+            int diffMaxVal = (diff_j? diff_j : 1) + 1;
+
+            maxLen = max(maxLen, diffMaxVal);
+            diffMax[i][diff] = diffMaxVal;
+        }
+    }
+
+    return maxLen;
+}
