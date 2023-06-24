@@ -608,3 +608,26 @@ int longestArithSeqLength(vector<int>& nums)
 
     return maxLen;
 }
+
+// DAY 24 (956. Tallest Billboard)=============================================================================
+
+#define MAXDIFF 5000
+int dfs(int i, int diff, vector<vector<int>> &dp, vector<int> &rods)
+{
+    if(i == rods.size()) return diff == 0? 0 : INT_MIN;
+
+    if(dp[i][diff + MAXDIFF] != -1) return dp[i][diff + MAXDIFF];
+
+    int roda = rods[i] + dfs(i+1, diff + rods[i], dp, rods);
+    int rodb = rods[i] + dfs(i+1, diff - rods[i], dp, rods);
+    int rodn = dfs(i+1, diff, dp, rods);
+
+    return dp[i][diff + MAXDIFF] = max({roda, rodb, rodn});
+}
+
+int tallestBillboard(vector<int>& rods) 
+{
+    int n = rods.size();
+    vector<vector<int>> dp(n, vector<int> (2*MAXDIFF, -1));
+    return dfs(0, 0, dp, rods)/2;
+}
