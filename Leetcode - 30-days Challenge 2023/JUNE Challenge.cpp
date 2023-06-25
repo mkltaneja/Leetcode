@@ -631,3 +631,31 @@ int tallestBillboard(vector<int>& rods)
     vector<vector<int>> dp(n, vector<int> (2*MAXDIFF, -1));
     return dfs(0, 0, dp, rods)/2;
 }
+
+// DAY 25 (1575. Count All Possible Routes)======================================================================
+
+int mod = 1e9 + 7;
+int dfs(int st, int end, int fuel, vector<int> &locations, vector<vector<int>> &dp)
+{
+    if(fuel < 0) 
+        return 0;
+    if(dp[st][fuel] != -1)
+        return dp[st][fuel];
+    int ans = st == end;
+
+    for(int i = 0; i < locations.size(); i++)
+    {
+        if(i == st) continue;
+        int useFuel = abs(locations[i] - locations[st]);
+        ans = (ans % mod + dfs(i, end, fuel - useFuel, locations, dp) % mod) % mod;
+    }
+
+    return dp[st][fuel] = ans;
+}
+
+int countRoutes(vector<int>& locations, int start, int finish, int fuel) 
+{
+    int n = locations.size();
+    vector<vector<int>> dp(n, vector<int> (fuel+1, -1));
+    return dfs(start, finish, fuel, locations, dp);
+}
