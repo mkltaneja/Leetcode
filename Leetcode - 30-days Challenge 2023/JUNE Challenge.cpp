@@ -659,3 +659,37 @@ int countRoutes(vector<int>& locations, int start, int finish, int fuel)
     vector<vector<int>> dp(n, vector<int> (fuel+1, -1));
     return dfs(start, finish, fuel, locations, dp);
 }
+
+// DAY 26 (2462. Total Cost to Hire K Workers)=====================================================================
+
+#define ll long long
+long long totalCost(vector<int>& costs, int k, int candidates) 
+{
+    int n = costs.size();
+    priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+    for(int i = 0; i < candidates && i < n/2; i++)
+    {
+        pq.push({costs[i], i, 1});
+        pq.push({costs[n-i-1], n-i-1, 2});
+    }
+    if(candidates > (n>>1) && (n & 1))
+        pq.push({costs[n>>1], n>>1, 1});
+    int part1 = candidates, part2 = n-candidates-1;
+
+    ll ans = 0;
+    while(k--)
+    {
+        int cost = pq.top()[0];
+        int idx = pq.top()[1];
+        int turn = pq.top()[2];
+        pq.pop();
+
+        ans += (ll)cost;
+        if(part1 > part2) continue;
+        if(turn == 1)
+            pq.push({costs[part1], part1++, 1});
+        else pq.push({costs[part2], part2--, 2});
+    }
+
+    return ans;
+}
