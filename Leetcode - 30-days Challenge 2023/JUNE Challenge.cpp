@@ -731,3 +731,48 @@ vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k
 
     return ans;
 }
+
+// DAY 28 (1514. Path with Maximum Probability)==================================================================================
+
+double ans = -1;
+
+double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) 
+{
+    vector<vector<pair<int,double>>> gp(n);
+    for(int i = 0; i < edges.size(); i++)
+    {
+        int u = edges[i][0], v = edges[i][1];
+        double prob = succProb[i];
+        gp[u].push_back({v, prob});
+        gp[v].push_back({u, prob});
+    }
+
+    priority_queue<pair<double,int>> pq;
+    pq.push({1.0, start});
+    vector<double> maxProb(n, 0.0);
+    maxProb[start] = 1.0;
+
+    while(!pq.empty())
+    {
+        double prob = pq.top().first;
+        int u = pq.top().second;
+        pq.pop();
+
+        if(u == end) 
+            return prob;
+
+        for(pair<int,double> child : gp[u])
+        {
+            int childNode = child.first;
+            double childProb = child.second;
+
+            if(prob * childProb > maxProb[childNode])
+            {
+                maxProb[childNode] = prob * childProb;
+                pq.push({maxProb[childNode], childNode});
+            }
+        }
+    }
+
+    return maxProb[end];
+}
