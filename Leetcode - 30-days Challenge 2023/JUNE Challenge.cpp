@@ -776,3 +776,69 @@ double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succPro
 
     return maxProb[end];
 }
+
+// DAY 29 (864. Shortest Path to Get All Keys)===================================================================================
+
+int shortestPathAllKeys(vector<string>& grid) 
+{
+    int n = grid.size(), m = grid[0].size();
+    int sti = -1, stj = -1, totKeys = 0;
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(grid[i][j] == '@')
+            {
+                sti = i;
+                stj = j;
+            }
+            if(grid[i][j] >= 'a' && grid[i][j] <= 'z')
+                totKeys++;
+        }
+    }
+    if(sti == -1) return -1;
+    if(totKeys == 0) return 0;
+
+    int allKeys = (1 << totKeys) - 1;
+    queue<vector<int>> que;
+    vector<vector<vector<bool>>> vis(n, vector<vector<bool>> (m, vector<bool> (allKeys+1, false)));
+    int keysVisited = 0;
+    que.push({sti, stj, 0});
+    vis[sti][stj][0] = true;
+    int dir[4][2] = {{1,0},{0,1},{-1,0},{0,-1}};
+    int lvl = 0;
+
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            int i = que.front()[0];
+            int j = que.front()[1];
+            int keysVis = que.front()[2];
+            que.pop();
+
+            for(int d = 0; d < 4; d++)
+            {
+                int r = i + dir[d][0];
+                int c = j + dir[d][1];
+                int newKeysVis = keysVis;
+
+                if(r == -1 || r == n || c == -1 || c == m || vis[r][c][keysVis] || grid[r][c] == '#')
+                    continue;
+                if(grid[r][c] >= 'A' && grid[r][c] <= 'Z' && (keysVis & (1 << (grid[r][c]-'A'))) == 0)
+                    continue;
+                if(grid[r][c] >= 'a' && grid[r][c] <= 'z')
+                    newKeysVis |= (1 << (grid[r][c] - 'a'));
+                
+                if(newKeysVis == allKeys) return lvl + 1;
+
+                vis[r][c][newKeysVis] = true;
+                que.push({r, c, newKeysVis});
+            }
+        }
+        lvl++;
+    }
+
+    return -1;
+}
