@@ -842,3 +842,60 @@ int shortestPathAllKeys(vector<string>& grid)
 
     return -1;
 }
+
+// DAY 30 (1970. Last Day Where You Can Still Cross)====================================================================
+
+bool hasPath(int row, int col, vector<vector<int>> &grid)
+{
+    int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    queue<pair<int,int>> que;
+    for(int i = 0; i < col; i++)
+    {
+        if(grid[0][i]) continue;
+        que.push({0, i});
+        grid[0][i] = 2;
+    }
+    while(!que.empty())
+    {
+        int i = que.front().first;
+        int j = que.front().second;
+        que.pop();
+
+        if(i == row-1) return true;
+
+        for(int d = 0; d < 4; d++)
+        {
+            int r = i + dir[d][0];
+            int c = j + dir[d][1];
+
+            if(r == -1 || c == -1 || r == row || c == col || grid[r][c])
+                continue;
+            if(r == row-1) return true;
+            que.push({r, c});
+            grid[r][c] = 2;
+        }
+    }
+
+    return false;
+}
+
+int latestDayToCross(int row, int col, vector<vector<int>>& cells) 
+{
+    int lo = 0, hi = row * col - 1, ans = -1;
+    while(lo <= hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        vector<vector<int>> grid(row, vector<int> (col, 0));
+        for(int i = 0; i <= mid; i++)
+            grid[cells[i][0]-1][cells[i][1]-1] = 1;
+        bool poss = hasPath(row, col, grid);
+        if(poss)
+        {
+            ans = mid;
+            lo = mid + 1;
+        }
+        else hi = mid - 1;
+    }
+
+    return ans + 1;
+}
