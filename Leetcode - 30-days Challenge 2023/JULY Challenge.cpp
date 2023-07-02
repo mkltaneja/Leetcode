@@ -32,3 +32,37 @@ int distributeCookies(vector<int>& cookies, int k)
 	dfs(0, k, cookies, child, k);
 	return ans;
 }
+
+// DAY 2 (1601. Maximum Number of Achievable Transfer Requests)======================================================================================
+
+int maximumRequests(int n, vector<vector<int>>& requests) 
+{
+	int m = requests.size();
+	int ans = 0;
+	for(int mask = 0; mask < (1 << m); mask++)
+	{
+		vector<int> in(n, 0), out(n, 0);
+		int transfers = 0;
+		for(int i = 0; i < m; i++)
+		{
+			if((mask >> i) & 1 ^ 1) continue;
+			int from = requests[i][0];
+			int to = requests[i][1];
+			out[from]++;
+			in[to]++;
+			transfers++;
+		}
+		bool possibleTransfer = true;
+		for(int i = 0; i < n; i++)
+		{
+			if(in[i] != out[i])
+			{
+				possibleTransfer = false;
+				break;
+			}
+		}
+		if(possibleTransfer) ans = max(ans, transfers);
+	}
+
+	return ans;
+}
