@@ -66,3 +66,29 @@ int maximumRequests(int n, vector<vector<int>>& requests)
 
 	return ans;
 }
+
+// DAY 3 (859. Buddy Strings)===================================================================================
+
+bool buddyStrings(string s, string goal) 
+{
+	int n = s.size(), m = goal.size();
+	if(n != m) return false;
+	char a = '#', b = '#', c = '#', d = '#';
+	int vis = 0;
+	bool repeated = false;
+	for(int i = 0; i < n; i++)
+	{
+		if(vis & (1 << s[i] - 'a')) repeated = true;
+		vis |= (1 << (s[i] - 'a'));
+
+		if(s[i] == goal[i]) continue;
+		
+		if(a == '#') a = s[i], b = goal[i];
+		else if(c == '#') c = s[i], d = goal[i];
+		else return false;
+	}
+
+	if(a == '#') return repeated;
+	if(c == '#') return false;
+	return a == d && b == c;
+}
