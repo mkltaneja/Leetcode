@@ -92,3 +92,19 @@ bool buddyStrings(string s, string goal)
 	if(c == '#') return false;
 	return a == d && b == c;
 }
+
+// DAY 4 (137. Single Number II)=============================================================================
+
+int singleNumber(vector<int>& nums) 
+{
+	int ans = 0;
+	for(int bit = 0; bit < 32; bit++)
+	{
+		int onBits = 0;
+		for(int num : nums)
+			onBits += (1 << bit) & num? 1 : 0;
+		ans |= onBits % 3? (1 << bit) : 0;
+	}
+
+	return ans;
+}
