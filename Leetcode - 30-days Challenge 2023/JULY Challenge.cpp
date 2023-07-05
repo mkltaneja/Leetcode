@@ -108,3 +108,25 @@ int singleNumber(vector<int>& nums)
 
 	return ans;
 }
+
+// DAY 5 (1493. Longest Subarray of 1's After Deleting One Element)============================================================
+
+int longestSubarray(vector<int>& nums) 
+{
+	int n = nums.size();
+	vector<int> lconsec(n), rconsec(n);
+	for(int i = 0; i < n; i++)
+	{
+		lconsec[i] = nums[i]? (i? lconsec[i-1] : 0) + 1 : 0;
+		rconsec[n-i-1] = nums[n-i-1]? (i? rconsec[n-i] : 0) + 1 : 0;
+	}
+	int maxLen = 0;
+	for(int i = 0; i < n; i++)
+	{
+		int leftConsec = i? lconsec[i-1] : 0;
+		int rightConsec = i != n-1? rconsec[i+1] : 0;
+		maxLen = max(maxLen, leftConsec + rightConsec);
+	}
+
+	return maxLen;
+}
