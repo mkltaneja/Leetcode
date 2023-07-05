@@ -111,6 +111,8 @@ int singleNumber(vector<int>& nums)
 
 // DAY 5 (1493. Longest Subarray of 1's After Deleting One Element)============================================================
 
+// APPROACH 1 (Using Array to store consecutive ones count)
+
 int longestSubarray(vector<int>& nums) 
 {
 	int n = nums.size();
@@ -126,6 +128,27 @@ int longestSubarray(vector<int>& nums)
 		int leftConsec = i? lconsec[i-1] : 0;
 		int rightConsec = i != n-1? rconsec[i+1] : 0;
 		maxLen = max(maxLen, leftConsec + rightConsec);
+	}
+
+	return maxLen;
+}
+
+// APPROACH 2 (Space OPTIMIZED)
+
+int longestSubarray(vector<int>& nums) 
+{
+	int n = nums.size();
+	int l = 0, r = 0, flips = 1;
+	int maxLen = 0;
+	while(r < n)
+	{
+		if(nums[r] == 0) flips--;
+		if(flips < 0)
+		{
+			while(nums[l++]);
+			flips++;
+		}
+		maxLen = max(maxLen, r++ - l);
 	}
 
 	return maxLen;
