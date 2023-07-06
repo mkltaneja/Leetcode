@@ -153,3 +153,23 @@ int longestSubarray(vector<int>& nums)
 
 	return maxLen;
 }
+
+// DAY 6 (209. Minimum Size Subarray Sum)===================================================================
+
+int minSubArrayLen(int target, vector<int>& nums) 
+{
+	int n = nums.size();
+	int curr = 0, prev = 0, minLen = n + 1;
+	long sum = 0;
+	while(curr < n)
+	{
+		sum += nums[curr++];
+		while(sum >= target)
+		{
+			minLen = min(minLen, curr - prev);
+			sum -= nums[prev++];
+		}
+	}
+
+	return minLen == n+1? 0 : minLen;
+}
