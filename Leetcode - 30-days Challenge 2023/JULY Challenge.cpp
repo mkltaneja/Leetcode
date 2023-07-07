@@ -173,3 +173,24 @@ int minSubArrayLen(int target, vector<int>& nums)
 
 	return minLen == n+1? 0 : minLen;
 }
+
+// DAY 7 (2024. Maximize the Confusion of an Exam)===============================================================
+
+int convertTo(string &answerKey, int k, char x)
+{
+	int curr = 0, prev = 0, maxLen = 0;
+	while(curr < answerKey.size())
+	{
+		k -= answerKey[curr++] != x;
+		while(k < 0)
+			k += answerKey[prev++] != x;
+		maxLen = max(maxLen, curr - prev);
+	}
+
+	return maxLen;
+}
+
+int maxConsecutiveAnswers(string answerKey, int k) 
+{
+	return max(convertTo(answerKey, k, 'T'), convertTo(answerKey, k, 'F'));
+}
