@@ -1,3 +1,49 @@
+
+// APPROACH 1 (Subsequence Method)
+
+class Solution {
+public:
+    
+    bool isPowerOf5(int x)
+    {
+        while(x > 1)
+        {
+            if(x % 5) return false;
+            x /= 5;
+        }
+        return x == 1;
+    }
+    
+    int ans = INT_MAX;
+    void dfs(int i, int x, int n, string &s, int cnt)
+    {
+        if(i == n)
+        {
+            bool chk = (isPowerOf5(x));
+            if(!chk) return;
+            ans = min(ans, cnt + chk);
+            return;
+        }
+        if(x == 0 && s[i] == '0') return;
+        
+        x = (x << 1) | (s[i]-'0');
+        
+        bool check = isPowerOf5(x);
+        if(check)
+            dfs(i+1, 0, n, s, cnt+1);
+        dfs(i+1, x, n, s, cnt);
+    }
+    
+    int minimumBeautifulSubstrings(string s) 
+    {
+        int n = s.size();
+        dfs(0, 0, n, s, 0);
+        return ans == INT_MAX? -1 : ans;
+    }
+};
+
+// APPROACH 2 (Using DP) [OPTIMIZED]
+
 class Solution {
 public:
     
