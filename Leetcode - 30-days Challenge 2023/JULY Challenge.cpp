@@ -194,3 +194,26 @@ int maxConsecutiveAnswers(string answerKey, int k)
 {
 	return max(convertTo(answerKey, k, 'T'), convertTo(answerKey, k, 'F'));
 }
+
+// DAY 8 (2551. Put Marbles in Bags)==================================================================================
+
+#define ll long long
+long long putMarbles(vector<int>& weights, int k) 
+{
+	if(k == 0) return 0;
+
+	int n = weights.size();
+	vector<ll> consecSums;
+	for(int i = 0; i < n-1; i++)
+		consecSums.push_back(weights[i] + weights[i+1]);
+	
+	sort(consecSums.begin(), consecSums.end());
+	ll minSum = 0, maxSum = 0;
+	for(int i = 0; i < k-1; i++)
+	{
+		minSum += consecSums[i];
+		maxSum += consecSums[consecSums.size() - 1 - i];
+	}
+
+	return maxSum - minSum;
+}
