@@ -217,3 +217,45 @@ long long putMarbles(vector<int>& weights, int k)
 
 	return maxSum - minSum;
 }
+
+// DAY 9 (2272. Substring With Largest Variance)==============================================================
+
+int largestVariance(string s) 
+{
+	int n = s.size();
+	vector<int> cntMap(26,0);
+	for(char c : s)
+		cntMap[c-'a']++;
+	
+	int variance = 0;
+	for(int i = 0; i < 26; i++)
+	{
+		if(!cntMap[i]) continue;
+		char major = 'a' + i;
+		for(int j = 0; j < 26; j++)
+		{
+			if(j == i || !cntMap[j]) continue;
+			char minor = 'a' + j;
+
+			int majorCnt = 0, minorCnt = 0, remMinorCnt = cntMap[j];
+			for(char c : s)
+			{
+				if(c == major)
+					majorCnt++;
+				else if(c == minor)
+				{
+					minorCnt++;
+					remMinorCnt--;
+				}
+
+				if(minorCnt)
+					variance = max(variance, majorCnt - minorCnt);
+
+				if(majorCnt < minorCnt && remMinorCnt)
+					majorCnt = 0, minorCnt = 0;
+			}
+		}
+	}
+
+	return variance;
+}
