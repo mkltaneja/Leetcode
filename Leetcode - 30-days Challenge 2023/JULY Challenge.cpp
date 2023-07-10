@@ -259,3 +259,33 @@ int largestVariance(string s)
 
 	return variance;
 }
+
+// DAY 10 (111. Minimum Depth of Binary Tree)=======================================================================
+
+int minDepth(TreeNode* root) 
+{
+	if(!root) return 0;
+
+	queue<TreeNode*> que;
+	que.push(root);
+	int lvl = 0;
+	while(!que.empty())
+	{
+		int sz = que.size();
+		while(sz--)
+		{
+			TreeNode* curr = que.front();
+			que.pop();
+			if(!curr->left && !curr->right)
+				return lvl + 1;
+
+			if(curr->left)
+				que.push(curr->left);
+			if(curr->right)
+				que.push(curr->right);
+		}
+		lvl++;
+	}
+
+	return -1;
+}
