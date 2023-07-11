@@ -289,3 +289,54 @@ int minDepth(TreeNode* root)
 
 	return -1;
 }
+
+// DAY 11 (863. All Nodes Distance K in Binary Tree)========================================================================
+
+vector<TreeNode*> findRootToNodePath(TreeNode* node, int target)
+{
+	if(!node) return {};
+	if(node->val == target) return {node};
+
+	vector<TreeNode*> lAns = findRootToNodePath(node->left, target);
+	if(!lAns.empty())
+	{
+		lAns.push_back(node);
+		return lAns;
+	}
+
+	vector<TreeNode*> rAns = findRootToNodePath(node->right, target);
+	if(!rAns.empty())
+	{
+		rAns.push_back(node);
+		return rAns;
+	}
+
+	return {};
+}
+
+void findNodesWithDistD(int k, TreeNode* node, TreeNode* prev, vector<int> &ans)
+{
+	if(!node || node == prev) return;
+	if(k == 0)
+	{
+		ans.push_back(node->val);
+		return;
+	}
+	findNodesWithDistD(k-1, node->left, prev, ans);
+	findNodesWithDistD(k-1, node->right, prev, ans);
+}
+
+vector<int> distanceK(TreeNode* root, TreeNode* target, int k) 
+{
+	vector<TreeNode*> rootToNodePath = findRootToNodePath(root, target->val);
+
+	vector<int> ans;
+	TreeNode* prev;
+	for(int i = 0; i < rootToNodePath.size() && k >= 0; i++)
+	{
+		findNodesWithDistD(k--, rootToNodePath[i], prev, ans);
+		prev = rootToNodePath[i];
+	}
+
+	return ans;
+}
