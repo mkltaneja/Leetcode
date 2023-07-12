@@ -340,3 +340,36 @@ vector<int> distanceK(TreeNode* root, TreeNode* target, int k)
 
 	return ans;
 }
+
+// DAY 12 (802. Find Eventual Safe States)==================================================================================
+
+int dfs(int u, vector<int> &isSafe, vector<vector<int>> &graph)
+{
+	if(isSafe[u] != -1) return isSafe[u];
+	
+	isSafe[u] = 0;
+
+	int safe = 1;
+	for(int v : graph[u])
+		safe &= dfs(v, isSafe, graph);
+
+	isSafe[u] = safe;
+
+	return safe;
+}
+
+vector<int> eventualSafeNodes(vector<vector<int>>& graph) 
+{
+	int n = graph.size();
+	vector<int> isSafe(n, -1);
+	for(int i = 0; i < n; i++)
+		if(isSafe[i] == -1)
+			dfs(i, isSafe, graph);
+	
+	vector<int> safeNodes;
+	for(int i = 0; i < n; i++)
+		if(isSafe[i])
+			safeNodes.push_back(i);
+	
+	return safeNodes;
+}
