@@ -373,3 +373,47 @@ vector<int> eventualSafeNodes(vector<vector<int>>& graph)
 	
 	return safeNodes;
 }
+
+// DAY 13 (207. Course Schedule)====================================================================
+
+bool canFinish(int numCourses, vector<vector<int>>& prerequisites) 
+{
+	vector<vector<int>> gp(numCourses);
+	vector<int> inDegree(numCourses);
+	for(vector<int> prereq : prerequisites)
+	{
+		gp[prereq[0]].push_back(prereq[1]);
+		inDegree[prereq[1]]++;
+	}
+
+	queue<int> que;
+	vector<int> vis(numCourses,0);
+	int coursesFinished = 0;
+	for(int i = 0; i < numCourses; i++)
+	{
+		if(inDegree[i] == 0)
+		{
+			que.push(i);
+			vis[i] = 1;
+			if(++coursesFinished == numCourses) return true;
+		}
+	}
+	
+	while(!que.empty())
+	{
+		int u = que.front();
+		que.pop();
+
+		for(int v : gp[u])
+		{
+			if(!vis[v] && --inDegree[v] == 0)
+			{
+				vis[v] = 1;
+				que.push(v);
+				if(++coursesFinished == numCourses) return true;
+			}
+		}
+	}
+
+	return false;
+}
