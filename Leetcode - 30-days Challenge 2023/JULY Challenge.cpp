@@ -417,3 +417,23 @@ bool canFinish(int numCourses, vector<vector<int>>& prerequisites)
 
 	return false;
 }
+
+// DAY 14 (1218. Longest Arithmetic Subsequence of Given Difference)=========================================================
+
+#define offset (1e5 + 1)
+
+int longestSubsequence(vector<int>& arr, int difference) 
+{
+	vector<int> maxSeqLen(2*offset);
+	int ans = 0;
+	for(int x : arr)
+	{
+		int curr = x + offset;
+		int prev = curr - difference;
+
+		maxSeqLen[curr] = max(maxSeqLen[curr], maxSeqLen[prev] + 1);
+		ans = max(ans, maxSeqLen[curr]);
+	}
+
+	return ans;
+}
