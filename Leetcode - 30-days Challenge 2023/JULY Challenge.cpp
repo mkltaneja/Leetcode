@@ -437,3 +437,35 @@ int longestSubsequence(vector<int>& arr, int difference)
 
 	return ans;
 }
+
+// DAY 15 (1751. Maximum Number of Events That Can Be Attended II)=======================================================================
+
+int dfs(int i, int k, vector<vector<int>> &events, vector<int> &eventStarts, vector<int> &upperBound, vector<vector<int>> &dp)
+{
+	if(i == events.size() || k == 0) return 0;
+	if(dp[i][k] != -1) return dp[i][k];
+
+	int ans = 0;
+	for(int j = i; j < events.size(); j++)
+	{
+		int ub = upperBound[j];
+		ans = max(ans, dfs(ub, k-1, events, eventStarts, upperBound, dp) + events[j][2]);
+	}
+
+	return dp[i][k] = ans;
+}
+
+int maxValue(vector<vector<int>>& events, int k) 
+{
+	int n = events.size();
+	vector<int> eventStarts(n);
+	vector<int> upperBound(n);
+	vector<vector<int>> dp(n, vector<int>(k+1, -1));
+	sort(events.begin(), events.end());
+	for(int i = 0; i < n; i++)
+		eventStarts[i] = events[i][0];
+	for(int i = 0; i < n; i++)
+		upperBound[i] = upper_bound(eventStarts.begin() + i, eventStarts.end(), events[i][1]) - eventStarts.begin();
+
+	return dfs(0, k, events, eventStarts, upperBound, dp);
+}
