@@ -469,3 +469,55 @@ int maxValue(vector<vector<int>>& events, int k)
 
 	return dfs(0, k, events, eventStarts, upperBound, dp);
 }
+
+// DAY 17 (1125. Smallest Sufficient Team)==========================================================================
+
+#define ll long long
+ll findMinPeople(int skillMask, vector<int> &bitSkills, vector<ll> &dp)
+{
+	if(skillMask == 0) return 0;
+	if(dp[skillMask] != -1) return dp[skillMask];
+
+	ll minPeopleMask = LLONG_MAX;
+	for(int i = 0; i < bitSkills.size(); i++)
+	{
+		int restMask = skillMask & ~bitSkills[i];
+		if(restMask == skillMask) continue;
+		ll currPeopleMask = findMinPeople(restMask, bitSkills, dp) | (1ll << i);
+
+		if(__builtin_popcountll(currPeopleMask) < __builtin_popcountll(minPeopleMask))
+			minPeopleMask = currPeopleMask;
+	}
+
+	return dp[skillMask] = minPeopleMask;
+}
+
+vector<int> smallestSufficientTeam(vector<string>& req_skills, vector<vector<string>>& people) 
+{
+	int n = people.size();
+	unordered_map<string,int> skillMap;
+	int mapVal = 0, reqSkillsMask;
+	for(string &skill : req_skills)
+	{
+		reqSkillsMask |= (1 << mapVal);
+		skillMap[skill] = mapVal++;
+	}
+	
+	vector<int> bitSkills(n, 0);
+	for(int i = 0; i < n; i++)
+	{
+		int mask = 0;
+		for(string &skill : people[i])
+			mask |= (1 << skillMap[skill]);
+		bitSkills[i] = mask;
+	}
+
+	vector<ll> dp(reqSkillsMask + 1, -1);
+	ll minMask = findMinPeople(reqSkillsMask, bitSkills, dp);
+	
+	vector<int> ans;
+	for(int i = 0; i < n; i++)
+		if((minMask >> i) & 1)
+			ans.push_back(i);
+	return ans;
+}
