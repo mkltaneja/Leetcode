@@ -571,7 +571,71 @@ ListNode* addTwoNumbers(ListNode* l1, ListNode* l2)
 	return reverseList(lSum->next);
 }
 
-// APPROACH 2 (Without reversing the list) --> Using Stack  --> Time = O(n + m + max(n, m)), Space = O(n + m + max(n, m))
+// APPROACH 2 (Without Reversing the list) --> Using Recursion --> Time = O(3*max(n, m)), Space = O(2*max(n, m))
+
+int getListSize(ListNode* list)
+{
+	int n = 0;
+	ListNode* itr = list;
+	while(itr)
+	{
+		itr = itr->next;
+		n++;
+	}
+	return n;
+}
+
+ListNode* listSum(ListNode* l1, ListNode* l2, int &carry)
+{
+	if(!l1) return nullptr;
+
+	ListNode* nxtSumList = listSum(l1->next, l2->next, carry);
+
+	int sum = l1->val + l2->val + carry;
+	carry = sum / 10;
+	ListNode* currSum = new ListNode(sum % 10);
+	currSum->next = nxtSumList;
+
+	return currSum;
+}
+
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) 
+{
+	int n = getListSize(l1);
+	int m = getListSize(l2);
+
+	int diff = abs(n - m);
+	ListNode* prefix = new ListNode(-1), *itr = prefix;
+	while(diff--)
+	{
+		itr->next = new ListNode(0);
+		itr = itr->next;
+	}
+
+	if(n < m)
+	{
+		itr->next = l1;
+		l1 = prefix->next;
+	}
+	else if(m < n)
+	{
+		itr->next = l2;
+		l2 = prefix->next;
+	}
+
+	int carry = 0;
+	ListNode* sumlist = listSum(l1, l2, carry);
+	if(carry) 
+	{
+		ListNode* carryNode = new ListNode(carry);
+		carryNode->next = sumlist;
+		sumlist = carryNode;
+	}
+
+	return sumlist;
+}
+
+// APPROACH 3 (Without reversing the list) --> Using Stack  --> Time = O(n + m + max(n, m)), Space = O(n + m + max(n, m)) [SPACE AND TIME OPTIMIZED]
 
 ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) 
 {
