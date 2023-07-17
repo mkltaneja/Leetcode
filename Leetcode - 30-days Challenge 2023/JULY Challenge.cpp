@@ -521,3 +521,50 @@ vector<int> smallestSufficientTeam(vector<string>& req_skills, vector<vector<str
 			ans.push_back(i);
 	return ans;
 }
+
+// DAY 17 (445. Add Two Numbers II)===========================================================================
+
+ListNode* reverseList(ListNode* list)
+{
+	ListNode* curr = list, *prev = nullptr, *forw = list;
+	while(curr)
+	{
+		forw = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = forw;
+	}
+
+	return prev;
+}
+
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) 
+{
+	ListNode* l1rev = reverseList(l1);
+	ListNode* l2rev = reverseList(l2);
+
+	ListNode* lSum = new ListNode(-1), *itr = lSum;
+	int carry = 0;
+	while(l1rev || l2rev)
+	{
+		int l1val = 0, l2val = 0;
+		if(l1rev)
+		{
+			l1val = l1rev->val;
+			l1rev = l1rev->next;
+		}
+		if(l2rev)
+		{
+			l2val = l2rev->val;
+			l2rev = l2rev->next;
+		}
+		int sum = l1val + l2val + carry;
+		itr->next = new ListNode(sum % 10);
+		itr = itr->next;
+		carry = sum / 10;
+	}
+	if(carry)
+		itr->next = new ListNode(carry);
+
+	return reverseList(lSum->next);
+}
