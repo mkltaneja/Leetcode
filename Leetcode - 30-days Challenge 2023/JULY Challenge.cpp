@@ -524,6 +524,8 @@ vector<int> smallestSufficientTeam(vector<string>& req_skills, vector<vector<str
 
 // DAY 17 (445. Add Two Numbers II)===========================================================================
 
+// APPROACH 1 (By Reversing the list) --> Time = O(n + m + 2*max(n, m)), Space = O(n + m + max(n, m))
+
 ListNode* reverseList(ListNode* list)
 {
 	ListNode* curr = list, *prev = nullptr, *forw = list;
@@ -567,4 +569,51 @@ ListNode* addTwoNumbers(ListNode* l1, ListNode* l2)
 		itr->next = new ListNode(carry);
 
 	return reverseList(lSum->next);
+}
+
+// APPROACH 2 (Without reversing the list) --> Using Stack  --> Time = O(n + m + max(n, m)), Space = O(n + m + max(n, m))
+
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) 
+{
+	stack<int> st1, st2;
+	while(l1)
+	{
+		st1.push(l1->val);
+		l1 = l1->next;
+	}
+	while(l2)
+	{
+		st2.push(l2->val);
+		l2 = l2->next;
+	}
+
+	ListNode* sumList = nullptr;
+	int carry = 0;
+	while(!st1.empty() || !st2.empty())
+	{
+		int l1val = 0, l2val = 0;
+		if(!st1.empty())
+		{
+			l1val = st1.top();
+			st1.pop();
+		}
+		if(!st2.empty())
+		{
+			l2val = st2.top();
+			st2.pop();
+		}
+		int sum = l1val + l2val + carry;
+		carry = sum / 10;
+		ListNode* currSumList = new ListNode(sum % 10);
+		currSumList->next = sumList;
+		sumList = currSumList;
+	}
+	if(carry)
+	{
+		ListNode* carryNode = new ListNode(carry);
+		carryNode->next = sumList;
+		sumList = carryNode;
+	}
+
+	return sumList;
 }
