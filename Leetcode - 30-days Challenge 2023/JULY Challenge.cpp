@@ -681,3 +681,64 @@ ListNode* addTwoNumbers(ListNode* l1, ListNode* l2)
 
 	return sumList;
 }
+
+// DAY 18 (146. LRU Cache)====================================================================================================
+
+class LRUCache {
+public:
+
+    unordered_map<int,int> keyTime;
+    unordered_map<int,int> keyVal;
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pqTime;
+    int time, capacity, size;
+    LRUCache(int capacity) 
+    {
+        this->time = 0;
+        this->size = 0;
+        this->capacity = capacity;
+    }
+    
+    int get(int key) 
+    {
+        if(!keyVal.count(key)) return -1;
+        
+        keyTime[key] = time;
+        pqTime.push({time++, key});
+
+        return keyVal[key];
+    }
+    
+    void put(int key, int value) 
+    {
+        if(!keyVal.count(key))
+        {
+            if(++size > capacity)
+            {
+                while(!pqTime.empty())
+                {
+                    int topTime = pqTime.top().first;
+                    int topKey = pqTime.top().second;
+                    pqTime.pop();
+                    if(topTime == keyTime[topKey])
+                    {
+                        keyVal.erase(topKey);
+                        keyTime.erase(topKey);
+                        size--;
+                        break;
+                    }
+                }
+            }
+        }
+
+        keyVal[key] = value;
+        keyTime[key] = time;
+        pqTime.push({time++, key});
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
