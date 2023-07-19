@@ -742,3 +742,41 @@ public:
  * int param_1 = obj->get(key);
  * obj->put(key,value);
  */
+
+// DAY 19 (435. Non-overlapping Intervals)=================================================================================================
+
+int lowerBound(int end, vector<vector<int>> &intervals)
+{
+	int lo = 0, hi = intervals.size();
+	while(lo < hi)
+	{
+		int mid = lo + ((hi - lo) >> 1);
+		int start = intervals[mid][0];
+		if(start < end)
+			lo = mid + 1;
+		else hi = mid;
+	}
+
+	return lo;
+}
+
+int eraseOverlapIntervals(vector<vector<int>>& intervals) 
+{
+	int n = intervals.size();
+	vector<int> maxLenDP(n, 1);
+	sort(intervals.begin(), intervals.end());
+
+	int maxLen = 1;
+	for(int i = n-1; i >= 0; i--)
+	{
+		int nextIntervalIndex = lowerBound(intervals[i][1], intervals);
+		maxLenDP[i] = maxLen;
+
+		if(nextIntervalIndex == n) continue;
+
+		maxLenDP[i] = max(maxLenDP[i], maxLenDP[nextIntervalIndex] + 1);
+		maxLen = max(maxLen, maxLenDP[i]);
+	}
+
+	return n - maxLen;
+}
