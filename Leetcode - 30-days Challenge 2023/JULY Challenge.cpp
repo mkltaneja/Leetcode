@@ -745,6 +745,8 @@ public:
 
 // DAY 19 (435. Non-overlapping Intervals)=================================================================================================
 
+// APPROACH 1 (By finding lower_bound for every interval) --> time = O(2*n*logn), space = O(n)
+
 int lowerBound(int end, vector<vector<int>> &intervals)
 {
 	int lo = 0, hi = intervals.size();
@@ -779,4 +781,30 @@ int eraseOverlapIntervals(vector<vector<int>>& intervals)
 	}
 
 	return n - maxLen;
+}
+
+// APPROACH 2 (By updating lastEnd variable on every interval) --> time = O(n*logn + n), space = O(1) [OPTIMIZED]
+
+int eraseOverlapIntervals(vector<vector<int>>& intervals) 
+{
+	int n = intervals.size();
+	if(n == 0) return 0;
+
+	sort(intervals.begin(), intervals.end());
+
+	int lastEnd = intervals[0][1], removalCount = 0;
+	for(int i = 1; i < n; i++)
+	{
+		int start = intervals[i][0];
+		int end = intervals[i][1];
+		if(start < lastEnd)
+		{
+			removalCount++;
+			lastEnd = min(lastEnd, end);
+		}
+		else 
+			lastEnd = end;
+	}
+
+	return removalCount;
 }
