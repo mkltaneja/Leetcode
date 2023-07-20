@@ -808,3 +808,28 @@ int eraseOverlapIntervals(vector<vector<int>>& intervals)
 
 	return removalCount;
 }
+
+// DAY 20 (735. Asteroid Collision)===============================================================================
+
+vector<int> asteroidCollision(vector<int>& asteroids) 
+{
+	vector<int> currAsteroids;
+	for(int asteroid : asteroids)
+	{
+		if(asteroid > 0) 
+		{
+			currAsteroids.push_back(asteroid);
+			continue;
+		}
+		
+		while(!currAsteroids.empty() && currAsteroids.back() > 0 && currAsteroids.back() < -asteroid)
+			currAsteroids.pop_back();
+		
+		if(currAsteroids.empty() || currAsteroids.back() < 0)
+			currAsteroids.push_back(asteroid);
+		else if(currAsteroids.back() == -asteroid)
+			currAsteroids.pop_back();
+	}
+
+	return currAsteroids;
+}
