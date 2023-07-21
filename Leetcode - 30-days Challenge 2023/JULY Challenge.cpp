@@ -833,3 +833,37 @@ vector<int> asteroidCollision(vector<int>& asteroids)
 
 	return currAsteroids;
 }
+
+// DAY 21 (673. Number of Longest Increasing Subsequence)================================================================
+
+int findNumberOfLIS(vector<int>& nums) 
+{
+	int n = nums.size();
+	vector<int> maxLen(n, 1), seqCount(n, 1);
+	int maxCount = 0, currMax = INT_MIN;
+	for(int i = 0; i < n; i++)
+	{
+		for(int j = 0; j < i; j++)
+		{
+			if(nums[j] < nums[i])
+			{
+				if(maxLen[i] < maxLen[j] + 1)
+				{
+					maxLen[i] = maxLen[j] + 1;
+					seqCount[i] = seqCount[j];
+				}
+				else if(maxLen[i] == maxLen[j] + 1)
+					seqCount[i] += seqCount[j];
+			}
+		}
+		if(maxLen[i] > currMax)
+		{
+			currMax = maxLen[i];
+			maxCount = seqCount[i];
+		}
+		else if(maxLen[i] == currMax)
+			maxCount += seqCount[i];
+	}
+
+	return maxCount;
+}
