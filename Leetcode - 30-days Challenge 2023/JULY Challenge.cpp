@@ -836,6 +836,8 @@ vector<int> asteroidCollision(vector<int>& asteroids)
 
 // DAY 21 (673. Number of Longest Increasing Subsequence)================================================================
 
+// APPROACH 1 (Using DP) --> Time = O(n*n), Space = O(2*n)
+
 int findNumberOfLIS(vector<int>& nums) 
 {
 	int n = nums.size();
@@ -866,4 +868,39 @@ int findNumberOfLIS(vector<int>& nums)
 	}
 
 	return maxCount;
+}
+
+// APPROACH 2 (Using binary search and DP) --> Time = O(n*(logn)), Space = O(2*n)
+
+int findNumberOfLIS(vector<int>& nums) 
+{
+	int n = nums.size();
+	vector<int> dp;
+	dp.push_back(INT_MIN);
+	vector<vector<pair<int,int>>> LIS(n+1);
+	LIS[0].push_back({INT_MIN, 1});
+
+	int maxLen = 0;
+	
+	for(int x : nums)
+	{
+		int len = lower_bound(dp.begin(), dp.end(), x) - dp.begin();
+		if(len == dp.size())
+		{
+			dp.push_back(x);
+			maxLen++;
+		}
+		else dp[len] = x;
+
+		int seqCount = 0;
+		for(auto [num, cnt] : LIS[len - 1])
+			seqCount += num < x? cnt : 0;
+		LIS[len].push_back({x, seqCount});
+	}
+
+	int maxSeqCount = 0;
+	for(auto [num, cnt] : LIS[maxLen])
+		maxSeqCount += cnt;
+
+	return maxSeqCount;
 }
