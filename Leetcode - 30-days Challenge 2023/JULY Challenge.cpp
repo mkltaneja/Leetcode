@@ -904,3 +904,40 @@ int findNumberOfLIS(vector<int>& nums)
 
 	return maxSeqCount;
 }
+
+// DAY 22 (688. Knight Probability in Chessboard)======================================================================================
+
+double knightProbability(int n, int k, int row, int column) 
+{
+	vector<vector<double>> prob(n, vector<double>(n, 0));
+	prob[row][column] = 1;
+
+	for(int i = 0; i < k; i++)
+	{
+		vector<vector<double>> newProb(n, vector<double>(n, 0));
+		for(int i = 0; i < n; i++)
+		{
+			for(int j = 0; j < n; j++)
+			{
+				for(int x : {1, -1, 2, -2})
+				{
+					for(int y : {1, -1, 2, -2})
+					{
+						if(abs(x) == abs(y)) continue;
+						int r = i + x, c = j + y;
+						if(r < 0 || c < 0 || r >= n || c >= n)
+							continue;
+						newProb[r][c] += prob[i][j] / 8.0;
+					}
+				}
+			}
+		}
+		prob = newProb;
+	}
+
+	double totProb = 0;
+	for(int i = 0; i < n; i++)
+		for(int j = 0; j < n; j++)
+			totProb += prob[i][j];
+	return totProb;
+}
