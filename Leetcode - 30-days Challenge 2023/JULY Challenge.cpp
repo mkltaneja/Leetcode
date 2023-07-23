@@ -941,3 +941,26 @@ double knightProbability(int n, int k, int row, int column)
 			totProb += prob[i][j];
 	return totProb;
 }
+
+// DAY 23 (894. All Possible Full Binary Trees)=================================================================================
+
+unordered_map<int, vector<TreeNode*>> dp;
+vector<TreeNode*> allPossibleFBT(int n) 
+{
+	if(n & 1 ^ 1) return {};
+	if(n == 1) return {new TreeNode(0)};
+	if(dp.count(n)) return dp[n];
+
+	vector<TreeNode*> ans;
+	for(int i = 1; i < n; i += 2)
+	{
+		vector<TreeNode*> lTree = allPossibleFBT(i);
+		vector<TreeNode*> rTree = allPossibleFBT(n - i - 1);
+
+		for(auto l : lTree)
+			for(auto r : rTree)
+				ans.push_back(new TreeNode(0, l, r));
+	}
+
+	return dp[n] = ans;
+}
