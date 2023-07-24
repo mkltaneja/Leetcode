@@ -964,3 +964,20 @@ vector<TreeNode*> allPossibleFBT(int n)
 
 	return dp[n] = ans;
 }
+
+// DAY 24 (50. Pow(x, n))====================================================================================================
+
+double myPow(double x, int n) 
+{
+	long nn = n;
+	double ans = 1.0;
+	while(nn)
+	{
+		if(nn & 1)
+			ans *= x;
+		x *= x;
+		nn /= 2;
+	}
+
+	return n > 0? ans : 1.0/ans;
+}
