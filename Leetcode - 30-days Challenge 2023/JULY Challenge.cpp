@@ -1002,3 +1002,30 @@ int peakIndexInMountainArray(vector<int>& arr)
 
 	return -1;
 }
+
+// DAY 26 (1870. Minimum Speed to Arrive on Time)===================================================================
+
+double checkTime(int speed, vector<int> &dist)
+{
+	double time = 0, n = dist.size();
+	for(int i = 0; i < n-1; i++)
+		time += ceil(1.0 * dist[i] / speed);
+	time += 1.0 * dist[n-1] / speed;
+
+	return time;
+}
+
+int minSpeedOnTime(vector<int>& dist, double hour) 
+{
+	int lo = 1, hi = INT_MAX;
+	while(lo < hi)
+	{
+		int mid = lo + ((hi - lo) >> 1);
+		double time = checkTime(mid, dist);
+		if(time <= hour)
+			hi = mid;
+		else lo = mid + 1;
+	}
+
+	return hi == INT_MAX? -1 : lo;
+}
