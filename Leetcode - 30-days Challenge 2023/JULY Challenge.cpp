@@ -1047,3 +1047,33 @@ bool PredictTheWinner(vector<int>& nums)
 	vector<vector<int>> dp(n, vector<int> (n, -1));
 	return maxDiff(0, n-1, nums, dp) >= 0;
 }
+
+// DAY 29 (808. Soup Servings)============================================================================
+
+unordered_map<int,unordered_map<int,double>> dp;
+double calculateDP(int i, int j)
+{
+	return (dp[max(0, i - 4)][j] + dp[max(0, i - 3)][max(0, j - 1)] + 
+		dp[max(0, i - 2)][max(0, j - 2)] + dp[max(0, i - 1)][max(0, j - 3)]) / 4.0;
+}
+
+double soupServings(int n) 
+{
+	int m = ceil(n / 25.0);
+
+	dp[0][0] = 0.5;
+	for(int i = 1; i <= m; i++)
+	{
+		dp[0][i] = 1;
+		dp[i][0] = 0;
+		for(int j = 1; j <= i; j++)
+		{
+			dp[i][j] = calculateDP(i, j);
+			dp[j][i] = calculateDP(j, i);
+		}
+		if(dp[i][i] > 1 - 1e-5)
+			return 1;
+	}
+
+	return dp[m][m];
+}
