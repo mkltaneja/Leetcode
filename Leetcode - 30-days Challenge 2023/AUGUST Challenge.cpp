@@ -1,3 +1,29 @@
+
+// DAY 2 (46. Permutations)======================================================================================
+
+vector<vector<int>> ans;
+void dfs(int i, vector<int> &nums)
+{
+    if(i == nums.size()-1)
+    {
+        ans.push_back(nums);
+        return;
+    }
+
+    for(int j = i; j < nums.size(); j++)
+    {
+        swap(nums[i], nums[j]);
+        dfs(i+1, nums);
+        swap(nums[i], nums[j]);
+    }
+}
+
+vector<vector<int>> permute(vector<int>& nums)
+{
+    dfs(0, nums);
+    return ans;
+}
+
 // DAY 3 (17. Letter Combinations of a Phone Number)================================================================================================
 
 vector<string> keys = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
