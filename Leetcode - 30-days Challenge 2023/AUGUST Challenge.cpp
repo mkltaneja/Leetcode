@@ -80,3 +80,34 @@ bool wordBreak(string s, vector<string>& wordDict)
     vector<int> dp(s.size(), -1);
     return canSegment(0, itr, s, dp);
 }
+
+// DAY 5 (95. Unique Binary Search Trees II)==================================================================
+
+vector<TreeNode*> dfs(int l, int r)
+{
+    if(l >= r)
+    {
+        if(l == r) 
+            return {new TreeNode(l)};
+        return {nullptr};
+    }
+
+
+    vector<TreeNode*> currAns;
+    for(int x = l; x <= r; x++)
+    {
+        vector<TreeNode*> lans = dfs(l, x-1);
+        vector<TreeNode*> rans = dfs(x+1, r);
+
+        for(TreeNode* lTree : lans)
+            for(TreeNode* rTree : rans)
+                currAns.push_back(new TreeNode(x, lTree, rTree));
+    }
+
+    return currAns;
+}
+
+vector<TreeNode*> generateTrees(int n) 
+{
+    return dfs(1, n);
+}
