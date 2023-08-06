@@ -137,3 +137,29 @@ vector<TreeNode*> generateTrees(int n)
 {
     return dfs(1, n);
 }
+
+// DAY 6 (920. Number of Music Playlists)====================================================================================
+
+#define ll long long
+int mod = 1e9 + 7;
+ll nn = 0, kk = 0;
+ll totalPlaylists(ll i, ll j, vector<vector<ll>> &dp)
+{
+    if(i == 0 && j == 0) return 1ll;
+    if(i == 0 || j == 0) return 0ll;
+    if(dp[i][j] != -1) return dp[i][j];
+
+    ll uniqueSong = (totalPlaylists(i-1, j-1, dp) % mod
+                     * (nn - (i - 1)) % mod) % mod;
+    ll existingSong = i > kk? ((totalPlaylists(i, j-1, dp) % mod
+                     * (i - kk) % mod) % mod) : 0ll;
+
+    return dp[i][j] = (uniqueSong % mod + existingSong % mod) % mod;
+}
+
+int numMusicPlaylists(int n, int goal, int k) 
+{
+    nn = n, kk = k;
+    vector<vector<ll>> dp(n+1, vector<ll>(goal+1, -1));
+    return totalPlaylists(n, goal, dp);
+}
