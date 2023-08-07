@@ -1,4 +1,30 @@
 
+// DAY 1 (77. Combinations)=================================================================================
+
+vector<vector<int>> ans;
+void dfs(int x, int n, int k, vector<int> &curr)
+{
+    if(curr.size() == k) 
+    {
+        ans.push_back(curr);
+        return;
+    }
+
+    for(int y = x; y <= n; y++)
+    {
+        curr.push_back(y);
+        dfs(y+1, n, k, curr);
+        curr.pop_back();
+    }
+}
+
+vector<vector<int>> combine(int n, int k) 
+{
+    vector<int> curr;
+    dfs(1, n, k, curr);
+    return ans;
+}
+
 // DAY 2 (46. Permutations)======================================================================================
 
 vector<vector<int>> ans;
