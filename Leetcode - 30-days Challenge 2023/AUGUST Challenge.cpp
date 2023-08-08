@@ -211,3 +211,47 @@ bool searchMatrix(vector<vector<int>>& matrix, int target)
 
     return false;
 }
+
+// DAY 8 (33. Search in Rotated Sorted Array)======================================================================================
+
+int findPivot(int n, vector<int> &nums)
+{
+    int lo = 0, hi = n-1;
+    int ans = -1;
+    while(lo <= hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        if(nums[mid] > nums[n-1])
+            lo = mid + 1;
+        else
+        {
+            ans = mid;
+            hi = mid - 1;
+        }
+    }
+    return ans;
+}
+
+int findTarget(int n, vector<int> &nums, int start, int target)
+{
+    int lo = start, hi = start + n - 1;
+    while(lo <= hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        int idx = mid % n;
+        if(nums[idx] == target)
+            return idx;
+        if(nums[idx] < target)
+            lo = mid + 1;
+        else hi = mid - 1;
+    }
+
+    return -1;
+}
+
+int search(vector<int>& nums, int target) 
+{
+    int n = nums.size();
+    int start = findPivot(n, nums);
+    return findTarget(n, nums, start, target);
+}
