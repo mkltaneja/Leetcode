@@ -285,3 +285,25 @@ int search(vector<int>& nums, int target)
 
     return -1;
 }
+
+// DAY 9 (2616. Minimize the Maximum Difference of Pairs)=========================================================================
+
+int minimizeMax(vector<int>& nums, int p) 
+{
+    int n = nums.size();
+    sort(nums.begin(), nums.end());
+    int lo = 0, hi = nums[n-1] - nums[0];
+    while(lo < hi)
+    {
+        int candidate = lo + ((hi - lo) >> 1);
+        int pairs = 0;
+        for(int i = 0; i < n-1; i++)
+            if(abs(nums[i+1] - nums[i]) <= candidate)
+                pairs++, i++;
+        if(pairs >= p)
+            hi = candidate;
+        else lo = candidate + 1;
+    }
+
+    return lo;
+}
