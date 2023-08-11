@@ -307,3 +307,18 @@ int minimizeMax(vector<int>& nums, int p)
 
     return lo;
 }
+
+// DAY 10 (518. Coin Change II)==================================================================
+
+int change(int amount, vector<int>& coins) 
+{
+    vector<int> dp(amount + 1, 0);
+    dp[0] = 1;
+    for(int i = 0; i < coins.size(); i++)
+    {
+        vector<int> curr_dp = dp;
+        for(int x = coins[i]; x <= amount; x++)
+            dp[x] += dp[x - coins[i]];
+    }
+    return dp[amount];
+}
