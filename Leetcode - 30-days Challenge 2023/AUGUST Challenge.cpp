@@ -308,7 +308,7 @@ int minimizeMax(vector<int>& nums, int p)
     return lo;
 }
 
-// DAY 10 (518. Coin Change II)==================================================================
+// DAY 11 (518. Coin Change II)==================================================================
 
 int change(int amount, vector<int>& coins) 
 {
@@ -321,4 +321,33 @@ int change(int amount, vector<int>& coins)
             dp[x] += dp[x - coins[i]];
     }
     return dp[amount];
+}
+
+// DAY 12 (63. Unique Paths II)==========================================================================
+
+int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) 
+{
+    int n = obstacleGrid.size(), m = obstacleGrid[0].size();
+    vector<vector<long>> dp(n, vector<long>(m, 0));
+
+    for(int i = n-1; i >= 0; i--)
+    {
+        for(int j = m-1; j >= 0; j--)
+        {
+            if(i == n-1 && j == m-1)
+            {
+                if(obstacleGrid[i][j] == 1)
+                    return 0;
+                dp[i][j] = 1;
+                continue;
+            }
+            if(obstacleGrid[i][j] == 1) continue;
+
+            long rAns = j == m-1? 0 : dp[i][j+1];
+            long dAns = i == n-1? 0 : dp[i+1][j];
+            dp[i][j] = rAns + dAns;
+        }
+    }
+
+    return dp[0][0];
 }
