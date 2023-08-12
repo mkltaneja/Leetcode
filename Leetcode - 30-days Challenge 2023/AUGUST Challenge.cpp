@@ -308,6 +308,53 @@ int minimizeMax(vector<int>& nums, int p)
     return lo;
 }
 
+// DAY 10 (81. Search in Rotated Sorted Array II)===============================================================================================
+
+
+bool hasAmbiguity(int lo, int mid, vector<int> &nums)
+{
+    return nums[mid] == nums[lo];
+}
+
+int existInFirst(int lo, int x, vector<int> &nums)
+{
+    return nums[lo] <= x;
+}
+
+bool search(vector<int>& nums, int target) 
+{
+    int lo = 0, hi = nums.size() - 1;
+    while(lo <= hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+
+        if(nums[mid] == target) return true;
+        
+        if(hasAmbiguity(lo, mid, nums))
+        {
+            lo++;
+            continue;
+        }
+
+        int midInFirst = existInFirst(lo, nums[mid], nums);
+        int tarInFirst = existInFirst(lo, target, nums);
+        if(midInFirst ^ tarInFirst)
+        {
+            if(midInFirst)
+                lo = mid + 1;
+            else hi = mid - 1;
+        }
+        else 
+        {
+            if(nums[mid] < target)
+                lo = mid + 1;
+            else hi = mid - 1;
+        }
+    }
+
+    return false;
+}
+
 // DAY 11 (518. Coin Change II)==================================================================
 
 int change(int amount, vector<int>& coins) 
