@@ -398,3 +398,28 @@ int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid)
 
     return dp[0][0];
 }
+
+// DAY 13 (2369. Check if There is a Valid Partition For The Array)=============================================================================
+
+bool validPartition(vector<int>& nums) 
+{
+    int n = nums.size();
+    vector<int> dp(n+1);
+    dp[0] = 1;
+    dp[1] = 0;
+    for(int i = 1; i < n; i++)
+    {
+        int a = nums[i];
+        int b = nums[i-1];
+        if(a == b) 
+            dp[(i)+1] = dp[(i-2)+1];
+        
+        if(i == 1) continue;
+
+        int c = nums[i-2];
+        if(a == b && b == c || a == b+1 && b == c+1)
+            dp[(i)+1] |= dp[(i-3)+1];
+    }
+
+    return dp[n];
+}
