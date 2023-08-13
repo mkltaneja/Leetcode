@@ -41,3 +41,26 @@ public:
         return ans;
     }
 };
+
+// APPROACH 2 (Sliding window -> considering elements outside x-sized window using set) --> time = O((n-x)*log(n-x)) --> [OPTIMIZED]
+
+class Solution {
+public:
+    int minAbsoluteDifference(vector<int>& nums, int x) 
+    {
+        int n = nums.size();
+        set<int> st;
+        int ans = INT_MAX;
+        for(int i = x; i < n; i++)
+        {
+            st.insert(nums[i-x]);
+            auto itr = st.lower_bound(nums[i]);
+            if(itr != st.end())
+                ans = min(ans, *itr - nums[i]);
+            if(itr != st.begin())
+                ans = min(ans, nums[i] - *(--itr));
+        }
+        
+        return ans;
+    }
+};
