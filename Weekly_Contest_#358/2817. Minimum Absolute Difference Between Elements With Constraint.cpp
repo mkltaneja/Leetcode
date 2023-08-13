@@ -1,3 +1,6 @@
+
+// APPROACH 1 (Using priority Queue and Next Greater Element type approach) --> time = O(n + 3*n*logn)
+
 class Solution {
 public:
     
