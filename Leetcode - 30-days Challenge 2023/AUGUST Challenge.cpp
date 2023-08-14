@@ -423,3 +423,17 @@ bool validPartition(vector<int>& nums)
 
     return dp[n];
 }
+
+// DAY 14 (215. Kth Largest Element in an Array)==================================================================================
+
+int findKthLargest(vector<int>& nums, int k) 
+{
+    priority_queue<int, vector<int>, greater<int>> pq;
+    for(int x : nums)
+    {
+        pq.push(x);
+        if(pq.size() > k)
+            pq.pop();
+    }
+    return pq.top();
+}
