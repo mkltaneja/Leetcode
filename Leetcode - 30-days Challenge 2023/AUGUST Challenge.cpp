@@ -437,3 +437,32 @@ int findKthLargest(vector<int>& nums, int k)
     }
     return pq.top();
 }
+
+// DAY 15 (86. Partition List)====================================================================================
+
+ListNode* partition(ListNode* head, int x) 
+{
+    ListNode *lessHead = new ListNode(INT_MIN), *lessItr = lessHead;
+    ListNode *moreHead = new ListNode(INT_MIN), *moreItr = moreHead;
+    ListNode *itr = head;
+
+    while(itr)
+    {
+        if(itr->val >= x)
+        {
+            moreItr->next = itr;
+            moreItr = moreItr->next;
+        }
+        else 
+        {
+            lessItr->next = itr;
+            lessItr = lessItr->next;
+        }
+        itr = itr->next;
+    }
+    moreHead = moreHead->next;
+    lessItr->next = moreHead;
+    moreItr->next = nullptr;
+
+    return lessHead->next;
+}
