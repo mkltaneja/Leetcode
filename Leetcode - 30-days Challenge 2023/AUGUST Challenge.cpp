@@ -469,12 +469,14 @@ ListNode* partition(ListNode* head, int x)
 
 // DAY 16 (239. Sliding Window Maximum)======================================================================
 
+// APPROACH 1 (Using Priority Queue) --> time = O(n*logn), space = O(2*n)
+
 #define f first
 #define s second
 vector<int> maxSlidingWindow(vector<int>& nums, int k) 
 {
     int n = nums.size();
-    queue<pair<int,int>> que;
+    priority_queue<pair<int,int>> pq;
     vector<int> ans(n-k+1);
     for(int i = 0; i < n; i++)
     {
@@ -482,7 +484,29 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k)
         while(pq.size() > k && pq.top().s <= i-k)
             pq.pop();
         if(i+1 >= k)
-            ans[i+1-k] = pq.top().f;
+            ans[i-k] = pq.top().f;
+    }
+    return ans;
+}
+
+// APPROACH 2 (Using Deque) --> time = O(2*n), space = O(2*n)
+
+#define f first
+#define s second
+vector<int> maxSlidingWindow(vector<int>& nums, int k) 
+{
+    int n = nums.size();
+    deque<pair<int,int>> dq;
+    vector<int> ans(n-k+1);
+    for(int i = 0; i < n; i++)
+    {
+        while(!dq.empty() && (dq.back().s <= i-k || dq.back().f <= nums[i]))
+            dq.pop_back();
+        dq.push_back({nums[i], i});
+        while(!dq.empty() && dq.front().s <= i-k)
+            dq.pop_front();
+        if(i+1 >= k)
+            ans[i+1-k] = dq.front().f;
     }
     return ans;
 }
