@@ -466,3 +466,23 @@ ListNode* partition(ListNode* head, int x)
 
     return lessHead->next;
 }
+
+// DAY 16 (239. Sliding Window Maximum)======================================================================
+
+#define f first
+#define s second
+vector<int> maxSlidingWindow(vector<int>& nums, int k) 
+{
+    int n = nums.size();
+    queue<pair<int,int>> que;
+    vector<int> ans(n-k+1);
+    for(int i = 0; i < n; i++)
+    {
+        pq.push({nums[i], i});
+        while(pq.size() > k && pq.top().s <= i-k)
+            pq.pop();
+        if(i+1 >= k)
+            ans[i+1-k] = pq.top().f;
+    }
+    return ans;
+}
