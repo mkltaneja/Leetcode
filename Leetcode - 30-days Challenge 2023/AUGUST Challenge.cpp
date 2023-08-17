@@ -534,3 +534,40 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k)
         ans[i] = max(smax[i], pmax[i+k-1]);
     return ans;
 }
+
+// DAY 17 (542. 01 Matrix)==============================================================================
+
+vector<vector<int>> updateMatrix(vector<vector<int>>& mat) 
+{
+    int n = mat.size(), m = mat[0].size();
+    queue<vector<int>> que;
+    vector<vector<int>> ans(n, vector<int> (m, 0));
+    int dir[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < m; j++)
+            if(!mat[i][j])
+                que.push({i, j, 0});
+    
+    while(!que.empty())
+    {
+        int x = que.front()[0];
+        int y = que.front()[1];
+        int dist = que.front()[2];
+        que.pop();
+
+        for(int d = 0; d < 4; d++)
+        {
+            int dx = dir[d][0], dy = dir[d][1];
+            int r = x + dx;
+            int c = y + dy;
+            if(r == -1 || c == -1 || r == n || c == m || mat[r][c] != 1)
+                continue;
+            mat[r][c] = 0;
+            ans[r][c] = dist + 1;
+            que.push({r, c, dist + 1});
+        }
+    }
+
+    return ans;
+}
