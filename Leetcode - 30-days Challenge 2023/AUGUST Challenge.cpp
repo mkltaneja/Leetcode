@@ -537,6 +537,8 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k)
 
 // DAY 17 (542. 01 Matrix)==============================================================================
 
+// APPROACH 1 (Using BFS) --> time = O(n*m), space = O(n*m)
+
 vector<vector<int>> updateMatrix(vector<vector<int>>& mat) 
 {
     int n = mat.size(), m = mat[0].size();
@@ -570,4 +572,33 @@ vector<vector<int>> updateMatrix(vector<vector<int>>& mat)
     }
 
     return ans;
+}
+
+// APPROACH 2 (Using Tabulated form of DFS) --> time = O(n*m), space = O(1)
+
+vector<vector<int>> updateMatrix(vector<vector<int>>& mat) 
+{
+    int n = mat.size(), m = mat[0].size();
+    int inf = n + m;
+
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(mat[i][j] == 0) continue;
+            mat[i][j] = min(i? mat[i-1][j] : inf, j? mat[i][j-1] : inf) + 1;
+        }
+    }
+    for(int i = n-1; i >= 0; i--)
+    {
+        for(int j = m-1; j >= 0; j--)
+        {
+            if(mat[i][j] == 0) continue;
+            mat[i][j] = min({mat[i][j], 
+                            i != n-1? mat[i+1][j] + 1 : inf, 
+                            j != m-1? mat[i][j+1] + 1 : inf});
+        }
+    }
+    
+    return mat;
 }
