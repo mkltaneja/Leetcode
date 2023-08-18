@@ -602,3 +602,30 @@ vector<vector<int>> updateMatrix(vector<vector<int>>& mat)
     
     return mat;
 }
+
+// DAY 18 (1615. Maximal Network Rank)==================================================================================
+
+int maximalNetworkRank(int n, vector<vector<int>>& roads) 
+{
+    vector<vector<int>> graph(n, vector<int>(n, 0));
+    vector<int> rank(n);
+    for(vector<int> &road : roads)
+    {
+        int u = road[0], v = road[1];
+        rank[u]++;
+        rank[v]++;
+        graph[u][v] = 1;
+        graph[v][u] = 1;
+    }
+    int ans = 0;
+    for(int u = 0; u < n; u++)
+    {
+        for(int v = u+1; v < n; v++)
+        {
+            int netRank = rank[u] + rank[v] - graph[u][v];
+            ans = max(ans, netRank);
+        }
+    }
+
+    return ans;
+}
