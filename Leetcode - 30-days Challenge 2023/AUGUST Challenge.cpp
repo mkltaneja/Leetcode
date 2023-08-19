@@ -629,3 +629,88 @@ int maximalNetworkRank(int n, vector<vector<int>>& roads)
 
     return ans;
 }
+
+// DAY 19 (1489. Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree)===================================================================================
+
+class DSU
+{
+    public:
+    int n, maxSize;
+    vector<int> par, psize;
+
+    DSU(int n)
+    {
+        this->n = n;
+        this->maxSize = 1;
+        this->par.resize(n);
+        this->psize.assign(n, 1);
+        for(int i = 0; i < n; i++)
+            par[i] = i;
+    }
+
+    int findPar(int u)
+    {
+        return par[u] = par[u] == u? u : findPar(par[u]);
+    }
+    bool merge(int u, int v)
+    {
+        int pu = findPar(u);
+        int pv = findPar(v);
+        if(pu == pv) return false;
+        if(psize[pu] < psize[pv])
+            swap(pu, pv);
+        par[pv] = pu;
+        psize[pu] += psize[pv];
+        maxSize = max(maxSize, psize[pu]);
+
+        return true;
+    }
+};
+
+vector<vector<int>> findCriticalAndPseudoCriticalEdges(int n, vector<vector<int>>& edges) 
+{
+    int m = edges.size();
+    for(int i = 0; i < m; i++)
+        edges[i].push_back(i);
+    
+    sort(edges.begin(), edges.end(), [](auto const &a, auto const &b){
+        return a[2] < b[2];
+    });
+    
+    DSU stdMST(n);
+    int stdMSTwt = 0;
+    for(auto &e : edges)
+        if(stdMST.merge(e[0], e[1]))
+            stdMSTwt += e[2];
+    
+    vector<vector<int>> ans(2);
+    for(int i = 0; i < m; i++)
+    {
+        DSU iCritical(n);
+        int iCriticalwt = 0;
+        for(int j = 0; j < m; j++)
+            if(j != i && iCritical.merge(edges[j][0], edges[j][1]))
+                iCriticalwt += edges[j][2];
+
+        // Check if edge "i" is critical -> if ignoring it makes graph disconnected, or increases the weight of MST
+        if(iCritical.maxSize < n || iCriticalwt > stdMSTwt)
+        {
+            ans[0].push_back(edges[i][3]);
+            continue;
+        }
+
+        // Else check for Pseudo-Critical
+        DSU iPseudoCritical(n);
+        iPseudoCritical.merge(edges[i][0], edges[i][1]);
+        int iPseudoCriticalwt = edges[i][2];
+        for(int j = 0; j < m; j++)
+            if(j != i && iPseudoCritical.merge(edges[j][0], edges[j][1]))
+                iPseudoCriticalwt += edges[j][2];
+
+        // If adding it gives equal weight as standard MST, then its the Pseudo-Critical Edge
+        if(iPseudoCriticalwt == stdMSTwt)
+            ans[1].push_back(edges[i][3]);
+    }
+
+    return ans;
+}
