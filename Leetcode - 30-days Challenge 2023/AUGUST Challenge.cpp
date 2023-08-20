@@ -714,3 +714,76 @@ vector<vector<int>> findCriticalAndPseudoCriticalEdges(int n, vector<vector<int>
 
     return ans;
 }
+
+// DAY 20 (1203. Sort Items by Groups Respecting Dependencies)=========================================================================
+
+vector<int> groupOrder, itemOrder;
+
+bool bfs(queue<int> &que, vector<vector<int>> &gp, vector<int> &inDeg, vector<int> &order)
+{
+    for(int i = 0; i < inDeg.size(); i++)
+        if(inDeg[i] == 0)
+            que.push(i);
+    
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            int u = que.front();
+            que.pop();
+            order.push_back(u);
+
+            for(int v : gp[u])
+                if(--inDeg[v] == 0)
+                    que.push(v);
+        }
+    }
+
+    return true;
+}
+
+vector<int> sortItems(int n, int m, vector<int>& group, vector<vector<int>>& beforeItems)
+{
+    int x = 0;
+    for(int i = 0; i < n; i++)
+        if(group[i] == -1)
+            group[i] = m + x++;
+
+    vector<vector<int>> itemGp(n), groupGp(m+x);
+    vector<int> itemInDeg(n, 0), groupInDeg(m+x, 0);
+    queue<int> itemQue, groupQue;
+    vector<int> itemVis(n), groupVis(m+x);
+    
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < beforeItems[i].size(); j++)
+        {
+            itemGp[beforeItems[i][j]].push_back(i);
+            itemInDeg[i]++;
+            
+            if(group[i] == group[beforeItems[i][j]]) continue;
+
+            groupGp[group[beforeItems[i][j]]].push_back(group[i]);
+            groupInDeg[group[i]]++;
+        }
+    }
+
+    bfs(itemQue, itemGp, itemInDeg, itemOrder);
+    if(itemOrder.size() != n)
+        return {};
+
+    bfs(groupQue, groupGp, groupInDeg, groupOrder);
+    if(groupOrder.size() != m+x)
+        return {};
+
+    vector<int> ans;
+    unordered_map<int,vector<int>> mp;
+    for(int item : itemOrder)
+        mp[group[item]].push_back(item);
+    for(int group : groupOrder)
+        for(int item : mp[group])
+            ans.push_back(item);
+
+    return ans;
+}
