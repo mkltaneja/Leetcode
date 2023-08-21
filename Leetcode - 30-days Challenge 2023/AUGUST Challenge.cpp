@@ -787,3 +787,13 @@ vector<int> sortItems(int n, int m, vector<int>& group, vector<vector<int>>& bef
 
     return ans;
 }
+
+// DAY 21 (459. Repeated Substring Pattern)===============================================================
+
+bool repeatedSubstringPattern(string s) 
+{
+    string s2 = s + s;
+    string s2Mid = s2.substr(1, s2.size()-2);
+
+    return s2Mid.find(s) != -1;
+}
