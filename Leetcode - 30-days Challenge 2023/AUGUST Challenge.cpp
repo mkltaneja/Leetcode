@@ -790,10 +790,24 @@ vector<int> sortItems(int n, int m, vector<int>& group, vector<vector<int>>& bef
 
 // DAY 21 (459. Repeated Substring Pattern)===============================================================
 
+// APPROACH 1 (Checking the original string in between the double of it) --> time = O(2*n + n^2), space = O(2*n)
+
 bool repeatedSubstringPattern(string s) 
 {
     string s2 = s + s;
     string s2Mid = s2.substr(1, s2.size()-2);
 
     return s2Mid.find(s) != -1;
+}
+
+// APPROACH 2 (Checking just using the prefix and suffix of string) --> time = O(n*p), space = O(1) [p = total prime numbers] [OPTIMIZED]
+
+bool repeatedSubstringPattern(string s) 
+{
+    int n = s.size();
+    for(int i = n/2; i >= 1; i--)
+        if(n % i == 0)
+            if(s.substr(0, n-i) == s.substr(i))
+                return true;
+    return false;
 }
