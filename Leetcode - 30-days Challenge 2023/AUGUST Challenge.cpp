@@ -811,3 +811,17 @@ bool repeatedSubstringPattern(string s)
                 return true;
     return false;
 }
+
+// DAY 22 (168. Excel Sheet Column Title)=============================================================================
+
+string convertToTitle(int columnNumber) 
+{
+    string columnTitle = "";
+    while(columnNumber)
+    {
+        columnTitle += char((--columnNumber % 26) + 'A');
+        columnNumber /= 26;
+    }
+    reverse(columnTitle.begin(), columnTitle.end());
+    return columnTitle;
+}
