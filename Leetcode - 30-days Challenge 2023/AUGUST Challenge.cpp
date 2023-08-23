@@ -825,3 +825,51 @@ string convertToTitle(int columnNumber)
     reverse(columnTitle.begin(), columnTitle.end());
     return columnTitle;
 }
+
+// DAY 23 (767. Reorganize String)===============================================================================================
+
+#define f first
+#define s second
+
+string reorganizeString(string s) 
+{
+    priority_queue<pair<int,char>> pq;
+    vector<int> countMap(26, 0);
+    for(char c : s)
+        countMap[c-'a']++;
+    for(int i = 0; i < 26; i++)
+        if(countMap[i])
+            pq.push({countMap[i], char(i+'a')});
+    
+    char prevChar = '#';
+    string ans = "";
+
+    while(!pq.empty())
+    {
+        int topCount = pq.top().f;
+        char topChar = pq.top().s;
+        pq.pop();
+
+        if(prevChar == topChar)
+        {
+            if(pq.empty()) return "";
+            int nextCount = pq.top().f;
+            char nextChar = pq.top().s;
+            pq.pop();
+
+            ans += nextChar;
+            pq.push({topCount, topChar});
+            if(--nextCount)
+                pq.push({nextCount, nextChar});
+        }
+        else 
+        {
+            ans += topChar;
+            if(--topCount)
+                pq.push({topCount, topChar});
+        }
+        prevChar = ans.back();
+    }
+
+    return ans;
+}
