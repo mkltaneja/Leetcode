@@ -873,3 +873,46 @@ string reorganizeString(string s)
 
     return ans;
 }
+
+// DAY 24 (68. Text Justification)=================================================================================================
+
+vector<string> fullJustify(vector<string>& words, int maxWidth) 
+{
+    vector<string> ans;
+    int i = 0, n = words.size();
+    while(i < n)
+    {
+        int j = i;
+        int gaps = 0, totalWordsLen = 0;
+        string line = "";
+        while(j < n && totalWordsLen + words[j].size() + gaps <= maxWidth)
+        {
+            totalWordsLen += words[j++].size();
+            gaps++;
+        }
+        gaps--;
+
+        int endSpaces = j == n? maxWidth - totalWordsLen - gaps : 0;
+        int spaces = endSpaces? gaps : maxWidth - totalWordsLen;
+        int equalSpaces = gaps? spaces / gaps : spaces;
+        int extraSpaces = gaps? spaces % gaps : 0;
+        if(endSpaces && equalSpaces)
+            endSpaces--;
+        int k = i;
+        while(k < j)
+        {
+            line += words[k++];
+            int blanks = equalSpaces;
+            while(line.size() < maxWidth && blanks--)
+                line += " ";
+            if(line.size() < maxWidth && extraSpaces-- > 0)
+                line += " ";
+        }
+        while(endSpaces--)
+            line += " ";
+        ans.push_back(line);
+
+        i = j;
+    }
+    return ans;
+}
