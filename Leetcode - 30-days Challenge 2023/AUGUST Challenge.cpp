@@ -943,3 +943,31 @@ bool isInterleave(string s1, string s2, string s3)
     vector<vector<int>> dp(s1.size()+1, vector<int> (s2.size()+1, -1));
     return dfs(0, 0, s1, s2, s3, dp);
 }
+
+// DAY 26 (646. Maximum Length of Pair Chain)================================================================================================
+
+int upperBound(int end, int lo, int hi, vector<vector<int>> &pairs)
+{
+    while(lo < hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        if(pairs[mid][0] <= end)
+            lo = mid + 1;
+        else hi = mid;
+    }
+    return lo;
+}
+
+int findLongestChain(vector<vector<int>>& pairs) 
+{
+    int n = pairs.size();
+    sort(pairs.begin(), pairs.end());
+    vector<int> dp(n+1, 1);
+    dp[n] = 0;
+    for(int i = n-2; i >= 0; i--)
+    {
+        int ub = upperBound(pairs[i][1], i+1, n, pairs);
+        dp[i] = max(dp[i+1], dp[ub] + 1);
+    }
+    return dp[0];
+}
