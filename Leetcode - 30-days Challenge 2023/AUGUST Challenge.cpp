@@ -946,6 +946,8 @@ bool isInterleave(string s1, string s2, string s3)
 
 // DAY 26 (646. Maximum Length of Pair Chain)================================================================================================
 
+// APPROACH 2 (Using binary search to find last short start)  -->  time = O(n*logn), space = O(n)
+
 int upperBound(int end, int lo, int hi, vector<vector<int>> &pairs)
 {
     while(lo < hi)
@@ -970,4 +972,27 @@ int findLongestChain(vector<vector<int>>& pairs)
         dp[i] = max(dp[i+1], dp[ub] + 1);
     }
     return dp[0];
+}
+
+// APPROACH 2 (Moving Greedily to find count short end)  -->  time = O(n), space = O(1)  [OPTIMIZED]
+
+int findLongestChain(vector<vector<int>>& pairs) 
+{
+    int n = pairs.size();
+    sort(pairs.begin(), pairs.end(), [](auto const &a, auto const &b){
+        return a[1] < b[1];
+    });
+
+    int chainSize = 1;
+    int lastEnd = pairs[0][1];
+    for(int i = 1; i < n; i++)
+    {
+        if(pairs[i][0] > lastEnd)
+        {
+            chainSize++;
+            lastEnd = pairs[i][1];
+        }
+    }
+
+    return chainSize;
 }
