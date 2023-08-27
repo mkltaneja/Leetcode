@@ -996,3 +996,34 @@ int findLongestChain(vector<vector<int>>& pairs)
 
     return chainSize;
 }
+
+// DAY 27 (403. Frog Jump)=================================================================================
+
+unordered_map<int,int> stonesMap;
+int n;
+int dp[2005][2005];
+
+bool dfs(int i, int jump, vector<int> &stones)
+{
+    if(i == n-1) return true;
+    if(jump <= 0 || i < 0 || i >= n) return false;
+    if(dp[i][jump] != -1) return dp[i][jump];
+
+    bool kp1 = stonesMap.count(stones[i] + jump + 1) && dfs(stonesMap[stones[i] + jump + 1], jump + 1, stones);
+    bool k = stonesMap.count(stones[i] + jump) && dfs(stonesMap[stones[i] + jump], jump, stones);
+    bool km1 = stonesMap.count(stones[i] + jump - 1) && dfs(stonesMap[stones[i] + jump - 1], jump - 1, stones);
+
+    return dp[i][jump] = kp1 || k || km1;
+}
+
+bool canCross(vector<int>& stones) 
+{
+    if(stones[1] - stones[0] != 1)
+        return false;
+    
+    n = stones.size();
+    memset(dp, -1, sizeof(dp));
+    for(int i = 0; i < n; i++)
+        stonesMap[stones[i]] = i;
+    return dfs(1, 1, stones);
+}
