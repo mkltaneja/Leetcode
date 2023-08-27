@@ -1,20 +1,17 @@
 class Solution {
 public:
-    long long minimumPossibleSum(int n, int target) 
+    int furthestDistanceFromOrigin(string moves) 
     {
-        long long x = 1, sum = 0;
-        unordered_set<long long> st;
-        while(n)
+        int u = 0, x = 0;
+        for(char c : moves)
         {
-            if(st.count(target - x))
+            if(c == '_')
             {
-                x++;
+                u++;
                 continue;
             }
-            st.insert(x);
-            sum += x++;
-            n--;
+            x += (c == 'L')? -1 : 1;
         }
-        return sum;
+        return abs(x) + u;
     }
 };
