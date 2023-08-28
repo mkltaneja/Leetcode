@@ -1,5 +1,7 @@
 // DAY 1 (2305. Fair Distribution of Cookies)=================================================================================
 
+// METHOD 1 (Memoized)
+
 int ans = INT_MAX;
 void dfs(int i, int k, vector<int> &cookies, vector<int> &child, int zeroCount)
 {
@@ -1109,4 +1111,24 @@ int minimumDeleteSum(string s1, string s2)
 	
 	vector<vector<int>> dp(n, vector<int> (m, -1));
 	return dfs(0, 0, n, m, s1, s2, dp);
+}
+
+// METHOD 2 (Tabulated)
+
+int minimumDeleteSum(string s1, string s2) 
+{
+	int n = s1.size(), m = s2.size();
+	vector<vector<int>> dp(n+1, vector<int> (m+1, 0));
+
+	dp[n][m] = 0;
+	for(int i = n-1; i >= 0; i--)
+		dp[i][m] = s1[i] + dp[i+1][m];
+	for(int i = m-1; i >= 0; i--)
+		dp[n][i] = s2[i] + dp[n][i+1];
+
+	for(int i = n-1; i >= 0; i--)
+		for(int j = m-1; j >= 0; j--)
+			dp[i][j] = s1[i] == s2[j]? dp[i+1][j+1] : 
+				min(dp[i+1][j] + s1[i], dp[i][j+1] + s2[j]);
+	return dp[0][0];
 }
