@@ -1077,3 +1077,36 @@ double soupServings(int n)
 
 	return dp[m][m];
 }
+
+// DAY 31 (712. Minimum ASCII Delete Sum for Two Strings)===========================================================================
+
+vector<int> remSum1, remSum2;
+int dfs(int i, int j, int n, int m, string &s1, string &s2, vector<vector<int>> &dp)
+{
+	if(i == n && j == m)
+		return 0;
+	if(i == n || j == m)
+		return remSum1[i] + remSum2[j];
+	
+	if(dp[i][j] != -1) return dp[i][j];
+
+	return dp[i][j] = s1[i] == s2[j]? dfs(i+1, j+1, n, m, s1, s2, dp) : 
+		min(dfs(i+1, j, n, m, s1, s2, dp) + s1[i], dfs(i, j+1, n, m, s1, s2, dp) + s2[j]);
+}
+
+int minimumDeleteSum(string s1, string s2)
+{
+	int n = s1.size(), m = s2.size();
+
+	remSum1.resize(n+1);
+	remSum2.resize(m+1);
+	remSum1[n-1] = s1[n-1];
+	remSum2[m-1] = s2[m-1];
+	for(int i = n-2; i >= 0; i--)
+		remSum1[i] += s1[i] + remSum1[i+1];
+	for(int i = m-2; i >= 0; i--)
+		remSum2[i] += s2[i] + remSum2[i+1];
+	
+	vector<vector<int>> dp(n, vector<int> (m, -1));
+	return dfs(0, 0, n, m, s1, s2, dp);
+}
