@@ -1081,6 +1081,8 @@ public:
 
 // DAY 29 (2483. Minimum Penalty for a Shop)==============================================================================
 
+// APPROACH 1 (Calculating penalty at every step) --> time = O(n), space = O(n)
+
 int bestClosingTime(string customers) 
 {
     int n = customers.size();
@@ -1099,6 +1101,27 @@ int bestClosingTime(string customers)
             minClosingHour = i;
         }
         preNs += customers[i] == 'N';
+    }
+
+    return minClosingHour;
+}
+
+// APPROACH 2 (Using a counter) --> time = O(n), space = O(1)  [OPTIMIZED]
+
+int bestClosingTime(string customers) 
+{
+    int n = customers.size();
+    
+    int minCount = 0, minClosingHour = 0;
+    int count = 0;
+    for(int i = 1; i <= n; i++)
+    {
+        count += customers[i-1] == 'Y'? -1 : 1;
+        if(count < minCount)
+        {
+            minCount = count;
+            minClosingHour = i;
+        }
     }
 
     return minClosingHour;
