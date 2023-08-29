@@ -1078,3 +1078,28 @@ public:
  * int param_3 = obj->top();
  * bool param_4 = obj->empty();
  */
+
+// DAY 29 (2483. Minimum Penalty for a Shop)==============================================================================
+
+int bestClosingTime(string customers) 
+{
+    int n = customers.size();
+    vector<int> postYs(n+1, 0);
+    for(int i = n-1; i >= 0; i--)
+        postYs[i] += postYs[i+1] + (customers[i] == 'Y');
+    
+    int minPenalty = INT_MAX, minClosingHour = n+1;
+    int preNs = 0;
+    for(int i = 0; i <= n; i++)
+    {
+        int currPenalty = preNs + postYs[i];
+        if(currPenalty < minPenalty)
+        {
+            minPenalty = currPenalty;
+            minClosingHour = i;
+        }
+        preNs += customers[i] == 'N';
+    }
+
+    return minClosingHour;
+}
