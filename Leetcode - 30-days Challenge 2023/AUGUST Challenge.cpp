@@ -1126,3 +1126,20 @@ int bestClosingTime(string customers)
 
     return minClosingHour;
 }
+
+// DAY 30 (2366. Minimum Replacements to Sort the Array)========================================================================================
+
+long long minimumReplacement(vector<int>& nums) 
+{
+    int n = nums.size();
+    int last = nums[n-1];
+    long long ans = 0;
+    for(int i = n-2; i >= 0; i--)
+    {
+        long long parts = ceil(1.0 * nums[i] / last);
+        ans += parts - 1;
+        last = nums[i] / parts;
+    }
+
+    return ans;
+}
