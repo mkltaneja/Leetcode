@@ -1143,3 +1143,31 @@ long long minimumReplacement(vector<int>& nums)
 
     return ans;
 }
+
+// DAY 31 (1326. Minimum Number of Taps to Open to Water a Garden)=======================================================================================
+
+int minTaps(int n, vector<int>& ranges) 
+{
+    vector<int> maxReach(n+1);
+    for(int i = 0; i <= n; i++)
+    {
+        int start = max(0, i - ranges[i]);
+        int end = min(n, i + ranges[i]);
+        maxReach[start] = max(maxReach[start], end);
+    }
+
+    int currEnd = 0, nextEnd = 0, taps = 0;
+    for(int start = 0; start <= n; start++)
+    {
+        if(start > nextEnd) return -1;
+
+        if(start > currEnd)
+        {
+            currEnd = nextEnd;
+            taps++;
+        }
+        nextEnd = max(nextEnd, maxReach[start]);
+    }
+
+    return taps;
+}
