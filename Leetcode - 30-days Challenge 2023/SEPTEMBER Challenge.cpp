@@ -1,5 +1,7 @@
 
-// DAY 1 ()====================================================================================================
+// DAY 1 (338. Counting Bits)====================================================================================================
+
+// APPROACH 1 (By Dividing numbers into segments - 2-3, 4-7, 8-15...) --> time = O(n), space = O(n)
 
 vector<int> countBits(int n) 
 {
@@ -25,6 +27,20 @@ vector<int> countBits(int n)
             time++;
         }
     }
+
+    return ans;
+}
+
+// APPROACH 2 (Using FACT - odd num has 1 bit more than its half, and even num has equal) --> time = O(n), space = O(n)
+
+vector<int> countBits(int n) 
+{
+    vector<int> ans(n+1, 0);
+    if(n == 0) return ans;
+    
+    ans[1] = 1;
+    for(int x = 2; x <= n; x++)
+        ans[x] += ans[x >> 1] + (x & 1);
 
     return ans;
 }
