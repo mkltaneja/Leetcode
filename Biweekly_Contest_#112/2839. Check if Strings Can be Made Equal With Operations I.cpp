@@ -18,3 +18,20 @@ public:
         return o1 == o2 && e1 == e2;
     }
 };
+
+// METHOD 2 
+
+class Solution {
+public:
+    bool canBeEqual(string s1, string s2) 
+    {
+        auto sort = [&](string &s){
+            if(s[0] > s[2]) swap(s[0], s[2]);
+            if(s[1] > s[3]) swap(s[1], s[3]);
+        };
+        
+        sort(s1);
+        sort(s2);
+        return s1 == s2;
+    }
+};
