@@ -58,3 +58,59 @@ vector<int> countBits(int n)
 
     return ans;
 }
+
+// DAY 2 (2707. Extra Characters in a String)====================================================================================
+
+class Trie
+{
+    public:
+    vector<Trie*> child;
+    bool wordEnd;
+    Trie()
+    {
+        this->child.assign(26, nullptr);
+        this->wordEnd = false;
+    }
+
+    void insert(Trie* t, string &s)
+    {
+        Trie* tmp = t;
+        for(char c : s)
+        {
+            if(!tmp->child[c-'a'])
+                tmp->child[c-'a'] = new Trie();
+            tmp = tmp->child[c-'a'];
+        }
+        tmp->wordEnd = true;
+    }
+};
+Trie* root = new Trie();
+
+// map<pair<int,Trie*>, int> dp;
+// Note: We don't need above kind of DP, as we don't have dependency over Trie node for every index, as we are just calling for the root at every call
+int dfs(int i, Trie* itr, string &s, vector<int> &dp)
+{
+    if(i == s.size()) return 0;
+    if(dp[i] != -1) return dp[i];
+
+    int ans = dfs(i+1, root, s, dp) + 1;
+    for(int j = i; j < s.size(); j++)
+    {
+        Trie* nxt = itr->child[s[j]-'a'];
+        if(!nxt) break;
+
+        if(nxt->wordEnd)
+            ans = min(ans, dfs(j+1, root, s, dp));
+        itr = nxt;
+    }
+    return dp[i] = ans;
+}
+
+int minExtraChar(string s, vector<string>& dictionary) 
+{
+    for(string &word : dictionary)
+        root->insert(root, word);
+    
+    vector<int> dp(s.size(), -1);
+    return dfs(0, root, s, dp);
+}
