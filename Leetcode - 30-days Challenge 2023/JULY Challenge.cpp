@@ -1034,6 +1034,8 @@ int minSpeedOnTime(vector<int>& dist, double hour)
 
 // DAY 27 (2141. Maximum Running Time of N Computers)============================================================================
 
+// APPROACH 1 (Binary Search of times) --> time = O(m * log(sum)), space = O(1)
+
 #define ll long long
 
 bool isPossibleTime(int n, int m, ll time, vector<int> &batteries)
@@ -1065,6 +1067,27 @@ long long maxRunTime(int n, vector<int>& batteries)
 	}
 
 	return ansTime;
+}
+
+// APPROACH 2 (Mathematically) --> time = O(n), space = O(1)
+
+#define ll long long
+long long maxRunTime(int n, vector<int>& batteries) 
+{
+	sort(batteries.rbegin(), batteries.rend());
+	ll totTime = 0;
+	for(ll battery : batteries)
+		totTime += battery;
+	
+	for(int battery : batteries)
+	{
+		if(battery <= totTime / n)
+			return totTime / n;
+		totTime -= battery;
+		n--;
+	}
+
+	return 0;
 }
 
 // DAY 28 (486. Predict the Winner)===============================================================================================
