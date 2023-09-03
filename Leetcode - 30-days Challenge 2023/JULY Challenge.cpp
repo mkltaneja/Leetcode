@@ -1032,6 +1032,41 @@ int minSpeedOnTime(vector<int>& dist, double hour)
 	return hi == INT_MAX? -1 : lo;
 }
 
+// DAY 27 (2141. Maximum Running Time of N Computers)============================================================================
+
+#define ll long long
+
+bool isPossibleTime(int n, int m, ll time, vector<int> &batteries)
+{
+	ll totTime = 0;
+	for(int i = 0; i < m; i++)
+		totTime += min((ll)batteries[i], time);
+	
+	return totTime / time >= n;
+}
+
+long long maxRunTime(int n, vector<int>& batteries) 
+{
+	int m = batteries.size();
+	
+	ll lo = 1, hi = 0;
+	for(int x : batteries)
+		hi += (ll)x;
+	ll ansTime = 0;
+	while(lo <= hi)
+	{
+		ll mid = lo + ((hi - lo) >> 1);
+		if(isPossibleTime(n, m, mid, batteries))
+		{
+			ansTime = mid;
+			lo = mid + 1;
+		}
+		else hi = mid - 1;
+	}
+
+	return ansTime;
+}
+
 // DAY 28 (486. Predict the Winner)===============================================================================================
 
 int maxDiff(int l, int r, vector<int> &nums, vector<vector<int>> &dp)
