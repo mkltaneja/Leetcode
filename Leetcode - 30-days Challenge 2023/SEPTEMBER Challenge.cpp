@@ -147,3 +147,51 @@ bool hasCycle(ListNode *head)
     }
     return false;
 }
+
+// DAY 5 (138. Copy List with Random Pointer)================================================================================
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) 
+    {
+        unordered_map<Node*, Node*> nodeMap;
+        Node* itr = head;
+        Node* ans = new Node(0), *ansItr = ans;
+        while(itr)
+        {
+            ansItr->next = new Node(itr->val);
+
+            nodeMap[itr] = ansItr->next;
+
+            itr = itr->next;
+            ansItr = ansItr->next;
+        }
+
+        ans = ans->next, ansItr = ans, itr = head;
+
+        while(ansItr)
+        {
+            ansItr->random = nodeMap[itr->random];
+            itr = itr->next;
+            ansItr = ansItr->next;
+        }
+
+        return ans;
+    }
+};
