@@ -195,3 +195,40 @@ public:
         return ans;
     }
 };
+
+// DAY 6 (725. Split Linked List in Parts)================================================================================================
+
+vector<ListNode*> splitListToParts(ListNode* head, int k) 
+{
+    int size = 0;
+    ListNode* itr = head;
+    while(itr)
+    {
+        size++;
+        itr = itr->next;
+    }
+
+    int partSize = size / k;
+    int extras = size % k;
+    itr = head;
+    vector<ListNode*> ans;
+    while(ans.size() < k)
+    {
+        ListNode* curr = itr;
+        for(int nodes = 1; nodes <= partSize-1; nodes++)
+            itr = itr->next;
+        if(extras-- > 0 && partSize)
+            itr = itr->next;
+
+        ans.push_back(curr);
+
+        if(itr)
+        {
+            ListNode* nxt = itr->next;
+            itr->next = nullptr;
+            itr = nxt;
+        }
+    }
+
+    return ans;
+}
