@@ -232,3 +232,53 @@ vector<ListNode*> splitListToParts(ListNode* head, int k)
 
     return ans;
 }
+
+// DAY 7 (92. Reverse Linked List II)=======================================================================================
+
+ListNode* reverseBetween(ListNode* head, int left, int right) 
+{
+    ListNode* curr = nullptr, *prev = nullptr, *forw = nullptr;
+    ListNode* itr = head, *last = nullptr, *rangeStart = head;
+    int index = 1;
+    while(itr)
+    {
+        bool inRange = false;
+        if(index == left)
+        {
+            rangeStart = itr;
+            prev = itr;
+            curr = itr->next;
+        }
+        else if(index >= left && index <= right)
+        {
+            forw = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = forw;
+            itr = forw;
+            inRange = true;
+        }
+        else if(index == left - 1)
+            last = itr;
+        else if(index == right + 1)
+        {
+            if(last) 
+                last->next = prev;
+            rangeStart->next = itr;
+        }
+        
+        if(!inRange)
+            itr = itr->next;
+        index++;
+    }
+    if(left == 1)
+        head = prev;
+    if(right == index-1)
+    {
+        if(last)
+            last->next = prev;
+        rangeStart->next = nullptr;
+    }
+
+    return head;
+}
