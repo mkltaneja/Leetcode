@@ -282,3 +282,18 @@ ListNode* reverseBetween(ListNode* head, int left, int right)
 
     return head;
 }
+
+// DAY 8 (118. Pascal's Triangle)============================================================================================
+
+vector<vector<int>> generate(int numRows) 
+{
+    vector<vector<int>> ans(numRows);
+    for(int i = 0; i < numRows; i++)
+    {
+        ans[i].resize(i+1);
+        for(int j = 0; j <= i; j++)
+            ans[i][j] = (j == 0 || j == i)? 1 : (ans[i-1][j-1] + ans[i-1][j]);
+    }
+
+    return ans;
+}
