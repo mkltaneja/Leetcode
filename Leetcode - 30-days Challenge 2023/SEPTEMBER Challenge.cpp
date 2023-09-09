@@ -297,3 +297,16 @@ vector<vector<int>> generate(int numRows)
 
     return ans;
 }
+
+// DAY 9 (377. Combination Sum IV)=================================================================================================
+
+int combinationSum4(vector<int>& nums, int target) 
+{
+    vector<unsigned int> dp(target+1, 0);
+    sort(nums.begin(), nums.end());
+    dp[0] = 1;
+    for(int tar = 1; tar <= target; tar++)
+        for(int i = 0; i < nums.size() && nums[i] <= tar; i++)
+            dp[tar] += dp[tar - nums[i]];
+    return dp[target];
+}
