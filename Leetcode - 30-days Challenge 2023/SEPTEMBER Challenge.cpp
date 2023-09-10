@@ -310,3 +310,15 @@ int combinationSum4(vector<int>& nums, int target)
             dp[tar] += dp[tar - nums[i]];
     return dp[target];
 }
+
+// DAY 10 (1359. Count All Valid Pickup and Delivery Options)==============================================================================================================
+
+int mod = 1e9 + 7;
+int countOrders(int n) 
+{
+    long ans = 1;
+    for(int x = 2; x <= n; x++)
+        ans = (ans * (2*x * (2*x - 1) / 2)) % mod;  // After placing (x-1) P-D pairs,  2*(x-1) + 1 = 2*x - 1 places are remaining to place the xth pair. Then after placing Px, we have ∑2i-1 (1 <= i <= x) combinations
+
+    return ans;
+}
