@@ -325,6 +325,8 @@ int countOrders(int n)
 
 // DAY 11 (1282. Group the People Given the Group Size They Belong To)===========================================================================================
 
+// METHOD 1 (Using 3D vector)
+
 vector<vector<int>> groupThePeople(vector<int>& groupSizes) 
 {
     int n = groupSizes.size();
@@ -347,6 +349,33 @@ vector<vector<int>> groupThePeople(vector<int>& groupSizes)
         {
             ans.push_back(gsize[size].back());
             gsize[size].pop_back();
+        }
+    }
+    return ans;
+}
+
+// METHOD 2 (Without 3D vector)
+
+vector<vector<int>> groupThePeople(vector<int>& groupSizes) 
+{
+    int n = groupSizes.size();
+    vector<vector<int>> gsize(n+1);
+    for(int person = 0; person < n; person++)
+        gsize[groupSizes[person]].push_back(person);
+
+    vector<vector<int>> ans;
+    for(int size = 1; size <= n; size++)
+    {
+        vector<int> tmp;
+        while(!gsize[size].empty())
+        {
+            tmp.push_back(gsize[size].back());
+            gsize[size].pop_back();
+            if(tmp.size() == size)
+            {
+                ans.push_back(tmp);
+                tmp.clear();
+            }
         }
     }
     return ans;
