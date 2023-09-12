@@ -380,3 +380,26 @@ vector<vector<int>> groupThePeople(vector<int>& groupSizes)
     }
     return ans;
 }
+
+// DAY 12 (1647. Minimum Deletions to Make Character Frequencies Unique)=======================================================================================
+
+int minDeletions(string s) 
+{
+    int n = s.size();
+    vector<int> countMap(26, 0);
+    for(char c : s)
+        countMap[c-'a']++;
+    
+    sort(countMap.rbegin(), countMap.rend());
+    int deletions = 0;
+    for(int i = 1; i < 26 && countMap[i]; i++)
+    {
+        if(countMap[i] < countMap[i-1]) continue;
+
+        int prevCount = countMap[i];
+        countMap[i] = max(countMap[i-1] - 1, 0);
+        deletions += prevCount - countMap[i];
+    }
+    
+    return deletions;
+}
