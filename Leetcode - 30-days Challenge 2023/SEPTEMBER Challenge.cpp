@@ -406,6 +406,8 @@ int minDeletions(string s)
 
 // DAY 13 (135. Candy)====================================================================================
 
+// APPROACH 1 (Getting current answer by previously-stored answers) --> time = O(n + n*logn), space = O(n)
+
 int candy(vector<int>& ratings) 
 {
     int n = ratings.size();
@@ -426,5 +428,24 @@ int candy(vector<int>& ratings)
         candies[idx] = max(lval, rval) + 1;
         totalCandies += candies[idx];
     }
+    return totalCandies;
+}
+
+// APPROACH 2 (Getting current answer by previously-stored answers) --> time = O(3*n), space = O(n) [OPTIMIZED]
+
+int candy(vector<int>& ratings) 
+{
+    int n = ratings.size();
+    int totalCandies = 0;
+    vector<int> candies(n, 1);
+    for(int i = 1; i < n; i++)
+        if(ratings[i] > ratings[i-1])
+            candies[i] = candies[i-1] + 1;
+    for(int i = n-2; i >= 0; i--)
+        if(ratings[i] > ratings[i+1])
+            candies[i] = max(candies[i], candies[i+1] + 1);
+    for(int i = 0; i < n; i++)
+        totalCandies += candies[i];
+
     return totalCandies;
 }
