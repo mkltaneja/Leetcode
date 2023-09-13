@@ -403,3 +403,28 @@ int minDeletions(string s)
     
     return deletions;
 }
+
+// DAY 13 (135. Candy)====================================================================================
+
+int candy(vector<int>& ratings) 
+{
+    int n = ratings.size();
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+    for(int i = 0; i < n; i++)
+        pq.push({ratings[i], i});
+    
+    vector<int> candies(n, 0);
+    int totalCandies = 0;
+    while(!pq.empty())
+    {
+        int rating = pq.top().first;
+        int idx = pq.top().second;
+        pq.pop();
+
+        int lval = idx && ratings[idx-1] != ratings[idx]? candies[idx-1] : 0;
+        int rval = idx != n-1 && ratings[idx+1] != ratings[idx]? candies[idx+1] : 0;
+        candies[idx] = max(lval, rval) + 1;
+        totalCandies += candies[idx];
+    }
+    return totalCandies;
+}
