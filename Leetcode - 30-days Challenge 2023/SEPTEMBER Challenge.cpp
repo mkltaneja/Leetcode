@@ -449,3 +449,29 @@ int candy(vector<int>& ratings)
 
     return totalCandies;
 }
+
+// DAY 14 (332. Reconstruct Itinerary)======================================================================================================
+
+void dfs(string src, unordered_map<string, priority_queue<string, vector<string>, greater<string>>> &gp, vector<string> &ans)
+{
+    while(!gp[src].empty())
+    {
+        string dest = gp[src].top();
+        gp[src].pop();
+        dfs(dest, gp, ans);
+    }
+    ans.push_back(src);
+}
+
+vector<string> findItinerary(vector<vector<string>>& tickets) 
+{
+    unordered_map<string, priority_queue<string, vector<string>, greater<string>>> gp;
+    for(vector<string> &ticket : tickets)
+        gp[ticket[0]].push(ticket[1]);
+    
+    vector<string> ans;
+    dfs("JFK", gp, ans);
+    reverse(ans.begin(), ans.end());
+    
+    return ans;
+}
