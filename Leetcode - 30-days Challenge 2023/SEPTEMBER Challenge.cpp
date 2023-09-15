@@ -475,3 +475,31 @@ vector<string> findItinerary(vector<vector<string>>& tickets)
     
     return ans;
 }
+
+// DAY 15 (1584. Min Cost to Connect All Points)=========================================================================================================
+
+int minCostConnectPoints(vector<vector<int>>& points)
+{
+    int n = points.size();
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+    pq.push({0, 0});
+    int minCost = 0;
+    vector<bool> vis(n, false);
+
+    while(!pq.empty())
+    {
+        int wt = pq.top().first;
+        int src = pq.top().second;
+        pq.pop();
+
+        if(vis[src]) continue;
+        vis[src] = true;
+        minCost += wt;
+
+        for(int dest = 0; dest < n; dest++)
+            if(!vis[dest])
+                pq.push({abs(points[src][0] - points[dest][0]) + abs(points[src][1] - points[dest][1]), dest});
+    }
+
+    return minCost;
+}
