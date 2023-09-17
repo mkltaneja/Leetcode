@@ -503,3 +503,44 @@ int minCostConnectPoints(vector<vector<int>>& points)
 
     return minCost;
 }
+
+// DAY 17 (847. Shortest Path Visiting All Nodes)========================================================================================
+
+int shortestPathLength(vector<vector<int>>& graph) 
+{
+    int n = graph.size();
+    vector<vector<int>> vis(n, vector<int> ((1 << n), 0));
+    queue<pair<int, int>> que;
+    for(int i = 0; i < n; i++)
+    {
+        que.push({i, (1 << i)});
+        vis[i][(1 << i)] = 1;
+    }
+    int allVis = (1 << n) - 1;
+    
+    int traversals = 0;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            int src = que.front().first;
+            int mask = que.front().second;
+            que.pop();
+            for(int dest : graph[src])
+            {
+                int newMask = mask | (1 << dest);
+                if(newMask == allVis)
+                    return traversals + 1;
+                if(!vis[dest][newMask])
+                {
+                    vis[dest][newMask] = 1;
+                    que.push({dest, newMask});
+                }
+            }
+        }
+        traversals++;
+    }
+
+    return 0;
+}
