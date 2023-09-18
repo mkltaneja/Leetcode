@@ -544,3 +544,27 @@ int shortestPathLength(vector<vector<int>>& graph)
 
     return 0;
 }
+
+// DAY 18 (1337. The K Weakest Rows in a Matrix)=====================================================================================
+
+vector<int> kWeakestRows(vector<vector<int>>& mat, int k)
+{
+    int n = mat.size(), m = mat[0].size();
+    priority_queue<pair<int,int>> pq;
+    for(int i = 0; i < n; i++)
+    {
+        int j = 0;
+        while(j < m && mat[i][j]) j++;
+        pq.push({j, i});
+        if(pq.size() > k) pq.pop();
+    }
+
+    vector<int> ans;
+    while(!pq.empty())
+    {
+        ans.push_back(pq.top().second);
+        pq.pop();
+    }
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
