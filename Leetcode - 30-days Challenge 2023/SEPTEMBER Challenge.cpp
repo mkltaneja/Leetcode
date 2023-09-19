@@ -568,3 +568,25 @@ vector<int> kWeakestRows(vector<vector<int>>& mat, int k)
     reverse(ans.begin(), ans.end());
     return ans;
 }
+
+// DAY 19 (287. Find the Duplicate Number)=============================================================================================
+
+int findDuplicate(vector<int>& nums) 
+{
+    int slow = nums[0], fast = nums[0];
+    do
+    {
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+    }
+    while(slow != fast);
+
+    slow = nums[0];
+    while(slow != fast)
+    {
+        slow = nums[slow];
+        fast = nums[fast];
+    }
+
+    return slow;
+}
