@@ -601,6 +601,7 @@ int minOperations(vector<int>& nums, int x)
         sum += x;
     
     int revSum = sum - x;
+    if(revSum < 0) return -1;
 
     int currSum = 0, maxSize = -1;
     for(int i = 0, j = 0; i < n; i++)
