@@ -590,3 +590,27 @@ int findDuplicate(vector<int>& nums)
 
     return slow;
 }
+
+// DAY 20 (1658. Minimum Operations to Reduce X to Zero)=================================================================================
+
+int minOperations(vector<int>& nums, int x) 
+{
+    int n = nums.size();
+    int sum = 0;
+    for(int x : nums)
+        sum += x;
+    
+    int revSum = sum - x;
+
+    int currSum = 0, maxSize = -1;
+    for(int i = 0, j = 0; i < n; i++)
+    {
+        currSum += nums[i];
+        while(j <= i && currSum > revSum)
+            currSum -= nums[j++];
+        if(currSum == revSum)
+            maxSize = max(maxSize, i-j+1);
+    }
+
+    return maxSize == -1? -1 : n - maxSize;
+}
