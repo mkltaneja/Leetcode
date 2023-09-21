@@ -615,3 +615,37 @@ int minOperations(vector<int>& nums, int x)
 
     return maxSize == -1? -1 : n - maxSize;
 }
+
+// DAY 21 (4. Median of Two Sorted Arrays)=======================================================================================================
+
+double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) 
+{
+    int n = nums1.size(), m = nums2.size();
+    if(n > m) return findMedianSortedArrays(nums2, nums1);
+
+    int lo = 0, hi = n-1, half = (n + m) / 2;
+
+    while(true)
+    {
+        int mid1 = lo + ((hi - lo) >> 1);
+        int mid2 = half - (mid1 + 1) - 1;
+
+        int l1 = mid1 >= 0? nums1[mid1] : INT_MIN;
+        int l2 = mid2 >= 0? nums2[mid2] : INT_MIN;
+        int r1 = mid1 < n-1? nums1[mid1 + 1] : INT_MAX;
+        int r2 = mid2 < m-1? nums2[mid2 + 1] : INT_MAX;
+
+        if(l1 <= r2 && l2 <= r1)
+        {
+            if((n + m) & 1)
+                return min(r1, r2);
+            return (1.0 * max(l1, l2) + min(r1, r2)) / 2;
+        }
+
+        if(l1 > r2)
+            hi = mid1 - 1;
+        else lo = mid1 + 1;
+    }
+
+    return 0;
+}
