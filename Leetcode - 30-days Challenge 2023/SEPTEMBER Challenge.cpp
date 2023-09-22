@@ -649,3 +649,17 @@ double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2)
 
     return 0;
 }
+
+// DAY 22 (392. Is Subsequence)================================================================================================
+
+bool isSubsequence(string s, string t) 
+{
+    int n = s.size(), m = t.size();
+    int i = 0, j = 0;
+    while(i < n && j < m)
+    {
+        if(s[i] == t[j]) i++;
+        j++;
+    }
+    return i == n;
+}
