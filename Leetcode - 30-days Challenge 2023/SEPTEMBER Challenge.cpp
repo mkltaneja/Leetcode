@@ -663,3 +663,56 @@ bool isSubsequence(string s, string t)
     }
     return i == n;
 }
+
+// DAY 23 (1048. Longest String Chain)============================================================================================
+
+unordered_map<int, vector<string>> lenMap;
+unordered_map<string, int> dp;
+
+bool isPredecessor(string &prevWord, string &word)
+{
+    int i = 0, j = 0, n = prevWord.size(), m = word.size();
+    int unmatched = 0;
+    while(i < n && j < m)
+    {
+        if(prevWord[i] == word[j]) i++;
+        else if(++unmatched == 2) return false;
+        j++;
+    }
+    return j == m || unmatched == 0;
+}
+
+int dfs(int len, string &prevWord)
+{
+    if(!lenMap.count(len)) return 0;
+    if(dp.count(prevWord)) return dp[prevWord];
+
+    int ans = 0;
+    for(string &word : lenMap[len])
+        if(isPredecessor(prevWord, word))
+            ans = max(ans, dfs(len+1, word) + 1);
+    return dp[prevWord] = ans;
+}
+
+int longestStrChain(vector<string>& words) 
+{
+    int minLen = INT_MAX, maxLen = 0;
+    for(string &word : words)
+    {
+        int size = word.size();
+        lenMap[size].push_back(word);
+        minLen = min(minLen, size);
+        maxLen = max(maxLen, size);
+    }
+    
+    int ans = 0;
+    for(int len = minLen; len <= maxLen; len++)
+    {
+        if(lenMap[len].empty()) continue;
+        for(string &word : lenMap[len])
+            if(!dp.count(word))
+                ans = max(ans, dfs(len+1, word) + 1);
+    }
+
+    return ans;
+}
