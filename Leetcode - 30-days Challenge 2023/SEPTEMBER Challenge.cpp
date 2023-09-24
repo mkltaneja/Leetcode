@@ -716,3 +716,21 @@ int longestStrChain(vector<string>& words)
 
     return ans;
 }
+
+// DAY 24 (799. Champagne Tower)==============================================================================================
+
+double champagneTower(int poured, int query_row, int query_glass) 
+{
+    vector<double> dp(200, 0);
+    dp[0] = poured;
+    for(int i = 0; i < query_row; i++)
+    {
+        for(int j = i; j >= 0; j--)
+        {
+            double overflow = (dp[j] - 1.0) / 2.0;
+            dp[j] = max(0.0, overflow);
+            dp[j+1] += max(0.0, overflow);
+        }
+    }
+    return min(1.0, dp[query_glass]);
+}
