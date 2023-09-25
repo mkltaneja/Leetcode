@@ -734,3 +734,17 @@ double champagneTower(int poured, int query_row, int query_glass)
     }
     return min(1.0, dp[query_glass]);
 }
+
+// DAY 25 (389. Find the Difference)============================================================================================
+
+char findTheDifference(string s, string t) 
+{
+    int extra = t.back();
+    for(int i = 0; i < s.size(); i++)
+    {
+        extra ^= s[i];
+        extra ^= t[i];
+    }
+
+    return extra;
+}
