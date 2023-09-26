@@ -751,6 +751,8 @@ char findTheDifference(string s, string t)
 
 // DAY 26 (316. Remove Duplicate Letters)======================================================================================
 
+// APPROACH 1 (Start from the lowest character and keep the note of next occurrence and count of every character at every index) --> Time = O(26*26*log(26)), Space = O(26*n)
+
 string removeDuplicateLetters(string s) 
 {
     int n = s.size();
@@ -794,6 +796,34 @@ string removeDuplicateLetters(string s)
             itr = charSet.begin();
         }
         else itr++;
+    }
+
+    return ans;
+}
+
+// APPROACH 2 (Using Stack Approach -> Remove previous characters until the current is smaller and previous are also present ahead) --> Time = O(2*n), Space = O(1)  [OPTIMIZED]
+
+string removeDuplicateLetters(string s) 
+{
+    int n = s.size();
+    vector<int> cntMap(26, 0);
+    int vis = 0;
+    string ans = "";
+    for(int i = 0; i < n; i++)
+        cntMap[s[i]-'a']++;
+    
+    for(int i = 0; i < n; i++)
+    {
+        cntMap[s[i]-'a']--;
+        if(vis & (1 << (s[i]-'a'))) continue;
+
+        while(!ans.empty() && ans.back() > s[i] && cntMap[ans.back()-'a'])
+        {
+            vis &= ~(1 << (ans.back()-'a'));
+            ans.pop_back();
+        }
+        ans += s[i];
+        vis |= (1 << (ans.back()-'a'));
     }
 
     return ans;
