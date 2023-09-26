@@ -748,3 +748,53 @@ char findTheDifference(string s, string t)
 
     return extra;
 }
+
+// DAY 26 (316. Remove Duplicate Letters)======================================================================================
+
+string removeDuplicateLetters(string s) 
+{
+    int n = s.size();
+    set<char> charSet;
+    vector<vector<int>> cntMap(n, vector<int>(26, 0));
+    vector<vector<int>> nextOcc(n, vector<int>(26, 0));
+    vector<int> map(26, 0);
+    vector<int> last(26, n);
+    for(int i = n-1; i >= 0; i--)
+    {
+        charSet.insert(s[i]);
+        cntMap[i] = map;
+        nextOcc[i] = last;
+        map[s[i]-'a']++;
+        last[s[i]-'a'] = i;
+    }
+
+    string ans = "";
+    int currIdx = -1;
+    auto itr = charSet.begin();
+    while(!charSet.empty())
+    {
+        char minChar = *itr;
+        int firstOcc = currIdx == -1? last[minChar-'a'] : nextOcc[currIdx][minChar-'a'];
+
+        bool isPossible = true;
+        for(char c : charSet)
+        {
+            if(c == minChar) continue;
+            if(!cntMap[firstOcc][c-'a'])
+            {
+                isPossible = false;
+                break;
+            }
+        }
+        if(isPossible)
+        {
+            ans += minChar;
+            charSet.erase(minChar);
+            currIdx = firstOcc;
+            itr = charSet.begin();
+        }
+        else itr++;
+    }
+
+    return ans;
+}
