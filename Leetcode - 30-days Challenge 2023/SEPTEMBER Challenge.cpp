@@ -828,3 +828,34 @@ string removeDuplicateLetters(string s)
 
     return ans;
 }
+
+// DAY 27 (880. Decoded String at Index)========================================================================================================
+
+#define ull unsigned long long
+
+bool isNum(char c)
+{
+    return (c >= '0' && c <= '9'); 
+}
+
+string decodeAtIndex(string s, int k) 
+{
+    int n = s.size();
+    ull len = 0;
+    for(char c : s)
+        if(isNum(c))
+            len *= (c-'0');
+        else len++;
+
+    for(int i = n-1; i >= 0; i--)
+    {
+        char c = s[i];
+        if(isNum(c))
+        {
+            len /= (c-'0');
+            k %= len;
+        }
+        else if(k == 0 || len-- == k) return string(1,c);
+    }
+    return "";
+}
