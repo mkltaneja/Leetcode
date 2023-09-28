@@ -859,3 +859,12 @@ string decodeAtIndex(string s, int k)
     }
     return "";
 }
+
+// DAY 28 (905. Sort Array By Parity)======================================================================================
+
+vector<int> sortArrayByParity(vector<int>& nums) 
+{
+    for(int i = 0, j = 0; i < nums.size(); i++)
+        if(nums[i]&1^1) swap(nums[i], nums[j++]);
+    return nums;
+}
