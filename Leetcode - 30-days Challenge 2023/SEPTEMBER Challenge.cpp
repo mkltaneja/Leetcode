@@ -506,6 +506,8 @@ int minCostConnectPoints(vector<vector<int>>& points)
 
 // DAY 16 (1631. Path With Minimum Effort)====================================================================================
 
+// APPROACH 1 (Using DFS) --> Time = O(n*m * log(INT_MAX)), Space = O(n*m)
+
 bool isPossible_dfs(int threshold, int i, int j, int prev, int n, int m, vector<vector<int>>& heights, vector<vector<int>>& vis)
 {
     if(i == -1 || j == -1 || i == n || j == m || vis[i][j] ||  abs(heights[i][j] - prev) > threshold)
@@ -536,6 +538,47 @@ int minimumEffortPath(vector<vector<int>>& heights)
     }
 
     return ans;
+}
+
+// APPROACH 2 (Using Dijikstra Algo) --> Time = O(E * log(E)) or O(E * log(V)) = O(n*m*4 * log(n*m)), Space = O(n*m)
+
+#define f first
+#define s second
+int minimumEffortPath(vector<vector<int>>& heights) 
+{
+    int n = heights.size(), m = heights[0].size();
+    vector<vector<int>> minDist(n, vector<int>(m, INT_MAX));
+    minDist[0][0] = 0;
+    priority_queue<pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>>, greater<pair<int,pair<int,int>>>> pq;
+    pq.push({0, {0, 0}});
+
+    vector<vector<int>> dir = {{0,1},{1,0},{-1,0},{0,-1}};
+    while(!pq.empty())
+    {
+        int currEffort = pq.top().f;
+        int i = pq.top().s.f;
+        int j = pq.top().s.s;
+        pq.pop();
+
+        if(i == n-1 && j == m-1)
+            return currEffort;
+
+        for(int d = 0; d < 4; d++)
+        {
+            int x = i + dir[d][0];
+            int y = j + dir[d][1];
+            if(x == -1 || y == -1 || x == n || y == m)
+                continue;
+            int newEffort = max(currEffort, abs(heights[i][j] - heights[x][y]));
+            if(newEffort >= minDist[x][y])
+                continue;
+            
+            minDist[x][y] = newEffort;
+            pq.push({newEffort, {x, y}});
+        }
+    }
+
+    return -1;
 }
 
 // DAY 17 (847. Shortest Path Visiting All Nodes)========================================================================================
