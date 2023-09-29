@@ -868,3 +868,24 @@ vector<int> sortArrayByParity(vector<int>& nums)
         if(nums[i]&1^1) swap(nums[i], nums[j++]);
     return nums;
 }
+
+// DAY 29 (896. Monotonic Arra)========================================================================================
+
+bool isMonotonic(vector<int>& nums) 
+{
+    bool inc = false, dec = false;
+    for(int i = 0; i < nums.size()-1; i++)
+    {
+        if(nums[i+1] > nums[i])
+        {
+            if(dec) return false;
+            inc = true;
+        }
+        if(nums[i+1] < nums[i])
+        {
+            if(inc) return false;
+            dec = true;
+        }
+    }
+    return true;
+}
