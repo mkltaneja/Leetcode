@@ -504,6 +504,40 @@ int minCostConnectPoints(vector<vector<int>>& points)
     return minCost;
 }
 
+// DAY 16 (1631. Path With Minimum Effort)====================================================================================
+
+bool isPossible_dfs(int threshold, int i, int j, int prev, int n, int m, vector<vector<int>>& heights, vector<vector<int>>& vis)
+{
+    if(i == -1 || j == -1 || i == n || j == m || vis[i][j] ||  abs(heights[i][j] - prev) > threshold)
+        return false;
+    if(i == n-1 && j == m-1)
+        return true;
+    vis[i][j] = true;
+    
+    return
+        isPossible_dfs(threshold, i+1, j, heights[i][j], n, m, heights, vis) || 
+        isPossible_dfs(threshold, i, j+1, heights[i][j], n, m, heights, vis) || 
+        isPossible_dfs(threshold, i-1, j, heights[i][j], n, m, heights, vis) || 
+        isPossible_dfs(threshold, i, j-1, heights[i][j], n, m, heights, vis);
+}
+
+int minimumEffortPath(vector<vector<int>>& heights) 
+{
+    int n = heights.size(), m = heights[0].size();
+    int lo = 0, hi = INT_MAX;
+    int ans = -1;
+    while(lo <= hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        vector<vector<int>> vis(n, vector<int>(m, false));
+        if(isPossible_dfs(mid, 0, 0, heights[0][0], n, m, heights, vis))
+            hi = mid - 1, ans = mid;
+        else lo = mid + 1;
+    }
+
+    return ans;
+}
+
 // DAY 17 (847. Shortest Path Visiting All Nodes)========================================================================================
 
 int shortestPathLength(vector<vector<int>>& graph) 
