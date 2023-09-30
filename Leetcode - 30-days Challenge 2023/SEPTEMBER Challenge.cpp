@@ -966,3 +966,27 @@ bool isMonotonic(vector<int>& nums)
     }
     return true;
 }
+
+// DAY 30 (456. 132 Patter)===================================================================================
+
+bool find132pattern(vector<int>& nums) 
+{
+    int n = nums.size();
+    stack<int> st;
+    vector<int> currMin(n);
+    currMin[0] = nums[0];
+    for(int i = 1; i < n; i++)
+        currMin[i] = min(currMin[i-1], nums[i]);
+    
+    for(int i = n-1; i >= 0; i--)
+    {
+        while(!st.empty() && nums[i] > st.top())
+        {
+            if(st.top() > currMin[i])
+                return true;
+            st.pop();
+        }
+        st.push(nums[i]);
+    }
+    return false;
+}
