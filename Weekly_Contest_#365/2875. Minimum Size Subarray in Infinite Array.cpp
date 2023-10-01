@@ -1,3 +1,6 @@
+
+// APPROACH 1 (Sliding window with infinite array) --> Time = O(target/sum(nums) + n), Space = O(n * n * (target / sum(nums)))
+
 class Solution {
 public:
     int minSizeSubarray(vector<int>& nums, int target) 
@@ -24,5 +27,36 @@ public:
         }
         
         return ans == INT_MAX? -1 : ans;
+    }
+};
+
+// APPROACH 2 (Sliding window with Single array) --> Time = O(2*n), Space = O(1) --> [OPTIMIZED]
+
+class Solution {
+public:
+    int minSizeSubarray(vector<int>& nums, int target) 
+    {
+        int i = 0, j = 0, n = nums.size();
+        long sum = 0;
+        for(int x : nums)
+            sum += x;
+        
+        int len = (target / sum) * n;
+        target %= sum;
+        if(target == 0) return len;
+        
+        int rsum = 0, rlen = n+1;
+        while(j < n)
+        {
+            rsum += nums[i];
+            while(j < n && rsum > target)
+                rsum -= nums[j++];
+            
+            if(rsum == target)
+                rlen = min(rlen, i >= j? i-j+1 : n + i-j+1);
+            i = (i + 1) % n;
+        }
+        
+        return rlen == n+1? -1 : len + rlen;
     }
 };
