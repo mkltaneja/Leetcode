@@ -17,3 +17,31 @@ string reverseWords(string s)
 
     return ans;
 }
+
+// DAY 2 (2038. Remove Colored Pieces if Both Neighbors are the Same Color)============================================================
+
+bool winnerOfGame(string colors) 
+{
+    int As = 0, Bs = 0, Aturns = 0, Bturns = 0;
+    for(char c : colors)
+    {
+        if(c == 'A')
+        {
+            As++;
+            Bturns += max(0, Bs-2);
+            Bs = 0;
+        }
+        else
+        {
+            Bs++;
+            Aturns += max(0, As-2);
+            As = 0;
+        }
+    }
+    Aturns += max(0, As-2);
+    Bturns += max(0, Bs-2);
+
+    bool AliceWon = Aturns > Bturns;
+
+    return AliceWon;
+}
