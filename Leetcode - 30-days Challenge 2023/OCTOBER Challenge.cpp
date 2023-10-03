@@ -45,3 +45,17 @@ bool winnerOfGame(string colors)
 
     return AliceWon;
 }
+
+// DAY 3 (1512. Number of Good Pairs)=====================================================================================
+
+int numIdenticalPairs(vector<int>& nums) 
+{
+    int ans = 0;
+    unordered_map<int,int> mp;
+    for(int x : nums)
+        mp[x]++;
+    for(auto p : mp)
+        ans += p.second * (p.second - 1) / 2;
+
+    return ans;
+}
