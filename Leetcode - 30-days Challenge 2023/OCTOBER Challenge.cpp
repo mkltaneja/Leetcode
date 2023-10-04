@@ -62,6 +62,8 @@ int numIdenticalPairs(vector<int>& nums)
 
 // DAY 4 (706. Design HashMap)=============================================================================================
 
+// APPROACH 1 (Using 1D array of bigger size to avoid collision) --> Time = O(1), Space = O(MAX_NUMBER)
+
 class MyHashMap {
 public:
 
@@ -85,6 +87,116 @@ public:
     void remove(int key) 
     {
         map[key] = -1;
+    }
+};
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap* obj = new MyHashMap();
+ * obj->put(key,value);
+ * int param_2 = obj->get(key);
+ * obj->remove(key);
+ */
+
+// APPROACH 2 (Using BST to avoid collision) --> Time = O(size * log(queries)), Space = O(size*queries) --> [OPTIMIZED]
+
+class MyHashMap {
+public:
+
+    class Node
+    {
+        public:
+        Node* left, *right;
+        int key, val;
+        Node(int key, int val)
+        {
+            this->key = key;
+            this->val = val;
+            this->left = nullptr;
+            this->right = nullptr;
+        }
+    };
+
+    Node* insert(Node* root, int key, int val)
+    {
+        if(!root)
+            return new Node(key, val);
+        if(root->key == key)
+            root->val = val;
+        else if(root->key < key)
+            root->right = insert(root->right, key, val);
+        else root->left = insert(root->left, key, val);
+
+        return root;
+    }
+
+    Node* removeNode(Node* root, int key)
+    {
+        if(!root)
+            return nullptr;
+        if(root->key == key)
+        {
+            if(!root->left)
+            {
+                Node* tmp = root->right;
+                delete root;
+                return tmp;
+            }
+            else if(!root->right)
+            {
+                Node* tmp = root->left;
+                delete root;
+                return tmp;
+            }
+
+            Node* minNode = root->right;
+            while(minNode->left) minNode = minNode->left;
+
+            root->key = minNode->key;
+            root->val = minNode->val;
+            root->right = removeNode(root->right, minNode->key);
+        }
+        else if(root->key < key)
+            root->right = removeNode(root->right, key);
+        else root->left = removeNode(root->left, key);
+
+        return root;
+    }
+
+    int getNodeVal(Node* root, int key)
+    {
+        if(!root)
+            return -1;
+        if(root->key < key)
+            return getNodeVal(root->right, key);
+        else if(root->key > key)
+            return getNodeVal(root->left, key);
+        else return root->val;
+    }
+
+    vector<Node*> map;
+    int size = 10000;
+    MyHashMap() 
+    {
+        map.assign(size, nullptr);
+    }
+    
+    void put(int key, int value) 
+    {
+        int hash = key % size;
+        map[hash] = insert(map[hash], key, value);
+    }
+    
+    int get(int key) 
+    {
+        int hash = key % size;
+        return getNodeVal(map[hash], key);
+    }
+    
+    void remove(int key) 
+    {
+        int hash = key % size;
+        map[hash] = removeNode(map[hash], key);
     }
 };
 
