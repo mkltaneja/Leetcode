@@ -207,3 +207,33 @@ public:
  * int param_2 = obj->get(key);
  * obj->remove(key);
  */
+
+// DAY 5 (229. Majority Element II)============================================================================
+
+vector<int> majorityElement(vector<int>& nums) 
+{
+    int n = nums.size();
+    int cnta = 0, cntb = 0, a = INT_MIN, b = INT_MIN;
+    for(int x : nums)
+    {
+        if(x == a) cnta++;
+        else if(x == b) cntb++;
+        else if(cnta == 0) a = x, cnta = 1;
+        else if(cntb == 0) b = x, cntb = 1;
+        else cnta--, cntb--;
+    }
+    cnta = 0, cntb = 0;
+    for(int x : nums)
+    {
+        cnta += x == a;
+        cntb += x == b;
+    }
+
+    if(cnta > n/3 && cntb > n/3)
+        return {a, b};
+    if(cnta > n/3)
+        return {a};
+    if(cntb > n/3)
+        return {b};
+    return {};
+}
