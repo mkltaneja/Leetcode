@@ -254,3 +254,24 @@ int integerBreak(int n)
 
     return dp[n];
 }
+
+// DAY 7 (1420. Build Array Where You Can Find The Maximum Exactly K Comparisons)==========================================================================
+
+int mod = 1e9 + 7;
+int numOfArraysHelper(int n, int m, int k, int mx, vector<vector<vector<int>>> &dp)
+{
+    if(n == 0) return k == 0;
+    if(k < 0) return 0;
+    if(dp[n][mx][k] != -1) return dp[n][mx][k];
+
+    int ans = 0;
+    for(int x = 1; x <= m; x++)
+        ans = ans % mod + numOfArraysHelper(n-1, m, k - (x > mx), max(mx, x), dp) % mod % mod;
+    return dp[n][mx][k] = ans % mod;
+}
+
+int numOfArrays(int n, int m, int k)
+{
+    vector<vector<vector<int>>> dp(n+1, vector<vector<int>> (m+1, vector<int>(k+1, -1)));
+    return numOfArraysHelper(n, m, k, 0, dp) % mod;
+}
