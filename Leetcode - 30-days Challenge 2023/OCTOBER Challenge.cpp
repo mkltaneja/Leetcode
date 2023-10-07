@@ -237,3 +237,20 @@ vector<int> majorityElement(vector<int>& nums)
         return {b};
     return {};
 }
+
+// DAY 6 (343. Integer Break)========================================================================
+
+int integerBreak(int n) 
+{
+    vector<int> dp(n+1, 0);
+    for(int i = 1; i < n; i++)
+    {
+        dp[i] = i;
+        for(int x = 1; x <= i/2; x++)
+            dp[i] = max(dp[i], dp[x] * dp[i-x]);
+    }
+    for(int x = 1; x <= n/2; x++)
+        dp[n] = max(dp[n], dp[x] * dp[n-x]);
+
+    return dp[n];
+}
