@@ -275,3 +275,34 @@ int numOfArrays(int n, int m, int k)
     vector<vector<vector<int>>> dp(n+1, vector<vector<int>> (m+1, vector<int>(k+1, -1)));
     return numOfArraysHelper(n, m, k, 0, dp) % mod;
 }
+
+// DAY 8 (1458. Max Dot Product of Two Subsequences)=====================================================================================
+
+int maxDotProd = INT_MIN;
+
+int dfs(int i, int j, vector<int>& nums1, vector<int>& nums2, vector<vector<int>> &dp)
+{
+    if(i == nums1.size() || j == nums2.size())
+        return INT_MIN;
+    if(dp[i][j] != -1)
+        return dp[i][j];
+
+    int include = dfs(i+1, j+1, nums1, nums2, dp);
+    include = (nums1[i] * nums2[j]) + (include == INT_MIN? 0 : include);
+    int excludei = dfs(i+1, j, nums1, nums2, dp);
+    int excludej = dfs(i, j+1, nums1, nums2, dp);
+
+    int currProd = max({include, excludei, excludej});
+    maxDotProd = max(maxDotProd, currProd);
+    currProd = currProd < 0? INT_MIN : currProd;
+
+    return dp[i][j] = currProd;
+}
+
+int maxDotProduct(vector<int>& nums1, vector<int>& nums2)
+{
+    vector<vector<int>> dp(nums1.size(), vector<int>(nums2.size(), -1));
+    dfs(0, 0, nums1, nums2, dp);
+
+    return maxDotProd;
+}
