@@ -306,3 +306,35 @@ int maxDotProduct(vector<int>& nums1, vector<int>& nums2)
 
     return maxDotProd;
 }
+
+// DAY 9 (34. Find First and Last Position of Element in Sorted Array)===========================================================================
+
+int lowerBound(vector<int> &nums, int target)
+{
+    int lo = 0, hi = nums.size()-1;
+    int ans = nums.size();
+    while(lo <= hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        if(nums[mid] < target)
+            lo = mid + 1;
+        else 
+        {
+            ans = mid;
+            hi = mid - 1;
+        }
+    }
+
+    return ans;
+}
+
+vector<int> searchRange(vector<int>& nums, int target) 
+{
+    int firstPos = lowerBound(nums, target);
+    if(firstPos == nums.size() || nums[firstPos] != target)
+        return {-1, -1};
+
+    int lastPos = lowerBound(nums, target+1) - 1;
+
+    return {firstPos, lastPos};
+}
