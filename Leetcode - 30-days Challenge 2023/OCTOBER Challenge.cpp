@@ -338,3 +338,27 @@ vector<int> searchRange(vector<int>& nums, int target)
 
     return {firstPos, lastPos};
 }
+
+// DAY 10 (2009. Minimum Number of Operations to Make Array Continuous)=================================================================================
+
+int minOperations(vector<int>& nums) 
+{
+    sort(nums.begin(), nums.end());
+    int n = nums.size(), maxDiff = n-1;
+    int maxContSubarray = 0;
+    unordered_map<int,int> cnt;
+
+    for(int i = 0, j = 0; i < n; i++)
+    {
+        cnt[nums[i]]++;
+        while(nums[i] - nums[j] > maxDiff)
+        {
+            if(--cnt[nums[j]] == 0)
+                cnt.erase(nums[j]);
+            j++;
+        }
+        maxContSubarray = max(maxContSubarray, (int)cnt.size());
+    }
+
+    return n - maxContSubarray;
+}
