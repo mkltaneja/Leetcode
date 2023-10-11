@@ -392,3 +392,30 @@ int minOperations(vector<int>& nums)
 
     return ans;
 }
+
+// DAY 11 (2251. Number of Flowers in Full Bloom)===============================================================================
+
+vector<int> fullBloomFlowers(vector<vector<int>>& flowers, vector<int>& people) 
+{
+    int n = flowers.size();
+    vector<int> bloomStart(n), bloomEnd(n);
+    for(int i = 0; i < n; i++)
+    {
+        bloomStart[i] = flowers[i][0];
+        bloomEnd[i] = flowers[i][1];
+    }
+
+    sort(bloomStart.begin(), bloomStart.end());
+    sort(bloomEnd.begin(), bloomEnd.end());
+
+    vector<int> ans;
+    for(int person : people)
+    {
+        int countStart = upper_bound(bloomStart.begin(), bloomStart.end(), person) - bloomStart.begin();
+        int countEnd = lower_bound(bloomEnd.begin(), bloomEnd.end(), person) - bloomEnd.begin();
+
+        ans.push_back(countStart - countEnd);
+    }
+
+    return ans;
+}
