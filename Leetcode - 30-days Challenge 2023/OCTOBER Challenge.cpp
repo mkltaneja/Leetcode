@@ -419,3 +419,73 @@ vector<int> fullBloomFlowers(vector<vector<int>>& flowers, vector<int>& people)
 
     return ans;
 }
+
+// DAY 12 (1095. Find in Mountain Array)===================================================================================================
+
+/**
+ * // This is the MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * class MountainArray {
+ *   public:
+ *     int get(int index);
+ *     int length();
+ * };
+ */
+
+class Solution {
+public:
+
+    int findPeak(int n, MountainArray &mountainArr)
+    {
+        int lo = 0, hi = n-1;
+        while(lo <= hi)
+        {
+            int mid = lo + ((hi - lo) >> 1);
+            int curr = mountainArr.get(mid);
+            int prev = mid? mountainArr.get(mid-1) : -1;
+            int forw = mid != n-1? mountainArr.get(mid+1) : INT_MAX;
+            if(curr > prev && curr > forw)
+                return mid;
+            if(curr > prev)
+                lo = mid + 1;
+            else hi = mid - 1;
+        }
+        return -1;
+    }
+
+    int findInSubArr(int target, int lo, int hi, bool isInc, MountainArray &mountainArr)
+    {
+        while(lo <= hi)
+        {
+            int mid = lo + ((hi - lo) >> 1);
+            int curr = mountainArr.get(mid);
+
+            if(curr == target) return mid;
+
+            if(isInc)
+            {
+                if(curr < target) lo = mid + 1;
+                else hi = mid - 1;
+            }
+            else
+            {
+                if(curr > target) lo = mid + 1;
+                else hi = mid - 1;
+            }
+        }
+
+        return -1;
+    }
+
+    int findInMountainArray(int target, MountainArray &mountainArr)
+    {
+        int n = mountainArr.length();
+        int peak = findPeak(n, mountainArr);
+        if(peak == -1) return -1;
+
+        int lAns = findInSubArr(target, 0, peak, true, mountainArr);
+        int rAns = findInSubArr(target, peak + 1, n-1, false, mountainArr);
+
+        return lAns != -1? lAns : rAns;
+    }
+};
