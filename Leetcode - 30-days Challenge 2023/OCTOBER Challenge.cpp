@@ -489,3 +489,15 @@ public:
         return lAns != -1? lAns : rAns;
     }
 };
+
+// DAY 13 (746. Min Cost Climbing Stairs)============================================================================================
+
+int minCostClimbingStairs(vector<int>& cost) 
+{
+    int size = cost.size();
+    vector<int> cache(size+1, 0);
+    cache[size-1] = cost[size-1];
+    for(int i = size-2; i >= 0; i--)
+        cache[i] = min(cache[i+1], cache[i+2]) + cost[i];
+    return min(cache[0], cache[1]);
+}
