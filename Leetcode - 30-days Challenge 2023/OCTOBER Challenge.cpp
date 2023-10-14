@@ -501,3 +501,26 @@ int minCostClimbingStairs(vector<int>& cost)
         cache[i] = min(cache[i+1], cache[i+2]) + cost[i];
     return min(cache[0], cache[1]);
 }
+
+// DAY 14 (2742. Painting the Walls)===============================================================================================
+
+int cache[505][2505];
+int dfs(int i, int n, vector<int>& cost, vector<int>& time)
+{
+    if(n <= 0) return 0;
+    if(i == cost.size()) return INT_MAX;
+    if(cache[i][n] != -1) return cache[i][n];
+
+    int inc = dfs(i+1, n - time[i] - 1, cost, time);
+    inc = inc == INT_MAX? INT_MAX : inc + cost[i];
+    
+    int exc = dfs(i+1, n, cost, time);
+
+    return cache[i][n] = min(inc, exc);
+}
+
+int paintWalls(vector<int>& cost, vector<int>& time) 
+{
+    memset(cache, -1, sizeof(cache));
+    return dfs(0, time.size(), cost, time);
+}
