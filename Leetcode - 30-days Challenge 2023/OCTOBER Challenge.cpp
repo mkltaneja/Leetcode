@@ -545,3 +545,21 @@ int numWays(int steps, int arrLen)
     vector<vector<int>> dp(steps+1, vector<int>(steps+1, -1));
     return dfs(0, steps, arrLen, dp);
 }
+
+// DAY 16 (119. Pascal's Triangle II)==============================================================================
+
+vector<int> getRow(int rowIndex)
+{
+    vector<int> pascalTriangle = {1};
+    if(rowIndex == 0) return pascalTriangle;
+    
+    for(int i = 1; i <= rowIndex; i++)
+    {
+        vector<int> nextRow(i+1, 1);
+        for(int j = 1; j < i; j++)
+            nextRow[j] = pascalTriangle[j-1] + pascalTriangle[j];
+        pascalTriangle = nextRow;
+    }
+
+    return pascalTriangle;
+}
