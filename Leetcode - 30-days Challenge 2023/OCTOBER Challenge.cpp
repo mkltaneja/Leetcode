@@ -563,3 +563,53 @@ vector<int> getRow(int rowIndex)
 
     return pascalTriangle;
 }
+
+// DAY 17 (1361. Validate Binary Tree Nodes)=========================================================================
+
+vector<int> par;
+int findPar(int u)
+{
+    if(par[u] == -1 || par[u] == u)
+        return u;
+    return par[u] = findPar(par[u]);
+}
+
+bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) 
+{
+    par.assign(n, -1);
+    for(int i = 0; i < n; i++)
+    {
+        if(leftChild[i] != -1)
+        {
+            if(par[leftChild[i]] != -1)
+                return false;
+            par[leftChild[i]] = par[i] == -1? i : findPar(i);
+        }
+        if(rightChild[i] != -1)
+        {
+            if(par[rightChild[i]] != -1)
+                return false;
+            par[rightChild[i]] = par[i] == -1? i : findPar(i);
+        }
+    }
+
+    int cntRoot = 0, root = -1, prevPar = -1;
+    for(int i = 0; i < n; i++)
+    {
+        if(par[i] == -1)
+        {
+            if(++cntRoot > 1)
+                return false;
+            root = i;
+        }
+        else
+        {
+            int par = findPar(i);
+            if(prevPar != -1 && par != prevPar)
+                return false;
+            prevPar = par;
+        }
+    }
+
+    return cntRoot == 1 && (prevPar == -1 || root == prevPar);
+}
