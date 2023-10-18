@@ -613,3 +613,43 @@ bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightCh
 
     return cntRoot == 1 && (prevPar == -1 || root == prevPar);
 }
+
+// DAY 18 (2050. Parallel Courses III)==============================================================================
+
+int minimumTime(int n, vector<vector<int>>& relations, vector<int>& time) 
+{
+    vector<vector<int>> gp(n);
+    vector<int> inDeg(n, 0), nodeCompTime(n, 0);
+    queue<int> que;
+    int ansTime = 0;
+    for(vector<int> &rel : relations)
+    {
+        gp[rel[0]-1].push_back(rel[1]-1);
+        inDeg[rel[1]-1]++;
+    }
+    for(int i = 0; i < n; i++)
+    {
+        if(inDeg[i] == 0)
+        {
+            que.push(i);
+            nodeCompTime[i] = time[i];
+        }
+    }
+    
+    while(!que.empty())
+    {
+        int u = que.front();
+        que.pop();
+
+        ansTime = max(ansTime, nodeCompTime[u]);
+
+        for(int v : gp[u])
+        {
+            nodeCompTime[v] = max(nodeCompTime[v], nodeCompTime[u] + time[v]);
+            if(--inDeg[v] == 0)
+                que.push(v);
+        }
+    }
+
+    return ansTime;
+}
