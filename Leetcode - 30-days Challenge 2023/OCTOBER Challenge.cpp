@@ -653,3 +653,30 @@ int minimumTime(int n, vector<vector<int>>& relations, vector<int>& time)
 
     return ansTime;
 }
+
+// DAY 19 (844. Backspace String Compare)====================================================================================
+
+bool backspaceCompare(string s, string t) 
+{
+    string sFinal = "", tFinal = "";
+    for(char c : s)
+    {
+        if(c == '#')
+        {
+            if(!sFinal.empty())
+                sFinal.pop_back();
+        }
+        else sFinal += c;
+    }
+    for(char c : t)
+    {
+        if(c == '#')
+        {
+            if(!tFinal.empty())
+                tFinal.pop_back();
+        }
+        else tFinal += c;
+    }
+
+    return sFinal == tFinal;
+}
