@@ -740,3 +740,23 @@ public:
  * NestedIterator i(nestedList);
  * while (i.hasNext()) cout << i.next();
  */
+
+// DAY 21 (1425. Constrained Subsequence Sum)====================================================================================
+
+#define osum first
+#define index second
+int constrainedSubsetSum(vector<int>& nums, int k) 
+{
+    priority_queue<pair<int,int>> maxSum;
+    int ans = INT_MIN;
+    for(int i = 0; i < nums.size(); i++)
+    {
+        while(!maxSum.empty() && maxSum.top().index < i-k)
+            maxSum.pop();
+        int omax = (maxSum.empty() || maxSum.top().osum < 0? 0 : maxSum.top().osum);
+        maxSum.push({nums[i] + omax, i});
+        ans = max(ans, maxSum.top().osum);
+    }
+
+    return ans;
+}
