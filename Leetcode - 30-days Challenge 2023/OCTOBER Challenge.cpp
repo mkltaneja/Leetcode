@@ -743,6 +743,8 @@ public:
 
 // DAY 21 (1425. Constrained Subsequence Sum)====================================================================================
 
+// METHOD 1 (Using Priority Queue) --> Time = O(2*n*logn), Space = O(n)
+
 #define osum first
 #define index second
 int constrainedSubsetSum(vector<int>& nums, int k) 
@@ -756,6 +758,31 @@ int constrainedSubsetSum(vector<int>& nums, int k)
         int omax = (maxSum.empty() || maxSum.top().osum < 0? 0 : maxSum.top().osum);
         maxSum.push({nums[i] + omax, i});
         ans = max(ans, maxSum.top().osum);
+    }
+
+    return ans;
+}
+
+// METHOD 2 (Uisng Deque) --> Time = O(2*n), Space = O(n) [OPTIMIZED]
+
+#define osum first
+#define index second
+int constrainedSubsetSum(vector<int>& nums, int k) 
+{
+    deque<pair<int,int>> maxSum;
+    int ans = INT_MIN;
+    for(int i = 0; i < nums.size(); i++)
+    {
+        while(!maxSum.empty() && maxSum.back().index < i-k)
+            maxSum.pop_back();
+        
+        int currMax = nums[i] + ((maxSum.empty() || maxSum.back().osum < 0)? 0 : maxSum.back().osum);
+        ans = max(ans, currMax);
+
+        while(!maxSum.empty() && currMax >= maxSum.front().osum)
+            maxSum.pop_front();
+        
+        maxSum.push_front({currMax, i});
     }
 
     return ans;
