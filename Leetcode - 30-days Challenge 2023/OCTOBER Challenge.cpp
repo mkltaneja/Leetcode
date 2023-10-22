@@ -790,6 +790,8 @@ int constrainedSubsetSum(vector<int>& nums, int k)
 
 // DAY 22 (1793. Maximum Score of a Good Subarray)=================================================================================
 
+// APPROACH 1 (Using Stack to store previous and next greater elements) --> Time = O(6*n), Space = O(3*n)
+
 void clear(stack<int> &stk)
 {
     while(!stk.empty())
@@ -828,6 +830,36 @@ int maximumScore(vector<int>& nums, int k)
             continue;
         int len = (i - prevSmaller[i] - 1) + 1 + (nextSmaller[i] - i - 1);
         ans = max(ans, nums[i] * len);
+    }
+
+    return ans;
+}
+
+// APPROACH 2 (Starting from K only (without stack and extra space)) --> Time = O(n), Space = O(1) [OPTIMIZED]
+
+int maximumScore(vector<int>& nums, int k) 
+{
+    int n = nums.size();
+    int left = k, right = k, minVal = nums[k];
+    int ans = 0;
+    while(left >= 0 && right < n)
+    {
+        int len = right - left + 1;
+        ans = max(ans, minVal * len);
+
+        int leftNext = left? nums[left-1] : 0;
+        int rightNext = n-right-1? nums[right+1] : 0;
+
+        if(leftNext >= rightNext)
+        {
+            minVal = min(minVal, leftNext);
+            left--;
+        }
+        else
+        {
+            minVal = min(minVal, rightNext);
+            right++;
+        }
     }
 
     return ans;
