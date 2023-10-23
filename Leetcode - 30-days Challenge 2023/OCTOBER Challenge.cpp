@@ -864,3 +864,10 @@ int maximumScore(vector<int>& nums, int k)
 
     return ans;
 }
+
+// DAY 24 (342. Power of Four)=================================================================================
+
+bool isPowerOfFour(int n) 
+{
+    return n > 0 && !(n & (n-1)) && (n & 0x55555555);
+}
