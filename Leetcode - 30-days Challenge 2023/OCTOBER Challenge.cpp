@@ -871,3 +871,36 @@ bool isPowerOfFour(int n)
 {
     return n > 0 && !(n & (n-1)) && (n & 0x55555555);
 }
+
+// DAY 25 (515. Find Largest Value in Each Tree Row)===================================================================
+
+vector<int> largestValues(TreeNode* root) 
+{
+    vector<int> ans;
+    
+    if(!root) return ans;
+
+    queue<TreeNode*> levelNodes;
+    levelNodes.push(root);
+
+    while(!levelNodes.empty())
+    {
+        int sz = levelNodes.size();
+        int maxVal = INT_MIN;
+        while(sz--)
+        {
+            TreeNode* topNode = levelNodes.front();
+            levelNodes.pop();
+
+            maxVal = max(maxVal, topNode->val);
+
+            if(topNode->left)
+                levelNodes.push(topNode->left);
+            if(topNode->right)
+                levelNodes.push(topNode->right);
+        }
+        ans.push_back(maxVal);
+    }
+
+    return ans;
+}
