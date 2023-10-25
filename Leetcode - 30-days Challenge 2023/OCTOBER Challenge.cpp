@@ -904,3 +904,14 @@ vector<int> largestValues(TreeNode* root)
 
     return ans;
 }
+
+// DAY 25 (779. K-th Symbol in Grammar)=============================================================================
+
+int kthGrammar(int n, int k) 
+{
+    if(n == 0) return 0;
+    
+    int prevAns = kthGrammar(n-1, (k&1)? ((k + 1) >> 1) : (k >> 1));
+
+    return (k & 1)? prevAns : (prevAns ^ 1);
+}
