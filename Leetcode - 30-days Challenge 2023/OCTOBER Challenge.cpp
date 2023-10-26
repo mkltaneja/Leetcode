@@ -915,3 +915,24 @@ int kthGrammar(int n, int k)
 
     return (k & 1)? prevAns : (prevAns ^ 1);
 }
+
+// DAY 26 (823. Binary Trees With Factors)=====================================================================================
+
+int mod = 1e9 + 7;
+int numFactoredBinaryTrees(vector<int>& arr) 
+{
+    sort(arr.begin(), arr.end());
+    unordered_map<int,long> dp;
+
+    int totWays = 0;
+    for(int x : arr)
+    {
+        dp[x] = 1;
+        for(int i = 2; i*i <= x; i++)
+            if(x % i == 0)
+                dp[x] = (dp[x] % mod) + (dp[i] * dp[x/i] * (i == x/i? 1 : 2) % mod) % mod;
+        totWays = (totWays % mod + dp[x] % mod) % mod;
+    }
+
+    return totWays;
+}
