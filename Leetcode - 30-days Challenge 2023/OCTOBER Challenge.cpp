@@ -983,3 +983,46 @@ string longestPalindrome(string s)
 
     return s.substr(left, right-left+1);
 }
+
+// APPROACH 3 (OPTIMIZED Version of 2nd approach --> [Manacher's Algorithm]) --> Time = O(4*n), Space = O(2*n)
+
+string longestPalindrome(string s) 
+{
+    string t = "@#";
+    for(char c : s)
+    {
+        t += c;
+        t += "#";
+    }
+    t += "$";
+
+    int n = t.size();
+    vector<int> palCenter(n, 0);
+    int right = 0, center = 0;
+    int maxLen = 0, maxCenter = -1;
+    for(int curr = 1; curr < n-1; curr++)
+    {
+        int mirror = 2*center - curr;
+        if(curr < right)
+            palCenter[curr] = min(palCenter[mirror], right - curr);
+        
+        while(t[curr + 1 + palCenter[curr]] == t[curr - 1 - palCenter[curr]])
+            palCenter[curr]++;
+        
+        if(curr + palCenter[curr] > right)
+        {
+            right = curr + palCenter[curr];
+            center = curr;
+        }
+
+        if(palCenter[curr] > maxLen)
+        {
+            maxLen = palCenter[curr];
+            maxCenter = curr;
+        }
+    }
+
+    int start = (maxCenter - maxLen) / 2;
+
+    return s.substr(start, maxLen);
+}
