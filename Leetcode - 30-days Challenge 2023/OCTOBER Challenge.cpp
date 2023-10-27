@@ -963,3 +963,23 @@ string longestPalindrome(string s)
     string palString = s.substr(left, right-left+1);
     return palString;
 }
+
+// APPROACH 2 (Considering every position as center) --> Time = O(n*n), Space = O(1)
+
+string longestPalindrome(string s) 
+{
+    int n = s.size();
+    int left = 0, right = 0;
+    for(int i = 0; i < n; i++)
+    {
+        int l = i;
+        while(i+1 < n && s[i] == s[i+1]) i++;
+        int r = i;
+        while(l-1 >= 0 && r+1 < n && s[l-1] == s[r+1]) l--, r++;
+
+        if(r-l+1 > right-left+1)
+            left = l, right = r;
+    }
+
+    return s.substr(left, right-left+1);
+}
