@@ -936,3 +936,30 @@ int numFactoredBinaryTrees(vector<int>& arr)
 
     return totWays;
 }
+
+// DAY 27 (5. Longest Palindromic Substring)=================================================================================
+
+// APPROACH 1 (Using DP) --> Time = O(n*n), Space = O(n*n)
+
+string longestPalindrome(string s) 
+{
+    int n = s.size();
+    vector<vector<bool>> isPal(n, vector<bool> (n, false));
+    int left = 0, right = 0;
+    for(int len = 1; len <= n; len++)
+    {
+        for(int i = 0, j = len-1; j < n; i++, j++)
+        {
+            if(len == 1)
+                isPal[i][j] = true;
+            else if(len == 2)
+                isPal[i][j] = s[i] == s[j];
+            else isPal[i][j] = s[i] == s[j] && isPal[i+1][j-1];
+            if(isPal[i][j] && j-i+1 > right - left + 1)
+                left = i, right = j;
+        }
+    }
+
+    string palString = s.substr(left, right-left+1);
+    return palString;
+}
