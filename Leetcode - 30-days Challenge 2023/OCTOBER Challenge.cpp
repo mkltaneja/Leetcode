@@ -1026,3 +1026,28 @@ string longestPalindrome(string s)
 
     return s.substr(start, maxLen);
 }
+
+// DAY 29 (1220. Count Vowels Permutation)==================================================================================
+
+const int MOD = 1e9 + 7;
+int countVowelPermutation(int n) 
+{
+    long aAns, eAns, iAns, oAns, uAns;
+    aAns = eAns = iAns = oAns = uAns = 1;
+    while(--n)
+    {
+        long aAnsNext = eAns;
+        long eAnsNext = (aAns + iAns) % MOD;
+        long iAnsNext = (aAns + eAns + oAns + uAns) % MOD;
+        long oAnsNext = (iAns + uAns) % MOD;
+        long uAnsNext = aAns;
+
+        aAns = aAnsNext;
+        eAns = eAnsNext;
+        iAns = iAnsNext;
+        oAns = oAnsNext;
+        uAns = uAnsNext;
+    }
+
+    return (aAns + eAns + iAns + oAns + uAns) % MOD;
+}
