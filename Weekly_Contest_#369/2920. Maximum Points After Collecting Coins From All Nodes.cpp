@@ -1,28 +1,26 @@
 class Solution {
 public:
     
-    int dfs(int p, int u, int d, int k, vector<int> &coins, vector<vector<int>> &gp, vector<vector<int>> &dp)
+    int dfs(int p, int u, int div, int d, int k, vector<int> &coins, vector<vector<int>> &gp, vector<vector<int>> &dp)
     {
         if(d > 14) return INT_MIN;
         
         if(dp[u][d] != -1) return dp[u][d];
         
-        int actCoins = coins[u];
-        for(int i = 0; i < d; i++)
-            actCoins >>= 1;
+        int actCoins = coins[u] / div;
         
         long way1 = actCoins - k;
         long way2 = actCoins / 2;
         for(int v : gp[u])
         {
             if(v == p) continue;
-            way1 += dfs(u, v, d, k, coins, gp, dp);
+            way1 += dfs(u, v, div, d, k, coins, gp, dp);
         }
         
         for(int v : gp[u])
         {
             if(v == p) continue;
-            way2 += dfs(u, v, d+1, k, coins, gp, dp);
+            way2 += dfs(u, v, div*2, d+1, k, coins, gp, dp);
         }
         
         return dp[u][d] = max(way1, way2);
@@ -39,6 +37,6 @@ public:
             gp[e[1]].push_back(e[0]);
         }
         
-        return dfs(-1, 0, 0, k, coins, gp, dp);
+        return dfs(-1, 0, 1, 0, k, coins, gp, dp);
     }
 };
