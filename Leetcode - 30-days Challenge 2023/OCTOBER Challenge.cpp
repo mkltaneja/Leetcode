@@ -1051,3 +1051,18 @@ int countVowelPermutation(int n)
 
     return (aAns + eAns + iAns + oAns + uAns) % MOD;
 }
+
+// DAY 29 (458. Poor Pigs)===================================================================================================
+
+int poorPigs(int buckets, int minutesToDie, int minutesToTest) 
+{
+    int totalTrials = (minutesToTest / minutesToDie) + 1; // + 1 for 1 remaining bucket that doesn't need to be tested (100% success rate)
+
+    // as a pig can be a part of at max totalTrials trials
+    // so (totalTrials * totalTrials * .... (minimumPigs) times) ≤ buckets
+    // totalTrials ^ minimumPigs ≤ buckets
+    // take log both sides: minimumPigs * log(totalTrials) ≤ log(buckets)
+    // minimumPigs = ceil(log(buckets) / log(totalTrials))
+
+    return ceil(log10(buckets) / log10(totalTrials));
+}
