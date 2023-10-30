@@ -1066,3 +1066,34 @@ int poorPigs(int buckets, int minutesToDie, int minutesToTest)
 
     return ceil(log10(buckets) / log10(totalTrials));
 }
+
+// DAY 30 (1356. Sort Integers by The Number of 1 Bits)===========================================================================
+
+#define bits first
+#define num second
+
+int countBits(int num)
+{
+    int ans = 0;
+    while(num)
+    {
+        num -= num & -num;
+        ans++;
+    }
+    return ans;
+}
+
+vector<int> sortByBits(vector<int>& arr) 
+{
+    int n = arr.size();
+    vector<pair<int,int>> bitsCount(n);
+    for(int i = 0; i < n; i++)
+        bitsCount[i] = {countBits(arr[i]), arr[i]};
+
+    sort(bitsCount.begin(), bitsCount.end());
+    vector<int> ans(n);
+    for(int i = 0; i < n; i++)
+        ans[i] = bitsCount[i].num;
+    
+    return ans;
+}
