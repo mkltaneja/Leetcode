@@ -1097,3 +1097,15 @@ vector<int> sortByBits(vector<int>& arr)
     
     return ans;
 }
+
+// DAY 31 (2433. Find The Original Array of Prefix Xor)================================================================
+
+vector<int> findArray(vector<int>& pref) 
+{
+    int n = pref.size();
+    vector<int> arr(n);
+    for(int i = 0; i < n; i++)
+        arr[i] = pref[i] ^ (i? pref[i-1] : 0);
+
+    return arr;
+}
