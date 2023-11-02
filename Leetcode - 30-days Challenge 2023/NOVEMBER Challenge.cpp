@@ -29,3 +29,28 @@ vector<int> findMode(TreeNode* root)
     inorder(root);
     return ans;
 }
+
+// DAY 2 (2265. Count Nodes Equal to Average of Subtree)=================================================================================================================
+
+int ans = 0;
+
+pair<int,int> dfs(TreeNode* node)
+{
+    if(!node) return {0, 0};
+
+    pair<int,int> lAns = dfs(node->left);
+    pair<int,int> rAns = dfs(node->right);
+
+    int sum = lAns.first + rAns.first + node->val;
+    int tot = lAns.second + rAns.second + 1;
+    
+    ans += (sum / tot) == node->val;
+
+    return {sum, tot};
+}
+
+int averageOfSubtree(TreeNode* root) 
+{
+    dfs(root);
+    return ans;
+}
