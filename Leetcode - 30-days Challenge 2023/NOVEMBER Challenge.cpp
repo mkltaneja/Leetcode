@@ -54,3 +54,29 @@ int averageOfSubtree(TreeNode* root)
     dfs(root);
     return ans;
 }
+
+// DAY 3 (1441. Build an Array With Stack Operations)===========================================================================
+
+const string PUSH = "Push";
+const string POP = "Pop";
+vector<string> buildArray(vector<int>& target, int n) 
+{
+    vector<string> ans;
+    for(int in = 1, i = 0, pops = 0; in <= n && i < target.size(); in++)
+    {
+        if(in == target[i])
+        {
+            while(pops--)
+                ans.push_back(POP);
+            ans.push_back(PUSH);
+            i++;
+            pops = 0;
+        }
+        else 
+        {
+            ans.push_back(PUSH);
+            pops++;
+        }
+    }
+    return ans;
+}
