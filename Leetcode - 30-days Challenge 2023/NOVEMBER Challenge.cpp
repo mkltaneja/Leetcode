@@ -80,3 +80,15 @@ vector<string> buildArray(vector<int>& target, int n)
     }
     return ans;
 }
+
+// DAY 4 (1503. Last Moment Before All Ants Fall Out of a Plank)==========================================================================================
+
+int getLastMoment(int n, vector<int>& left, vector<int>& right) 
+{
+    int ans = 0;
+    for(int x : left)
+        ans = max(ans, x);
+    for(int x : right)
+        ans = max(ans, n-x);
+    return ans;
+}
