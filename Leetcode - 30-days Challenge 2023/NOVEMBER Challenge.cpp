@@ -92,3 +92,41 @@ int getLastMoment(int n, vector<int>& left, vector<int>& right)
         ans = max(ans, n-x);
     return ans;
 }
+
+// DAY 5 (1535. Find the Winner of an Array Game)=========================================================================================
+
+int getWinner(vector<int>& arr, int k) 
+{
+    int n = arr.size();
+    if(k >= n-1) 
+        return *max_element(arr.begin(), arr.end());
+    
+    deque<int> que;
+    for(int x : arr)
+        que.push_back(x);
+    
+    int prev = -1, prevCnt = 0;
+    while(true)
+    {
+        int top1 = que.front();
+        que.pop_front();
+        int top2 = que.front();
+        que.pop_front();
+
+        int topMax = max(top1, top2);
+        int topMin = min(top1, top2);
+        if(prev == topMax) prevCnt++;
+        else
+        {
+            prevCnt = 1;
+            prev = topMax;
+        }
+        
+        if(prevCnt == k) return topMax;
+
+        que.push_front(topMax);
+        que.push_back(topMin);
+    }
+
+    return -1;
+}
