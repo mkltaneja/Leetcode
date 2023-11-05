@@ -95,6 +95,8 @@ int getLastMoment(int n, vector<int>& left, vector<int>& right)
 
 // DAY 5 (1535. Find the Winner of an Array Game)=========================================================================================
 
+// APPROACH 2 (Using Deque) --> Time = O(n+k), Space = O(n)
+
 int getWinner(vector<int>& arr, int k) 
 {
     int n = arr.size();
@@ -129,4 +131,30 @@ int getWinner(vector<int>& arr, int k)
     }
 
     return -1;
+}
+
+// APPROACH 2 (2 Pointer) --> Time = O(n), Space = O(1) [OPTIMIZED]
+
+int getWinner(vector<int>& arr, int k) 
+{
+    int n = arr.size();
+    int left = 0, right = 1;
+    
+    if(k == 1) return max(arr[left], arr[right]);
+
+    int win_count = 0;
+    while(right < n)
+    {
+        if(arr[left] > arr[right])
+        {
+            right++;
+            if(++win_count == k) return arr[left];
+        }
+        else
+        {
+            left = right++;
+            win_count = 1;
+        }
+    }
+    return arr[left];
 }
