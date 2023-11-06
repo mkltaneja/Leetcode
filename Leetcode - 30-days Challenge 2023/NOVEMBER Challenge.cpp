@@ -158,3 +158,45 @@ int getWinner(vector<int>& arr, int k)
     }
     return arr[left];
 }
+
+// DAY 6 (1845. Seat Reservation Manager)======================================================================================
+
+class SeatManager {
+public:
+
+    int totSeats;
+    vector<int> reserved;
+    priority_queue<int, vector<int>, greater<int>> minSeat;
+    SeatManager(int n) 
+    {
+        this->totSeats = n;
+        reserved.assign(totSeats+1, 0);
+        for(int seat = 1; seat <= n; seat++)
+            minSeat.push(seat);
+    }
+    
+    int reserve() 
+    {
+        if(minSeat.empty()) return -1; // No Seat Available
+
+        int availSeat = minSeat.top();
+        reserved[availSeat] = 1;
+        minSeat.pop();
+
+        return availSeat;
+    }
+    
+    void unreserve(int seatNumber) 
+    {
+        if(!reserved[seatNumber]) return; // Seat Already Unreserved
+        minSeat.push(seatNumber);
+        reserved[seatNumber] = 0;
+    }
+};
+
+/**
+ * Your SeatManager object will be instantiated and called as such:
+ * SeatManager* obj = new SeatManager(n);
+ * int param_1 = obj->reserve();
+ * obj->unreserve(seatNumber);
+ */
