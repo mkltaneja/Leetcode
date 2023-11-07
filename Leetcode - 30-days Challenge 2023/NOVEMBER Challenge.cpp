@@ -200,3 +200,23 @@ public:
  * int param_1 = obj->reserve();
  * obj->unreserve(seatNumber);
  */
+
+// DAY 7 (1921. Eliminate Maximum Number of Monsters)================================================================================================
+
+int eliminateMaximum(vector<int>& dist, vector<int>& speed) 
+{
+    int n = dist.size();
+    vector<float> time(n);
+    for(int i = 0; i < n; i++)
+        time[i] = 1.0 * dist[i] / speed[i];
+    
+    sort(time.begin(), time.end());
+    int currTime = 0, monstersKiller = 0;
+    for(int i = 0; i < n && currTime < time[i]; i++)
+    {
+        currTime++;
+        monstersKiller++;
+    }
+
+    return monstersKiller;
+}
