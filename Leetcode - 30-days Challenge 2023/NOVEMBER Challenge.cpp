@@ -220,3 +220,13 @@ int eliminateMaximum(vector<int>& dist, vector<int>& speed)
 
     return monstersKiller;
 }
+
+// DAY 8 (2849. Determine if a Cell Is Reachable at a Given Time)=========================================================================================
+
+bool isReachableAtTime(int sx, int sy, int fx, int fy, int t) 
+{
+    int diagTime = min(abs(sx - fx), abs(sy - fy));
+    int linTime = abs(sx - fx) + abs(sy - fy);
+    int minTime = linTime - diagTime;
+    return minTime == 0? t != 1 : t >= minTime;
+}
