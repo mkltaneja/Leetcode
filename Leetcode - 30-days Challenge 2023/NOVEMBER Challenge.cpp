@@ -230,3 +230,21 @@ bool isReachableAtTime(int sx, int sy, int fx, int fy, int t)
     int minTime = linTime - diagTime;
     return minTime == 0? t != 1 : t >= minTime;
 }
+
+// DAY 9 (1759. Count Number of Homogenous Substrings)===================================================================================================
+
+int MOD = 1e9 + 7;
+int countHomogenous(string s) 
+{
+    int n = s.size();
+    long i = 0;
+    long ans = 0;
+    while(i < n)
+    {
+        long j = i;
+        while(j < n && s[i] == s[j]) 
+            ans = (ans + (++j - i)) % MOD;
+        i = j;
+    }
+    return ans;
+}
