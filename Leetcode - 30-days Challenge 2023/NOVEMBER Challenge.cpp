@@ -248,3 +248,46 @@ int countHomogenous(string s)
     }
     return ans;
 }
+
+// DAY 10 (1743. Restore the Array From Adjacent Pairs)=========================================================================================
+
+vector<int> restoreArray(vector<vector<int>>& adjacentPairs) 
+{
+    unordered_map<int, vector<int>> adj;
+    vector<int> ans;
+    int start = INT_MIN;
+    for(vector<int> &pair : adjacentPairs)
+    {
+        int u = pair[0];
+        int v = pair[1];
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    for(auto &pair : adj)
+    {
+        if(pair.second.size() == 1)
+            start = pair.first;
+        else if(pair.second.size() > 2)
+            return {};
+    }
+    
+    int curr = start, prev = -1;
+    bool isLast = false;
+    while(!isLast)
+    {
+        ans.push_back(curr);
+        isLast = true;
+        int currTemp = curr;
+        for(int nxt : adj[curr])
+        {
+            if(nxt != prev)
+            {
+                isLast = false;
+                curr = nxt;
+            }
+        }
+        prev = currTemp;
+    }
+    return ans;
+}
