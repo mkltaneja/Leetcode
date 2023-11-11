@@ -291,3 +291,58 @@ vector<int> restoreArray(vector<vector<int>>& adjacentPairs)
     }
     return ans;
 }
+
+// DAY 11 (2642. Design Graph With Shortest Path Calculator)===========================================================================================
+
+class Graph {
+public:
+
+    int n;
+    vector<vector<vector<int>>> gp;
+    Graph(int n, vector<vector<int>>& edges) 
+    {
+        this->n = n;
+        this->gp.resize(n);
+        for(vector<int> &e : edges)
+            gp[e[0]].push_back({e[1], e[2]});
+    }
+    
+    void addEdge(vector<int> edge) 
+    {
+        gp[edge[0]].push_back({edge[1], edge[2]});
+    }
+    
+    int shortestPath(int node1, int node2) 
+    {
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+        vector<int> minDist(this->n, INT_MAX);
+        minDist[node1] = 0;
+        pq.push({0, node1});
+        while(!pq.empty())
+        {
+            int wsf = pq.top().first;
+            int u = pq.top().second;
+            pq.pop();
+            
+            if(u == node2) return wsf;
+
+            for(auto v : gp[u])
+            {
+                if(wsf + v[1] < minDist[v[0]])
+                {
+                    pq.push({wsf + v[1], v[0]});
+                    minDist[v[0]] = wsf + v[1];
+                }
+            }
+        }
+
+        return -1;
+    }
+};
+
+/**
+ * Your Graph object will be instantiated and called as such:
+ * Graph* obj = new Graph(n, edges);
+ * obj->addEdge(edge);
+ * int param_2 = obj->shortestPath(node1,node2);
+ */
