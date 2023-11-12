@@ -346,3 +346,48 @@ public:
  * obj->addEdge(edge);
  * int param_2 = obj->shortestPath(node1,node2);
  */
+
+
+// DAY 12 (815. Bus Routes)=======================================================================================================
+
+int numBusesToDestination(vector<vector<int>>& routes, int source, int target) 
+{
+    unordered_map<int,vector<int>> gp;
+    for(int i = 0; i < routes.size(); i++)
+        for(int node : routes[i])
+            gp[node].push_back(i);
+
+    queue<int> que;
+    unordered_set<int> nodeVis;
+    vector<int> routeVis(routes.size(), 0);
+    que.push(source);
+
+    int buses = 0;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            int u = que.front();
+            que.pop();
+
+            if(u == target) return buses;
+
+            for(int route : gp[u])
+            {
+                if(routeVis[route]) continue;
+                routeVis[route] = 1;
+                for(int node : routes[route])
+                {
+                    if(nodeVis.count(node)) continue;
+                    if(node == target) return buses + 1;
+                    nodeVis.insert(node);
+                    que.push(node);
+                }
+            }
+        }
+        buses++;
+    }
+
+    return -1;
+}
