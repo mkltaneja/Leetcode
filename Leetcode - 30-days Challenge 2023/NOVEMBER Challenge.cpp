@@ -391,3 +391,31 @@ int numBusesToDestination(vector<vector<int>>& routes, int source, int target)
 
     return -1;
 }
+
+// DAY 13 (2785. Sort Vowels in a String)==============================================================================================
+
+bool isVowel(char c)
+{
+    c = tolower(c);
+    return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+}
+
+string sortVowels(string s) 
+{
+    vector<int> freq(128, 0);
+    for(char c : s)
+        if(isVowel(c))
+            freq[(int)c]++;
+        
+    int i = 0;
+    for(char &c : s)
+    {
+        if(!isVowel(c)) continue;
+        while(freq[i] == 0) i++;
+
+        c = char(i);
+        freq[i]--;
+    }
+
+    return s;
+}
