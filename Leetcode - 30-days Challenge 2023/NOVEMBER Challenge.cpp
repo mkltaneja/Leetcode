@@ -419,3 +419,37 @@ string sortVowels(string s)
 
     return s;
 }
+
+// DAY 14 (1930. Unique Length-3 Palindromic Subsequences)===========================================================
+
+#define first first
+#define last second
+int countPalindromicSubsequence(string s) 
+{
+    int n = s.size();
+    vector<pair<int,int>> occ(26, {-1, -1});
+    vector<vector<int>> uniMap(n, vector<int>(26, 0));
+    for(int i = 0; i < n; i++)
+    {
+        if(occ[s[i]-'a'].first == -1)
+            occ[s[i]-'a'].first = i;
+        occ[s[i]-'a'].last = i;
+        
+        if(i) uniMap[i] = uniMap[i-1];
+        uniMap[i][s[i]-'a']++;
+    }
+
+    int ans = 0;
+    for(int i = 0; i < 26; i++)
+    {
+        int start = occ[i].first, end = occ[i].last;
+        if(start == end) continue;
+
+        int totUni = 0;
+        for(int j = 0; j < 26; j++)
+            totUni += (uniMap[end-1][j] - uniMap[start][j]) > 0;
+        ans += totUni;
+    }
+
+    return ans;
+}
