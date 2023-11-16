@@ -466,3 +466,56 @@ int maximumElementAfterDecrementingAndRearranging(vector<int>& arr)
     
     return arr[n-1];
 }
+
+// DAY 16 (1980. Find Unique Binary String)======================================================================================
+
+string toBinary(int num)
+{
+    string ans = "";
+    while(num)
+    {
+        ans += to_string(num & 1);
+        num >>= 1;
+    }
+    reverse(ans.begin(), ans.end());
+
+    return ans;
+}
+
+string findDifferentBinaryString(vector<string>& nums) 
+{
+    int n = nums.size();
+    unordered_set<int> numsDeci;
+    for(string bin : nums)
+    {
+        string temp = bin;
+        int pow = 1;
+        int num = 0;
+        while(!temp.empty())
+        {
+            num += pow * (temp.back() - '0');
+            temp.pop_back();
+            pow *= 2;
+        }
+        numsDeci.insert(num);
+    }
+    int start = 0, end = (1 << n) - 1;
+    int curr = start;
+    string ans = "";
+    while(curr <= end)
+    {
+        if(!numsDeci.count(curr))
+        {
+            ans = toBinary(curr);
+            break;
+        }
+        curr++;
+    }
+    int m = ans.size();
+    string prefix = "";
+    while(prefix.size() + m < n)
+        prefix += "0";
+    ans = prefix + ans;
+
+    return ans;
+}
