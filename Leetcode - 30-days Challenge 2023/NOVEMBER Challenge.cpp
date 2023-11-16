@@ -469,6 +469,8 @@ int maximumElementAfterDecrementingAndRearranging(vector<int>& arr)
 
 // DAY 16 (1980. Find Unique Binary String)======================================================================================
 
+// APPROACH 1 (Checking by converting binary to decimal) --> Time = O(2^n + n), Space = O(2*n)
+
 string toBinary(int num)
 {
     string ans = "";
@@ -517,5 +519,17 @@ string findDifferentBinaryString(vector<string>& nums)
         prefix += "0";
     ans = prefix + ans;
 
+    return ans;
+}
+
+// APPROACH 2 (Considering every ith bit of every ith number, and taking its opposite in answer) --> Time = O(n), Space = O(n) [OPTIMIZED]
+
+string findDifferentBinaryString(vector<string>& nums) 
+{
+    int n = nums.size();
+    string ans = "";
+    for(int i = 0; i < n; i++)
+        ans += to_string((nums[i][i] - '0') ^ 1);
+    
     return ans;
 }
