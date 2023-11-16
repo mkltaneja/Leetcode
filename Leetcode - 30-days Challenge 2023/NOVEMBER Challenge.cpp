@@ -453,3 +453,16 @@ int countPalindromicSubsequence(string s)
 
     return ans;
 }
+
+// DAY 15 (1846. Maximum Element After Decreasing and Rearranging)==========================================================================
+
+int maximumElementAfterDecrementingAndRearranging(vector<int>& arr) 
+{
+    int n = arr.size();
+    sort(arr.begin(), arr.end());
+    arr[0] = 1;
+    for(int i = 1; i < n; i++)
+        arr[i] = min(arr[i], arr[i-1] + 1);
+    
+    return arr[n-1];
+}
