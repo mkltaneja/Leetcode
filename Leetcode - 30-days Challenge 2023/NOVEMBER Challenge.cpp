@@ -533,3 +533,15 @@ string findDifferentBinaryString(vector<string>& nums)
     
     return ans;
 }
+
+// DAY 17 (1877. Minimize Maximum Pair Sum in Array)==========================================================================
+
+int minPairSum(vector<int>& nums) 
+{
+    int n = nums.size();
+    sort(nums.begin(), nums.end());
+    int maxAns = INT_MIN;
+    for(int i = 0, j = n-1; i < j; i++, j--)
+        maxAns = max(maxAns, nums[i] + nums[j]);
+    return maxAns;
+}
