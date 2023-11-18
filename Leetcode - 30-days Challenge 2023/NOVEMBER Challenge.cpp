@@ -545,3 +545,22 @@ int minPairSum(vector<int>& nums)
         maxAns = max(maxAns, nums[i] + nums[j]);
     return maxAns;
 }
+
+// DAY 18 (1838. Frequency of the Most Frequent Element)===================================================================================
+
+int maxFrequency(vector<int>& nums, int k) 
+{
+    int n = nums.size();
+    sort(nums.begin(), nums.end());
+    long last = nums[0], kUsed = 0;
+    int maxFreq = 1;
+    for(int i = 1, j = 0; i < n; i++)
+    {
+        long diff = nums[i] - nums[i-1];
+        kUsed += diff * (i-j);
+        while(j < i && kUsed > k)
+            kUsed -= nums[i] - nums[j++];
+        maxFreq = max(maxFreq, i-j+1);
+    }
+    return maxFreq;
+}
