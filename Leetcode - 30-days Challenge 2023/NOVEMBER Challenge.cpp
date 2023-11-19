@@ -564,3 +564,24 @@ int maxFrequency(vector<int>& nums, int k)
     }
     return maxFreq;
 }
+
+// DAY 19 (1887. Reduction Operations to Make the Array Elements Equal)=======================================================================
+
+int reductionOperations(vector<int>& nums) 
+{
+    int n = nums.size();
+    sort(nums.rbegin(), nums.rend());
+    int i = 0, ans = 0, prevCnt = 0;
+    while(i < n)
+    {
+        int j = i;
+        while(j < n && nums[j] == nums[i]) j++;
+
+        ans += (j < n)? (j - i + prevCnt) : 0;
+        prevCnt += (j - i);
+
+        i = j;
+    }
+
+    return ans;
+}
