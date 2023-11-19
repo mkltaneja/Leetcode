@@ -567,6 +567,8 @@ int maxFrequency(vector<int>& nums, int k)
 
 // DAY 19 (1887. Reduction Operations to Make the Array Elements Equal)=======================================================================
 
+// APPROACH 1 (Sorting the array) --> Time = O(n*logn + n), Space = O(1)
+
 int reductionOperations(vector<int>& nums) 
 {
     int n = nums.size();
@@ -581,6 +583,31 @@ int reductionOperations(vector<int>& nums)
         prevCnt += (j - i);
 
         i = j;
+    }
+
+    return ans;
+}
+
+// APPROACH 2 (Using Count Sort) --> Time = O(n + (MAX - MIN)), Space = O(MAX_NUMBER)
+
+int reductionOperations(vector<int>& nums) 
+{
+    int n = nums.size();
+    int mn = INT_MAX, mx = INT_MIN;
+    vector<int> cnt(500005, 0);
+    for(int x : nums)
+    {
+        cnt[x]++;
+        mn = min(mn, x);
+        mx = max(mx, x);
+    }
+    int ans = 0, prevCnt = 0;
+    for(int i = mx; i > mn; i--)
+    {
+        if(!cnt[i]) continue;
+        
+        ans += cnt[i] + prevCnt;
+        prevCnt += cnt[i];
     }
 
     return ans;
