@@ -612,3 +612,22 @@ int reductionOperations(vector<int>& nums)
 
     return ans;
 }
+
+// DAY 20 (2391. Minimum Amount of Time to Collect Garbage)=========================================================================================
+
+int garbageCollection(vector<string>& garbage, vector<int>& travel) 
+{
+    int n = garbage.size();
+    unordered_map<char,int> travTime;
+    int totTime = 0, travelledTime = 0;
+    for(int i = 0; i < n; i++)
+    {
+        totTime += garbage[i].size();
+        for(char garType : garbage[i])
+            travTime[garType] = travelledTime;
+        travelledTime += (i != n-1)? travel[i] : 0;
+    }
+    totTime += travTime['M'] + travTime['P'] + travTime['G'];
+
+    return totTime;
+}
