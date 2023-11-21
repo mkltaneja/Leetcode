@@ -631,3 +631,30 @@ int garbageCollection(vector<string>& garbage, vector<int>& travel)
 
     return totTime;
 }
+
+// DAY 21 (1814. Count Nice Pairs in an Array)=========================================================================================
+
+int MOD = 1e9 + 7;
+long rev(int x)
+{
+    long res = 0;
+    while(x)
+    {
+        res = res*10 + x%10;
+        x /= 10;
+    }
+    return res;
+}
+
+int countNicePairs(vector<int>& nums) 
+{
+    unordered_map<long,long> mp;
+    long ans = 0;
+    for(int x : nums)
+    {
+        ans = (ans % MOD + (mp[x - rev(x)]++) % MOD) % MOD;
+        mp[x - rev(x)] %= MOD;
+    }
+
+    return ans % MOD;
+}
