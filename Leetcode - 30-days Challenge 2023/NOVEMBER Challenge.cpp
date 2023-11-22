@@ -658,3 +658,21 @@ int countNicePairs(vector<int>& nums)
 
     return ans % MOD;
 }
+
+// DAY 22 (1424. Diagonal Traverse II)=============================================================================================
+
+vector<int> findDiagonalOrder(vector<vector<int>>& nums) 
+{
+    int n = nums.size();
+    map<int, vector<int>> diag;
+    vector<int> ans;
+    for(int i = n-1; i >= 0; i--)
+        for(int j = 0; j < nums[i].size(); j++)
+            diag[i+j].push_back(nums[i][j]);
+    
+    for(auto &pair : diag)
+        for(int ele : pair.second)
+            ans.push_back(ele);
+    
+    return ans;
+}
