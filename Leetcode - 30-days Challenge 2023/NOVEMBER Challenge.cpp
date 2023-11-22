@@ -661,6 +661,8 @@ int countNicePairs(vector<int>& nums)
 
 // DAY 22 (1424. Diagonal Traverse II)=============================================================================================
 
+// METHOD 1 (Using Equal Sum of indices of a diagonal property of matrix) --> Time = O(n*m*log(n+m-1) + n*m), Space = O(n+m-1 + n*m)
+
 vector<int> findDiagonalOrder(vector<vector<int>>& nums) 
 {
     int n = nums.size();
@@ -674,5 +676,33 @@ vector<int> findDiagonalOrder(vector<vector<int>>& nums)
         for(int ele : pair.second)
             ans.push_back(ele);
     
+    return ans;
+}
+
+// METHOD 2 (Using BFS) --> Time = O(n*m), Space = O(min(n, m) + n*m) [OPTIMIZED]
+
+vector<int> findDiagonalOrder(vector<vector<int>>& nums) 
+{
+    int n = nums.size();
+    vector<int> ans;
+    
+    if(n == 0) return ans;
+
+    queue<pair<int,int>> que;
+    que.push({0, 0});
+
+    while(!que.empty())
+    {
+        int i = que.front().first;
+        int j = que.front().second;
+        que.pop();
+        ans.push_back(nums[i][j]);
+
+        if(j == 0 && i + 1 < n)
+            que.push({i+1, j});
+        if(j + 1 < nums[i].size())
+            que.push({i, j+1});
+    }
+
     return ans;
 }
