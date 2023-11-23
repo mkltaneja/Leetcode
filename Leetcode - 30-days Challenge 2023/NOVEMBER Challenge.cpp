@@ -709,11 +709,12 @@ vector<int> findDiagonalOrder(vector<vector<int>>& nums)
 
 // DAY 23 (1630. Arithmetic Subarrays)===========================================================================================
 
+// METHOD 1 (Sorting every query interval) --> Time = O(m * (nlogn + n)), Space = O(m + n)
+
 vector<bool> checkArithmeticSubarrays(vector<int>& nums, vector<int>& l, vector<int>& r) 
 {
     int n = nums.size(), m = l.size();
     vector<bool> ans(m, false);
-    map<pair<int,int>, bool> cache;
     for(int i = 0; i < m; i++)
     {
         if(l[i] == r[i]) 
@@ -741,5 +742,41 @@ vector<bool> checkArithmeticSubarrays(vector<int>& nums, vector<int>& l, vector<
             ans[i] = true;
     }
 
+    return ans;
+}
+
+// METHOD 2 (Using Arithmetic series property) --> Time = O(m * n), Space = O(n + m) --> [OPTIMIZED]
+
+bool isArithmetic(int start, int end, vector<int> &nums)
+{
+    if(start == end) return true;
+
+    int a1 = INT_MAX, an = INT_MIN;
+    int n = end - start + 1;
+    unordered_set<int> st;
+    for(int i = start; i <= end; i++)
+    {
+        a1 = min(a1, nums[i]);
+        an = max(an, nums[i]);
+        st.insert(nums[i]);
+    }
+
+    if((an - a1) % (n - 1)) return false; // using the property -> an = a1 + (n-1)*d
+    
+    int d = (an - a1) / (n - 1);
+    if(d == 0) return true;
+    for(int ai = a1 + d; ai <= an; ai += d)
+        if(!st.count(ai))
+            return false;
+    
+    return true;
+}
+
+vector<bool> checkArithmeticSubarrays(vector<int>& nums, vector<int>& l, vector<int>& r) 
+{
+    int n = nums.size(), m = l.size();
+    vector<bool> ans(m);
+    for(int i = 0; i < m; i++)
+        ans[i] = isArithmetic(l[i], r[i], nums);
     return ans;
 }
