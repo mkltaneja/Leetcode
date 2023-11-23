@@ -706,3 +706,40 @@ vector<int> findDiagonalOrder(vector<vector<int>>& nums)
 
     return ans;
 }
+
+// DAY 23 (1630. Arithmetic Subarrays)===========================================================================================
+
+vector<bool> checkArithmeticSubarrays(vector<int>& nums, vector<int>& l, vector<int>& r) 
+{
+    int n = nums.size(), m = l.size();
+    vector<bool> ans(m, false);
+    map<pair<int,int>, bool> cache;
+    for(int i = 0; i < m; i++)
+    {
+        if(l[i] == r[i]) 
+        {
+            ans[i] = true;
+            continue;
+        }
+        vector<int> tmp(r[i] - l[i] + 1);
+        for(int j = l[i], k = 0; j <= r[i] && k < tmp.size(); j++, k++)
+            tmp[k] = nums[j];
+        sort(tmp.begin(), tmp.end());
+
+        int d = tmp[1] - tmp[0];
+        bool isArithmetic = true;
+        for(int j = 2; j < tmp.size(); j++)
+        {
+            if(d != tmp[j] - tmp[j-1])
+            {
+                isArithmetic = false;
+                break;
+            }
+        }
+
+        if(isArithmetic)
+            ans[i] = true;
+    }
+
+    return ans;
+}
