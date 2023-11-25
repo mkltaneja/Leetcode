@@ -781,6 +781,17 @@ vector<bool> checkArithmeticSubarrays(vector<int>& nums, vector<int>& l, vector<
     return ans;
 }
 
+// DAY 24 (1561. Maximum Number of Coins You Can Get)==================================================================================================
+
+int maxCoins(vector<int>& piles) 
+{
+    sort(piles.rbegin(), piles.rend());
+    int ans = 0;
+    for(int i = 1, j = piles.size()-1; i < j; i += 2, j--)
+        ans += piles[i];
+    return ans;
+}
+
 // DAY 25 (1685. Sum of Absolute Differences in a Sorted Array)=========================================================================================
 
 vector<int> getSumAbsoluteDifferences(vector<int>& nums) 
