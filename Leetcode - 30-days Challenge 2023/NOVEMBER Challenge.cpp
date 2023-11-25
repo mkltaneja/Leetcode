@@ -780,3 +780,24 @@ vector<bool> checkArithmeticSubarrays(vector<int>& nums, vector<int>& l, vector<
         ans[i] = isArithmetic(l[i], r[i], nums);
     return ans;
 }
+
+// DAY 25 (1685. Sum of Absolute Differences in a Sorted Array)=========================================================================================
+
+vector<int> getSumAbsoluteDifferences(vector<int>& nums) 
+{
+    int n = nums.size();
+    int rSum = 0;
+    for(int x : nums)
+        rSum += x;
+    
+    vector<int> result(n, 0);
+    int lSum = 0;
+    for(int i = 0; i < n; i++)
+    {
+        result[i] = (i * nums[i] - lSum) + (rSum - (n-i) * nums[i]);
+        lSum += nums[i];
+        rSum -= nums[i];
+    }
+    
+    return result;
+}
