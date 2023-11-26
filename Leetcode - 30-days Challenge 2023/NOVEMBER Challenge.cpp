@@ -812,3 +812,29 @@ vector<int> getSumAbsoluteDifferences(vector<int>& nums)
     
     return result;
 }
+
+// DAY 26 (1727. Largest Submatrix With Rearrangements)============================================================================================
+
+int largestSubmatrix(vector<vector<int>>& matrix) 
+{
+    int n = matrix.size(), m = matrix[0].size();
+    vector<vector<int>> barh(n, vector<int>(m, 0));
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(matrix[i][j] == 0) continue;
+            barh[i][j] = 1 + (i? barh[i-1][j] : 0);
+        }
+    }
+    
+    int maxMat = 0;
+    for(int i = 0; i < n; i++)
+    {
+        sort(barh[i].begin(), barh[i].end());
+        for(int j = 0; j < m; j++)
+            maxMat = max(maxMat, barh[i][j] * (m - j));
+    }
+    
+    return maxMat;
+}
