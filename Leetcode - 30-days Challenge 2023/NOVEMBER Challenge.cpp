@@ -838,3 +838,34 @@ int largestSubmatrix(vector<vector<int>>& matrix)
     
     return maxMat;
 }
+
+// DAY 27 (935. Knight Dialer)===========================================================================================================================
+
+#define ll long long
+int MOD = 1e9 + 7;
+vector<vector<int>> dir = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};
+int dfs(int i, int j, int n, int m, int len, vector<vector<char>> &keypad, vector<vector<int>> &dp)
+{
+    if(i >= n || j >= m || i < 0 || j < 0 || keypad[i][j] == '*' || keypad[i][j] == '#') return 0;
+    if(len == 0) return 1;
+    if(dp[i * m + j][len] != -1) return dp[i * m + j][len];
+
+    int ways = 0;
+    for(int d = 0; d < 8; d++)
+        ways = (ways % MOD + dfs(i + dir[d][0], j + dir[d][1], n, m, len-1, keypad, dp) % MOD) % MOD;
+
+    return dp[i * m + j][len] = ways % MOD;
+}
+
+int knightDialer(int n) 
+{
+    vector<vector<char>> keypad = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}, {'*', '0', '#'}};
+
+    int rows = keypad.size(), cols = keypad[0].size();
+    int ans = 0;
+    vector<vector<int>> dp(rows*cols, vector<int>(n, -1));
+    for(int i = 0; i < rows; i++)
+        for(int j = 0; j < cols; j++)
+            ans = (ans % MOD + dfs(i, j, rows, cols, n-1, keypad, dp) % MOD) % MOD;
+    return ans;
+}
