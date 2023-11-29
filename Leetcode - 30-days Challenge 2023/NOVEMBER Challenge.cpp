@@ -891,3 +891,16 @@ int numberOfWays(string corridor)
     }
     return !seats || (seats & 1)? 0 : ans;
 }
+
+// DAY 29 (191. Number of 1 Bits)======================================================================================
+
+int hammingWeight(uint32_t n) 
+{
+    int bits = 0;
+    while(n)
+    {
+        bits++;
+        n -= n & -n;
+    }
+    return bits;
+}
