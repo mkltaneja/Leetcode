@@ -869,3 +869,25 @@ int knightDialer(int n)
             ans = (ans % MOD + dfs(i, j, rows, cols, n-1, keypad, dp) % MOD) % MOD;
     return ans;
 }
+
+// DAY 28 (2147. Number of Ways to Divide a Long Corridor)================================================================================
+
+int MOD = 1e9 + 7;
+int numberOfWays(string corridor)
+{
+    bool seatVisited = false;
+    int seats = 0, prevPlants = 0, ans = 1;
+    for(char obj : corridor)
+    {
+        if(obj == 'S')
+        {
+            seats++;
+            if(seats > 1 && (seats & 1))
+                ans = (1l * ans % MOD * (prevPlants + 1) % MOD) % MOD;
+            prevPlants = 0;
+        }
+        else 
+            prevPlants++;
+    }
+    return !seats || (seats & 1)? 0 : ans;
+}
