@@ -907,6 +907,8 @@ int hammingWeight(uint32_t n)
 
 // DAY 30 (1611. Minimum One Bit Operations to Make Integers Zero)=======================================================
 
+// APPROACH 1 (Recursion) --> Time = O(logn), space = O(logn)
+
 int minimumOneBitOperations(int n) 
 {
     if(n <= 1) return n;
@@ -919,4 +921,14 @@ int minimumOneBitOperations(int n)
             return (mask - 1) - minimumOneBitOperations(n - pmask);
     }
     return 0;
+}
+
+// APPROACH 2 (Iteration) --> Time = O(logn), Space = O(1) [OPTIMIZED]
+
+int minimumOneBitOperations(int n) 
+{
+    int ans = 0;
+    for(int tmp = n; tmp; tmp >>= 1)
+        ans ^= tmp;
+    return ans;
 }
