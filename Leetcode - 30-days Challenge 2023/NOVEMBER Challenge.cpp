@@ -904,3 +904,19 @@ int hammingWeight(uint32_t n)
     }
     return bits;
 }
+
+// DAY 30 (1611. Minimum One Bit Operations to Make Integers Zero)=======================================================
+
+int minimumOneBitOperations(int n) 
+{
+    if(n <= 1) return n;
+    
+    for(int i = 1; i < 32; i++)
+    {
+        int mask = (1 << i);
+        int pmask = (1 << (i-1));
+        if(mask > n)
+            return (mask - 1) - minimumOneBitOperations(n - pmask);
+    }
+    return 0;
+}
