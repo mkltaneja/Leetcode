@@ -14,3 +14,29 @@ bool arrayStringsAreEqual(vector<string>& word1, vector<string>& word2)
     }
     return i == n && j == m;
 }
+
+// DAY 2 (1160. Find Words That Can Be Formed by Characters)=====================================================================================================
+
+int countCharacters(vector<string>& words, string chars) 
+{
+    vector<int> map(26, 0);
+    for(char c : chars)
+        map[c - 'a']++;
+    
+    int ans = 0;
+    for(string word : words)
+    {
+        vector<int> tmp = map;
+        bool isValid = true;
+        for(char c : word)
+        {
+            if(--tmp[c-'a'] < 0)
+            {
+                isValid = false;
+                break;
+            }
+        }
+        if(isValid) ans += word.size();
+    }
+    return ans;
+}
