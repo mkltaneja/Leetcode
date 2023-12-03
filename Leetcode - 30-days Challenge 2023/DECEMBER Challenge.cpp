@@ -40,3 +40,18 @@ int countCharacters(vector<string>& words, string chars)
     }
     return ans;
 }
+
+// DAY 3 (1266. Minimum Time Visiting All Points)========================================================================================================
+
+int minTimeToVisitAllPoints(vector<vector<int>>& points) 
+{
+    int n = points.size();
+    int time = 0;
+    for(int i = 1; i < n; i++)
+    {
+        int di = abs(points[i][0] - points[i-1][0]);
+        int dj = abs(points[i][1] - points[i-1][1]);
+        time += max(di, dj);
+    }
+    return time;
+}
