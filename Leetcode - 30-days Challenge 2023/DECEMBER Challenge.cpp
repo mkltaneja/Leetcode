@@ -55,3 +55,21 @@ int minTimeToVisitAllPoints(vector<vector<int>>& points)
     }
     return time;
 }
+
+// DAY 4 (2264. Largest 3-Same-Digit Number in String)=========================================================================================
+
+string largestGoodInteger(string num) 
+{
+    int n = num.size();
+    int maxDig = -1;
+    string maxNum = "";
+    
+    if(n < 3) return maxNum;
+
+    for(int i = 2; i < n; i++)
+        if(num[i] == num[i-1] && num[i] == num[i-2])
+            maxDig = max(maxDig, num[i]-'0');
+    maxNum = maxDig == -1? "" :
+        maxDig == 0? "000" : to_string(maxDig*100 + maxDig*10 + maxDig);
+    return maxNum;
+}
