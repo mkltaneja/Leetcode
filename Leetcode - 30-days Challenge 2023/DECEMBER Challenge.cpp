@@ -73,3 +73,16 @@ string largestGoodInteger(string num)
         maxDig == 0? "000" : to_string(maxDig*100 + maxDig*10 + maxDig);
     return maxNum;
 }
+
+// DAY 5 (1688. Count of Matches in Tournament)=================================================================================================
+
+int numberOfMatches(int n) 
+{
+    int totalMatches = 0;
+    while(n != 1)
+    {
+        totalMatches += n/2;
+        n = (n+1)/2;
+    }
+    return totalMatches;
+}
