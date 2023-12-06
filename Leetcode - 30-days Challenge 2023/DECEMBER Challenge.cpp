@@ -86,3 +86,17 @@ int numberOfMatches(int n)
     }
     return totalMatches;
 }
+
+// DAY 6 (1716. Calculate Money in Leetcode Bank)========================================================================================
+
+int totalMoney(int n) 
+{
+    int properGroups = n / 7;
+    int lastGroupCount = n % 7;
+    int sumOfFirstSeven = (7 * (7 + 1)) / 2;
+    
+    int ans = properGroups * sumOfFirstSeven + (properGroups * (properGroups - 1) / 2) * 7;
+    ans += (lastGroupCount * (lastGroupCount + 1)) / 2 + lastGroupCount * properGroups;
+
+    return ans;
+}
