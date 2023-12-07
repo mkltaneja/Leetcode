@@ -100,3 +100,14 @@ int totalMoney(int n)
 
     return ans;
 }
+
+// DAY 7 (1903. Largest Odd Number in String)=================================================================================================
+
+string largestOddNumber(string num)
+{
+    int lastOddIdx = -1;
+    for(int index = num.size()-1; index >= 0 && lastOddIdx == -1; index--)
+        lastOddIdx = ((num[index] - '0') & 1)? index : lastOddIdx;
+    string ansSubstring = num.substr(0, lastOddIdx+1);
+    return ansSubstring;
+}
