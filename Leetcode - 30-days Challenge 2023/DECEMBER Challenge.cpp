@@ -111,3 +111,34 @@ string largestOddNumber(string num)
     string ansSubstring = num.substr(0, lastOddIdx+1);
     return ansSubstring;
 }
+
+// DAY 8 (606. Construct String from Binary Tree)======================================================================================
+
+string ans = "";
+void tree2strHelper(TreeNode* node)
+{
+    if(!node) return;
+    if(!node->left && !node->right)
+    {
+        ans += to_string(node->val);
+        return;
+    }
+
+    ans += to_string(node->val);
+    ans += "(";
+    tree2strHelper(node->left);
+    ans += ")";
+    if(node->right)
+    {
+        ans += "(";
+        tree2strHelper(node->right);
+        ans += ")";
+    }
+}
+
+
+string tree2str(TreeNode* root)
+{
+    tree2strHelper(root);
+    return ans;
+}
