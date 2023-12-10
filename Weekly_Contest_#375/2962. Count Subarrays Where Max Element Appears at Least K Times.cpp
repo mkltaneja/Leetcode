@@ -1,3 +1,7 @@
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
 class Solution {
 public:
     long long countSubarrays(vector<int>& nums, int k) 
