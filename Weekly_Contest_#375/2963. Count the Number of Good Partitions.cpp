@@ -1,5 +1,7 @@
 
 // Contest Submission
+// Time Complexity = O(n + n*logn)
+// Space Complexity = O(n)
 
 class Solution {
 public:
@@ -45,6 +47,35 @@ public:
         while(--parts)
         {
             ans = (ans % MOD * 2 % MOD) % MOD;
+        }
+        
+        return ans;
+    }
+};
+
+// Post Contest Submission
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+class Solution {
+public:
+    
+    int MOD = 1e9 + 7;
+    int numberOfGoodPartitions(vector<int>& nums) 
+    {
+        int n = nums.size();
+        unordered_map<int,int> last;
+        for(int i = 0; i < n; i++)
+            last[nums[i]] = i;
+        
+        int i = 0, ans = 1;
+        while(i < n)
+        {
+            int j = last[nums[i]];
+            while(j < n && i < j)
+                j = max(j, last[nums[++i]]);
+            if(++i < n)
+                ans = ((long)ans * 2) % MOD;
         }
         
         return ans;
