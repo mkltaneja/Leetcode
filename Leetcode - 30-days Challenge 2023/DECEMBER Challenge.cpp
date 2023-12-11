@@ -187,3 +187,15 @@ vector<vector<int>> transpose(vector<vector<int>>& matrix)
             ansMatrix[j][i] = matrix[i][j];
     return ansMatrix;
 }
+
+// DAY 11 (1287. Element Appearing More Than 25% In Sorted Array)===============================================================
+
+int findSpecialInteger(vector<int>& arr) 
+{
+    int n = arr.size();
+    int threshold = ceil(n/4);
+    for(int idx = 0; idx < n; idx++)
+        if(arr[idx] == arr[idx + threshold])
+            return arr[idx];
+    return -1;
+}
