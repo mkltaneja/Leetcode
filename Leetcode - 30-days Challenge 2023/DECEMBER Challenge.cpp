@@ -199,3 +199,20 @@ int findSpecialInteger(vector<int>& arr)
             return arr[idx];
     return -1;
 }
+
+// DAY 12 (1464. Maximum Product of Two Elements in an Array)==========================================================================
+
+int maxProduct(vector<int>& nums)
+{
+    int maxNum = 0, maxNum2 = 0;
+    for(int x : nums)
+    {
+        if(x > maxNum)
+        {
+            maxNum2 = maxNum;
+            maxNum = x;
+        }
+        else maxNum2 = max(maxNum2, x);
+    }
+    return (maxNum - 1) * (maxNum2 - 1);
+}
