@@ -216,3 +216,28 @@ int maxProduct(vector<int>& nums)
     }
     return (maxNum - 1) * (maxNum2 - 1);
 }
+
+// DAY 13 (2482. Difference Between Ones and Zeros in Row and Column)===========================================================================
+
+vector<vector<int>> onesMinusZeros(vector<vector<int>>& grid)
+{
+    int n = grid.size();
+    int m = grid[0].size();
+    
+    vector<int> rowDiff(n, 0), colDiff(m, 0);
+    vector<vector<int>> diff(n, vector<int>(m, 0));
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            rowDiff[i] += (grid[i][j] == 1) - (grid[i][j] == 0);
+            colDiff[j] += (grid[i][j] == 1) - (grid[i][j] == 0);
+        }
+    }
+
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < m; j++)
+            diff[i][j] = rowDiff[i] + colDiff[j];
+    
+    return diff;
+}
