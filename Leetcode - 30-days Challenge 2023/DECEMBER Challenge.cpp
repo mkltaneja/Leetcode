@@ -241,3 +241,19 @@ vector<vector<int>> onesMinusZeros(vector<vector<int>>& grid)
     
     return diff;
 }
+
+// DAY 15 (1436. Destination City)=================================================================================================
+
+string destCity(vector<vector<string>>& paths)
+{
+    unordered_map<string, int> outDegree;
+    for(vector<string> &path : paths)
+    {
+        outDegree[path[0]]++;
+        outDegree[path[1]] = outDegree[path[1]];
+    }
+    for(pair<string, int> city_degree : outDegree)
+        if(city_degree.second == 0)
+            return city_degree.first;
+    return "";
+}
