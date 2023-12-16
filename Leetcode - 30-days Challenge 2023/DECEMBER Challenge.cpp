@@ -257,3 +257,19 @@ string destCity(vector<vector<string>>& paths)
             return city_degree.first;
     return "";
 }
+
+// DAY 16 (242. Valid Anagram)========================================================================================================================
+
+bool isAnagram(string s, string t)
+{
+    vector<int> sMap(26, 0), tMap(26, 0);
+    for(char c : s)
+        sMap[c-'a']++;
+    for(char c : t)
+        tMap[c-'a']++;
+    
+    for(int i = 0; i < 26; i++)
+        if(sMap[i] != tMap[i])
+            return false;
+    return true;
+}
