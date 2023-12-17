@@ -273,3 +273,69 @@ bool isAnagram(string s, string t)
             return false;
     return true;
 }
+
+// DAY 17 (2353. Design a Food Rating System)=======================================================================================================
+
+class FoodRatings {
+public:
+
+    class FoodInfo
+    {
+        public:
+        string name;
+        string cuisine;
+        int rating;
+
+        FoodInfo(){}
+        FoodInfo(string name, string cuisine, int rating)
+        {
+            this->name = name;
+            this->cuisine = cuisine;
+            this->rating = rating;
+        }
+        bool operator<(const FoodInfo &info) const
+        {
+            return info.rating == rating? name < info.name : rating > info.rating;
+        }
+    };
+
+    unordered_map<string, FoodInfo> foodMap;
+    unordered_map<string, set<FoodInfo>> cuisineMap;
+
+    FoodRatings(vector<string>& foods, vector<string>& cuisines, vector<int>& ratings)
+    {
+        int size = foods.size();
+        for(int i = 0; i < size; i++)
+        {
+            FoodInfo foodInfo(foods[i], cuisines[i], ratings[i]);
+            foodMap[foods[i]] = foodInfo;
+            cuisineMap[cuisines[i]].insert(foodInfo);
+        }
+    }
+
+
+    void changeRating(string food, int newRating) 
+    {
+        FoodInfo &foodInfo = foodMap[food];
+        cuisineMap[foodInfo.cuisine].erase(foodInfo);
+        foodInfo.rating = newRating;
+        cuisineMap[foodInfo.cuisine].insert(foodInfo);
+        FoodInfo foodInfo2 = foodMap[food];
+    }
+
+
+    string highestRated(string cuisine) 
+    {
+        FoodInfo foodInfo = *cuisineMap[cuisine].begin();
+        return foodInfo.name;
+    }
+};
+
+
+/**
+* Your FoodRatings object will be instantiated and called as such:
+* FoodRatings* obj = new FoodRatings(foods, cuisines, ratings);
+* obj->changeRating(food,newRating);
+* string param_2 = obj->highestRated(cuisine);
+*/
+
