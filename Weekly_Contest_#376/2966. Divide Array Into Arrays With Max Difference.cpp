@@ -1,3 +1,6 @@
+
+// Time - O(n*logn + n), Space = O(2)
+
 class Solution {
 public:
     vector<vector<int>> divideArray(vector<int>& nums, int k) 
