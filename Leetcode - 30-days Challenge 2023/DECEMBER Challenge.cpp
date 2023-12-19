@@ -366,3 +366,37 @@ int maxProductDifference(vector<int>& nums)
     }      
     return max1 * max2 - min1 * min2;
 }
+
+// DAY 19 (661. Image Smoother)===============================================================================================
+
+vector<vector<int>> imageSmoother(vector<vector<int>>& img)
+{
+    int n = img.size(), m = img[0].size();
+    vector<vector<int>> finalImage(n, vector<int>(m, 0));
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            int pixels = 1;
+            pixels += i > 0;
+            int top = i? img[i-1][j] : 0;
+            pixels += n-i-1 > 0;
+            int down = n-i-1? img[i+1][j] : 0;
+            pixels += j > 0;
+            int left = j? img[i][j-1] : 0;
+            pixels += m-j-1 > 0;
+            int right = m-j-1? img[i][j+1] : 0;
+            pixels += i > 0 && j > 0;
+            int topLeft = i && j? img[i-1][j-1] : 0;
+            pixels += i > 0 && m-j-1 > 0;
+            int topRight = i && m-j-1? img[i-1][j+1] : 0;
+            pixels += n-i-1 > 0 && j > 0;
+            int downLeft = n-i-1 && j? img[i+1][j-1] : 0;
+            pixels += n-i-1 > 0 && m-j-1 > 0;
+            int downRight = n-i-1 && m-j-1? img[i+1][j+1] : 0;
+            
+            finalImage[i][j] = (img[i][j] + top + down + left + right + topLeft + topRight + downLeft + downRight) / pixels;
+        }
+    }
+    return finalImage;
+}
