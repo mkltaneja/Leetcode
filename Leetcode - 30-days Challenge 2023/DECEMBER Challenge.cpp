@@ -400,3 +400,23 @@ vector<vector<int>> imageSmoother(vector<vector<int>>& img)
     }
     return finalImage;
 }
+
+// DAY 20 (2706. Buy Two Chocolates)==========================================================================
+
+int buyChoco(vector<int>& prices, int money)
+{
+    int minPrice = INT_MAX, secondMinPrice = INT_MAX;
+    for(int price : prices)
+    {
+        if(price <= minPrice)
+        {
+            secondMinPrice = minPrice;
+            minPrice = price;
+        }
+        else secondMinPrice = min(secondMinPrice, price);
+    }
+    int totalMinPrice = minPrice + secondMinPrice;
+    int moneySpent = totalMinPrice > money? money : money - totalMinPrice;
+    
+    return moneySpent;
+}
