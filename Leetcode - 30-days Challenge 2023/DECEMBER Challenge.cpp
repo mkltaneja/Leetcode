@@ -420,3 +420,15 @@ int buyChoco(vector<int>& prices, int money)
     
     return moneySpent;
 }
+
+// DAY 21 (1637. Widest Vertical Area Between Two Points Containing No Points)================================================================
+
+int maxWidthOfVerticalArea(vector<vector<int>>& points) 
+{
+    sort(points.begin(), points.end());
+    int size = points.size();
+    int widestVerticalArea = 0;
+    for(int index = 1; index < size; index++)
+        widestVerticalArea = max(widestVerticalArea, points[index][0] - points[index-1][0]);
+    return widestVerticalArea;
+}
