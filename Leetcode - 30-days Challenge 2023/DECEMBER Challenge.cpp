@@ -432,3 +432,26 @@ int maxWidthOfVerticalArea(vector<vector<int>>& points)
         widestVerticalArea = max(widestVerticalArea, points[index][0] - points[index-1][0]);
     return widestVerticalArea;
 }
+
+// DAY 22 (1422. Maximum Score After Splitting a String)==========================================================================================
+
+int maxScore(string s) 
+{
+    int size = s.size();
+    if(size < 2) return 0;
+
+    int totalOnes = 0;
+    for(char digit : s)
+        totalOnes += digit == '1';
+    int leftZeros = s[0] == '0';
+    int rightOnes = totalOnes - (s[0] == '1');
+    int maximumScore = 0;
+    for(int index = 1; index < size; index++)
+    {
+        maximumScore = max(maximumScore, leftZeros + rightOnes);
+        leftZeros += s[index] == '0';
+        rightOnes -= s[index] == '1';
+    }
+    
+    return maximumScore;
+}
