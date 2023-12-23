@@ -455,3 +455,26 @@ int maxScore(string s)
     
     return maximumScore;
 }
+
+// DAY 23 (1496. Path Crossing)===============================================================================================================
+
+bool isPathCrossing(string path)
+{
+    int verticalDistance = 0, horizontalDistance = 0;
+    set<pair<int,int>> visitedPoints;
+    visitedPoints.insert({0, 0});
+    
+    for(char direction : path)
+    {
+        if(direction == 'N' || direction == 'S')
+            verticalDistance += direction == 'N'? 1 : -1;
+        else
+            horizontalDistance += direction == 'E'? 1 : -1;
+    
+        if(visitedPoints.count({horizontalDistance, verticalDistance}))
+            return true;
+        visitedPoints.insert({horizontalDistance, verticalDistance});
+    }
+
+    return false;
+}
