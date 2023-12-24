@@ -478,3 +478,23 @@ bool isPathCrossing(string path)
 
     return false;
 }
+
+// DAY 24 (1758. Minimum Changes To Make Alternating Binary String)===================================================================================
+
+int findCost(int start, string &bin)
+{
+    int cost = 0;
+    for(int index = 0; index < bin.size(); index++)
+    {
+        cost += (bin[index]-'0') != start;
+        start ^= 1;
+    }
+    return cost;
+}
+
+int minOperations(string s) 
+{
+    int cost01 = findCost(0, s);
+    int cost10 = s.size() - cost01;
+    return min(cost01, cost10);
+}
