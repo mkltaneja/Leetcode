@@ -498,3 +498,28 @@ int minOperations(string s)
     int cost10 = s.size() - cost01;
     return min(cost01, cost10);
 }
+
+// DAY 25 (91. Decode Ways)==========================================================================================================================
+
+int numDecodings(string s)
+{
+    int size = s.size();
+    vector<int> cache(size+1, 0);
+    cache[size] = 1;
+    for(int index = size-1; index >= 0; index--)
+    {
+        int singleDigit = s[index]-'0';
+        if(singleDigit == 0)
+        {
+            cache[index] = 0;
+            continue;
+        }
+        cache[index] = cache[index + 1];
+        
+        if(index+1 == size) continue;
+        int doubleDigit = (s[index]-'0') * 10 + (s[index+1]-'0');
+        if(doubleDigit <= 26)
+            cache[index] += cache[index+2];
+    }
+    return cache[0];
+}
