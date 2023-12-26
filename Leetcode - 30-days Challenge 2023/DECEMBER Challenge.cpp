@@ -523,3 +523,37 @@ int numDecodings(string s)
     }
     return cache[0];
 }
+
+// DAY 26 (1155. Number of Dice Rolls With Target Sum)==============================================================================================
+
+const int MOD = 1e9 + 7;
+int numRollsToTarget(int n, int k, int target) 
+{
+    if(target < n || target > n*k)
+        return 0;
+
+    vector<int> countCache(target+1, 0);
+    countCache[0] = 1;
+    for(int die = 1; die <= n; die++)
+    {
+        vector<int> nextCountCache(target+1, 0);
+        for(int tar = 1; tar <= target; tar++)
+        {
+            if(die == 1)
+            {
+                if(tar <= k)
+                    nextCountCache[tar] = 1;
+                else break;
+                continue;
+            }
+            for(int num = 1; num <= k && tar-num+1 >= die; num++)
+            {
+                int complement = tar - num;
+                nextCountCache[tar] = (nextCountCache[tar] % MOD + countCache[complement] % MOD) % MOD;
+            }
+        }
+        countCache = nextCountCache;
+    }
+    
+    return countCache[target] % MOD;
+}
