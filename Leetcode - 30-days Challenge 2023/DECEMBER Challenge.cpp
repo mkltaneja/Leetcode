@@ -557,3 +557,24 @@ int numRollsToTarget(int n, int k, int target)
     
     return countCache[target] % MOD;
 }
+
+// DAY 27 (1578. Minimum Time to Make Rope Colorful)===================================================================================
+
+int minCost(string colors, vector<int>& neededTime) 
+{
+    int size = colors.size();
+    int minimumTimeNeeded = 0;
+    for(int left = 0; left < size; )
+    {
+        int right = left;
+        int totalTime = 0, maxTime = 0;
+        while(right < size && colors[right] == colors[left])
+        {
+            maxTime = max(maxTime, neededTime[right]);
+            totalTime += neededTime[right++];
+        }
+        minimumTimeNeeded += totalTime - maxTime;
+        left = right;
+    }
+    return minimumTimeNeeded;
+}
