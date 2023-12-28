@@ -578,3 +578,39 @@ int minCost(string colors, vector<int>& neededTime)
     }
     return minimumTimeNeeded;
 }
+
+// DAY 28 (1531. String Compression II)=======================================================================================
+
+int cache[101][101][101][27];
+
+class Solution {
+public:
+
+    int getMinimumLengthDFS(int idx, char prevChar, int prevCnt, int k, string &s)
+    {
+        if(k < 0) return INT_MAX;
+        if(idx == s.size()) return 0;
+        if(cache[idx][prevCnt][k][prevChar-'a'] != -1)
+            return cache[idx][prevCnt][k][prevChar-'a'];
+
+        int deleteRes = getMinimumLengthDFS(idx+1, prevChar, prevCnt, k-1, s);
+        int keepRes = INT_MAX;
+        if(s[idx] == prevChar)
+        {
+            int increasedCount = (prevCnt == 1 || prevCnt == 9 || prevCnt == 99);
+            keepRes = getMinimumLengthDFS(idx+1, prevChar, prevCnt+1, k, s) + increasedCount;
+        }
+        else keepRes = getMinimumLengthDFS(idx+1, s[idx], 1, k, s) + 1;
+
+        return
+         cache[idx][prevCnt][k][prevChar-'a'] = 
+        min(deleteRes, keepRes);
+    }
+
+    int getLengthOfOptimalCompression(string s, int k)
+    {
+        int size = s.size();
+        memset(cache, -1, sizeof(cache));
+        return getMinimumLengthDFS(0, 'z'+1, 0, k, s);
+    }
+};
