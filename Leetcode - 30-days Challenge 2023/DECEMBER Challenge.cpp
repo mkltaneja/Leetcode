@@ -581,6 +581,8 @@ int minCost(string colors, vector<int>& neededTime)
 
 // DAY 28 (1531. String Compression II)=======================================================================================
 
+// APPROACH 1 (Either deleting or Choosing a character with storing previous character and its count) --> Time = O(n^3*k), Space = O(n^3*k)
+
 int cache[101][101][101][27];
 
 class Solution {
@@ -612,5 +614,45 @@ public:
         int size = s.size();
         memset(cache, -1, sizeof(cache));
         return getMinimumLengthDFS(0, 'z'+1, 0, k, s);
+    }
+};
+
+// APPROACH 2 (Either deleting or Looping for a particular character) --> Time = O(n*k), Space = O(n*k)
+
+int cache[101][101];
+
+class Solution {
+public:
+
+    int getMinimumLengthDFS(int itr1, int k, string &s)
+    {
+        if(k < 0) return INT_MAX;
+        if(itr1 == s.size()) return 0;
+        if(cache[itr1][k] != -1)
+            return cache[itr1][k];
+
+        int deleteRes = getMinimumLengthDFS(itr1+1, k-1, s);
+        int keepRes = INT_MAX;
+        int keepCnt = 0;
+        int kTemp = k;
+        
+        for(int itr2 = itr1; itr2 < s.size(); itr2++)
+        {
+            if(s[itr2] == s[itr1])
+                keepCnt++;
+            else if(--kTemp < 0) break;
+            int numCnt = (keepCnt > 99? 3 : (keepCnt > 9? 2 : (keepCnt > 1? 1 : 0)));
+            
+            keepRes = min(keepRes, getMinimumLengthDFS(itr2+1, kTemp, s) + numCnt + 1);
+        }
+
+        return cache[itr1][k] = min(deleteRes, keepRes);
+    }
+
+    int getLengthOfOptimalCompression(string s, int k)
+    {
+        int size = s.size();
+        memset(cache, -1, sizeof(cache));
+        return getMinimumLengthDFS(0, k, s);
     }
 };
