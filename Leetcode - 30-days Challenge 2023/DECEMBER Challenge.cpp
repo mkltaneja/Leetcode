@@ -659,6 +659,9 @@ public:
 
 // DAY 29 (1335. Minimum Difficulty of a Job Schedule)============================================================================
 
+// APPROACH 1 (DFS and memoization)
+// Time = O(n^2 * d), Space = O(n*d)
+
 int minDifficultyDFS(int idx1, int d, vector<int> &jobDiff, vector<vector<int>> &cache)
 {
     if(idx1 == jobDiff.size())
@@ -685,4 +688,45 @@ int minDifficulty(vector<int>& jobDifficulty, int d)
     vector<vector<int>> cache(jobSize, vector<int>(d+1, -1));
     int minAns = minDifficultyDFS(0, d, jobDifficulty, cache);
     return minAns == INT_MAX? -1 : minAns;
+}
+
+// APPROACH 2 (Tabulation with 1D DP)
+// Time = O(n^2 * d), Space = O(n)
+
+int minDifficulty(vector<int>& jobDifficulty, int d)
+{
+    int jobSize = jobDifficulty.size();
+
+    if(jobSize < d)
+        return -1;
+
+    vector<int> cache(jobSize);
+    cache[0] = jobDifficulty[0];
+    int jobSum = jobDifficulty[0];
+    for(int idx = 1; idx < jobSize; idx++)
+    {
+        cache[idx] = max(cache[idx-1], jobDifficulty[idx]);
+        jobSum += jobDifficulty[idx];
+    }
+    if(jobSize == d)
+        return jobSum;
+    
+    vector<int> prevCache = cache;
+    for(int day = 2; day <= d; day++)
+    {
+        int threshold = day - 1;
+        for(int idx1 = threshold; idx1 < jobSize; idx1++)
+        {
+            int maxDiff = INT_MIN;
+            int minAns = INT_MAX;
+            for(int idx2 = idx1; idx2 >= threshold; idx2--)
+            {
+                maxDiff = max(maxDiff, jobDifficulty[idx2]);
+                minAns = min(minAns, maxDiff + prevCache[idx2-1]);
+            }
+            cache[idx1] = minAns;
+        }
+        prevCache = cache;
+    }
+    return cache[jobSize-1];
 }
