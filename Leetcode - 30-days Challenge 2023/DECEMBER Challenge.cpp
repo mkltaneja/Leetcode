@@ -656,3 +656,33 @@ public:
         return getMinimumLengthDFS(0, k, s);
     }
 };
+
+// DAY 29 (1335. Minimum Difficulty of a Job Schedule)============================================================================
+
+int minDifficultyDFS(int idx1, int d, vector<int> &jobDiff, vector<vector<int>> &cache)
+{
+    if(idx1 == jobDiff.size())
+        return d == 0? 0 : INT_MAX;
+    if(d == 0) return INT_MAX;
+    if(cache[idx1][d] != -1)
+        return cache[idx1][d];
+
+    int partitionRes = INT_MAX;
+    int maxDiff = -1;
+    for(int idx2 = idx1; idx2 < jobDiff.size(); idx2++)
+    {
+        maxDiff = max(maxDiff, jobDiff[idx2]);
+        int nextParitionRes = minDifficultyDFS(idx2+1, d-1, jobDiff, cache);
+
+        partitionRes = min(partitionRes, nextParitionRes == INT_MAX? INT_MAX : (nextParitionRes + maxDiff));
+    }
+    return cache[idx1][d] = partitionRes;
+}
+
+int minDifficulty(vector<int>& jobDifficulty, int d)
+{
+    int jobSize = jobDifficulty.size();
+    vector<vector<int>> cache(jobSize, vector<int>(d+1, -1));
+    int minAns = minDifficultyDFS(0, d, jobDifficulty, cache);
+    return minAns == INT_MAX? -1 : minAns;
+}
