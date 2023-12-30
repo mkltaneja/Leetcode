@@ -730,3 +730,18 @@ int minDifficulty(vector<int>& jobDifficulty, int d)
     }
     return cache[jobSize-1];
 }
+
+// DAY 30 (1897. Redistribute Characters to Make All Strings Equal)=============================================================================
+
+bool makeEqual(vector<string>& words)
+{
+    int expectedOcc = words.size();
+    vector<int> charFreq(26, 0);
+    for(string word : words)
+        for(char c : word)
+            charFreq[c-'a']++;
+    for(int i = 0; i < 26; i++)
+        if(charFreq[i] % expectedOcc)
+            return false;
+    return true;
+}
