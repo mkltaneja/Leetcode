@@ -745,3 +745,19 @@ bool makeEqual(vector<string>& words)
             return false;
     return true;
 }
+
+// DAY 31 (1624. Largest Substring Between Two Equal Characters)=====================================================================================
+
+int maxLengthBetweenEqualCharacters(string &s)
+{
+    vector<int> firstOcc(26, -1);
+    int maxLen = -1;
+    for(int i = 0; i < s.size(); i++)
+    {
+        if(firstOcc[s[i]-'a'] != -1)
+            maxLen = max(maxLen, i - firstOcc[s[i]-'a'] - 1);
+        else
+            firstOcc[s[i]-'a'] = i;
+    }
+    return maxLen;
+}
