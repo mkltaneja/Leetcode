@@ -48,3 +48,31 @@ int findContentChildren(vector<int>& g, vector<int>& s)
     }
     return satisfiedCount;
 }
+
+// DAY 2 (2610. Convert an Array Into a 2D Array With Conditions)====================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<vector<int>> findMatrix(vector<int>& nums) 
+{
+    int size = nums.size();
+    unordered_map<int,int> freqMap;
+    vector<vector<int>> ans;
+    for(int num : nums)
+        freqMap[num]++;
+    
+    while(!freqMap.empty())
+    {
+        vector<int> rowTemp;
+        for(auto itr = freqMap.begin(); itr != freqMap.end(); )
+        {
+            rowTemp.push_back(itr->first);
+            if(--itr->second == 0)
+                itr = freqMap.erase(itr);
+            else itr++;
+        }
+        ans.push_back(rowTemp);
+    }
+    return ans;
+}
