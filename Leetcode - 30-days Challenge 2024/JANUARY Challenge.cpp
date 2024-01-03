@@ -76,3 +76,27 @@ vector<vector<int>> findMatrix(vector<int>& nums)
     }
     return ans;
 }
+
+// DAY 3 (2125. Number of Laser Beams in a Bank)==================================================================================
+
+// Time Complexity = O(rows*cols)
+// Space Complexity = O(1)
+
+int numberOfBeams(vector<string>& bank)
+{
+    int rows = bank.size();
+    int cols = bank[0].size();
+    
+    int totalBeams = 0;
+    int previousRowDevices = 0;
+    for(string plan : bank)
+    {
+        int totalDevices = 0;
+        for(char device : plan)
+            totalDevices += (device == '1');
+        totalBeams += totalDevices * previousRowDevices;
+        if(totalDevices)
+            previousRowDevices = totalDevices;
+    }
+    return totalBeams;
+}
