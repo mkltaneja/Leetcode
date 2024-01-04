@@ -100,3 +100,33 @@ int numberOfBeams(vector<string>& bank)
     }
     return totalBeams;
 }
+
+// DAY 4 (2870. Minimum Number of Operations to Make Array Empty)=========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int minOperations(vector<int> &nums)
+{
+    int size = nums.size();
+    unordered_map<int,int> numCnt;
+    for(int x : nums)
+        numCnt[x]++;
+    
+    int totalOperations = 0;
+    for(auto pair : numCnt)
+    {
+        int num = pair.first;
+        int cnt = pair.second;
+        if(cnt == 1) return -1;
+
+        int k = cnt / 3;
+        if(cnt % 3 == 0)
+            totalOperations += k;
+        else if(cnt % 3 == 1)
+            totalOperations += k-1 + 2;
+        else
+            totalOperations += k + 1;
+    }
+    return totalOperations;
+}
