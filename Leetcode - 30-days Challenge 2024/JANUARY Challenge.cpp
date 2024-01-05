@@ -130,3 +130,40 @@ int minOperations(vector<int> &nums)
     }
     return totalOperations;
 }
+
+// DAY 5 (300. Longest Increasing Subsequence)=======================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int findLowerBound(vector<int> &lis, int num)
+{
+    int low = 0, high = lis.size()-1;
+    int ans = lis.size();
+    while(low <= high)
+    {
+        int mid = low + ((high - low) >> 1);
+        if(lis[mid] < num)
+            low = mid + 1;
+        else
+        {
+            high = mid - 1;
+            ans = mid;
+        }
+    }
+    return ans;
+}
+
+int lengthOfLIS(vector<int> &nums)
+{
+    int size = nums.size();
+    vector<int> lis;
+    for(int num : nums)
+    {
+        int justGreaterIdx = findLowerBound(lis, num);
+        if(justGreaterIdx == lis.size())
+            lis.push_back(num);
+        else lis[justGreaterIdx] = num;
+    }
+    return lis.size();
+}
