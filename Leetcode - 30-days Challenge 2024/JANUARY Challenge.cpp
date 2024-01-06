@@ -167,3 +167,37 @@ int lengthOfLIS(vector<int> &nums)
     }
     return lis.size();
 }
+
+// DAY 6 (1235. Maximum Profit in Job Scheduling)=========================================================================================================
+
+int findLowerBound(int endTime, int lo, int hi, vector<vector<int>> &times)
+{
+    while(lo < hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        if(times[mid][0] < endTime)
+            lo = mid + 1;
+        else hi = mid;
+    }
+    return lo;
+}
+
+int jobScheduling(vector<int> &startTime, vector<int> &endTime, vector<int> &profit)
+{
+    int size = startTime.size();
+    vector<vector<int>> times(size);
+    for(int idx = 0; idx < size; idx++)
+        times[idx] = {startTime[idx], endTime[idx], profit[idx]};
+    sort(times.begin(), times.end());
+
+    vector<int> maxProfit(size, 0);
+    maxProfit[size-1] = times[size-1][2];
+    for(int idx = size-2; idx >= 0; idx--)
+    {
+        int nextJobIdx = findLowerBound(times[idx][1], idx+1, size, times);
+        int nextJobProfit = nextJobIdx == size? 0 : maxProfit[nextJobIdx];
+        maxProfit[idx] = max(maxProfit[idx+1], nextJobProfit + times[idx][2]);
+    }
+
+    return maxProfit[0];
+}
