@@ -170,6 +170,9 @@ int lengthOfLIS(vector<int> &nums)
 
 // DAY 6 (1235. Maximum Profit in Job Scheduling)=========================================================================================================
 
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
 int findLowerBound(int endTime, int lo, int hi, vector<vector<int>> &times)
 {
     while(lo < hi)
@@ -200,4 +203,29 @@ int jobScheduling(vector<int> &startTime, vector<int> &endTime, vector<int> &pro
     }
 
     return maxProfit[0];
+}
+
+// DAY 7 (446. Arithmetic Slices II - Subsequence)================================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+int numberOfArithmeticSlices(vector<int> &nums)
+{
+    int size = nums.size();
+    unordered_map<int, unordered_map<long,int>> numDiffMap;
+    int totalSeqs = 0;
+    for(int idx1 = size-1; idx1 >= 0; idx1--)
+    {
+        for(int idx2 = idx1 + 1; idx2 < size; idx2++)
+        {
+            int num1 = nums[idx1];
+            int num2 = nums[idx2];
+            long diff = (long)num2 - num1;
+            
+            numDiffMap[idx1][diff] += numDiffMap[idx2][diff] + 1;
+            totalSeqs += numDiffMap[idx2][diff];
+        }
+    }
+    return totalSeqs;
 }
