@@ -229,3 +229,22 @@ int numberOfArithmeticSlices(vector<int> &nums)
     }
     return totalSeqs;
 }
+
+// DAY 8 (938. Range Sum of BST)=================================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(logn)
+
+int rangeSumBST(TreeNode* root, int low, int high)
+{
+    if(!root) return 0;
+    if(root->val < low)
+        return rangeSumBST(root->right, low, high);
+    if(root->val > high)
+        return rangeSumBST(root->left, low, high);
+
+    int leftSum = rangeSumBST(root->left, low, high);
+    int rightSum = rangeSumBST(root->right, low, high);
+
+    return leftSum + rightSum + root->val;
+}
