@@ -248,3 +248,43 @@ int rangeSumBST(TreeNode* root, int low, int high)
 
     return leftSum + rightSum + root->val;
 }
+
+// DAY 9 (872. Leaf-Similar Trees)================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool isLeafNode(TreeNode* node)
+{
+    return !node->left && !node->right;
+}
+
+void addAllLeaves(TreeNode* node, vector<int> &leaves)
+{
+    if(!node)
+        return;
+    if(isLeafNode(node))
+    {
+        leaves.push_back(node->val);
+        return;
+    }
+
+    addAllLeaves(node->left, leaves);
+    addAllLeaves(node->right, leaves);
+}
+
+bool leafSimilar(TreeNode* root1, TreeNode* root2)
+{
+    vector<int> leaves1, leaves2;
+    addAllLeaves(root1, leaves1);
+    addAllLeaves(root2, leaves2);
+
+    if(leaves1.size() != leaves2.size())
+        return false;	
+
+    for(int idx = 0; idx < leaves1.size(); idx++)
+        if(leaves1[idx] != leaves2[idx])
+            return false;
+    
+    return true;
+}
