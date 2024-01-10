@@ -288,3 +288,42 @@ bool leafSimilar(TreeNode* root1, TreeNode* root2)
     
     return true;
 }
+
+// DAY 10 (2385. Amount of Time for Binary Tree to Be Infected)==========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(h)
+
+int numMinutes = 0;
+pair<int, bool> distanceFromNode(TreeNode* node, int start)
+{
+    if(!node) return {0, false};
+    
+    pair<int, bool> leftDepth = distanceFromNode(node->left, start);
+    pair<int, bool> rightDepth = distanceFromNode(node->right, start);
+
+    int currDepth = max(leftDepth.first, rightDepth.first);
+    if(node->val == start)
+    {
+        numMinutes = max(numMinutes, currDepth);
+        return {1, true};
+    }
+    else
+    {
+        if(leftDepth.second || rightDepth.second)
+        {
+            numMinutes = max(numMinutes, rightDepth.first + leftDepth.first);
+            if(leftDepth.second)
+                return {leftDepth.first + 1, true};
+            else return {rightDepth.first + 1, true};
+        }
+    }
+
+    return {currDepth + 1, false};
+}
+
+int amountOfTime(TreeNode* root, int start)
+{
+    distanceFromNode(root, start);
+    return numMinutes;
+}
