@@ -327,3 +327,26 @@ int amountOfTime(TreeNode* root, int start)
     distanceFromNode(root, start);
     return numMinutes;
 }
+
+// DAY 11 (1026. Maximum Difference Between Node and Ancestor)=========================================================================================
+
+int maxAncestorDiff_DFS(TreeNode* node, int maxAncestorVal, int minAncestorVal)
+{
+    if(!node)
+        return 0;
+
+    int currDiff = max(abs(maxAncestorVal - node->val), abs(minAncestorVal - node->val));
+
+    maxAncestorVal = max(maxAncestorVal, node->val);
+    minAncestorVal = min(minAncestorVal, node->val);
+
+    int leftMaxDiff = maxAncestorDiff_DFS(node->left, maxAncestorVal, minAncestorVal);
+    int rightMaxDiff = maxAncestorDiff_DFS(node->right, maxAncestorVal, minAncestorVal);
+
+    return max({currDiff, leftMaxDiff, rightMaxDiff});
+}
+
+int maxAncestorDiff(TreeNode* root)
+{
+    return maxAncestorDiff_DFS(root, root->val, root->val);
+}
