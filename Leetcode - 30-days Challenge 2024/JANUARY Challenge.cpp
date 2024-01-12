@@ -350,3 +350,24 @@ int maxAncestorDiff(TreeNode* root)
 {
     return maxAncestorDiff_DFS(root, root->val, root->val);
 }
+
+// DAY 12 (1704. Determine if String Halves Are Alike)===============================================================================================
+
+bool isVowel(char inputChar)
+{
+    inputChar = tolower(inputChar);
+    return inputChar == 'a' || inputChar == 'e' || inputChar == 'i' || inputChar == 'o' || inputChar == 'u';
+}
+
+bool halvesAreAlike(string s)
+{
+    int aCount = 0, bCount = 0;
+    int size = s.size();
+    for(int itr = 0; itr < size/2; itr++)
+    {
+        aCount += isVowel(s[itr]);
+        bCount += isVowel(s[size - itr - 1]);
+    }
+
+    return aCount == bCount;
+}
