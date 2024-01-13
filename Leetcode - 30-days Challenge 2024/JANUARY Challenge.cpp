@@ -353,6 +353,9 @@ int maxAncestorDiff(TreeNode* root)
 
 // DAY 12 (1704. Determine if String Halves Are Alike)===============================================================================================
 
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
 bool isVowel(char inputChar)
 {
     inputChar = tolower(inputChar);
@@ -370,4 +373,28 @@ bool halvesAreAlike(string s)
     }
 
     return aCount == bCount;
+}
+
+// DAY 13 (1347. Minimum Number of Steps to Make Two Strings Anagram)====================================================================================
+
+// Time Complexity = O(n + 26)
+// Space Complexity = O(26)
+
+int minSteps(string s, string t)
+{
+    vector<int> sMap(26), tMap(26);
+    for(char c : s)
+        sMap[c-'a']++;
+    for(char c : t)
+        tMap[c-'a']++;
+
+    int extraCnt = 0, lessCnt = 0;
+    for(int idx = 0; idx < 26; idx++)
+    {
+        if(tMap[idx] < sMap[idx])
+            lessCnt += sMap[idx] - tMap[idx];
+        else extraCnt += tMap[idx] - sMap[idx];
+    }
+
+    return max(extraCnt, lessCnt);
 }
