@@ -398,3 +398,30 @@ int minSteps(string s, string t)
 
     return max(extraCnt, lessCnt);
 }
+
+// DAY 14 (1657. Determine if Two Strings Are Close)==============================================================================================
+
+bool closeStrings(string word1, string word2)
+{
+    int size1 = word1.size(), size2 = word2.size();
+    if(size1 != size2) return false;
+
+    vector<int> freq1(26), freq2(26);
+    for(char c : word1)
+        freq1[c-'a']++;
+    for(char c : word2)
+        freq2[c-'a']++;
+
+    for(int idx = 0; idx < 26; idx++)
+        if((freq1[idx] &&  !freq2[idx]) || (!freq1[idx] &&  freq2[idx]))
+            return false;
+
+    sort(freq1.begin(), freq1.end());
+    sort(freq2.begin(), freq2.end());
+
+    for(int idx = 0; idx < 26; idx++)
+        if(freq1[idx] != freq2[idx])
+            return false;
+
+    return true;
+}
