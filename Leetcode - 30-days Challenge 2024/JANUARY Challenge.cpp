@@ -401,6 +401,9 @@ int minSteps(string s, string t)
 
 // DAY 14 (1657. Determine if Two Strings Are Close)==============================================================================================
 
+// Time Complexity = O(n + m + 4*26 + 26log(26))
+// Space Complexity = O(2*26)
+
 bool closeStrings(string word1, string word2)
 {
     int size1 = word1.size(), size2 = word2.size();
@@ -424,4 +427,32 @@ bool closeStrings(string word1, string word2)
             return false;
 
     return true;
+}
+
+// DAY 15 (2225. Find Players With Zero or One Losses)==============================================================================================
+
+// Time Complexity = O(n + n*logn)
+// Space Complexity = O(n)
+
+vector<vector<int>> findWinners(vector<vector<int>> &matches)
+{
+    unordered_map<int, int> matchesLost;
+    vector<vector<int>> ans(2);
+    for(vector<int> &match : matches)
+    {
+        int winner = match[0];
+        int loser = match[1];
+        matchesLost[winner] = matchesLost[winner];
+        matchesLost[loser]++;
+    }
+
+    for(auto playerLosses : matchesLost)
+    {
+        if(playerLosses.second == 0 || playerLosses.second == 1)
+            ans[playerLosses.second].push_back(playerLosses.first);
+    }
+
+    sort(ans[0].begin(), ans[0].end());
+    sort(ans[1].begin(), ans[1].end());
+    return ans;
 }
