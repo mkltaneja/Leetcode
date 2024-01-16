@@ -456,3 +456,61 @@ vector<vector<int>> findWinners(vector<vector<int>> &matches)
     sort(ans[1].begin(), ans[1].end());
     return ans;
 }
+
+// DAY 16 (380. Insert Delete GetRandom O(1))================================================================================================
+
+class RandomizedSet {
+private:
+    int size;
+    vector<int> nums;
+    unordered_map<int, int> numIdx;
+
+public:
+    RandomizedSet()
+    {
+        this->size = 0;
+    }
+
+    bool insert(int val)
+    {
+        if(numIdx.count(val))
+            return false;
+
+        nums.push_back(val);
+        numIdx[val] = size++;
+
+        return true;
+    }
+
+    bool remove(int val)
+    {
+        if(!numIdx.count(val))
+            return false;
+        
+    int currIdx = numIdx[val];
+        int lastIdx = --size;
+
+        numIdx[nums[lastIdx]] = currIdx;
+        swap(nums[currIdx], nums[lastIdx]);
+
+        numIdx.erase(val);
+        nums.pop_back();
+        
+        return true;
+    }
+
+    int getRandom()
+    {
+        int randIdx = rand() % size;
+        return nums[randIdx];
+    }
+
+};
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet* obj = new RandomizedSet();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
