@@ -514,3 +514,22 @@ public:
  * bool param_2 = obj->remove(val);
  * int param_3 = obj->getRandom();
  */
+
+// DAY 17 (1207. Unique Number of Occurrences)====================================================================================
+
+bool uniqueOccurrences(vector<int> &arr)
+{
+    int size = arr.size();
+    unordered_map<int,int> freqMap;
+    unordered_set<int> freqSet;
+    for(int num : arr)
+        freqMap[num]++;
+    for(auto pair : freqMap)
+    {
+        if(freqSet.count(pair.second))
+            return false;
+        freqSet.insert(pair.second);
+    }
+
+    return true;
+}
