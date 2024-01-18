@@ -533,3 +533,22 @@ bool uniqueOccurrences(vector<int> &arr)
 
     return true;
 }
+
+// DAY 17 (70. Climbing Stairs)======================================================================================
+
+int climbStairs(int n)
+{
+    if(n <= 2) return n;
+
+    int prevWays = 2;
+    int prevPrevWays = 1;
+    int currWays = 0;
+    for(int step = 3; step <= n; step++)
+    {
+        currWays = prevWays + prevPrevWays;
+        prevPrevWays = prevWays;
+        prevWays = currWays;
+    }
+
+    return currWays;
+}
