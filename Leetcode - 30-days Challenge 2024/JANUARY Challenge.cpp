@@ -534,7 +534,10 @@ bool uniqueOccurrences(vector<int> &arr)
     return true;
 }
 
-// DAY 17 (70. Climbing Stairs)======================================================================================
+// DAY 18 (70. Climbing Stairs)======================================================================================
+
+// Time Complexity = O(n)
+// Time Complexity = O(1)
 
 int climbStairs(int n)
 {
@@ -551,4 +554,51 @@ int climbStairs(int n)
     }
 
     return currWays;
+}
+
+// DAY 19 (931. Minimum Falling Path Sum)==================================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n)
+
+const int INF = 1e5;
+void solveForMinSum(int size, vector<int> &minSum, vector<vector<int>> &matrix)
+{
+    for(int row = size-1; row >= 0; row--)
+    {
+        vector<int> minSumTemp(size, INF);
+        for(int col = 0; col < size; col++)
+        {
+            if(row == size-1)
+            {
+                minSumTemp[col] = matrix[row][col];
+                continue;
+            }
+            int bottomLeftSum = col? minSum[col-1] : INF;
+            int bottomSum = minSum[col];
+            int bottomRightSum = size-col-1? minSum[col+1] : INF;
+
+            minSumTemp[col] = min({bottomLeftSum, bottomSum, bottomRightSum}) + matrix[row][col];
+        }
+        minSum = minSumTemp;
+    }
+}
+
+int findMinAns(int size, vector<int> &minSum)
+{
+    int minAns = INF;
+    for(int col = 0; col < size; col++)
+        minAns = min(minAns, minSum[col]);
+    return minAns;
+}
+
+int minFallingPathSum(vector<vector<int>> &matrix)
+{
+    int size = matrix.size();
+    vector<int> minSum(size, INF);
+
+    solveForMinSum(size, minSum, matrix);
+    int minAns = findMinAns(size, minSum);
+
+    return minAns;
 }
