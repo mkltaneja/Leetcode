@@ -556,6 +556,27 @@ int climbStairs(int n)
     return currWays;
 }
 
+// WEEK 3 (1165. Single-Row Keyboard)==========================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(26)
+
+int calculateTime(string keyboard, string word)
+{
+    vector<int> charPos(26, 0);
+    int pos = 0, moves = 0, currPos = 0;
+    for(char c : keyboard)
+        charPos[c-'a'] = pos++;
+    
+    for(char c : word)
+    {
+        moves += abs(charPos[c-'a'] - currPos);
+        currPos = charPos[c-'a'];
+    }
+
+    return moves;
+}
+
 // DAY 19 (931. Minimum Falling Path Sum)==================================================================================
 
 // Time Complexity = O(n^2)
