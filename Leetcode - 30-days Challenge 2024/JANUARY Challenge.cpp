@@ -623,3 +623,46 @@ int minFallingPathSum(vector<vector<int>> &matrix)
 
     return minAns;
 }
+
+// DAY 20 (907. Sum of Subarray Minimums)==============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int sumSubarrayMins(vector<int> &arr)
+{
+    int size = arr.size();
+    vector<int> leftSmaller(size, -1), rightSmaller(size, size);
+    stack<int> idxStack;
+    int ans = 0, MOD = 1e9 + 7;
+    for(int idx = 0; idx < size; idx++)
+    {
+        while(!idxStack.empty() && arr[idx] <= arr[idxStack.top()])
+        {
+            rightSmaller[idxStack.top()] = idx;
+            idxStack.pop();
+        }
+        idxStack.push(idx);
+    }
+    while(!idxStack.empty())
+        idxStack.pop();
+    for(int idx = size-1; idx >= 0; idx--)
+    {
+        while(!idxStack.empty() && arr[idx] < arr[idxStack.top()])
+        {
+            leftSmaller[idxStack.top()] = idx;
+            idxStack.pop();
+        }
+        idxStack.push(idx);
+    }
+
+    for(int idx = 0; idx < size; idx++)
+    {
+        int leftCount = idx - leftSmaller[idx];
+        int rightCount = rightSmaller[idx] - idx;
+        int totalCount = leftCount * rightCount;
+
+        ans = ans % MOD + (((long long)totalCount % MOD) * (arr[idx] % MOD)) % MOD;
+    }
+    return ans;
+}
