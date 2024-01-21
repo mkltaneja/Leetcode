@@ -666,3 +666,21 @@ int sumSubarrayMins(vector<int> &arr)
     }
     return ans;
 }
+
+// DAY 21 (198. House Robber)==================================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int rob(vector<int> &nums)
+{
+    int size = nums.size();
+    int lastRobbed = 0, lastRobbed2 = 0, maxRobbery = 0;
+    for(int idx = 0; idx < size; idx++)
+    {
+        maxRobbery = max(lastRobbed, lastRobbed2 + nums[idx]);
+        lastRobbed2 = lastRobbed;
+        lastRobbed = maxRobbery;
+    }
+    return maxRobbery;
+}
