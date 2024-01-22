@@ -684,3 +684,28 @@ int rob(vector<int> &nums)
     }
     return maxRobbery;
 }
+
+// DAY 22 (645. Set Mismatch)==========================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+vector<int> findErrorNums(vector<int> &nums)
+{
+    int size = nums.size();
+    int missing = 0, extra = 0;
+    for(int idx = 0; idx < size; idx++)
+    {
+        int position = abs(nums[idx]) - 1;
+        if(nums[position] < 0)
+            extra = position + 1;
+        else nums[position] *= -1;
+    }
+
+    for(int idx = 0; idx < size; idx++)
+        if(nums[idx] > 0)
+            missing = idx + 1;
+
+    vector<int> ans = {extra, missing};
+    return ans;
+}
