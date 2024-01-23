@@ -712,8 +712,7 @@ vector<int> findErrorNums(vector<int> &nums)
 
 // DAY 23 (1239. Maximum Length of a Concatenated String with Unique Characters)======================================================
 
-
-// Time Complexity = O(2^n*logn)
+// Time Complexity = O(2^n)
 // Space Complexity = O(2^n)
 
 int convertStringToBits(string &str)
