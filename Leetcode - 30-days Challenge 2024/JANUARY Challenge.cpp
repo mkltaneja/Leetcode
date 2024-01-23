@@ -709,3 +709,59 @@ vector<int> findErrorNums(vector<int> &nums)
     vector<int> ans = {extra, missing};
     return ans;
 }
+
+// DAY 23 (1239. Maximum Length of a Concatenated String with Unique Characters)======================================================
+
+
+// Time Complexity = O(2^n*logn)
+// Space Complexity = O(2^n)
+
+int convertStringToBits(string &str)
+{
+    int res = 0;
+    for(char c : str)
+    {
+        if(res & (1 << (c - 'a')))
+            return 0;
+        res |= (1 << (c-'a'));
+    }
+    return res;
+}
+
+int getMaxLen(vector<vector<int>> &arr)
+{
+    vector<vector<int>> prevStates;
+    int maxLen = 0;
+    for(int idx = 0; idx < arr.size(); idx++)
+    {
+        int prevSize = prevStates.size();
+        for(int idx2 = 0; idx2 < prevSize; idx2++)
+        {
+            int state = prevStates[idx2][0];
+            int len = prevStates[idx2][1];
+            if(state & arr[idx][0]) continue;
+
+            int currState = (state | arr[idx][0]);
+            int currLen = len + arr[idx][1];
+            maxLen = max(maxLen, currLen);
+            prevStates.push_back({currState, currLen});
+        }
+        maxLen = max(maxLen, arr[idx][1]);
+        prevStates.push_back({arr[idx][0], arr[idx][1]});
+    }
+
+    return maxLen;
+}
+
+int maxLength(vector<string> &arr)
+{
+    int size = arr.size();
+    vector<vector<int>> bitArr;
+    for(int idx = 0; idx < size; idx++)
+    {
+        int bitRes = convertStringToBits(arr[idx]);
+        if(bitRes) 
+            bitArr.push_back({bitRes, (int)arr[idx].size()});
+    }
+    return getMaxLen(bitArr);
+}
