@@ -764,3 +764,31 @@ int maxLength(vector<string> &arr)
     }
     return getMaxLen(bitArr);
 }
+
+// DAY 24 (1457. Pseudo-Palindromic Paths in a Binary Tree)===================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int totalPaths = 0;
+void pseudoPalindromicPathsDFS(int pathMask, TreeNode* root)
+{
+    if(!root) return;
+    int newPathMask = pathMask ^ (1 << root->val);
+    if(!root->left && !root->right)
+    {
+        int isValidPath = (newPathMask == 0) || 
+            ((newPathMask & (newPathMask-1)) == 0);
+        totalPaths += isValidPath;
+        return;
+    }
+
+    pseudoPalindromicPathsDFS(newPathMask, root->left);
+    pseudoPalindromicPathsDFS(newPathMask, root->right);
+}
+
+int pseudoPalindromicPaths(TreeNode* root)
+{
+    pseudoPalindromicPathsDFS(0, root);
+    return totalPaths;
+}
