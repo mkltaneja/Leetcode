@@ -792,3 +792,32 @@ int pseudoPalindromicPaths(TreeNode* root)
     pseudoPalindromicPathsDFS(0, root);
     return totalPaths;
 }
+
+// DAY 25 (1143. Longest Common Subsequence)=================================================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n)
+
+int longestCommonSubsequence(string text1, string text2)
+{
+    int size1 = text1.size();
+    int size2 = text2.size();
+
+    vector<int> maxLenDP(size2, 0);
+
+    for(int idx1 = size1-1; idx1 >= 0; idx1--)
+    {
+        vector<int> prevDP = maxLenDP;
+        for(int idx2 = size2-1; idx2 >= 0; idx2--)
+        {
+            int inc1 = size1-idx1-1? prevDP[idx2] : 0;
+            int inc2 = size2-idx2-1? maxLenDP[idx2+1] : 0;
+            int inc12 = size1-idx1-1 && size2-idx2-1?
+                    prevDP[idx2+1] : 0;
+            maxLenDP[idx2] = text1[idx1] == text2[idx2]?
+                    (inc12 + 1) : max(inc1, inc2);
+        }
+    }
+
+    return maxLenDP[0];
+}
