@@ -821,3 +821,33 @@ int longestCommonSubsequence(string text1, string text2)
 
     return maxLenDP[0];
 }
+
+// DAY 26 (576. Out of Boundary Paths)=====================================================================
+
+// Time Complexity = O(n * m * maxMoves)
+// Space Complexity = O(n * m * maxMoves)
+
+int MOD = 1e9 + 7;
+int dir[4][2] = {{1,0},{0,1},{-1,0},{0,-1}};
+int findPathsDFS(int currRow, int currCol, int remMoves, int n, int m, vector<vector<vector<int>>> &stateCache)
+{
+    if(currRow == -1 || currCol == -1 || currRow == n || currCol == m)
+        return 1;
+    if(remMoves == 0)
+        return 0;
+    if(stateCache[currRow][currCol][remMoves] != -1)
+        return stateCache[currRow][currCol][remMoves];
+
+    int currAns = 0;
+    for(int d = 0; d < 4; d++)
+        currAns = (currAns % MOD + 
+            findPathsDFS(currRow + dir[d][0], currCol+dir[d][1], remMoves-1, n, m, stateCache) % MOD) % MOD;
+
+    return stateCache[currRow][currCol][remMoves] = currAns;
+}
+
+int findPaths(int n, int m, int maxMove, int startRow, int startColumn)
+{
+    vector<vector<vector<int>>> stateCache(n, vector<vector<int>>(m, vector<int>(maxMove+1, -1)));
+    return findPathsDFS(startRow, startColumn, maxMove, n, m, stateCache);
+}
