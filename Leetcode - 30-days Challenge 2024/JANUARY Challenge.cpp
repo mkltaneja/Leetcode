@@ -854,7 +854,7 @@ int findPaths(int n, int m, int maxMove, int startRow, int startColumn)
 
 // DAY 27 (629. K Inverse Pairs Array)=========================================================================================
 
-// APPROACH 1 (Traversing at every previous state from 0 to min(n-1, k))
+// APPROACH 1 (Tabulated DP: Traversing at every previous state from 0 to min(n-1, k))
 
 // Time Complexity = O(n * k * min(n, k))
 // Space Complexity = O(n * k)
@@ -884,5 +884,31 @@ int kInversePairsDFS(int N, int K, vector<vector<int>> &stateCache)
 int kInversePairs(int n, int k) 
 {
     vector<vector<int>> stateCache(n+1, vector<int>(k+1, 0));
+    return kInversePairsDFS(n, k, stateCache);
+}
+
+// APPROACH 2 (Sliding window + DP: Took sum of last k numbers instead of traversing again and again)
+
+// Time Complexity = O(n * k)
+// Space Complexity = O(k)
+
+const int MOD = 1e9 + 7;
+int kInversePairsDFS(int N, int K, vector<int> &stateCache)
+{
+    stateCache[0] = 1;
+    for(int n = 1; n <= N; n++)
+    {
+        vector<int> prevStateCache = stateCache;
+        for(int k = 1; k <= K; k++)
+            stateCache[k] = (((stateCache[k-1] % MOD
+                + prevStateCache[k] % MOD) % MOD) + MOD
+                - (k-n >= 0? prevStateCache[k-n] : 0)) % MOD;
+    }
+    return stateCache[K];
+}
+
+int kInversePairs(int n, int k) 
+{
+    vector<int> stateCache(k+1, 0);
     return kInversePairsDFS(n, k, stateCache);
 }
