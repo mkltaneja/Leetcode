@@ -912,3 +912,35 @@ int kInversePairs(int n, int k)
     vector<int> stateCache(k+1, 0);
     return kInversePairsDFS(n, k, stateCache);
 }
+
+// DAY 28 (1074. Number of Submatrices That Sum to Target)===============================================================================
+
+// Time Complexity = O(n * n * m)
+// Space Complexity = O(1)
+
+int numSubmatrixSumTarget(vector<vector<int>> &matrix, int target)
+{
+    int rows = matrix.size(), cols = matrix[0].size();
+    int totalCount = 0;
+    for(int row = 1; row < rows; row++)
+        for(int col = 0; col < cols; col++)
+            matrix[row][col] += matrix[row-1][col];
+
+    for(int border = 0; border < rows; border++)
+    {
+        for(int row = border; row < rows; row++)
+        {
+            unordered_map<int,int> sums;
+            sums[0] = 1;
+            int currSum = 0;
+            for(int col = 0; col < cols; col++)
+            {
+                currSum += matrix[row][col] - (border? matrix[border-1][col] : 0);
+                totalCount += sums[currSum - target];
+                sums[currSum]++;
+            }
+        }
+    }
+
+    return totalCount;
+}
