@@ -944,3 +944,67 @@ int numSubmatrixSumTarget(vector<vector<int>> &matrix, int target)
 
     return totalCount;
 }
+
+// DAY 29 (232. Implement Queue using Stacks)==========================================================================
+
+// Time Complexity = O(calls + elements)
+// Space Complexity = O(2*elements)
+
+class MyQueue {
+public:
+
+    stack<int> stack1, stack2;
+    MyQueue()
+    {
+        
+    }
+
+    void fillStack2()
+    {
+        while(!stack1.empty())
+        {
+            int top1 = stack1.top();
+            stack1.pop();
+            stack2.push(top1);
+        }
+    }
+
+    void push(int x)
+    {
+        stack1.push(x);
+    }
+
+    int pop()
+    {
+        if(stack2.empty())
+            fillStack2();
+        if(!stack2.empty())
+        {
+            int ans = stack2.top();
+            stack2.pop();
+            return ans;
+        }
+        return 0;
+    }
+
+    int peek()
+    {
+        if(stack2.empty())
+            fillStack2();
+        return stack2.empty()? 0 : stack2.top();
+    }
+
+    bool empty()
+    {
+        return stack1.empty() && stack2.empty();
+    }
+};
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue* obj = new MyQueue();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->peek();
+ * bool param_4 = obj->empty();
+ */
