@@ -1008,3 +1008,43 @@ public:
  * int param_3 = obj->peek();
  * bool param_4 = obj->empty();
  */
+
+// DAY 30 (150. Evaluate Reverse Polish Notation)====================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool isOperator(string &token)
+{
+    return token.size() == 1 && (token[0] == '+' || token[0] == '-' || token[0] == '*' || token[0] == '/');
+}
+
+int evalRPN(vector<string> &tokens)
+{
+    stack<int> nums;
+    for(string token : tokens)
+    {
+        if(isOperator(token))
+        {
+            int num2 = nums.top();
+            nums.pop();
+            int num1 = nums.top();
+            nums.pop();
+            if(token == "+")
+                nums.push(num1 + num2);
+            else if(token == "-")
+                nums.push(num1 - num2);
+            else if(token == "*")
+                nums.push(num1 * num2);
+            else if(token == "/")
+                nums.push(num1 / num2);
+        }
+        else
+        {
+            int num = stoi(token);
+            nums.push(num);
+        }
+    }
+
+    return nums.top();
+}
