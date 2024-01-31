@@ -1048,3 +1048,28 @@ int evalRPN(vector<string> &tokens)
 
     return nums.top();
 }
+
+// DAY 31 (739. Daily Temperatures)=====================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<int> dailyTemperatures(vector<int> &temperatures)
+{
+    int size = temperatures.size();
+    stack<int> temperatureStack;
+    vector<int> nextWarmerDay(size, 0);
+    for(int idx = 0; idx < size; idx++)
+    {
+        while(!temperatureStack.empty())
+        {
+            int topIdx = temperatureStack.top();
+            if(temperatures[topIdx] >= temperatures[idx])
+                break;
+            nextWarmerDay[topIdx] = idx - topIdx;
+            temperatureStack.pop();
+        }
+        temperatureStack.push(idx);
+    }
+    return nextWarmerDay;
+}
