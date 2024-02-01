@@ -17,3 +17,26 @@ vector<vector<int>> divideArray(vector<int> &nums, int k)
     }
     return ans;
 }
+
+// Week 1 (293. Flip Game)=================================================================================================
+
+// APPROACH 1 (Altering the strings while adding)
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n)
+
+vector<string> generatePossibleNextMoves(string currentState)
+{
+    vector<string> possibleStates;
+    for(int idx = 0; idx+1 < currentState.size(); idx++)
+    {
+        if(currentState[idx] == '+' && currentState[idx+1] == '+')
+        {
+            string tempState = currentState;
+            tempState[idx] = tempState[idx+1] = '-';
+            possibleStates.push_back(tempState);
+        }
+    }
+
+    return possibleStates;
+}
