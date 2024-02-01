@@ -40,3 +40,26 @@ vector<string> generatePossibleNextMoves(string currentState)
 
     return possibleStates;
 }
+
+// APPROACH 2 (Adding the indices first then changing the strings separately)
+
+// Time Complexity = O(2*n)
+// Space Complexity = O(2*n)
+
+vector<string> generatePossibleNextMoves(string currentState)
+{
+    vector<int> possibleStatesIdx;
+    for(int idx = 0; idx+1 < currentState.size(); idx++)
+        if(currentState[idx] == '+' && currentState[idx+1] == '+')
+            possibleStatesIdx.push_back(idx);
+
+    vector<string> possibleStates(possibleStatesIdx.size(), currentState);
+    for(int idx = 0; idx < possibleStatesIdx.size(); idx++)
+    {
+        int convertIdx = possibleStatesIdx[idx];
+        possibleStates[idx][convertIdx] = '-';
+        possibleStates[idx][convertIdx+1] = '-';
+    }
+
+    return possibleStates;
+}
