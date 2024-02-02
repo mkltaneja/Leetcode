@@ -66,6 +66,8 @@ vector<string> generatePossibleNextMoves(string currentState)
 
 // DAY 2 (1291. Sequential Digits)=========================================================================================
 
+// APPROACH 1
+
 // Time Complexity = ((log10(high) + 1)^2 * ((9 + (9 - log10(high))) / 2)) - ((log10(low) + 1)^2 * ((9 + (9 - log10(low))) / 2))
 // Space Complexity = O((log10(high) + 1) * ((9 + (9 - log10(high))) / 2))
 
@@ -85,5 +87,26 @@ vector<int> sequentialDigits(int low, int high)
                 ans.push_back(num);
         }
     }
+    return ans;
+}
+
+// APPROACH 2
+
+// Time Complexity = O(9*9 + 9*9*log2(9*9))
+// Space Complexity = O(9*9)
+
+vector<int> sequentialDigits(int low, int high)
+{
+    vector<int> ans;
+    for(int start = 1; start <= 9; start++)
+    {
+        for(int end = start, num = start; end <= 9 && num <= high; )
+        {
+            if(num >= low)
+                ans.push_back(num);
+            num = num*10 + ++end;
+        }
+    }
+    sort(ans.begin(), ans.end());
     return ans;
 }
