@@ -110,3 +110,26 @@ vector<int> sequentialDigits(int low, int high)
     sort(ans.begin(), ans.end());
     return ans;
 }
+
+// DAY 3 (1043. Partition Array for Maximum Sum)===================================================================================
+
+// Time Complexity = O(n*k)
+// Space Complexity = O(n)
+
+int maxSumAfterPartitioning(vector<int> &arr, int k)
+{
+    int size = arr.size();
+    vector<int> maxSumDP(size, 0);
+
+    for(int idx1 = size-1; idx1 >= 0; idx1--)
+    {
+        int maxNum = 0, tot = 1;
+        for(int idx2 = idx1; idx2 < size && tot <= k; idx2++, tot++)
+        {
+            maxNum = max(maxNum, arr[idx2]);
+            int nextMaxSum = idx2 != size-1? maxSumDP[idx2 + 1] : 0;
+            maxSumDP[idx1] = max(maxSumDP[idx1], maxNum*tot + nextMaxSum);
+        }
+    }
+    return maxSumDP[0];
+}
