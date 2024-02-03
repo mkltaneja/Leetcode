@@ -1,5 +1,5 @@
 
-// Time = O(n*logn + n^2)
+// Time = O(n*logn + n^3)
 // Space = O(1)
 
 class Solution {
