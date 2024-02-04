@@ -1,4 +1,6 @@
 
+// APPROACH 1 (Using set)
+
 // Time Complexity = O(n^2 + n/k)
 // Space Complexity = O(n)
 
@@ -28,5 +30,28 @@ public:
         }
         
         return cnt;
+    }
+};
+
+// APPROACH 2 (Checking in a single loop without set)
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(1)
+
+class Solution {
+public:
+    int minimumTimeToInitialState(string word, int k) 
+    {
+        int n = word.size();
+        
+        for(int i = k; i < n; i += k)
+        {
+            string s1 = word.substr(0, n-i);
+            string s2 = word.substr(i);
+            if(s1 == s2)
+                return i / k;
+        }
+        
+        return (n + k - 1) / k;;
     }
 };
