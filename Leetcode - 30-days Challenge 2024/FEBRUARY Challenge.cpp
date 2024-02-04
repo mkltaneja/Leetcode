@@ -133,3 +133,38 @@ int maxSumAfterPartitioning(vector<int> &arr, int k)
     }
     return maxSumDP[0];
 }
+
+// DAY 4 (76. Minimum Window Substring)================================================================================
+
+// Time Complexity = O(n + m)
+// Space Complexity = O(2*52)
+
+string minWindow(string s, string t)
+{
+    int sSize = s.size();
+    int tSize = t.size();
+    unordered_map<char, int> sMap, tMap;
+    int left = 0, right = 0, tRem = tSize;
+    int minLen = sSize+1, start = -1;
+
+    for(char c : t)
+        tMap[c]++;
+
+    while(right < sSize)
+    {
+        if(sMap[s[right]]++ < tMap[s[right]])
+            tRem--;
+        while(tRem == 0)
+        {
+            int currLen = right - left + 1;
+            if(currLen < minLen)
+                minLen = currLen, start = left;
+            if(sMap[s[left]]-- == tMap[s[left]])
+                tRem++;
+            left++;
+        }
+        right++;
+    }
+    
+    return start == -1? "" : s.substr(start, minLen);
+}
