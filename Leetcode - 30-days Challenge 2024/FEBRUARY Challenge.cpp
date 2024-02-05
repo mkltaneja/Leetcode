@@ -168,3 +168,21 @@ string minWindow(string s, string t)
     
     return start == -1? "" : s.substr(start, minLen);
 }
+
+// DAY 5 (387. First Unique Character in a String)==========================================================================
+
+int firstUniqChar(string s)
+{
+    int size = s.size();
+    vector<pair<int,int>> conf(26, {0, size});
+    for(int idx = 0; idx < size; idx++)
+    {
+        conf[s[idx]-'a'].first++;
+        conf[s[idx]-'a'].second = idx;
+    }
+    int minIdx = size;
+    for(int idx = 0; idx < 26; idx++)
+        if(conf[idx].first == 1)
+            minIdx = min(minIdx, conf[idx].second);
+    return minIdx == size? -1 : minIdx;
+}
