@@ -1073,3 +1073,25 @@ vector<int> dailyTemperatures(vector<int> &temperatures)
     }
     return nextWarmerDay;
 }
+
+// Week 4 (256. Paint House)===========================================================================
+
+const int MAX = 1e4;
+int minCost(vector<vector<int>>& costs) 
+{
+    int size = costs.size();
+    vector<int> minCost(3, MAX);
+    minCost = costs[0];
+    for(int houseIdx = 1; houseIdx < size; houseIdx++)
+    {
+        int prevHouseRedCost = minCost[0];
+        int prevHouseBlueCost = minCost[1];
+        int prevHouseGreenCost = minCost[2];
+        
+        minCost[0] = min(prevHouseBlueCost, prevHouseGreenCost) + costs[houseIdx][0];
+        minCost[1] = min(prevHouseRedCost, prevHouseGreenCost) + costs[houseIdx][1];
+        minCost[2] = min(prevHouseBlueCost, prevHouseRedCost) + costs[houseIdx][2];
+    }
+
+    return min({minCost[0], minCost[1], minCost[2]});
+}
