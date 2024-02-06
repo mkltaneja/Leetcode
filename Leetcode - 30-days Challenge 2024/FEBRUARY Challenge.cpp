@@ -186,3 +186,53 @@ int firstUniqChar(string s)
             minIdx = min(minIdx, conf[idx].second);
     return minIdx == size? -1 : minIdx;
 }
+
+// DAY 6 (49. Group Anagrams)=====================================================================================
+
+// Time Complexity = O(100*sqrt(100) + n*m)
+// Space Complexity = O(26 + n*m)
+
+const int MOD = 1e9 + 7;
+bool isPrime(int num)
+{
+    for(int x = 2; x*x <= num; x++)
+        if(num % x == 0)
+            return false;
+    return true;
+}
+
+vector<int> generateFirst26Primes()
+{
+    vector<int> primes;
+    int num = 2;
+    while(primes.size() < 26)
+    {
+        if(isPrime(num))
+            primes.push_back(num);
+        num++;
+    }
+    return primes;
+}
+
+int findHash(string inputString, vector<int> &primes)
+{
+    long long hashValue = 1;
+    for(char c : inputString)
+        hashValue = (hashValue % MOD * primes[c-'a'] % MOD) % MOD;
+    return hashValue;
+}
+
+vector<vector<string>> groupAnagrams(vector<string>& strs) 
+{
+    vector<int> primes = generateFirst26Primes();
+    unordered_map<int, vector<string>> hashMap;
+    vector<vector<string>> ans;
+    for(string str : strs)
+    {
+        int hash = findHash(str, primes);
+        hashMap[hash].push_back(str);
+    }
+    for(auto pair : hashMap)
+        ans.emplace_back(pair.second.begin(), pair.second.end());
+    return ans;
+}
