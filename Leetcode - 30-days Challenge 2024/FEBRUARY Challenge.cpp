@@ -236,3 +236,23 @@ vector<vector<string>> groupAnagrams(vector<string>& strs)
         ans.emplace_back(pair.second.begin(), pair.second.end());
     return ans;
 }
+
+// DAY 7 (451. Sort Characters By Frequency)=================================================================================================
+
+// Time Complexity = O(n + 52)
+// Space Complexity = O(256)
+
+string frequencySort(string s)
+{
+    string ans = "";
+    vector<pair<int,char>> freqMap(256, {0, ' '});
+    for(char c : s)
+        freqMap[c-' '].first++, freqMap[c-' '].second = c;
+    sort(freqMap.rbegin(), freqMap.rend());
+
+    for(int idx = 0; idx < 256 && freqMap[idx].first; idx++)
+        while(freqMap[idx].first--)
+            ans += freqMap[idx].second;
+
+    return ans;
+}
