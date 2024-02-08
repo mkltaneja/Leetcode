@@ -256,3 +256,53 @@ string frequencySort(string s)
 
     return ans;
 }
+
+// DAY 8 (279. Perfect Squares)===========================================================================================================
+
+vector<int> findSquaresTilln(int n)
+{
+    vector<int> ans;
+    for(int x = 1; x*x <= n; x++)
+        ans.push_back(x*x);
+    return ans;
+}
+
+
+int findMinAnsBFS(int n, vector<int> &squares)
+{
+    unordered_set<int> vis;
+    queue<int> que;
+    que.push(n);
+    vis.insert(n);
+    int numbersCount = 0;
+    while(!que.empty())
+    {
+        int sz = que.size();
+        while(sz--)
+        {
+            int top = que.front();
+            que.pop();
+            if(top == 0)
+                return numbersCount;
+            for(int num : squares)
+            {
+                if(top-num == 0)
+                    return numbersCount + 1;
+                if(top-num > 0 && !vis.count(top-num))
+                {
+                    que.push(top - num);
+                    vis.insert(top - num);
+                }
+            }
+        }
+        numbersCount++;
+    }
+    return numbersCount;
+}
+
+int numSquares(int n)
+{
+    vector<int> squares = findSquaresTilln(n);
+    int minNumbers = findMinAnsBFS(n, squares);
+    return minNumbers;
+}
