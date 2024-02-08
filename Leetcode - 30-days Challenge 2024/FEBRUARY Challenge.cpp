@@ -259,6 +259,9 @@ string frequencySort(string s)
 
 // DAY 8 (279. Perfect Squares)===========================================================================================================
 
+Time Complexity = O(sqrt(n) + n)
+Space Complexity = O(sqrt(n) + n)
+
 vector<int> findSquaresTilln(int n)
 {
     vector<int> ans;
