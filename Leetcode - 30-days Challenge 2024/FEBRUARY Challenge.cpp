@@ -309,3 +309,42 @@ int numSquares(int n)
     int minNumbers = findMinAnsBFS(n, squares);
     return minNumbers;
 }
+
+// DAY 9 (368. Largest Divisible Subset)=============================================================================================
+
+// Time Complexity = O(n*logn + n^2)
+// Space Complexity = O(2*n)
+
+vector<int> largestDivisibleSubset(vector<int>& nums) 
+{
+    int size = nums.size();
+    vector<int> nextMaxIdx(size, -1), maxCounts(size, 1);
+    vector<int> ans;
+    int maxCount = 0, maxIdx = -1;
+
+    sort(nums.begin(), nums.end());
+
+    for(int idx1 = size-1; idx1 >= 0; idx1--)
+    {
+        for(int idx2 = idx1+1; idx2 < size; idx2++)
+        {
+            if(nums[idx2] % nums[idx1] == 0 && maxCounts[idx2] + 1 > maxCounts[idx1])
+            {
+                maxCounts[idx1] = maxCounts[idx2] + 1;
+                nextMaxIdx[idx1] = idx2;
+            }
+        }
+        if(maxCounts[idx1] > maxCount)
+        {
+            maxCount = maxCounts[idx1];
+            maxIdx = idx1;
+        }
+    }
+    int currIdx = maxIdx;
+    while(currIdx != -1)
+    {
+        ans.push_back(nums[currIdx]);
+        currIdx = nextMaxIdx[currIdx];
+    }
+    return ans;
+}
