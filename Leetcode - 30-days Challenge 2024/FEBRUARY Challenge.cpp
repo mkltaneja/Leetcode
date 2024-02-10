@@ -348,3 +348,28 @@ vector<int> largestDivisibleSubset(vector<int>& nums)
     }
     return ans;
 }
+
+// DAY 10 (647. Palindromic Substrings)===========================================================================
+
+int countSubstrings(string s)
+{
+    int size = s.size();
+    int totalPalStrings = 0;
+    for(int center = 0; center < size; )
+    {
+        int itr = center;
+        while(itr < size && s[itr] == s[center]) itr++;
+
+        int countEqual = itr - center;
+        totalPalStrings += countEqual * (countEqual + 1) / 2;
+
+        int left = center - 1, right = itr, countBoundary = 0;
+        while(left >= 0 && right < size && s[left--] == s[right++])
+            countBoundary++;
+
+        totalPalStrings += countBoundary;
+        center = itr;
+    }
+
+    return totalPalStrings;
+}
