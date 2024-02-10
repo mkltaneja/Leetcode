@@ -351,6 +351,9 @@ vector<int> largestDivisibleSubset(vector<int>& nums)
 
 // DAY 10 (647. Palindromic Substrings)===========================================================================
 
+// Time Complexity = O(n*n)
+// Space Complexity = O(1)
+
 int countSubstrings(string s)
 {
     int size = s.size();
@@ -372,4 +375,23 @@ int countSubstrings(string s)
     }
 
     return totalPalStrings;
+}
+
+// WEEK 2 (276. Paint Fence)=====================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int numWays(int n, int k)
+{
+    if(n <= 1) return n == 0? 0 : k;
+
+    int last2diff = k * (k - 1), last2same = k;
+    for(int fence = 3; fence <= n; fence++)
+    {
+        int temp = last2diff;
+        last2diff = (last2diff + last2same) * (k - 1);
+        last2same = temp;
+    }
+    return last2diff + last2same;
 }
