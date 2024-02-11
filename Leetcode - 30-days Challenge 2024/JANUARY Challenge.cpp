@@ -822,6 +822,35 @@ int longestCommonSubsequence(string text1, string text2)
     return maxLenDP[0];
 }
 
+// WEEK 4 (1167. Minimum Cost to Connect Sticks)============================================================
+
+// Time Complexity = O(n + n * logn)
+// Time Complexity = O(n)
+
+#define ll long long
+int connectSticks(vector<int> &sticks)
+{
+    int size = sticks.size();
+
+    priority_queue<ll, vector<ll>, greater<ll>> minSticks;
+    ll totalCost = 0;
+    for(int stick : sticks)
+        minSticks.push(stick);
+    while(minSticks.size() > 1)
+    {
+        ll minStick1 = minSticks.top();
+        minSticks.pop();
+        ll minStick2 = minSticks.top();
+        minSticks.pop();
+
+        ll newStick = minStick1 + minStick2;
+        totalCost += newStick;
+        minSticks.push(newStick);
+    }
+    
+    return totalCost;
+}
+
 // DAY 26 (576. Out of Boundary Paths)=====================================================================
 
 // Time Complexity = O(n * m * maxMoves)
@@ -1074,7 +1103,7 @@ vector<int> dailyTemperatures(vector<int> &temperatures)
     return nextWarmerDay;
 }
 
-// Week 4 (256. Paint House)===========================================================================
+// Week 5 (256. Paint House)===========================================================================
 
 const int MAX = 1e4;
 int minCost(vector<vector<int>>& costs) 
