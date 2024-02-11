@@ -1,6 +1,8 @@
 
+// APPROACH 1 (Brute Force)
+
 // Time Complexity = O(n + n*logn + n * (26*log26 + m*26 + 26))
-// Space Complexity = O(26 + n)
+// Space Complexity = O(n + 26)
 
 class Solution {
 public:
@@ -54,5 +56,46 @@ public:
         }
         
         return ans;
+    }
+};
+
+
+// APPROACH 2 (Greedily)
+
+// Time Complexity = O(2*n + n*logn + 26)
+// Space Complexity = O(n + 26)
+
+class Solution {
+public:
+    int maxPalindromesAfterOperations(vector<string>& words) 
+    {
+        int n = words.size();
+        int totalPals = 0;
+        vector<int> freq(26);
+        vector<int> lens;
+        int canSwaps = 0;
+        for(string word : words)
+        {
+            for(char c : word)
+                freq[c-'a']++;
+            lens.push_back(word.size());
+        }
+        
+        for(int i = 0; i < 26; i++)
+            canSwaps += freq[i] / 2;
+        
+        sort(lens.begin(), lens.end());
+                
+        for(int len : lens)
+        {
+            int needSwaps = len / 2;
+            if(canSwaps - needSwaps >= 0)
+            {
+                canSwaps -= needSwaps;
+                totalPals++;
+            }
+        }
+        
+        return totalPals;
     }
 };
