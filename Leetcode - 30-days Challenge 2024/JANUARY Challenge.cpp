@@ -824,8 +824,10 @@ int longestCommonSubsequence(string text1, string text2)
 
 // WEEK 4 (1167. Minimum Cost to Connect Sticks)============================================================
 
+// APPROACH 1 (Using Priority Queue)
+
 // Time Complexity = O(n + n * logn)
-// Time Complexity = O(n)
+// Space Complexity = O(n)
 
 #define ll long long
 int connectSticks(vector<int> &sticks)
@@ -848,6 +850,60 @@ int connectSticks(vector<int> &sticks)
         minSticks.push(newStick);
     }
     
+    return totalCost;
+}
+
+// APPROACH 2 (Using 2 Linked Lists)
+
+// Time Complexity = O(2*n)
+// Space Complexity = O(2*n)
+
+int pickTop(deque<int> &dq1, deque<int> &dq2)
+{
+    if(dq1.empty() && dq2.empty())
+        return -1;
+    if(dq1.empty())
+        swap(dq1, dq2);
+
+    int top1 = dq1.front();
+    int topAns = top1;
+    if(dq2.empty())
+        dq1.pop_front();
+    else
+    {
+        int top2 = dq2.front();
+        if(top1 < top2)
+            dq1.pop_front();
+        else 
+        {
+            topAns = top2;
+            dq2.pop_front();
+        }
+    }
+    return topAns;
+}
+
+int connectSticks(vector<int>& sticks) 
+{
+    int size = sticks.size();
+    deque<int> dq1, dq2;
+    int totalCost = 0;
+
+    sort(sticks.begin(), sticks.end());
+    for(int stick : sticks)
+        dq1.push_back(stick);
+    
+    while(!dq1.empty() || !dq2.empty())
+    {
+        int top1 = pickTop(dq1, dq2);
+        int top2 = pickTop(dq1, dq2);
+        if(top1 == -1 || top2 == -1) break;
+
+        int newStick = top1 + top2;
+        totalCost += newStick;
+        dq2.push_back(newStick);
+    }
+
     return totalCost;
 }
 
