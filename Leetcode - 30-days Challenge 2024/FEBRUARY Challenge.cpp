@@ -395,3 +395,41 @@ int numWays(int n, int k)
     }
     return last2diff + last2same;
 }
+
+// DAY 11 (1463. Cherry Pickup II)==============================================================================
+
+// Time Complexity = O(n * m * m * 9)
+// Space Complexity = O(n * m * m)
+
+int cherryPickupTabulation(vector<vector<int>> &cherries)
+{
+    int rows = cherries.size(), cols = cherries[0].size();
+    vector<vector<vector<int>>> stateCache(rows, vector<vector<int>>(cols, vector<int>(cols, 0)));
+    for(int row = rows-1; row >= 0; row--)
+    {
+        for(int col1 = 0; col1 < cols; col1++)
+        {
+            for(int col2 = col1; col2 < cols; col2++)
+            {
+                int maxCherries = 0;
+                for(int d1 = -1; d1 <= 1; d1++)
+                {
+                    for(int d2 = -1; d2 <= 1; d2++)
+                    {
+                        if(row + 1 == rows || col1 + d1 == -1 || col1 + d1 == cols || col2 + d2 == -1 || col2 + d2 == cols)
+                            continue;
+                        maxCherries = max(maxCherries, stateCache[row+1][col1 + d1][col2 + d2]);
+                    }
+                }
+                stateCache[row][col1][col2] = maxCherries + (col1 == col2? cherries[row][col1] : cherries[row][col1] + cherries[row][col2]);
+            }
+        }
+    }
+
+    return stateCache[0][0][cols-1];
+}
+
+int cherryPickup(vector<vector<int>> &grid)
+{
+    return cherryPickupTabulation(grid);
+}
