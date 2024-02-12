@@ -433,3 +433,21 @@ int cherryPickup(vector<vector<int>> &grid)
 {
     return cherryPickupTabulation(grid);
 }
+
+// DAY 12 (169. Majority Element)==================================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int majorityElement(vector<int>& nums) 
+{
+    int majNum = nums[0], majNumFreq = 1;
+    for(int idx = 1; idx < nums.size(); idx++)
+    {
+        if(nums[idx] == majNum)
+            majNumFreq++;
+        else if(--majNumFreq == 0)
+            majNum = nums[idx], majNumFreq = 1;
+    }
+    return majNum;
+}
