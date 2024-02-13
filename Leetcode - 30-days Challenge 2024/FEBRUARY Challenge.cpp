@@ -451,3 +451,21 @@ int majorityElement(vector<int>& nums)
     }
     return majNum;
 }
+
+// DAY 13 (2108. Find First Palindromic String in the Array)=================================================================================
+
+bool isPalindrome(string &word)
+{
+    int left = 0, right = word.size()-1;
+    while(left < right && word[left] == word[right])
+        left++, right--;
+    return left >= right;
+}
+
+string firstPalindrome(vector<string> &words)
+{
+    for(string word : words)
+        if(isPalindrome(word))
+            return word;
+    return "";
+}
