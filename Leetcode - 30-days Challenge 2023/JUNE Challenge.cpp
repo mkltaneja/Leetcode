@@ -438,6 +438,58 @@ int maxLevelSum(TreeNode* root)
     return minLvl;
 }
 
+// DAY 16 (1569. Number of Ways to Reorder Array to Get Same BST)===========================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+#define ll long long
+const int MOD = 1e9 + 7;
+
+void fill_nCr_table(int N, vector<vector<int>> &nCr)
+{
+    for(int n = 0; n <= N; n++)
+    {
+        nCr[n].assign(n+1, 1);
+        for(int r = 1; r < n; r++)
+            nCr[n][r] = (nCr[n-1][r] % MOD + nCr[n-1][r-1] % MOD) % MOD;
+    }
+}
+
+int countNumOfWays_DFS(vector<int> &nodes, vector<vector<int>> &nCr)
+{
+    if(nodes.empty()) return 1;
+
+    int root = nodes[0];
+    int leftCount = 0, rightCount = 0;
+    vector<int> leftTree, rightTree;
+    for(int node : nodes)
+    {
+        if(node < root)
+            leftTree.push_back(node);
+        else if(node > root)
+            rightTree.push_back(node);
+    }
+    leftCount = leftTree.size();
+    rightCount = rightTree.size();
+    
+    ll leftWays = countNumOfWays_DFS(leftTree, nCr);
+    ll rightWays = countNumOfWays_DFS(rightTree, nCr);
+    ll subTreeWays = (leftWays % MOD * rightWays % MOD) % MOD;
+
+    ll currWays = nCr[nodes.size()-1][rightCount];
+    currWays = (currWays % MOD * subTreeWays % MOD) % MOD;
+    return currWays % MOD;
+}
+
+int numOfWays(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<vector<int>> nCr(n+1);
+    fill_nCr_table(n, nCr);
+    return countNumOfWays_DFS(nums, nCr) - 1;
+}
+
 // DAY 17 (1187. Make Array Strictly Increasing)============================================================================
 
 int dfs(int i, int previ, int prev, int n, int m, vector<int> &a, vector<int> &b, vector<vector<int>> &dp)
