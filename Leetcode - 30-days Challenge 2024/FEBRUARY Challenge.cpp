@@ -469,3 +469,29 @@ string firstPalindrome(vector<string> &words)
             return word;
     return "";
 }
+
+// DAY 14 (2149. Rearrange Array Elements by Sign)==========================================================================================]
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<int> rearrangeArray(vector<int> &nums)
+{
+    int size = nums.size();
+    vector<int> modifiedArray(size);
+    for(int idx = 0, posIdx = 0, negIdx = 1; idx < size; idx++)
+    {
+        int num = nums[idx];
+        if(num > 0)
+        {
+            modifiedArray[posIdx] = num;
+            posIdx += 2;
+        }
+        else
+        {
+            modifiedArray[negIdx] = num;
+            negIdx += 2;
+        }
+    }
+    return modifiedArray;
+}
