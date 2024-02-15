@@ -470,7 +470,7 @@ string firstPalindrome(vector<string> &words)
     return "";
 }
 
-// DAY 14 (2149. Rearrange Array Elements by Sign)==========================================================================================]
+// DAY 14 (2149. Rearrange Array Elements by Sign)==========================================================================================
 
 // Time Complexity = O(n)
 // Space Complexity = O(n)
@@ -494,4 +494,25 @@ vector<int> rearrangeArray(vector<int> &nums)
         }
     }
     return modifiedArray;
+}
+
+// DAY 15 (2971. Find Polygon With the Largest Perimeter)=================================================================================
+
+// Time Complexity = O(n*logn + 2*n)
+// Space Complexity = O(n)
+
+#define ll long long
+long long largestPerimeter(vector<int> &nums)
+{
+    int size = nums.size();
+    vector<ll> prefSum(size);
+
+    sort(nums.begin(), nums.end());
+    for(int idx = 0; idx < size; idx++)
+        prefSum[idx] += nums[idx] + (idx? prefSum[idx-1] : 0);
+    
+    for(int idx = size-1; idx >= 2; idx--)
+        if(prefSum[idx-1] > nums[idx])
+            return prefSum[idx];
+    return -1;
 }
