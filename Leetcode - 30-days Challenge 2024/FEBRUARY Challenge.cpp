@@ -516,3 +516,33 @@ long long largestPerimeter(vector<int> &nums)
             return prefSum[idx];
     return -1;
 }
+
+// DAY 16 (1481. Least Number of Unique Integers after K Removals)===========================================================================
+
+// Time Complexity = O(2*n*logn + 2*n)
+// Space Complexity = O(n)
+
+int findLeastNumOfUniqueInts(vector<int>& arr, int k) 
+{
+    int size = arr.size();
+    vector<int> freqs;
+
+    sort(arr.begin(), arr.end());
+    for(int idx = 0; idx < size; )
+    {
+        int idx1 = idx + 1;
+        while(idx1 < size && arr[idx1] == arr[idx])
+            idx1++;
+        freqs.push_back(idx1 - idx);
+        idx = idx1;
+    }
+    sort(freqs.rbegin(), freqs.rend());
+
+    while(!freqs.empty() && k && freqs.back() <= k)
+    {
+        k -= freqs.back();
+        freqs.pop_back();
+    }
+
+    return freqs.size();
+}
