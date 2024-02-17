@@ -546,3 +546,36 @@ int findLeastNumOfUniqueInts(vector<int>& arr, int k)
 
     return freqs.size();
 }
+
+// DAY 17 (1642. Furthest Building You Can Reach)=================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int furthestBuilding(vector<int>& heights, int bricks, int ladders)
+{
+    int size = heights.size();
+    priority_queue<int> maxHeightBricks;
+    for(int building = 0; building < size-1; building++)
+    {
+        int heightDiff = heights[building+1] - heights[building];
+        if(heightDiff <= 0)
+            continue;
+        if(bricks >= heightDiff)
+        {
+            bricks -= heightDiff;
+            maxHeightBricks.push(heightDiff);
+            continue;
+        }
+        if(ladders == 0) return building;
+        if(!maxHeightBricks.empty() && maxHeightBricks.top() > heightDiff)
+        {
+            bricks += maxHeightBricks.top() - heightDiff;
+            maxHeightBricks.pop();
+            maxHeightBricks.push(heightDiff);
+        }
+        ladders--;
+    }
+    
+    return size-1;
+}
