@@ -579,3 +579,54 @@ int furthestBuilding(vector<int>& heights, int bricks, int ladders)
     
     return size-1;
 }
+
+// DAY 18 (2402. Meeting Rooms III)=================================================================================
+
+// Time Complexity = O(n + m * (2*logn))
+// Space Complexity = O(3*n)
+
+#define ll long long
+int mostBooked(int n, vector<vector<int>> &meetings)
+{
+    int size = meetings.size();
+    int maxUsedCount = 0, minRoomNum = n;
+    priority_queue<pair<ll,int>, vector<pair<ll,int>>, greater<pair<ll,int>>> endTimePq;
+    priority_queue<int, vector<int>, greater<int>> roomPq;
+    vector<int> roomUsedCount(n, 0);
+
+    sort(meetings.begin(), meetings.end());
+    for(int room = 0; room < n; room++)
+        roomPq.push(room);
+    
+    for(vector<int> &meeting : meetings)
+    {
+        ll startTime = meeting[0];
+        ll endTime = meeting[1];
+        
+        while(!endTimePq.empty() && endTimePq.top().first <= startTime)
+        {
+            roomPq.push(endTimePq.top().second);
+            endTimePq.pop();
+        }
+        if(roomPq.empty())
+        {
+            ll waitTime = endTimePq.top().first - startTime;
+            endTime = endTime + waitTime;
+            roomPq.push(endTimePq.top().second);
+            endTimePq.pop();
+        }
+        int currRoom = roomPq.top();
+        endTimePq.push({endTime, currRoom});
+        roomPq.pop();
+
+        if(++roomUsedCount[currRoom] > maxUsedCount)
+        {
+            maxUsedCount = roomUsedCount[currRoom];
+            minRoomNum = currRoom;
+        }
+        else if(roomUsedCount[currRoom] == maxUsedCount)
+            minRoomNum = min(minRoomNum, currRoom);
+    }
+
+    return minRoomNum;
+}
