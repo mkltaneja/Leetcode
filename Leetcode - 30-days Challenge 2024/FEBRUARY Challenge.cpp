@@ -630,3 +630,14 @@ int mostBooked(int n, vector<vector<int>> &meetings)
 
     return minRoomNum;
 }
+
+// DAY 19 (231. Power of Two)======================================================================
+
+// Time Complexity = O(1)
+// Space Complexity = O(1)
+
+
+bool isPowerOfTwo(int n) 
+{
+    return n > 0 && (n & (n-1)) == 0;
+}
