@@ -641,3 +641,20 @@ bool isPowerOfTwo(int n)
 {
     return n > 0 && (n & (n-1)) == 0;
 }
+
+// DAY 20 (268. Missing Number)=============================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int missingNumber(vector<int> &nums)
+{
+    int size = nums.size();
+    int totalSum = 0;
+    int sumOfFirstN = size * (size + 1) / 2;
+    for(int num : nums)
+        totalSum += num;
+    int missingNumber = sumOfFirstN - totalSum;
+
+    return missingNumber;
+}
