@@ -661,6 +661,8 @@ int missingNumber(vector<int> &nums)
 
 // DAY 21 (201. Bitwise AND of Numbers Range)===============================================================================
 
+// METHOD 1 (Traversing on every bit from MSB to LSB)
+
 // Time Complexity = O(32)
 // Space Complexity = O(1)
 
@@ -678,5 +680,24 @@ int rangeBitwiseAnd(int left, int right)
             andAns |= mask;
         else shouldCheckFurther = false;
     }
+    return andAns;
+}
+
+// METHOD 2 (Removing the unequal part from left and right)
+
+// Time Complexity = O(log(left))
+// Space Complexity = O(1)
+
+int rangeBitwiseAnd(int left, int right)
+{
+    int andAns = 0;
+    int shifts = 0;
+    while(left != right)
+    {
+        left >>= 1;
+        right >>= 1;
+        shifts++;
+    }
+    andAns = left << shifts;
     return andAns;
 }
