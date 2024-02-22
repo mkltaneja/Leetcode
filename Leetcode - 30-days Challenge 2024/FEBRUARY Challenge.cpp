@@ -701,3 +701,24 @@ int rangeBitwiseAnd(int left, int right)
     andAns = left << shifts;
     return andAns;
 }
+
+// DAY 22 (997. Find the Town Judge)==================================================================================
+
+// Time Complexity = O(m + n)
+// Space Complexity = O(n)
+
+int findJudge(int n, vector<vector<int>> &trust)
+{
+    vector<int> trustCount(n+1);
+    for(vector<int> &pair : trust)
+    {
+        trustCount[pair[0]]--;
+        trustCount[pair[1]]++;
+    }
+    
+    for(int person = 1; person <= n; person++)
+        if(trustCount[person] == n-1)
+            return person;
+    
+    return -1;
+}
