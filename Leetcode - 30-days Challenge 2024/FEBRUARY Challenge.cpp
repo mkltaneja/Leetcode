@@ -722,3 +722,39 @@ int findJudge(int n, vector<vector<int>> &trust)
     
     return -1;
 }
+
+// DAY 23 (787. Cheapest Flights Within K Stops)=================================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dest, int k)
+{
+    vector<vector<vector<int>>> graph(n);
+    queue<vector<int>> priceQue;
+    vector<int> minPrice(n, INT_MAX);
+    minPrice[src] = 0;
+    for(vector<int> &flight : flights)
+        graph[flight[0]].push_back({flight[1], flight[2]});
+    priceQue.push({0, 0, src}); // {price, level, city}
+
+    while(!priceQue.empty())
+    {
+        int priceSf = priceQue.front()[0];
+        int stops = priceQue.front()[1];
+        int srcCity = priceQue.front()[2];
+        priceQue.pop();
+        
+        for(vector<int> destCity : graph[srcCity])
+        {
+            int newPrice = priceSf + destCity[1];
+            int newStops = stops + (destCity[0] != dest);
+            if(minPrice[destCity[0]] > newPrice && newStops <= k)
+            {
+                minPrice[destCity[0]] = newPrice;
+                priceQue.push({newPrice, newStops, destCity[0]});
+            }
+        }
+    }
+    return minPrice[dest] == INT_MAX? -1 : minPrice[dest];
+}
