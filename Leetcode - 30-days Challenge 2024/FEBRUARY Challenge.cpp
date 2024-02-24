@@ -758,3 +758,104 @@ int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dest, in
     }
     return minPrice[dest] == INT_MAX? -1 : minPrice[dest];
 }
+
+// DAY 24 (2092. Find All People With Secret)======================================================================
+
+// Time Complexity = O(n + m*logm + m)
+// Space Complexity = O(2*n)
+
+class DSU
+{
+    int size;
+    vector<int> parent;
+    public:
+    DSU(int size)
+    {
+        this->size = size;
+        this->parent.resize(size);
+        for(int node = 0; node < size; node++)
+            this->parent[node] = node;
+    }
+
+    void setParent(int node, int parent)
+    {
+        this->parent[node] = parent;
+    }
+
+    int findParent(int node)
+    {
+        return this->parent[node] = (this->parent[node] == node)? node : findParent(this->parent[node]);
+    }
+
+    void merge(int node1, int node2, vector<int> &knowsSecret)
+    {
+        int parent1 = findParent(node1);
+        int parent2 = findParent(node2);
+        if(parent1 == parent2)
+            return;
+
+        int secretValue = knowsSecret[parent1] | knowsSecret[parent2];
+        knowsSecret[parent1] = secretValue;
+        knowsSecret[parent2] = secretValue;
+        
+        parent[parent1] = parent2;
+    }
+};
+
+static bool sortByTime(vector<int> &meeting1, vector<int> &meeting2)
+{
+    return meeting1[2] < meeting2[2];
+}
+
+vector<int> findAllPeople(int n, vector<vector<int>> &meetings, int firstPerson)
+{
+    int size = meetings.size();
+    vector<int> knowsSecret(n);
+    knowsSecret[0] = 1;
+    knowsSecret[firstPerson] = 1;
+    vector<int> finalPeople;
+    DSU dsu(n);
+    sort(meetings.begin(), meetings.end(), sortByTime);
+
+    for(int idx = 0; idx < size; )
+    {
+        int currTime = meetings[idx][2];
+        int itr = idx;
+        while(itr < size && meetings[itr][2] == currTime)
+        {
+            int person1 = meetings[itr][0];
+            int person2 = meetings[itr][1];
+
+            dsu.merge(person1, person2, knowsSecret);
+            itr++;
+        }
+        itr = idx;
+        while(itr < size && meetings[itr][2] == currTime)
+        {
+            int person1 = meetings[itr][0];
+            int person2 = meetings[itr][1];
+            int parent = dsu.findParent(person1);
+            
+            knowsSecret[person1] |= knowsSecret[parent];
+            knowsSecret[person2] |= knowsSecret[parent];
+            itr++;
+        }
+        itr = idx;
+        while(itr < size && meetings[itr][2] == currTime)
+        {
+            int person1 = meetings[itr][0];
+            int person2 = meetings[itr][1];
+
+            dsu.setParent(person1, person1);
+            dsu.setParent(person2, person2);
+            itr++;
+        }
+        idx = itr;
+    }
+
+    for(int person = 0; person < n; person++)
+        if(knowsSecret[person])
+            finalPeople.push_back(person);
+
+    return finalPeople;
+}
