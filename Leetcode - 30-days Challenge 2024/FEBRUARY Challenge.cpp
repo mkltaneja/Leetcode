@@ -859,3 +859,84 @@ vector<int> findAllPeople(int n, vector<vector<int>> &meetings, int firstPerson)
 
     return finalPeople;
 }
+
+// DAY 25 (2709. Greatest Common Divisor Traversal)=============================================================================
+
+// Time Complexity = O(n*sqrt(MAX))
+// Space Complexity = O(MAX)
+
+class DSU
+{
+    int size;
+    vector<int> parent;
+    vector<int> parSize;
+    public:
+    DSU(int size)
+    {
+        this->size = size;
+        this->parent.resize(size);
+        this->parSize.assign(size, 1);
+        for(int node = 0; node < size; node++)
+            parent[node] = node;
+    }
+    
+    int findParent(int node)
+    {
+        return parent[node] = parent[node] == node? node : findParent(parent[node]);
+    }
+
+    void merge(int node1, int node2)
+    {
+        int parent1 = findParent(node1);
+        int parent2 = findParent(node2);
+        if(parent1 == parent2) return;
+
+        if(parSize[parent1] > parSize[parent2])
+        {
+            parent[parent2] = parent1;
+            parSize[parent1] += parSize[parent2];
+        }
+        else
+        {
+            parent[parent1] = parent2;
+            parSize[parent2] += parSize[parent1];
+        }
+    }
+};
+
+void fillPrimeMap(DSU &dsu, vector<int> &nums)
+{
+    for(int num : nums)
+    {
+        int tmp = num;
+        for(int x = 2; x*x <= tmp; x++)
+        {
+            if(tmp % x) continue;
+            int y = tmp / x;
+
+            dsu.merge(x, num);
+            while(tmp % x == 0)
+                tmp /= x;
+        }
+        if(tmp > 1)
+            dsu.merge(tmp, num);
+    }
+}
+
+bool canTraverseAllPairs(vector<int> &nums)
+{
+    int size = nums.size();
+    int maxNum = *max_element(nums.begin(), nums.end());
+    DSU dsu(maxNum+1);
+    fillPrimeMap(dsu, nums);
+    
+    int globalParent = -1;
+    for(int num : nums)
+    {
+        int parent = dsu.findParent(num);
+        if(globalParent != -1 && parent != globalParent)
+            return false;
+        globalParent = parent;
+    }
+    return globalParent != 1 || size == 1;
+}
