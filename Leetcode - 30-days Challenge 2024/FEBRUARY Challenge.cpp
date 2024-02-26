@@ -940,3 +940,18 @@ bool canTraverseAllPairs(vector<int> &nums)
     }
     return globalParent != 1 || size == 1;
 }
+
+// DAY 26 (100. Same Tree)======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool isSameTree(TreeNode* p, TreeNode* q)
+{
+    if(!p && !q)
+        return true;
+    if((!p ^ !q) || (p->val != q->val))
+        return false;
+    
+    return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
+}
