@@ -955,3 +955,28 @@ bool isSameTree(TreeNode* p, TreeNode* q)
     
     return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
 }
+
+// DAY 27 (543. Diameter of Binary Tree)==============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(h)
+
+int maxDiameter = 0;
+
+int findDiameter(TreeNode* node)
+{
+    if(!node) return -1;
+
+    int leftLenMax = findDiameter(node->left);
+    int rightLenMax = findDiameter(node->right);
+
+    maxDiameter = max(maxDiameter, leftLenMax + rightLenMax + 2);
+
+    return max(leftLenMax, rightLenMax) + 1;
+}
+
+int diameterOfBinaryTree(TreeNode* root)
+{
+    findDiameter(root);
+    return maxDiameter;
+}
