@@ -980,3 +980,29 @@ int diameterOfBinaryTree(TreeNode* root)
     findDiameter(root);
     return maxDiameter;
 }
+
+// DAY 28 (513. Find Bottom Left Tree Value)==================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(h)
+
+int bottomLeftValue = 0, maxHlevel = INT_MIN;
+void findBottomLeftValue_DFS(TreeNode* node, int hLevel)
+{
+    if(!node) return;
+
+    if(hLevel > maxHlevel)
+    {
+        maxHlevel = hLevel;
+        bottomLeftValue = node->val;
+    }
+
+    findBottomLeftValue_DFS(node->left, hLevel + 1);
+    findBottomLeftValue_DFS(node->right, hLevel + 1);
+}
+
+int findBottomLeftValue(TreeNode* root)
+{
+    findBottomLeftValue_DFS(root, 0);
+    return bottomLeftValue;
+}
