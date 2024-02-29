@@ -1006,3 +1006,47 @@ int findBottomLeftValue(TreeNode* root)
     findBottomLeftValue_DFS(root, 0);
     return bottomLeftValue;
 }
+
+// DAY 29 (1609. Even Odd Tree)================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool isEvenOddTree(TreeNode* root)
+{
+    if(!root) return true;
+
+    queue<TreeNode*> levelQue;
+    levelQue.push(root);
+    int levelIndex = 0;
+    while(!levelQue.empty())
+    {
+        int queSize = levelQue.size();
+        int prevValue = (levelIndex & 1)? INT_MAX : INT_MIN;
+        while(queSize--)
+        {
+            TreeNode* node = levelQue.front();
+            levelQue.pop();
+
+            if(levelIndex & 1)
+            {
+                if((node->val & 1) || (node->val >= prevValue))
+                    return false;
+                prevValue = node->val;
+            }
+            else
+            {
+                if((node->val & 1 ^ 1) || (node->val <= prevValue))
+                    return false;
+                prevValue = node->val;
+            }
+
+            if(node->left)
+                levelQue.push(node->left);
+            if(node->right)
+                levelQue.push(node->right);
+        }
+        levelIndex++;
+    }
+    return true;
+}
