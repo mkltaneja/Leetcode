@@ -41,3 +41,46 @@ public:
         return ans;
     }
 };
+
+// APPROACH 2 (Replacing Mpas with Constant Variables)
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n)
+
+class Solution {
+public:
+    
+    void dfs(int u, int p, int d, int ss, vector<vector<vector<int>>> &gp, int &currDivs)
+    {
+        currDivs += d == 0;
+        for(vector<int> &c : gp[u])
+            if(c[0] != p)
+                dfs(c[0], u, (d + c[1]) % ss, ss, gp, currDivs);
+    }
+    
+    vector<int> countPairsOfConnectableServers(vector<vector<int>>& edges, int signalSpeed) 
+    {
+        int n = edges.size() + 1;
+        vector<vector<vector<int>>> gp(n);
+        vector<int> ans(n);
+        for(auto e : edges)
+        {
+            gp[e[0]].push_back({e[1], e[2]});
+            gp[e[1]].push_back({e[0], e[2]});
+        }
+        
+        for(int p = 0; p < n; p++)
+        {
+            int totDivs = 0;
+            for(vector<int> &c : gp[p])
+            {
+                int currDivs = 0;
+                dfs(c[0], p, c[1] % signalSpeed, signalSpeed, gp, currDivs);
+                ans[p] += currDivs * totDivs;
+                totDivs += currDivs;
+            }
+        }
+        
+        return ans;
+    }
+};
