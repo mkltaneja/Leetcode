@@ -20,3 +20,24 @@ string maximumOddBinaryNumber(string s)
         swap(s[lastOnePos], s[size-1]);
     return s;
 }
+
+// DAY 2 (977. Squares of a Sorted Array)=============================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<int> sortedSquares(vector<int> &nums)
+{
+    int size = nums.size();
+    int positiveIdx = size-1, negativeIdx = 0, currentIdx = size-1;
+    vector<int> squaredNums(size, 0);
+    
+    while(currentIdx >= 0)
+    {
+        if(abs(nums[positiveIdx]) > abs(nums[negativeIdx]))
+            squaredNums[currentIdx--] = nums[positiveIdx] * nums[positiveIdx--];
+       else squaredNums[currentIdx--] = nums[negativeIdx] * nums[negativeIdx++];
+    }
+
+    return squaredNums;
+}
