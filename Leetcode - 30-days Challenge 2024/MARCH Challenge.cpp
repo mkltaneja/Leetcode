@@ -41,3 +41,55 @@ vector<int> sortedSquares(vector<int> &nums)
 
     return squaredNums;
 }
+
+// DAY 3 (19. Remove Nth Node From End of List)=======================================================================================
+
+// Time Complexity = O(2*n)
+// Space Complexity = O(1)
+
+int getSize(ListNode* head)
+{
+    int size = 0;
+    ListNode* itr = head;
+    while(itr)
+    {
+        itr = itr->next;
+        size++;
+    }
+    return size;
+}
+
+ListNode* getPreviousPointer(ListNode* head, int targetPos)
+{
+    ListNode* itr = head, *prev = nullptr;
+    while(targetPos--)
+    {
+        prev = itr;
+        itr = itr->next;
+    }
+    return prev;
+}
+
+ListNode* removeNthFromEnd(ListNode* head, int n)
+{
+    int listSize = getSize(head);
+    int targetPos = listSize - n;
+
+    ListNode* prevNode = getPreviousPointer(head, targetPos);
+
+    ListNode* nodeToRemove = nullptr;
+    if(prevNode == nullptr)
+    {
+        nodeToRemove = head;
+        head = head->next;
+    }
+    else 
+    {
+        nodeToRemove = prevNode->next;
+        prevNode->next = nodeToRemove->next;
+    }
+    
+    delete nodeToRemove;
+
+    return head;
+}
