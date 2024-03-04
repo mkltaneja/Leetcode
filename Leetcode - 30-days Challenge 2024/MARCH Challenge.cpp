@@ -93,3 +93,32 @@ ListNode* removeNthFromEnd(ListNode* head, int n)
 
     return head;
 }
+
+// DAY 4 (948. Bag of Tokens)===========================================================================================
+
+// Time Complexity = O(n*logn + n)
+// Space Complexity = O(1)
+
+int bagOfTokensScore(vector<int> &tokens, int power)
+{
+    int size = tokens.size();
+    sort(tokens.begin(), tokens.end());
+    int start = 0, end = size-1;
+    int score = 0, maxScore = 0;
+    while(start <= end)
+    {
+        if(power >= tokens[start])
+        {
+            power -= tokens[start++];
+            score++;
+        }
+        else if(score)
+        {
+            power += tokens[end--];
+            score--;
+        }
+        else break;
+        maxScore = max(maxScore, score);
+    }
+    return maxScore;
+}
