@@ -122,3 +122,32 @@ int bagOfTokensScore(vector<int> &tokens, int power)
     }
     return maxScore;
 }
+
+// DAY 5 (1750. Minimum Length of String After Deleting Similar Ends)===============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int minimumLength(string s)
+{
+    int size = s.size();
+    int idx1 = 0, idx2 = size-1;
+    int minLen = size;
+    while(true)
+    {
+        if(idx1 >= idx2 || s[idx1] != s[idx2])
+        {
+            minLen = idx2 - idx1 + 1;
+            break;
+        }
+
+        int itr1 = idx1, itr2 = idx2;
+        while(itr1 <= itr2 && s[itr1] == s[idx1])
+            itr1++;
+        while(itr2 >= itr1 && s[itr2] == s[idx2])
+            itr2--;
+
+        idx1 = itr1, idx2 = itr2;
+    }
+    return minLen;
+}
