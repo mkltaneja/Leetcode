@@ -170,3 +170,19 @@ bool hasCycle(ListNode* head)
 
     return false;
 }
+
+// DAY 7 (876. Middle of the Linked List)===========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+ListNode* middleNode(ListNode* head)
+{
+    ListNode* fast = head, *slow = head;
+    while(fast && fast->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+    return slow;
+}
