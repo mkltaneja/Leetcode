@@ -186,3 +186,27 @@ ListNode* middleNode(ListNode* head)
     }
     return slow;
 }
+
+// DAY 8 (3005. Count Elements With Maximum Frequency)=============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int maxFrequencyElements(vector<int> &nums)
+{
+	int maxFreq = 0, totalSum = 0;
+	unordered_map<int, int> numFreq;
+
+	for(int num : nums)
+	{
+		int freq = ++numFreq[num];
+		if(freq > maxFreq)
+		{
+			maxFreq = freq;
+			totalSum = freq;
+		}
+		else if(freq == maxFreq)
+			totalSum += freq;
+	}
+	return totalSum;
+}
