@@ -210,3 +210,20 @@ int maxFrequencyElements(vector<int> &nums)
 	}
 	return totalSum;
 }
+
+// DAY 9 (2540. Minimum Common Value)======================================================================================
+
+int getCommon(vector<int> &nums1, vector<int> &nums2)
+{
+	int itr1 = 0, itr2 = 0;
+	int size1 = nums1.size(), size2 = nums2.size();
+	while(itr1 != size1 && itr2 != size2)
+	{
+		if(nums1[itr1] == nums2[itr2])
+			return nums1[itr1];
+		if(nums1[itr1] < nums2[itr2])
+			itr1++;
+		else itr2++;
+	}
+	return -1;
+}
