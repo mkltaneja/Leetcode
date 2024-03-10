@@ -213,6 +213,9 @@ int maxFrequencyElements(vector<int> &nums)
 
 // DAY 9 (2540. Minimum Common Value)======================================================================================
 
+// Time Complexity = O(n + m)
+// Space Complexity = O(1)
+
 int getCommon(vector<int> &nums1, vector<int> &nums2)
 {
 	int itr1 = 0, itr2 = 0;
@@ -226,4 +229,34 @@ int getCommon(vector<int> &nums1, vector<int> &nums2)
 		else itr2++;
 	}
 	return -1;
+}
+
+// DAY 10 (349. Intersection of Two Arrays)=============================================================================
+
+// Time Complexity = O(n + m)
+// Space Complexity = O(min(n, m))
+
+vector<int> intersection(vector<int> &nums1, vector<int> &nums2)
+{
+	vector<int> common;
+	unordered_set<int> numsSet;
+	int size1 = nums1.size(), size2 = nums2.size();
+	if(size2 < size1)
+	{
+		swap(nums1, nums2);
+		swap(size1, size2);
+	}
+
+	for(int num : nums1)
+		numsSet.insert(num);
+	for(int num : nums2)
+	{
+		if(numsSet.count(num))
+		{
+			common.push_back(num);
+			numsSet.erase(num);
+		}
+	}
+
+	return common;
 }
