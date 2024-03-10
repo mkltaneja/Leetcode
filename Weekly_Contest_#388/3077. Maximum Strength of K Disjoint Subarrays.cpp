@@ -44,3 +44,35 @@ public:
         return dfs(0, 1, k, nums, dp);
     }
 };
+
+
+// APPROACH 2 (Choosing Greedily for every value of k (1 to k) among the current subarray maximum and the previous subarray maximum)
+
+// Time Complexity = O(n*k)
+// Space Complexity = O(n)
+
+class Solution {
+public:
+    
+    #define ll long long
+    const int MIN_INF = LLONG_MIN;
+    long long maximumStrength(vector<int>& nums, int k) 
+    {
+        int size = nums.size();
+        vector<ll> cache(size, MIN_INF);
+        for(int kDash = 1; kDash <= k; kDash++)
+        {
+            vector<ll> prevCache = cache;
+            int sign = (kDash & 1)? 1 : -1;
+            for(int idx = kDash-1; idx < size; idx++)
+            {
+                ll currSubPrev = idx? prevCache[idx-1] : MIN_INF;
+                ll prevSubPrev = idx? cache[idx-1] : MIN_INF;
+                
+                cache[idx] = max(currSubPrev, prevSubPrev) + 1ll * sign * (k - kDash + 1) * nums[idx];
+            }
+        }
+        
+        return *max_element(cache.begin() + k - 1, cache.end());
+    }
+};
