@@ -260,3 +260,26 @@ vector<int> intersection(vector<int> &nums1, vector<int> &nums2)
 
 	return common;
 }
+
+// DAY 11 (791. Custom Sort String)==================================================================================
+
+// Time Complexity = O(n + m)
+// Space Complexity = O(1)
+
+string customSortString(string order, string s)
+{
+	vector<int> charMap(26, 0);
+	for(char c : s)
+		charMap[c-'a']++;
+	
+	int idx = 0;
+	for(char c : order)
+		while(charMap[c-'a']--)
+			s[idx++] = c;
+
+	for(int cIdx = 0; cIdx < 26; cIdx++)
+		while(charMap[cIdx]-- > 0)
+			s[idx++] = char(cIdx + 'a');
+
+	return s;
+}
