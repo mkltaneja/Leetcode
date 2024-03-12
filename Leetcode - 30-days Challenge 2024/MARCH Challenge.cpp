@@ -350,3 +350,36 @@ public ListNode removeZeroSumSublists(ListNode head)
 	newHead = newHead.next;
 	return newHead;
 }
+
+// APPROACH 2 [OPTIMIZED]
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+public ListNode removeZeroSumSublists(ListNode head) 
+{
+	HashMap<Integer, ListNode> nodeMap = new HashMap<>();
+	ListNode itr = head;
+	ListNode newHead = new ListNode(0);
+	nodeMap.put(0, newHead);
+	newHead.next = head;
+	int prefSum = 0;
+	while(itr != null)
+	{
+		prefSum += itr.val;
+		nodeMap.put(prefSum, itr);
+		itr = itr.next;
+	}
+
+	itr = newHead;
+	prefSum = 0;
+	while(itr != null)
+	{
+		prefSum += itr.val;
+		itr.next = nodeMap.get(prefSum).next;
+		itr = itr.next;
+	}
+
+	newHead = newHead.next;
+	return newHead;
+}
