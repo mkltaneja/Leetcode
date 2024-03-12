@@ -283,3 +283,70 @@ string customSortString(string order, string s)
 
 	return s;
 }
+
+// DAY 12 (1171. Remove Zero Sum Consecutive Nodes from Linked List)=====================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n)
+
+public ListNode removeZeroSumSublists(ListNode head)
+{
+	ArrayList<Integer> nodes = new ArrayList<>();
+	ListNode itr = head;
+	ListNode newHead = new ListNode(-1), newItr = newHead;
+	while(itr != null)
+	{
+		nodes.add(itr.val);
+		itr = itr.next;
+	}
+
+	while(true)
+	{
+		Integer rangeMin = Integer.MAX_VALUE;
+		Integer rangeMax = Integer.MIN_VALUE;
+		Integer rangeSize = 0;
+		Integer maxSize = 0;
+		HashMap<Integer, Integer> minOcc = new HashMap<>();
+		Integer prefSum = 0;
+		minOcc.put(0, -1);
+
+		for(int idx = 0; idx < nodes.size(); idx++)
+		{
+			prefSum += nodes.get(idx);
+			if(!minOcc.containsKey(prefSum))
+				minOcc.put(prefSum, idx);
+			else
+			{
+				Integer newRangeSize = idx - minOcc.get(prefSum);
+				if(newRangeSize > rangeSize)
+				{
+					rangeMin = minOcc.get(prefSum);
+					rangeMax = idx;
+					rangeSize = newRangeSize;
+				}
+			}
+		}
+
+		ArrayList<Integer> newNodes = new ArrayList<Integer>();
+		if(rangeMax != Integer.MIN_VALUE)
+		{
+			for(int idx = 0; idx < nodes.size(); idx++)
+			{
+				if(idx > rangeMin && idx <= rangeMax)
+					continue;
+				newNodes.add(nodes.get(idx));
+			}
+			nodes = newNodes;
+		}
+		else break;
+	}
+
+	for(int idx = 0; idx < nodes.size(); idx++)
+	{
+		newItr.next = new ListNode(nodes.get(idx));
+		newItr = newItr.next;
+	}
+
+	newHead = newHead.next;
+	return newHead;
+}
