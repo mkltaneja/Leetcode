@@ -383,3 +383,25 @@ public ListNode removeZeroSumSublists(ListNode head)
 	newHead = newHead.next;
 	return newHead;
 }
+
+// DAY 13 (2485. Find the Pivot Integer)===================================================================================
+
+// Time Complexity = O(log n)
+// Space Complexity = O(1)
+
+int pivotInteger(int n) 
+{
+	int lo = 1, hi = n;
+	while(lo <= hi)
+	{
+		int mid = (lo + hi) >> 1;
+		int leftSum = mid * (mid + 1) >> 1;
+		int rightSum = (n * (n + 1) >> 1) - leftSum + mid;
+		if(leftSum == rightSum)
+			return mid;
+		if(leftSum < rightSum)
+			lo = mid + 1;
+		else hi = mid - 1;
+	}
+	return -1;
+}
