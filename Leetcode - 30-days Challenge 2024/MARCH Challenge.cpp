@@ -408,6 +408,8 @@ int pivotInteger(int n)
 
 // DAY 14 (930. Binary Subarrays With Sum)==============================================================================
 
+// APPROACH 1 (Using Queue and separately for 1 and 0)
+
 // Time Complexity = O(n)
 // Space Complexity = O(n)
 
@@ -449,6 +451,34 @@ int numSubarraysWithSum(vector<int>& nums, int goal)
 			else totalZeros++;
 			totalSubarrays += totalZeros;
 		}
+	}
+
+	return totalSubarrays;
+}
+
+// APPROACH 2 (Within a single loop)
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int numSubarraysWithSum(vector<int>& nums, int goal) 
+{
+	int size = nums.size();
+	int currSum = 0, prefZeros = 0, totalSubarrays = 0;
+	for(int left = 0, right = 0; right < size; right++)
+	{
+		currSum += nums[right];
+		while(left < right && (nums[left] == 0 || currSum > goal))
+		{
+			if(nums[left])
+				prefZeros = 0;
+			else prefZeros++;
+
+			currSum -= nums[left++];
+		}
+
+		if(currSum == goal)
+			totalSubarrays += prefZeros + 1;
 	}
 
 	return totalSubarrays;
