@@ -483,3 +483,28 @@ int numSubarraysWithSum(vector<int>& nums, int goal)
 
 	return totalSubarrays;
 }
+
+// DAY 15 (238. Product of Array Except Self)========================================================================================
+
+// Time Complexity = O(2*n)
+// Space Complexity = O(n)
+
+vector<int> productExceptSelf(vector<int>& nums) 
+{
+	int size = nums.size();
+	vector<int> answer(size);
+	int multRes = 1;
+	for(int idx = 0; idx < size; idx++)
+	{
+		answer[idx] = multRes;
+		multRes *= nums[idx];
+	}
+	multRes = 1;
+	for(int idx = size-1; idx >= 0; idx--)
+	{
+		answer[idx] *= multRes;
+		multRes *= nums[idx];
+	}
+
+	return answer;
+}
