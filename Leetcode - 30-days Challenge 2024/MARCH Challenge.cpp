@@ -508,3 +508,26 @@ vector<int> productExceptSelf(vector<int>& nums)
 
 	return answer;
 }
+
+// DAY 16 (525. Contiguous Array)=================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(2*n)
+
+int findMaxLength(vector<int>& nums) 
+{
+	int size = nums.size(), start = size;
+	vector<int> minOcc(2*size + 1, -2); // -2 = not yet encountered
+	int maxLen = 0;
+	minOcc[start] = -1;
+	for(int idx = 0; idx < size; idx++)
+	{
+		start += nums[idx]? 1 : -1;
+		if(minOcc[start] != -2)
+			maxLen = max(maxLen, idx - minOcc[start]);
+		else
+			minOcc[start] = idx;
+	}
+
+	return maxLen;
+}
