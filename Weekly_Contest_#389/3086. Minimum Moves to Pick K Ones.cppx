@@ -1,0 +1,64 @@
+
+// Time Complexity = O(3*n)
+// Space Complexity = O(n)
+
+class Solution {
+public:
+    
+    #define ll long long
+    
+    long long minimumMoves(vector<int>& nums, int k, int maxChanges) 
+    {
+        int n = nums.size();
+        ll maxConsec = 0, totalOps = 0;
+        for(int i = 0; i < n; i++)
+        {
+            if(nums[i])
+            {
+                maxConsec = max(maxConsec, 1ll);
+                if(i+1 < n && nums[i+1])
+                {
+                    maxConsec = max(maxConsec, 2ll);
+                    if(i+2 < n && nums[i+2])
+                        maxConsec = max(maxConsec, 3ll);
+                }
+            }
+        }
+        if(maxConsec + maxChanges >= k)
+        {
+            ll rem = max(0ll, (ll)k - maxConsec);
+            if(maxConsec >= 2 && k >= 2)
+                totalOps++;
+            if(maxConsec >= 3 && k >= 3)
+                totalOps++;
+            
+            totalOps += 2ll*rem;
+            return totalOps;
+        }
+        totalOps = 2 * min(k, maxChanges);
+        int need = k - maxChanges;
+        ll minOps = LLONG_MAX;
+        vector<ll> pos, prefPosSum;
+        for(int i = 0; i < n; i++)
+        {
+            if(!nums[i]) continue;
+            pos.push_back(i);
+            prefPosSum.push_back(i + (prefPosSum.size()? prefPosSum.back() : 0));
+        }
+        
+        for(int i = 0; i+need-1 < pos.size(); i++)
+        {
+            int left = i, right = i + need - 1;
+            int median = (left + right) >> 1;
+            
+            ll leftCount = pos[median] * (median - left + 1) - (prefPosSum[median] - (left? prefPosSum[left-1] : 0));
+            ll rightCount = -pos[median] * (right - median) + (prefPosSum[right] - prefPosSum[median]);
+            ll ops = leftCount + rightCount;
+            
+            minOps = min(minOps, ops);
+        }
+        minOps = minOps == LLONG_MAX? 0 : minOps;
+        
+        return minOps + totalOps;
+    }
+};
