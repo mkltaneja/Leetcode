@@ -531,3 +531,47 @@ int findMaxLength(vector<int>& nums)
 
 	return maxLen;
 }
+
+// DAY 17 (57. Insert Interval)===================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool doesLieBetween(int newStart, int newEnd, int idx, vector<vector<int>>& intervals)
+{
+	return (idx && newStart > intervals[idx-1][1] && newEnd < intervals[idx][0]);
+}
+
+vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) 
+{
+	int totalIntervals = intervals.size();
+	vector<vector<int>> newIntervals;
+	int newStart = newInterval[0], newEnd = newInterval[1];
+	bool toBeInserted = totalIntervals == 0 || newEnd < intervals[0][0];
+	bool isInserted = false;
+	
+	for(int idx = 0; idx < totalIntervals; idx++)
+	{
+		int start = intervals[idx][0], end = intervals[idx][1];
+		if(newStart > end || newEnd < start) // doesn't overlap
+		{
+			if(toBeInserted || doesLieBetween(newStart, newEnd, idx, intervals))
+			{
+				newIntervals.push_back({newStart, newEnd});
+				toBeInserted = false;
+				isInserted = true;
+			}
+			newIntervals.push_back(intervals[idx]);
+		}
+		else // overlaps
+		{
+			newStart = min(newStart, start);
+			newEnd = max(newEnd, end);
+			toBeInserted = true;
+		}
+	}
+	if(!isInserted)
+		newIntervals.push_back({newStart, newEnd});
+
+	return newIntervals;
+}
