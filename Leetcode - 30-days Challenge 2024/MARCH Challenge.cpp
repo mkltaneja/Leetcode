@@ -575,3 +575,23 @@ vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInter
 
 	return newIntervals;
 }
+
+// DAY 18 (452. Minimum Number of Arrows to Burst Balloons)==============================================================================
+
+// Time Complexity = O(n*logn + n)
+// Space Complexity = O(1)
+
+int findMinArrowShots(vector<vector<int>>& points) 
+{
+	int size = points.size();
+	int totalArrows = 0;
+	sort(points.begin(), points.end());
+	for(int idx = 0; idx < size; )
+	{
+		int currStart = points[idx][0], currEnd = points[idx][1];
+		while(idx < size && points[idx][0] <= currEnd)
+			currEnd = min(currEnd, points[idx++][1]);
+		totalArrows++;
+	}
+	return totalArrows;
+}
