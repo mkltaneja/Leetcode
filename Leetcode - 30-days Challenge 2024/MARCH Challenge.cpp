@@ -595,3 +595,50 @@ int findMinArrowShots(vector<vector<int>>& points)
 	}
 	return totalArrows;
 }
+
+// DAY 19 (621. Task Scheduler)===========================================================================================
+
+// Time Complexity = O(n + 26*log(26) + n*log(26))
+// Space Complexity = O(26 + n)
+
+int leastInterval(vector<char>& tasks, int n) 
+{
+	int minIntervals = 0;
+	vector<int> countMap(26, 0);
+	priority_queue<int> countPq;
+	for(char c : tasks)
+		countMap[c-'A']++;
+	
+	for(int c = 0; c < 26; c++)
+		if(countMap[c])
+			countPq.push(countMap[c]);
+
+	while(!countPq.empty())
+	{
+		int intervalSize = n + 1;
+		priority_queue<int> tempPq;
+		while(intervalSize--)
+		{
+			if(!countPq.empty())
+			{
+				int topCount = countPq.top();
+				countPq.pop();
+				if(topCount - 1)
+					tempPq.push(topCount-1);
+				minIntervals++;
+			}
+			else
+			{
+				if(!tempPq.empty())
+					minIntervals += intervalSize + 1;
+				break;
+			}
+		}
+		while(!tempPq.empty())
+		{
+			countPq.push(tempPq.top());
+			tempPq.pop();
+		}
+	}
+	return minIntervals;
+}
