@@ -673,3 +673,38 @@ int leastInterval(vector<char>& tasks, int n)
 
 	return minIntervals;
 }
+
+// DAY 20 (1669. Merge In Between Linked Lists)==================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+ListNode* getListTail(ListNode* list)
+{
+	ListNode* itr = list, *tail = list;
+	while(itr)
+	{
+		tail = itr;
+		itr = itr->next;
+	}
+	return tail;
+}
+
+ListNode* mergeInBetween(ListNode* list1, int a, int b, ListNode* list2) 
+{
+	ListNode* list2Tail = getListTail(list2);
+	ListNode* node1 = nullptr, *node2 = nullptr;
+	ListNode* itr = list1;
+	for(int idx = 0; idx <= b+1 && itr; idx++)
+	{
+		if(idx == a-1)
+			node1 = itr;
+		else if(idx == b+1)
+			node2 = itr;
+		itr = itr->next;
+	}
+	if(node1) node1->next = list2;
+	if(list2Tail) list2Tail->next = node2;
+
+	return list1;
+}
