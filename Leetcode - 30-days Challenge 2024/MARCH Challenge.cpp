@@ -708,3 +708,21 @@ ListNode* mergeInBetween(ListNode* list1, int a, int b, ListNode* list2)
 
 	return list1;
 }
+
+// DAY 21 (206. Reverse Linked List)===========================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+ListNode* reverseList(ListNode* head) 
+{
+	ListNode* curr = head, *prev = nullptr;
+	while(curr)
+	{
+		ListNode* next = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = next;
+	}
+	return prev;
+}
