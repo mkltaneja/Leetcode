@@ -726,3 +726,48 @@ ListNode* reverseList(ListNode* head)
 	}
 	return prev;
 }
+
+// DAY 22 (234. Palindrome Linked List)=======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+ListNode* getMidNode(ListNode* head)
+{
+	ListNode* slow = head, *fast = head;
+	while(fast && fast->next)
+	{
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+	return slow;
+}
+
+ListNode* reverseSecondHalfAndGetHead(ListNode* node)
+{
+	ListNode* curr = node, *prev = nullptr;
+	while(curr)
+	{
+		ListNode* forw = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = forw;
+	}
+	return prev;
+}
+
+bool isPalindrome(ListNode* head) 
+{
+	ListNode* midNode = getMidNode(head);
+	ListNode* head2 = reverseSecondHalfAndGetHead(midNode);
+	
+	ListNode* itr1 = head, *itr2 = head2;
+	while(itr1 && itr2)
+	{
+		if(itr1->val != itr2->val)
+			return false;
+		itr1 = itr1->next;
+		itr2 = itr2->next;
+	}
+	return true;
+}
