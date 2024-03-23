@@ -771,3 +771,50 @@ bool isPalindrome(ListNode* head)
 	}
 	return true;
 }
+
+// DAY 23 (143. Reorder List)========================================================================================================
+
+ListNode* getMidNode(ListNode* head)
+{
+	ListNode* slow = head, *fast = head, *midNode = nullptr;
+	while(fast->next && fast->next->next)
+	{
+		fast = fast->next->next;
+		slow = slow->next;
+	}
+	midNode = slow->next;
+	slow->next = nullptr;
+	return midNode;
+}
+
+ListNode* reverseSecondHalfAndGetHead(ListNode* head)
+{
+	ListNode* curr = head, *prev = nullptr;
+	while(curr)
+	{
+		ListNode* forw = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = forw;
+	}
+	return prev;
+}
+
+void reorderList(ListNode* head) 
+{
+	if(!head || !head->next || !head->next->next)
+		return;
+	ListNode* midNode = getMidNode(head);
+	ListNode* head2 = reverseSecondHalfAndGetHead(midNode);
+	ListNode* itr1 = head, *itr2 = head2, *tail = head;
+	while(itr1 && itr2)
+	{
+		tail = itr2;
+		ListNode* next1 = itr1->next, *next2 = itr2->next;
+		itr1->next = itr2;
+		itr2->next = next1;
+		itr1 = next1;
+		itr2 = next2;
+	}
+	if(itr1) tail->next = itr1;
+}
