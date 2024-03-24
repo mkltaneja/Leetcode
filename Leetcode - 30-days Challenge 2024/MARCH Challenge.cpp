@@ -818,3 +818,27 @@ void reorderList(ListNode* head)
 	}
 	if(itr1) tail->next = itr1;
 }
+
+// DAY 24 (287. Find the Duplicate Number)========================================================================================
+
+// Time Complexity  O(n)
+// Space Complexity  O(1)
+
+int findDuplicate(vector<int>& nums) 
+{
+	int slow = 0, fast = 0;
+	while(true)
+	{
+		slow = nums[slow];
+		fast = nums[nums[fast]];
+		if(slow == fast) break;
+	}
+
+	slow = 0;
+	while(slow != fast)
+	{
+		slow = nums[slow];
+		fast = nums[fast];
+	}
+	return slow;
+}
