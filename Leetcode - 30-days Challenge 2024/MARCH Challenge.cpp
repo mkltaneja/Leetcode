@@ -842,3 +842,20 @@ int findDuplicate(vector<int>& nums)
 	}
 	return slow;
 }
+
+// DAY 25 (442. Find All Duplicates in an Array)======================================================================================
+
+// Time Compolexity = O(n)
+// Space Compolexity = O(1)
+
+vector<int> findDuplicates(vector<int>& nums) 
+{
+	vector<int> ans;
+	for(int num : nums)
+	{
+		if(nums[abs(num)-1] < 0)
+			ans.push_back(abs(num));
+		nums[abs(num)-1] *= -1;
+	}
+	return ans;
+}
