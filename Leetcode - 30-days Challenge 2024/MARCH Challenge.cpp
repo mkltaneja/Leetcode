@@ -859,3 +859,20 @@ vector<int> findDuplicates(vector<int>& nums)
 	}
 	return ans;
 }
+
+// DAY 26 (41. First Missing Positive)=========================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int firstMissingPositive(vector<int>& nums) 
+{
+	int last = nums.size();
+	for(int idx = 0; idx < last; idx++)
+		while(nums[idx] >= 1 && nums[idx] <= last && nums[idx] != nums[nums[idx]-1])
+			swap(nums[idx], nums[nums[idx]-1]);
+	for(int idx = 0; idx < last; idx++)
+		if(nums[idx] != idx+1)
+			return idx + 1;
+	return last+1;
+}
