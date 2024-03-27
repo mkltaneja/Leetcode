@@ -876,3 +876,23 @@ int firstMissingPositive(vector<int>& nums)
 			return idx + 1;
 	return last+1;
 }
+
+// DAY 27 (713. Subarray Product Less Than K)=================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int numSubarrayProductLessThanK(vector<int>& nums, int k) 
+{
+	int size = nums.size();
+	int ans = 0;
+	for(int curr = 0, prev = 0, currProd = 1; curr < size; curr++)
+	{
+		currProd *= nums[curr];
+		while(prev <= curr && currProd >= k)
+			currProd /= nums[prev++];
+		if(curr >= prev)
+			ans += curr - prev + 1;
+	}
+	return ans;
+}
