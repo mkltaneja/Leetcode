@@ -896,3 +896,23 @@ int numSubarrayProductLessThanK(vector<int>& nums, int k)
 	}
 	return ans;
 }
+
+// DAY 28 (2958. Length of Longest Subarray With at Most K Frequency)===========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int maxSubarrayLength(vector<int>& nums, int k) 
+{
+	int maxLen = 0;
+	unordered_map<int,int> numFreq;
+	for(int curr = 0, prev = 0; curr < nums.size(); curr++)
+	{
+		numFreq[nums[curr]]++;
+		while(numFreq[nums[curr]] > k)
+			numFreq[nums[prev++]]--;
+		maxLen = max(maxLen, curr - prev + 1);
+	}
+
+	return maxLen;
+}
