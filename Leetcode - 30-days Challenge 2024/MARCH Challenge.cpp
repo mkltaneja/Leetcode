@@ -941,3 +941,34 @@ long long countSubarrays(vector<int>& nums, int k)
 
 	return totalSubarrays;
 }
+
+// DAY 30 (992. Subarrays with K Different Integers)============================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int subarraysWithKDistinct(vector<int>& nums, int k) 
+{
+	int ans = 0;
+	unordered_map<int,int> numCount;
+	for(int right = 0, left1 = 0, left2 = 0; right < nums.size(); right++)
+	{
+		numCount[nums[right]]++;
+		while(numCount.size() > k)
+		{
+			if(--numCount[nums[left2]] == 0)
+				numCount.erase(nums[left2]);
+			left1 = ++left2;
+		}
+		while(numCount.size() == k && numCount[nums[left2]] > 1)
+		{
+			if(--numCount[nums[left2]] == 0)
+				numCount.erase(nums[left2]);
+			left2++;
+		}
+		if(numCount.size() == k)
+			ans += left2 - left1 + 1;
+	}
+
+	return ans;
+}
