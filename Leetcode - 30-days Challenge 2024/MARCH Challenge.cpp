@@ -972,3 +972,28 @@ int subarraysWithKDistinct(vector<int>& nums, int k)
 
 	return ans;
 }
+
+// DAY 31 (2444. Count Subarrays With Fixed Bounds)=================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+#define ll long long
+long long countSubarrays(vector<int>& nums, int minK, int maxK) 
+{
+	ll subarrays = 0;
+	for(int lastMinkIdx = -1, lastMaxkIdx = -1, start = -1, curr = 0; curr < nums.size(); curr++)
+	{
+		if(nums[curr] == minK)
+			lastMinkIdx = curr;
+		if(nums[curr] == maxK)
+			lastMaxkIdx = curr;
+		if(nums[curr] < minK || nums[curr] > maxK)
+			lastMinkIdx = lastMaxkIdx = start = curr;
+		
+		int minLastIdx = min(lastMinkIdx, lastMaxkIdx);
+		subarrays += (ll)minLastIdx - start;
+	}
+
+	return subarrays;
+}
