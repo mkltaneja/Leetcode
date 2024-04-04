@@ -72,3 +72,21 @@ bool exist(vector<vector<char>>& board, string word)
                 return true;
     return false;
 }
+
+// DAY 4 (1614. Maximum Nesting Depth of the Parentheses)==================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int maxDepth(string s) 
+{
+    int currDepth = 0, maxDepth = 0;
+    for(char c : s)
+    {
+        if(c != '(' && c != ')') continue;
+        currDepth += c == '(';
+        currDepth -= c == ')';
+        maxDepth = max(maxDepth, currDepth);
+    }
+    return maxDepth;
+}
