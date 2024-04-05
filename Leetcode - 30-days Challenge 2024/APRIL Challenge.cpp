@@ -90,3 +90,39 @@ int maxDepth(string s)
     }
     return maxDepth;
 }
+
+// DAY 5 (1544. Make The String Great)============================================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(1)
+
+bool areEqual(char a, char b)
+{
+    return (tolower(a) == tolower(b))
+        && ((a == tolower(a) && b != tolower(b))
+            || (a != tolower(a) && b == tolower(b)));
+}
+
+string makeGood(string s) 
+{
+    int size = s.size();
+    bool checkMore = true;
+    while(checkMore)
+    {
+        checkMore = false;
+        string tmp = "";
+        for(int idx = 0; idx < size; idx++)
+        {
+            if(idx+1 < size && areEqual(s[idx], s[idx+1]))
+            {
+                checkMore = true;
+                idx++;
+            }
+            else tmp += s[idx];
+        }
+        s = tmp;
+        tmp = "";
+        size = s.size();
+    }
+    return s;
+}
