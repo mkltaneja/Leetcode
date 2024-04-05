@@ -93,6 +93,8 @@ int maxDepth(string s)
 
 // DAY 5 (1544. Make The String Great)============================================================================================
 
+// APPROACH 1 (Brute Force)
+
 // Time Complexity = O(n^2)
 // Space Complexity = O(1)
 
@@ -125,4 +127,35 @@ string makeGood(string s)
         size = s.size();
     }
     return s;
+}
+
+// APPROACH 2 (Using Stack)
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool areEqual(char a, char b)
+{
+    return (tolower(a) == tolower(b))
+        && ((a == tolower(a) && b != tolower(b))
+            || (a != tolower(a) && b == tolower(b)));
+}
+
+string makeGood(string s) 
+{
+    stack<char> st;
+    string ans = "";
+    for(char c : s)
+    {
+        if(!st.empty() && areEqual(st.top(), c))
+            st.pop();
+        else st.push(c);
+    }
+    while(!st.empty())
+    {
+        ans += st.top();
+        st.pop();
+    }
+    reverse(ans.begin(), ans.end());
+    return ans;
 }
