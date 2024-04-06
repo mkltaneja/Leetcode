@@ -159,3 +159,38 @@ string makeGood(string s)
     reverse(ans.begin(), ans.end());
     return ans;
 }
+
+// DAY 6 (1249. Minimum Remove to Make Valid Parentheses)=============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+string minRemoveToMakeValid(string s) 
+{
+    stack<int> st;
+    unordered_set<int> ignore;
+    string ans = "";
+    for(int idx = 0; idx < s.size(); idx++)
+    {
+        char c = s[idx];
+        if(c == '(')
+            st.push(idx);
+        else if(c == ')')
+        {
+            if(st.empty())
+                ignore.insert(idx);
+            else st.pop();
+        }
+    }
+    while(!st.empty())
+    {
+        ignore.insert(st.top());
+        st.pop();
+    }
+
+    for(int idx = 0; idx < s.size(); idx++)
+        if(!ignore.count(idx))
+            ans += s[idx];
+    
+    return ans;
+}
