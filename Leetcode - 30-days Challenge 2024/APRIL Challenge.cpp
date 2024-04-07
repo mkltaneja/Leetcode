@@ -194,3 +194,38 @@ string minRemoveToMakeValid(string s)
     
     return ans;
 }
+
+// DAY 7 (678. Valid Parenthesis String)==================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool checkValidString(string s)
+{
+    int size = s.size();
+    stack<int> bracketStack, starStack;
+    for(int idx = 0; idx < size; idx++)
+    {
+        if(s[idx] == '(')
+            bracketStack.push(idx);
+        else if(s[idx] == ')')
+        {
+            if(!bracketStack.empty())
+                bracketStack.pop();
+            else if(!starStack.empty())
+                starStack.pop();
+            else return false;
+        }
+        else starStack.push(idx);
+    }
+
+    while(!bracketStack.empty())
+    {
+        if(starStack.empty() || starStack.top() < bracketStack.top())
+            return false;
+        bracketStack.pop();
+        starStack.pop();
+    }
+
+    return true;
+}
