@@ -197,6 +197,8 @@ string minRemoveToMakeValid(string s)
 
 // DAY 7 (678. Valid Parenthesis String)==================================================================================
 
+// APPROACH 1 (Using Stacks)
+
 // Time Complexity = O(n)
 // Space Complexity = O(n)
 
@@ -228,4 +230,36 @@ bool checkValidString(string s)
     }
 
     return true;
+}
+
+// APPROACH 2 (Using Full and Partial Polarities of brackets)
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+bool checkValidString(string s) 
+{
+    int bracketPol = 0, starPol = 0;
+    for(char c : s)
+    {
+        if(c == '(')
+        {
+            bracketPol++;
+            starPol++;
+        }
+        else if(c == ')')
+        {
+            bracketPol--;
+            starPol = max(0, starPol - 1);
+        }
+        else
+        {
+            bracketPol++;
+            starPol = max(0, starPol - 1);
+        }
+        if(bracketPol < 0)
+            return false;
+    }
+
+    return starPol == 0;
 }
