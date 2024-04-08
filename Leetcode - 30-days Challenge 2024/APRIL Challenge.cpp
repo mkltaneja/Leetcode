@@ -263,3 +263,32 @@ bool checkValidString(string s)
 
     return starPol == 0;
 }
+
+// DAY 8 (1700. Number of Students Unable to Eat Lunch)=====================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int countStudents(vector<int>& students, vector<int>& sandwiches) 
+{
+    int ones = 0, zeros = 0;
+    for(int student : students)
+    {
+        ones += student == 1;
+        zeros += student == 0;
+    }
+    for(int sandwich : sandwiches)
+    {
+        if(sandwich == 0)
+        {
+            if(zeros-- == 0)
+                return ones;
+        }
+        else
+        {
+            if(ones-- == 0)
+                return zeros;
+        }
+    }
+    return 0;
+}
