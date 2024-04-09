@@ -292,3 +292,23 @@ int countStudents(vector<int>& students, vector<int>& sandwiches)
     }
     return 0;
 }
+
+
+// DAY 9 (2073. Time Needed to Buy Tickets)================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int timeRequiredToBuy(vector<int>& tickets, int k)
+{
+    int size = tickets.size();
+    int ticketsReqd = tickets[k];
+    int time = 0;
+    for(int idx = 0; idx < size; idx++)
+    {
+        time += min(ticketsReqd, tickets[idx]);
+        if(idx == k)
+            ticketsReqd--;
+    }
+    return time;
+}
