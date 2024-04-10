@@ -312,3 +312,31 @@ int timeRequiredToBuy(vector<int>& tickets, int k)
     }
     return time;
 }
+
+// DAY 10 (950. Reveal Cards In Increasing Order)===============================================================================
+
+// Time Complexity = O(n*logn + 2*n)
+// Space Complexity = O(2*n)
+
+vector<int> deckRevealedIncreasing(vector<int>& deck) 
+{
+    int size = deck.size();
+    queue<int> minIdx;
+    vector<int> reorderedDeck(size);
+    sort(deck.begin(), deck.end());
+    for(int idx = 0; idx < size; idx++)
+        minIdx.push(idx);
+    
+    for(int idx = 0; idx < size; idx++)
+    {
+        int currIdx = minIdx.front();
+        minIdx.pop();
+        reorderedDeck[currIdx] = deck[idx];
+        if(!minIdx.empty())
+        {
+            minIdx.push(minIdx.front());
+            minIdx.pop();
+        }
+    }
+    return reorderedDeck;
+}
