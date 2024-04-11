@@ -340,3 +340,31 @@ vector<int> deckRevealedIncreasing(vector<int>& deck)
     }
     return reorderedDeck;
 }
+
+// DAY 11 (402. Remove K Digits)=============================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+string removeKdigits(string num, int k) 
+{
+    stack<char> numStack;
+    string ans = "";
+    for(char x : num)
+    {
+        while(!numStack.empty() && numStack.top() > x && k-- > 0)
+            numStack.pop();
+        if(x == '0' && numStack.empty()) continue;
+        numStack.push(x);
+    }
+    while(!numStack.empty() && k-- > 0)
+        numStack.pop();
+    while(!numStack.empty())
+    {
+        ans += numStack.top();
+        numStack.pop();
+    }
+    reverse(ans.begin(), ans.end());
+
+    return ans.empty()? "0" : ans;
+}
