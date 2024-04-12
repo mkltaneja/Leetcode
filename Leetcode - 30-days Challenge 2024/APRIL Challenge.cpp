@@ -368,3 +368,33 @@ string removeKdigits(string num, int k)
 
     return ans.empty()? "0" : ans;
 }
+
+// DAY 12 (42. Trapping Rain Water)==========================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int trap(vector<int>& height) 
+{
+    int size = height.size();
+    int totalWater = 0;
+    stack<int> heightSt;
+    for(int idx = 0; idx < size; idx++)
+    {
+        while(!heightSt.empty() && height[heightSt.top()] < height[idx])
+        {
+            int bottom = height[heightSt.top()];
+            heightSt.pop();
+            if(!heightSt.empty())
+            {
+                int top = min(height[idx], height[heightSt.top()]);
+                int left = heightSt.top();
+                int right = idx;
+                int currentWaterArea = (right - left - 1) * (top - bottom);
+                totalWater += currentWaterArea;
+            }
+        }
+        heightSt.push(idx);
+    }
+    return totalWater;
+}
