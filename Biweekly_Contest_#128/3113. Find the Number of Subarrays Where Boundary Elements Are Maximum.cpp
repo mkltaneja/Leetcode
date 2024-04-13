@@ -1,4 +1,6 @@
 
+// APPROACH 1 (Starting from maximum number to lowest number)
+
 // Time Complexity = O(n + n^2)
 // Space Complexity = O(n)
 
@@ -39,6 +41,35 @@ public:
             hrdl = hrdl2;
             posMap.erase(x);
         }
+        return ans;
+    }
+};
+
+
+// APPROACH 2 (Using Stack)
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+class Solution {
+public:
+    
+    #define ll long long
+    long long numberOfSubarrays(vector<int>& nums) 
+    {
+        ll ans = 0;
+        stack<pair<int, int>> numSt;
+        for(int num : nums)
+        {
+            while(!numSt.empty() && numSt.top().first < num)
+                numSt.pop();
+            if(numSt.empty() || numSt.top().first != num)
+                numSt.push({num, 1});
+            else numSt.top().second++;
+            
+            ans += (ll)(numSt.top().second);
+        }
+        
         return ans;
     }
 };
