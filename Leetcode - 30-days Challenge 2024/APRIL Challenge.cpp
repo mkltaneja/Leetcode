@@ -398,3 +398,65 @@ int trap(vector<int>& height)
     }
     return totalWater;
 }
+
+// DAY 13 (85. Maximal Rectangle)============================================================================================
+
+// Time Complexity = O(rows * cols)
+// Space Complexity = O(rols * cols)
+
+void fillNextSmaller(vector<int> &heights, vector<int> &nextSmaller, int size, bool isLeft)
+{
+    stack<int> heightSt;
+    for(int idx = 0; idx < size; idx++)
+    {
+        while(!heightSt.empty() && heights[idx] < heights[heightSt.top()])
+        {
+            nextSmaller[heightSt.top()] = isLeft? size - idx - 1 : idx;
+            heightSt.pop();
+        }
+        heightSt.push(idx);
+    }
+}
+
+int getAreaForRow(vector<int> &heights, int size)
+{
+    int maxArea = 0;
+    vector<int> leftSmaller(size, -1), rightSmaller(size, size);
+    fillNextSmaller(heights, rightSmaller, size, 0);
+    
+    reverse(heights.begin(), heights.end());
+    fillNextSmaller(heights, leftSmaller, size, 1);
+    reverse(heights.begin(), heights.end());
+    reverse(leftSmaller.begin(), leftSmaller.end());
+
+    for(int idx = 0; idx < size; idx++)
+    {
+        int height = heights[idx];
+        int width = rightSmaller[idx] - leftSmaller[idx] - 1;
+        int area = height * width;
+
+        maxArea = max(maxArea, area);
+    }
+
+    return maxArea;
+}
+
+int maximalRectangle(vector<vector<char>>& matrix) 
+{
+    int rows = matrix.size(), cols = matrix[0].size();
+    vector<vector<int>> matHeight(rows, vector<int>(cols, 0));
+    int maxArea = 0;
+    for(int row = 0; row < rows; row++)
+    {
+        for(int col = 0; col < cols; col++)
+        {
+            if(row == 0)
+                matHeight[row][col] = matrix[row][col] - '0';
+            else if(matrix[row][col]-'0')
+                matHeight[row][col] = matHeight[row-1][col] + (matrix[row][col] - '0');
+        }
+        maxArea = max(maxArea, getAreaForRow(matHeight[row], cols));
+    }
+    
+    return maxArea;
+}
