@@ -460,3 +460,21 @@ int maximalRectangle(vector<vector<char>>& matrix)
     
     return maxArea;
 }
+
+// DAY 14 (404. Sum of Left Leaves)========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int sumOfLeftLeaves(TreeNode* root) 
+{
+    if(!root || !root->left && !root->right)
+        return 0;
+    int currSum = 0;
+    if(root->left && !root->left->left && !root->left->right)
+        currSum += root->left->val;
+    else currSum += sumOfLeftLeaves(root->left);
+    currSum += sumOfLeftLeaves(root->right);
+
+    return currSum;
+}
