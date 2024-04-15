@@ -478,3 +478,23 @@ int sumOfLeftLeaves(TreeNode* root)
 
     return currSum;
 }
+
+// DAY 15 (129. Sum Root to Leaf Numbers)============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int sumNumbersDFS(TreeNode* node, int num)
+{
+    if(!node) return 0;
+    num = num*10 + node->val;
+    if(!node->left && !node->right)
+        return num;
+    return sumNumbersDFS(node->left, num)
+        + sumNumbersDFS(node->right, num);
+}
+
+int sumNumbers(TreeNode* root) 
+{
+    return sumNumbersDFS(root, 0);
+}
