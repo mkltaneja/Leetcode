@@ -498,3 +498,26 @@ int sumNumbers(TreeNode* root)
 {
     return sumNumbersDFS(root, 0);
 }
+
+// DAY 16 (623. Add One Row to Tree)=================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+TreeNode* addOneRowDFS(TreeNode* node, int val, bool isLeft, int currDepth, int depth)
+{
+    if(currDepth == depth)
+        return isLeft? new TreeNode(val, node, nullptr) : new TreeNode(val, nullptr, node);
+    if(!node)
+        return nullptr;
+
+    node->left = addOneRowDFS(node->left, val, true, currDepth+1, depth);
+    node->right = addOneRowDFS(node->right, val, false, currDepth+1, depth);
+
+    return node;
+}
+
+TreeNode* addOneRow(TreeNode* root, int val, int depth) 
+{
+    return addOneRowDFS(root, val, 1, 1, depth);
+}
