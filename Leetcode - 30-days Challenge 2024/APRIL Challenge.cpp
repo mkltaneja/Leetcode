@@ -521,3 +521,33 @@ TreeNode* addOneRow(TreeNode* root, int val, int depth)
 {
     return addOneRowDFS(root, val, 1, 1, depth);
 }
+
+// DAY 17 (988. Smallest String Starting From Leaf)==========================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+string smallestString = string(9000, 'z');
+void smallestFromLeafDFS(TreeNode* node, string &currString)
+{
+    if(!node) return;
+    if(!node->left && !node->right)
+    {
+        string tempString = currString + char(node->val + 'a');
+        reverse(tempString.begin(), tempString.end());
+        smallestString = min(smallestString, tempString);
+        return;
+    }
+
+    currString += char(node->val + 'a');
+    smallestFromLeafDFS(node->left, currString);
+    smallestFromLeafDFS(node->right, currString);
+    currString.pop_back();
+}
+
+string smallestFromLeaf(TreeNode* root) 
+{
+    string currString = "";
+    smallestFromLeafDFS(root, currString);
+    return smallestString;
+}
