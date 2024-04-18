@@ -551,3 +551,27 @@ string smallestFromLeaf(TreeNode* root)
     smallestFromLeafDFS(root, currString);
     return smallestString;
 }
+
+// DAY 18 (463. Island Perimeter)================================================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(1)
+
+int islandPerimeter(vector<vector<int>>& grid) 
+{
+    int rows = grid.size(), cols = grid[0].size();
+    int totalPerimeter = 0;
+    for(int row = 0; row < rows; row++)
+    {
+        for(int col = 0; col < cols; col++)
+        {
+            if(grid[row][col] == 0) continue;
+            int isTopOutside = row == 0 || grid[row-1][col] == 0;
+            int isBottomOutside = row == rows-1 || grid[row+1][col] == 0;
+            int isLeftOutside = col == 0 || grid[row][col-1] == 0;
+            int isRightOutside = col == cols-1 || grid[row][col+1] == 0;
+            totalPerimeter += isTopOutside + isBottomOutside + isLeftOutside + isRightOutside;
+        }
+    }
+    return totalPerimeter;
+}
