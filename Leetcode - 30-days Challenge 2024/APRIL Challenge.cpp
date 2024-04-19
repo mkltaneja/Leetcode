@@ -575,3 +575,37 @@ int islandPerimeter(vector<vector<int>>& grid)
     }
     return totalPerimeter;
 }
+
+// DAY 19 (200. Number of Islands)=========================================================================================
+
+// Time Complexity = O(rows * cols)
+// Space Complexity = O(rows * cols)
+
+void visitIsland(int row, int col, int rows, int cols, vector<vector<char>>& grid)
+{
+    if(row == -1 || col == -1 || row == rows || col == cols || grid[row][col] != '1')
+        return;
+    grid[row][col] = '2';
+    visitIsland(row+1, col, rows, cols, grid);
+    visitIsland(row, col+1, rows, cols, grid);
+    visitIsland(row-1, col, rows, cols, grid);
+    visitIsland(row, col-1, rows, cols, grid);
+}
+
+int numIslands(vector<vector<char>>& grid)
+{
+    int rows = grid.size(), cols = grid[0].size();
+    int totalIslands = 0;
+    for(int row = 0; row < rows; row++)
+    {
+        for(int col = 0; col < cols; col++)
+        {
+            if(grid[row][col] == '1')
+            {
+                totalIslands++;
+                visitIsland(row, col, rows, cols, grid);
+            }
+        }
+    }
+    return totalIslands;
+}
