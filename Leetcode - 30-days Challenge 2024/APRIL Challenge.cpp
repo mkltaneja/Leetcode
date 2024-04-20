@@ -609,3 +609,39 @@ int numIslands(vector<vector<char>>& grid)
     }
     return totalIslands;
 }
+
+// DAY 20 (1992. Find All Groups of Farmland)==========================================================================
+
+// Time Complexity = O(rows * cols)
+// Space Complexity = O(rows * cols)
+
+vector<int> visitFarmland(int row, int col, int rows, int cols, vector<vector<int>> &land)
+{
+    int startRow = row, endRow = row;
+    int startCol = col, endCol = col;
+    while(endRow < rows && land[endRow][col]) endRow++;
+    while(endCol < cols && land[row][endCol]) endCol++;
+    for(int row = startRow; row < endRow; row++)
+        for(int col = startCol; col < endCol; col++)
+            land[row][col] = 0;
+    return {endRow-1, endCol-1};
+}
+
+vector<vector<int>> findFarmland(vector<vector<int>>& land)
+{
+    int rows = land.size(), cols = land[0].size();
+    const int OFFSET = 2;
+    int currGroupId = 2;
+    vector<vector<int>> ans;
+    for(int row = 0; row < rows; row++)
+    {
+        for(int col = 0; col < cols; col++)
+        {
+            if(land[row][col] == 0) continue;
+
+            vector<int> bottomRight = visitFarmland(row, col, rows, cols, land);
+            ans.push_back({row, col, bottomRight[0], bottomRight[1]});
+        }
+    }
+    return ans;
+}
