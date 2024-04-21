@@ -645,3 +645,57 @@ vector<vector<int>> findFarmland(vector<vector<int>>& land)
     }
     return ans;
 }
+
+// DAY 21 (1971. Find if Path Exists in Graph)=========================================================================================
+
+// Time Complexity = O(E)
+// Space Complexity = O(V)
+
+class DSU
+{
+    public:
+    int size;
+    vector<int> parent, parentSize;
+
+    DSU(int size)
+    {
+        this->size = size;
+        this->parent.resize(size);
+        this->parentSize.assign(size, 1);
+        for(int node = 0; node < size; node++)
+            parent[node] = node;
+    }
+
+    int findParent(int node)
+    {
+        return parent[node] = node == parent[node]? node : findParent(parent[node]);
+    }
+
+    void merge(int node1, int node2)
+    {
+        int parent1 = findParent(node1);
+        int parent2 = findParent(node2);
+        if(parent1 == parent2)
+            return;
+        if(parentSize[parent1] < parentSize[parent2])
+            swap(parent1, parent2);
+        
+        parentSize[parent1] += parentSize[parent2];
+        parent[parent2] = parent1;
+    }
+};
+
+bool validPath(int n, vector<vector<int>>& edges, int source, int destination) 
+{
+    DSU dsu(n);
+    for(vector<int> &edge : edges)
+    {
+        int fromNode = edge[0];
+        int toNode = edge[1];
+        dsu.merge(fromNode, toNode);
+    }
+    int sourceParent = dsu.findParent(source);
+    int destinationParent = dsu.findParent(destination);
+
+    return sourceParent == destinationParent;
+}
