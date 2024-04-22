@@ -699,3 +699,58 @@ bool validPath(int n, vector<vector<int>>& edges, int source, int destination)
 
     return sourceParent == destinationParent;
 }
+
+// DAY 22 (752. Open the Lock)======================================================================================================
+
+// Time Complexity = O(n + 10^4)
+// Space Complexity = O(n + 2*10^4)
+
+int openLock(vector<string>& deadends, string target) 
+{
+    string start = "0000";
+    queue<string> que;
+    unordered_set<string> vis;
+    unordered_set<string> deadendsSet;
+    for(string deadend : deadends)
+        deadendsSet.insert(deadend);
+    if(deadendsSet.count(start))
+        return -1;
+    if(target == start)
+        return 0;
+    que.push(start);
+    vis.insert(start);
+    
+    int minWays = 0;
+    while(!que.empty())
+    {
+        int size = que.size();
+        while(size--)
+        {
+            string curr = que.front();
+            que.pop();
+            for(int idx = 0; idx < 4; idx++)
+            {
+                string temp1 = curr;
+                string temp2 = curr;
+                temp1[idx] = char(((temp1[idx]-'0' + 1) % 10) + '0');
+                temp2[idx] = char(((temp2[idx]-'0' + 9) % 10) + '0');
+                if(!vis.count(temp1) && !deadendsSet.count(temp1))
+                {
+                    if(temp1 == target)
+                        return minWays + 1;
+                    que.push(temp1);
+                    vis.insert(temp1);
+                }
+                if(!vis.count(temp2) && !deadendsSet.count(temp2))
+                {
+                    if(temp2 == target)
+                        return minWays + 1;
+                    que.push(temp2);
+                    vis.insert(temp2);
+                }
+            }
+        }
+        minWays++;
+    }
+    return -1;
+}
