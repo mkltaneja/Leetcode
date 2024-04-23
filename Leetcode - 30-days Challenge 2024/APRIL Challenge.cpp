@@ -754,3 +754,54 @@ int openLock(vector<string>& deadends, string target)
     }
     return -1;
 }
+
+// DAY 23 (310. Minimum Height Trees)==================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) 
+{
+    if(n == 2)
+        return {0, 1};
+    vector<vector<int>> graph(n);
+    vector<int> degree(n, 0);
+    queue<int> que;
+    unordered_set<int> remNodes;
+    vector<int> ans;
+    for(vector<int> &edge : edges)
+    {
+        graph[edge[0]].push_back(edge[1]);
+        graph[edge[1]].push_back(edge[0]);
+        degree[edge[0]]++;
+        degree[edge[1]]++;
+    }
+    for(int node = 0; node < n; node++)
+    {
+        if(degree[node] == 1)
+            que.push(node);
+        else remNodes.insert(node);
+    }
+    
+    while(remNodes.size() > 2)
+    {
+        int size = que.size();
+        while(size--)
+        {
+            int currNode = que.front();
+            que.pop();
+            for(int nextNode : graph[currNode])
+            {
+                if(--degree[nextNode] == 1)
+                {
+                    que.push(nextNode);
+                    remNodes.erase(nextNode);
+                }
+            }
+        }
+    }
+
+    for(int node : remNodes)
+        ans.push_back(node);
+    return ans;
+}
