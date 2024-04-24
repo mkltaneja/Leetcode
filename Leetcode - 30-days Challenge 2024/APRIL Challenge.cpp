@@ -805,3 +805,24 @@ vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges)
         ans.push_back(node);
     return ans;
 }
+
+// DAY 24 (1137. N-th Tribonacci Number)=======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int tribonacci(int n) 
+{
+    if(n <= 1)
+        return n;
+    n -= 2;
+    int curr = 1, prev = 1, prev_prev = 0;
+    while(n--)
+    {
+        int currTemp = curr;
+        curr = curr + prev + prev_prev;
+        prev_prev = prev;
+        prev = currTemp;
+    }
+    return curr;
+}
