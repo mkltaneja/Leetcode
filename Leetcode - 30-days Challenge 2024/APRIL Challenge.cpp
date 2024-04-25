@@ -829,7 +829,9 @@ int tribonacci(int n)
 
 // DAY 25 (2370. Longest Ideal Subsequence)==================================================================================
 
-// Time Complexity = O(n*26)
+// APPROACH 1 (DFS - Going to every next valid character] -> Memory Limit Exceeded
+
+// Time Complexity = O(n*2*k)
 // Space Complexity = O(n*26)
 
 int getMaxStringSize(int idx, int k, string s, vector<int> &cache, vector<vector<int>> &nextIdx)
@@ -862,4 +864,26 @@ int longestIdealString(string s, int k)
         maxSize = max(maxSize, getMaxStringSize(idx, k, s, cache, nextIdx));
     
     return maxSize;
+}
+
+// APPROACH 2 (Like LIS - Taking maximum of every character until now) [MOST OPTIMIZED]
+
+// Time Complexity = O(n*2*k)
+// Time Complexity = O(26)
+
+int longestIdealString(string s, int k) 
+{
+    int size = s.size();
+    int maxLen = 1;
+    vector<int> cache(26, 0);
+    for(int idx = 0; idx < size; idx++)
+    {
+        int chItr = s[idx]-'a';
+        int currLen = 1;
+        for(int itr = max(0, chItr-k); itr <= min(25, chItr+k); itr++)
+            currLen = max(currLen, cache[itr] + 1);
+        cache[chItr] = currLen;
+        maxLen = max(maxLen, currLen);
+    }
+    return maxLen;
 }
