@@ -887,3 +887,39 @@ int longestIdealString(string s, int k)
     }
     return maxLen;
 }
+
+// DAY 26 (1289. Minimum Falling Path Sum II)==============================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(1)
+
+int minFallingPathSum(vector<vector<int>>& grid) 
+{
+    int rows = grid.size(), cols = grid[0].size();
+    int ans = INT_MAX, lastMin = INT_MAX, lastMin2 = INT_MAX;
+    for(int row = rows-1; row >= 0; row--)
+    {
+        int newLastMin = INT_MAX, newLastMin2 = INT_MAX;
+        for(int col = 0; col < cols; col++)
+        {
+            int minVal = lastMin;
+            if(row == rows-1)
+                minVal = 0;
+            else if(lastMin == grid[row+1][col])
+                minVal = lastMin2;
+            
+            grid[row][col] += minVal;
+            
+            if(grid[row][col] < newLastMin)
+                newLastMin2 = newLastMin, newLastMin = grid[row][col];
+            else
+                newLastMin2 = min(newLastMin2, grid[row][col]);
+            
+            if(row == 0)
+                ans = min(ans, grid[row][col]);
+        }
+        lastMin = newLastMin;
+        lastMin2 = newLastMin2;
+    }
+    return ans;
+}
