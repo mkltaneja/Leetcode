@@ -923,3 +923,28 @@ int minFallingPathSum(vector<vector<int>>& grid)
     }
     return ans;
 }
+
+// DAY 29 (2997. Minimum Number of Operations to Make Array XOR Equal to K)==================================================================================
+
+// Time Complexity = O(n + logk)
+// Space Complexity = O(1)
+
+int countBits(int num)
+{
+    int count = 0;
+    while(num)
+    {
+        num -= num & -num;
+        count++;
+    }
+    return count;
+}
+
+int minOperations(vector<int>& nums, int k)
+{
+    int finalXor = 0;
+    for(int num : nums)
+        finalXor ^= num;
+    int diffXor = finalXor ^ k;
+    return countBits(diffXor);
+}
