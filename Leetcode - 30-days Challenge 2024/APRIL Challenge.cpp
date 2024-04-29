@@ -924,6 +924,48 @@ int minFallingPathSum(vector<vector<int>>& grid)
     return ans;
 }
 
+// DAY 27 (514. Freedom Trail)==============================================================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*m + n*26)
+
+int findMinRotations(int ridx, int kidx, int kSize, string &key, string &ring, int rSize, vector<vector<int>> &clockNext, vector<vector<int>> &aclockNext, vector<vector<int>> &cache)
+{
+    if(kidx == kSize)
+        return 0;
+    if(cache[ridx][kidx] != -1)
+        return cache[ridx][kidx];
+    if(ring[ridx] == key[kidx])
+        return findMinRotations(ridx, kidx+1, kSize, key, ring, rSize, clockNext, aclockNext, cache) + 1;
+
+    int rotateClockWise = (clockNext[ridx][key[kidx]-'a'] - ridx + rSize) % rSize;
+    rotateClockWise += findMinRotations(clockNext[ridx][key[kidx]-'a'], kidx, kSize, key, ring, rSize, clockNext, aclockNext, cache);
+
+    int rotateAntiClockWise = (ridx - aclockNext[ridx][key[kidx]-'a'] + rSize) % rSize;
+    rotateAntiClockWise += findMinRotations(aclockNext[ridx][key[kidx]-'a'], kidx, kSize, key, ring, rSize, clockNext, aclockNext, cache);
+
+    return cache[ridx][kidx] = min(rotateClockWise, rotateAntiClockWise);
+}
+
+int findRotateSteps(string ring, string key) 
+{
+    int rSize = ring.size(), kSize = key.size();
+    vector<vector<int>> clockNext(rSize, vector<int>(26, -1));
+    vector<vector<int>> aclockNext(rSize, vector<int>(26, -1));
+    vector<int> clockCharIdx(26, -1), aclockCharIdx(26, -1);
+    vector<vector<int>> cache(rSize, vector<int>(kSize, -1));
+    for(int idx = 0; idx < 2*rSize; idx++)
+    {
+        int currIdx = idx % rSize;
+        aclockNext[currIdx] = aclockCharIdx;
+        aclockCharIdx[ring[currIdx] - 'a'] = currIdx;
+        clockNext[rSize - currIdx - 1] = clockCharIdx;
+        clockCharIdx[ring[rSize - currIdx - 1] - 'a'] = rSize - currIdx - 1;
+    }
+
+    return findMinRotations(0, 0, kSize, key, ring, rSize, clockNext, aclockNext, cache);
+}
+
 // DAY 28 (834. Sum of Distances in Tree)==================================================================================================
 
 // Time Complexity = O(n)
