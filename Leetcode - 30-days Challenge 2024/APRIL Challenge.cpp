@@ -924,6 +924,59 @@ int minFallingPathSum(vector<vector<int>>& grid)
     return ans;
 }
 
+// DAY 28 (834. Sum of Distances in Tree)==================================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int dfs1(int u, int p, int &dist0, vector<int> &subSize, vector<vector<int>> &graph)
+{
+    int treeSize = 0;
+
+    for(int v : graph[u])
+        if(v != p)
+            treeSize += dfs1(v, u, dist0, subSize, graph);
+    subSize[u] = treeSize + 1;
+    dist0 += treeSize;
+
+    return treeSize + 1;
+}
+
+void dfs2(int u, int p, int n, int dist0, vector<int> &subSize, vector<vector<int>> &graph, vector<int> &totDist)
+{
+    for(int v : graph[u])
+    {
+        if(v != p)
+        {
+            int childNodes = subSize[v];
+            int remNodes = n - childNodes;
+            totDist[v] = dist0 - childNodes + remNodes;
+            dfs2(v, u, n, totDist[v], subSize, graph, totDist);
+        }
+    }
+}
+
+vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) 
+{
+    vector<int> subSize(n);
+    int dist0 = 0;
+    vector<int> totDist(n, 0);
+    vector<vector<int>> graph(n);
+    for(vector<int> &edge : edges)
+    {
+        int u = edge[0];
+        int v = edge[1];
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+
+    dfs1(0, -1, dist0, subSize, graph);
+    totDist[0] = dist0;
+    dfs2(0, -1, n, dist0, subSize, graph, totDist);
+
+    return totDist;
+}
+
 // DAY 29 (2997. Minimum Number of Operations to Make Array XOR Equal to K)==================================================================================
 
 // Time Complexity = O(n + logk)
