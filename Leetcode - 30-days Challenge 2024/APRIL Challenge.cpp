@@ -1043,3 +1043,30 @@ int minOperations(vector<int>& nums, int k)
     int diffXor = finalXor ^ k;
     return countBits(diffXor);
 }
+
+// DAY 30 (1915. Number of Wonderful Substrings)=================================================================================================
+
+// Time Complexity = O(n*10)
+// Space Complexity = O(n)
+
+#define ll long long
+long long wonderfulSubstrings(string word) 
+{
+    unordered_map<int, ll> cntMap;
+    cntMap[0] = 1;
+    int currXor = 0;
+    ll ans = 0;
+    for(char c : word)
+    {
+        int currMask = (1 << (c - 'a'));
+        currXor ^= currMask;
+        ans += cntMap[currXor];
+        for(int bit = 0; bit < 10; bit++)
+        {
+            int searchXor = currXor ^ (1 << bit);
+            ans += cntMap[searchXor];
+        }
+        cntMap[currXor]++;
+    }
+    return ans;
+}
