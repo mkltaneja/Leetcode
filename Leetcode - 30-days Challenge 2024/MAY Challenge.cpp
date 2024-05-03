@@ -39,3 +39,31 @@ int findMaxK(vector<int>& nums)
     }
     return ans;
 }
+
+// DAY 3 (165. Compare Version Numbers)=================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int compareVersion(string version1, string version2) 
+{
+    int idx1 = 0, idx2 = 0;
+    int size1 = version1.size(), size2 = version2.size();
+    while(idx1 < size1 || idx2 < size2)
+    {
+        int num1 = 0, num2 = 0;
+        while(idx1 < size1 && version1[idx1] != '.')
+            num1 = num1*10 + (version1[idx1++]-'0');
+        while(idx2 < size2 && version2[idx2] != '.')
+            num2 = num2*10 + (version2[idx2++]-'0');
+        
+        if(num1 > num2)
+            return 1;
+        if(num2 > num1)
+            return -1;
+        
+        idx1++, idx2++;
+    }
+
+    return 0;
+}
