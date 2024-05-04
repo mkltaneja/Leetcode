@@ -67,3 +67,24 @@ int compareVersion(string version1, string version2)
 
     return 0;
 }
+
+// DAY 4 (881. Boats to Save People)=====================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(1)
+
+int numRescueBoats(vector<int>& people, int limit) 
+{
+    int size = people.size();
+    sort(people.begin(), people.end());
+    int start = 0, end = size-1;
+    int minBoats = 0;
+    while(start <= end)
+    {
+        if(people[start] + people[end] <= limit)
+            start++, end--;
+        else end--;
+        minBoats++;
+    }
+    return minBoats;
+}
