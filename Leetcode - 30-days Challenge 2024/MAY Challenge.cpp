@@ -88,3 +88,23 @@ int numRescueBoats(vector<int>& people, int limit)
     }
     return minBoats;
 }
+
+// DAY 5 (237. Delete Node in a Linked List)======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+void deleteNode(ListNode* node) 
+{
+    if(!node) return;
+    ListNode* prevNode = nullptr;
+    while(node->next)
+    {
+        node->val = node->next->val;
+        prevNode = node;
+        node = node->next;
+    }
+    assert(prevNode != nullptr);
+
+    prevNode->next = nullptr;
+}
