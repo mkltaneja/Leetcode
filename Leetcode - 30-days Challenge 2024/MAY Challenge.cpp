@@ -111,6 +111,8 @@ void deleteNode(ListNode* node)
 
 // DAY 6 (2487. Remove Nodes From Linked List)====================================================================================
 
+// APPROACH 1 (Using deque to compare values)
+
 // Time Complexity = O(n)
 // Space Complexity = O(n)
 
@@ -134,4 +136,36 @@ ListNode* removeNodes(ListNode* head)
     }
 
     return res->next;
+}
+
+// APPROACH 2 (Without additional space - reversing the list) --> [OPTIMIZED]
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+ListNode* reverseList(ListNode* head)
+{
+    ListNode* curr = head, *prev = nullptr;
+    while(curr)
+    {
+        ListNode* next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+
+ListNode* removeNodes(ListNode* head) 
+{
+    ListNode* newHead = reverseList(head);
+    ListNode* itr = newHead;
+    while(itr)
+    {
+        while(itr->next && itr->next->val < itr->val)
+            itr->next = itr->next->next;
+        itr = itr->next;
+    }
+    head = reverseList(newHead);
+    return head;
 }
