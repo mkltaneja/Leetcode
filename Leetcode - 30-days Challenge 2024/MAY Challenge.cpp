@@ -108,3 +108,30 @@ void deleteNode(ListNode* node)
 
     prevNode->next = nullptr;
 }
+
+// DAY 6 (2487. Remove Nodes From Linked List)====================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+ListNode* removeNodes(ListNode* head) 
+{
+    vector<ListNode*> deque;
+    ListNode* itr = head;
+    ListNode* res = new ListNode(-1);
+    while(itr)
+    {
+        while(!deque.empty() && deque.back()->val < itr->val)
+            deque.pop_back();
+        deque.push_back(itr);
+        itr = itr->next;
+    }
+    itr = res;
+    for(ListNode* node : deque)
+    {
+        itr->next = node;
+        itr = itr->next;
+    }
+
+    return res->next;
+}
