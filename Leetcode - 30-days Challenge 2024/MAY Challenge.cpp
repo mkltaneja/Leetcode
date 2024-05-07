@@ -169,3 +169,43 @@ ListNode* removeNodes(ListNode* head)
     head = reverseList(newHead);
     return head;
 }
+
+// DAY 7 (2816. Double a Number Represented as a Linked List)=======================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+ListNode* reverseList(ListNode* head)
+{
+    ListNode* curr = head, *prev = nullptr;
+    while(curr)
+    {
+        ListNode* next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+
+ListNode* doubleIt(ListNode* head) 
+{
+    ListNode* newHead = reverseList(head);
+    ListNode* itr = newHead, *prev = nullptr;
+    int carry = 0;
+    while(itr)
+    {
+        int sum = itr->val*2 + carry;
+        int currVal = sum % 10;
+        carry = sum / 10;
+        itr->val = currVal;
+        prev = itr;
+        itr = itr->next;
+    }
+    if(carry && prev)
+        prev->next = new ListNode(carry);
+
+    head = reverseList(newHead);
+
+    return head;
+}
