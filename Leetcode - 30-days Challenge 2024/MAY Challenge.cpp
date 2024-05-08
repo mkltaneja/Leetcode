@@ -209,3 +209,29 @@ ListNode* doubleIt(ListNode* head)
 
     return head;
 }
+
+// DAY 8 (506. Relative Ranks)==========================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+vector<string> findRelativeRanks(vector<int>& score) 
+{
+    vector<int> scoreSorted = score;
+    unordered_map<int,int> posInSorted;
+    vector<string> place;
+    sort(scoreSorted.rbegin(), scoreSorted.rend());
+    for(int idx = 0; idx < scoreSorted.size(); idx++)
+        posInSorted[scoreSorted[idx]] = idx+1;
+    for(int currScore : score)
+    {
+        if(posInSorted[currScore] == 1)
+            place.emplace_back("Gold Medal");
+        else if(posInSorted[currScore] == 2)
+            place.emplace_back("Silver Medal");
+        else if(posInSorted[currScore] == 3)
+            place.emplace_back("Bronze Medal");
+        else place.emplace_back(to_string(posInSorted[currScore]));
+    }
+    return place;
+}
