@@ -235,3 +235,18 @@ vector<string> findRelativeRanks(vector<int>& score)
     }
     return place;
 }
+
+// DAY 9 (3075. Maximize Happiness of Selected Children)==================================================================
+
+// Time Complexity = O(n*logn + n)
+// Space Complexity = O(1)
+
+long long maximumHappinessSum(vector<int>& happiness, int k) 
+{
+    int n = happiness.size();
+    long long maxScore = 0;
+    sort(happiness.begin(), happiness.end(), greater<int>());
+    for(int i = 0; i < k && i < n; i++)
+        maxScore += max(0, happiness[i] - i);
+    return maxScore;
+}
