@@ -250,3 +250,22 @@ long long maximumHappinessSum(vector<int>& happiness, int k)
         maxScore += max(0, happiness[i] - i);
     return maxScore;
 }
+
+// DAY 10 (786. K-th Smallest Prime Fraction)=============================================================================
+
+// Time Complexity = O(n^2 + n*logn)
+// Space Complexity = O(n^2)
+
+#define f first
+#define s second
+vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) 
+{
+    int size = arr.size();
+    vector<pair<double, pair<int,int>>> fractions;
+    for(int idx1 = 0; idx1 < size; idx1++)
+        for(int idx2 = idx1+1; idx2 < size; idx2++)
+            fractions.push_back({1.0 * arr[idx1] / arr[idx2], {arr[idx1], arr[idx2]}});
+    sort(fractions.begin(), fractions.end());
+
+    return {fractions[k-1].s.f, fractions[k-1].s.s};
+}
