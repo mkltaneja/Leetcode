@@ -253,6 +253,8 @@ long long maximumHappinessSum(vector<int>& happiness, int k)
 
 // DAY 10 (786. K-th Smallest Prime Fraction)=============================================================================
 
+// APPROACH 1 (Brute Force -> Comparing all pairs)
+
 // Time Complexity = O(n^2 + n*logn)
 // Space Complexity = O(n^2)
 
@@ -268,4 +270,39 @@ vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k)
     sort(fractions.begin(), fractions.end());
 
     return {fractions[k-1].s.f, fractions[k-1].s.s};
+}
+
+// APPROACH 2 (Binary Search) --> [OPTIMIZED]
+
+// Time Complexity = O(n*log(n))
+// Space Complexity = O(1)
+
+vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) 
+{
+    double lo = 0, hi = 1;
+    int size = arr.size();
+    while(lo <= hi)
+    {
+        double mid = (lo + hi) / 2;
+        int count = 0, num = 0, den = 0;
+        double maxFrac = 0;
+        for(int idx1 = 0, idx2 = 1; idx1 < size; idx1++)
+        {
+            while(idx2 < size && 1.0*arr[idx1]/arr[idx2] > mid) 
+                idx2++;
+            count += size - idx2;
+            if(idx2 < size && 1.0*arr[idx1]/arr[idx2] > maxFrac)
+            {
+                maxFrac = 1.0*arr[idx1]/arr[idx2];
+                num = arr[idx1];
+                den = arr[idx2];
+            }
+        }
+        if(count == k)
+            return {num, den};
+        if(count < k)
+            lo = mid;
+        else hi = mid;
+    }
+    return {-1, -1};
 }
