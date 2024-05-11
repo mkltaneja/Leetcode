@@ -306,3 +306,38 @@ vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k)
     }
     return {-1, -1};
 }
+
+// DAY 11 (857. Minimum Cost to Hire K Workers)==============================================================================
+
+// Time Complexity = O(n*logn + n*logk)
+// Space Complexity = O(n + k)
+
+double mincostToHireWorkers(vector<int>& quality, vector<int>& wage, int k) 
+{
+    int size = wage.size();
+    vector<pair<double, int>> wqRatio(size);
+    priority_queue<int> minkQualities;
+    int totalQuality = 0;
+    double minPay = DBL_MAX;
+    for(int idx = 0; idx < size; idx++)
+        wqRatio[idx] = {1.0 * wage[idx] / quality[idx], quality[idx]};
+    sort(wqRatio.begin(), wqRatio.end());
+
+    for(int idx = 0; idx < size; idx++)
+    {
+        minkQualities.push(wqRatio[idx].second);
+        double ratio = wqRatio[idx].first;
+        totalQuality += wqRatio[idx].second;
+
+        if(minkQualities.size() > k)
+        {
+            totalQuality -= minkQualities.top();
+            minkQualities.pop();
+        }
+
+        if(minkQualities.size() == k)
+            minPay = min(minPay, totalQuality * ratio);
+    }
+
+    return minPay;
+}
