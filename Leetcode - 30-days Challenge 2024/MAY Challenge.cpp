@@ -341,3 +341,20 @@ double mincostToHireWorkers(vector<int>& quality, vector<int>& wage, int k)
 
     return minPay;
 }
+
+// DAY 12 (2373. Largest Local Values in a Matrix)=====================================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*m)
+
+vector<vector<int>> largestLocal(vector<vector<int>>& grid) 
+{
+    int n = grid.size(), m = grid[0].size();
+    vector<vector<int>> maxLocal(n-2, vector<int>(m-2, 0));
+    for(int i = 0; i < n-2; i++)
+        for(int j = 0; j < m-2; j++)
+            maxLocal[i][j] = max({grid[i][j], grid[i][j+1], grid[i][j+2],
+                                  grid[i+1][j], grid[i+1][j+1], grid[i+1][j+2],
+                                  grid[i+2][j], grid[i+2][j+1], grid[i+2][j+2]});
+    return maxLocal;
+}
