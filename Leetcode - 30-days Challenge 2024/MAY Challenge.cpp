@@ -358,3 +358,74 @@ vector<vector<int>> largestLocal(vector<vector<int>>& grid)
                                   grid[i+2][j], grid[i+2][j+1], grid[i+2][j+2]});
     return maxLocal;
 }
+
+// DAY 13 (861. Score After Flipping Matrix)==============================================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(1)
+
+int countOffBitsForColumn(int col, int rows, vector<vector<int>> &grid)
+{
+    int count = 0;
+    for(int row = 0; row < rows; row++)
+        count += grid[row][col] == 0;
+    return count;
+}
+
+void toggleRow(int row, int cols, vector<vector<int>> &grid)
+{
+    for(int col = 0; col < cols; col++)
+        grid[row][col] ^= 1;
+}
+
+void toggleColumn(int col, int rows, vector<vector<int>> &grid)
+{
+    for(int row = 0; row < rows; row++)
+        grid[row][col] ^= 1;
+}
+
+int getMaxScore(int rows, int cols, vector<vector<int>> &grid)
+{
+    int score = 0;
+    for(int row = 0; row < rows; row++)
+    {
+        int num = 0;
+        for(int col = 0; col < cols; col++)
+            num = num*2 + grid[row][col];
+        score += num;
+    }
+    return score;
+}
+
+void solveForRemainingBits(int rows, int cols, vector<vector<int>> &grid)
+{
+    for(int col = 1; col < cols; col++)
+    {
+        int offBits = countOffBitsForColumn(col, rows, grid);
+        if(offBits > rows/2)
+            toggleColumn(col, rows, grid);
+    }
+}
+
+void solveForMSB(int rows, int cols, vector<vector<int>> &grid)
+{
+    int offBits = countOffBitsForColumn(0, rows, grid);
+    if(offBits == rows)
+        toggleColumn(0, rows, grid);
+    else if(offBits)
+        for(int row = 0; row < rows; row++)
+            if(grid[row][0] == 0)
+                toggleRow(row, cols, grid);
+}
+
+int matrixScore(vector<vector<int>>& grid)
+{
+    int rows = grid.size(), cols = grid[0].size();
+
+    solveForMSB(rows, cols, grid);
+    solveForRemainingBits(rows, cols, grid);
+    
+    int maxScore = getMaxScore(rows, cols, grid);
+
+    return maxScore;
+}
