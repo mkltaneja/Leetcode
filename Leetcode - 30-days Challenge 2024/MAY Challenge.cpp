@@ -429,3 +429,38 @@ int matrixScore(vector<vector<int>>& grid)
 
     return maxScore;
 }
+
+
+// DAY 14 (1219. Path with Maximum Gold)=======================================================================================
+
+// Time Complexity = O(4^g * (n*m)) [g = gold depth]
+// Space Complexity = O(g) [g = gold depth]
+
+int getMaximumGoldDFS(int row, int col, int rows, int cols, vector<vector<int>> &grid)
+{
+    if(row == -1 || col == -1 || row == rows || col == cols || grid[row][col] == 0)
+        return 0;
+
+    int currGold = grid[row][col];
+    grid[row][col] = 0;
+
+    int bottomMax = getMaximumGoldDFS(row+1, col, rows, cols, grid);
+    int rightMax = getMaximumGoldDFS(row, col+1, rows, cols, grid);
+    int topMax = getMaximumGoldDFS(row-1, col, rows, cols, grid);
+    int leftMax = getMaximumGoldDFS(row, col-1, rows, cols, grid);
+
+    grid[row][col] = currGold;
+
+    return currGold + max({bottomMax, rightMax, topMax, leftMax});
+}
+
+int getMaximumGold(vector<vector<int>>& grid)
+{
+    int maxGold = 0;
+    int rows = grid.size(), cols = grid[0].size();
+    for(int row = 0; row < rows; row++)
+        for(int col = 0; col < cols; col++)
+            if(grid[row][col])
+                maxGold = max(maxGold, getMaximumGoldDFS(row, col, rows, cols, grid));
+    return maxGold;
+}
