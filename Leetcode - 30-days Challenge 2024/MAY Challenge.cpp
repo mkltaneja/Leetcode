@@ -464,3 +464,97 @@ int getMaximumGold(vector<vector<int>>& grid)
                 maxGold = max(maxGold, getMaximumGoldDFS(row, col, rows, cols, grid));
     return maxGold;
 }
+
+// DAY 15 (2812. Find the Safest Path in a Grid)=================================================================================================
+
+
+// Time Complexity = O(n^2 + n^2 * log(n))
+// Space Complexity = O(n^2)
+
+int rows = 0, cols = 0;
+int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+int maxDist = 0;
+int minDist[404][404];
+bool visited[404][404];
+
+void getMinimumDistances(vector<vector<int>> &grid)
+{
+    memset(minDist, -1, sizeof(minDist));
+    queue<pair<int,int>> que;
+    for(int row = 0; row < rows; row++)
+    {
+        for(int col = 0; col < cols; col++)
+        {
+            if(grid[row][col])
+            {
+                que.push({row, col});
+                minDist[row][col] = 0;
+            }
+        }
+    }
+    
+    int dist = 0;
+    while(!que.empty())
+    {
+        int size = que.size();
+        while(size--)
+        {
+            int row = que.front().first;
+            int col = que.front().second;
+            que.pop();
+
+            for(int d = 0; d < 4; d++)
+            {
+                int nxtRow = row + dir[d][0], nxtCol = col + dir[d][1];
+                if(nxtRow != -1 && nxtCol != -1 && nxtRow < rows && nxtCol < cols && minDist[nxtRow][nxtCol] == -1)
+                {
+                    minDist[nxtRow][nxtCol] = dist + 1;
+                    maxDist = max(maxDist, dist + 1);
+                    que.push({nxtRow, nxtCol});
+                }
+            }
+        }
+        dist++;
+    }
+}
+
+bool isValidSF(int candidate, int row, int col)
+{
+    if(row == -1 || col == -1 || row == rows || col == cols || minDist[row][col] < candidate || visited[row][col])
+        return false;
+    if(row == rows-1 && col == cols-1)
+        return true;
+    visited[row][col] = true;
+
+    return isValidSF(candidate, row + 1, col) | 
+        isValidSF(candidate, row, col + 1) | 
+        isValidSF(candidate, row - 1, col) | 
+        isValidSF(candidate, row, col - 1);
+}
+
+int getMaxSafenessFactor()
+{
+    int lo = 0, hi = maxDist;
+    int safenessFactor = 0;
+    while(lo <= hi)
+    {
+        int mid = (lo + hi) >> 1;
+        memset(visited, false, sizeof(visited));
+        if(isValidSF(mid, 0, 0))
+        {
+            safenessFactor = mid;
+            lo = mid + 1;
+        }
+        else hi = mid - 1;
+    }
+    return safenessFactor;
+}
+
+int maximumSafenessFactor(vector<vector<int>>& grid)
+{
+    rows = grid.size(), cols = grid[0].size();
+    getMinimumDistances(grid);
+
+    int maxSafenessFactor = minDist[0][0] == 0 || minDist[rows-1][cols-1] == 0? 0 : getMaxSafenessFactor();
+    return maxSafenessFactor;
+}
