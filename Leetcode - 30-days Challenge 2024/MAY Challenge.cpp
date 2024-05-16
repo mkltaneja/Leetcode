@@ -558,3 +558,22 @@ int maximumSafenessFactor(vector<vector<int>>& grid)
     int maxSafenessFactor = minDist[0][0] == 0 || minDist[rows-1][cols-1] == 0? 0 : getMaxSafenessFactor();
     return maxSafenessFactor;
 }
+
+// DAY 16 (2331. Evaluate Boolean Binary Tree)=========================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool evaluateTree(TreeNode* root) 
+{
+    if(!root)
+        return false;
+    if(!root->left && !root->right)
+        return root->val;
+    
+    bool leftAns = evaluateTree(root->left);
+    bool rightAns = evaluateTree(root->right);
+    if(root->val == 2)
+        return leftAns | rightAns;
+    return leftAns & rightAns;
+}
