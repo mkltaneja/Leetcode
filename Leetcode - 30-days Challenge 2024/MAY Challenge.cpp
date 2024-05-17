@@ -577,3 +577,20 @@ bool evaluateTree(TreeNode* root)
         return leftAns | rightAns;
     return leftAns & rightAns;
 }
+
+// DAY 17 (1325. Delete Leaves With a Given Value)======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(h)
+
+TreeNode* removeLeafNodes(TreeNode* root, int target) 
+{
+    if(!root)
+        return nullptr;
+    root->left = removeLeafNodes(root->left, target);
+    root->right = removeLeafNodes(root->right, target);
+
+    if(!root->left && !root->right && root->val == target)
+        return nullptr;
+    return root;
+}
