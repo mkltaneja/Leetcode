@@ -594,3 +594,28 @@ TreeNode* removeLeafNodes(TreeNode* root, int target)
         return nullptr;
     return root;
 }
+
+// DAY 18 (979. Distribute Coins in Binary Tree)=================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(h)
+
+int totalMoves = 0;
+
+int distributeCoinsDFS(TreeNode* node)
+{
+    if(!node) return 0;
+
+    int leftStones = distributeCoinsDFS(node->left);
+    int rightStones = distributeCoinsDFS(node->right);
+
+    totalMoves += abs(leftStones) + abs(rightStones);
+
+    return leftStones + rightStones + (node->val - 1);
+}
+
+int distributeCoins(TreeNode* root) 
+{
+    distributeCoinsDFS(root);
+    return totalMoves;
+}
