@@ -37,3 +37,37 @@ public:
         return ans;
     }
 };
+
+// APPROACH 2 (BFS + DP)===========================================================================================
+
+// Time Complexity = O(30 * logk)
+// Space Complexity = O(logk)
+
+class Solution {
+public:
+    
+    #define ll long long
+    
+    int waysToReachStair(int k) 
+    {
+        unordered_map<ll,int> dp;
+        int ans = (k <= 1);
+        dp[1] = 1;
+        
+        for(int jump = 0; jump <= 30; jump++)
+        {
+            unordered_map<ll,int> dp2;
+            for(auto p : dp)
+            {
+                ll x = p.first;
+                int currAns = p.second;
+                dp2[x + (1ll << jump)] += currAns;
+                dp2[(x - 1) + (1ll << jump)] += currAns;
+            }
+            swap(dp, dp2);
+            ans += (dp.count(k)? dp[k] : 0) + (dp.count(k+1)? dp[k+1] : 0);
+        }
+        
+        return ans;
+    }
+};
