@@ -619,3 +619,28 @@ int distributeCoins(TreeNode* root)
     distributeCoinsDFS(root);
     return totalMoves;
 }
+
+// DAY 19 (3068. Find the Maximum Sum of Node Values)===================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+#define ll long long
+long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) 
+{
+    ll maxSum = 0;
+    int minXorDiff = INT_MAX, totalXors = 0;
+    for(int num : nums)
+    {
+        int xoredNum = num ^ k;
+        if(xoredNum > num)
+        {
+            totalXors++;
+            maxSum += xoredNum;
+        }
+        else maxSum += num;
+        minXorDiff = min(minXorDiff, abs(xoredNum - num));
+    }
+
+    return maxSum - ((totalXors & 1)? minXorDiff : 0);
+}
