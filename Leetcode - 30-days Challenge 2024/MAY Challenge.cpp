@@ -644,3 +644,23 @@ long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges)
 
     return maxSum - ((totalXors & 1)? minXorDiff : 0);
 }
+
+// DAY 20 (1863. Sum of All Subset XOR Totals)====================================================================================
+
+// Time Complexity = O(2^n * n)
+// Space Complexity = O(1)
+
+int subsetXORSum(vector<int>& nums) 
+{
+    int size = nums.size();
+    int sum = 0;
+    for(int mask = 0; mask < (1 << size); mask++)
+    {
+        int currXor = 0;
+        for(int idx = 0; idx < size; idx++)
+            if((mask >> idx) & 1)
+                currXor ^= nums[idx];
+        sum += currXor;
+    }
+    return sum;
+}
