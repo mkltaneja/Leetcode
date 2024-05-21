@@ -664,3 +664,31 @@ int subsetXORSum(vector<int>& nums)
     }
     return sum;
 }
+
+// DAY 21 (78. Subsets)=============================================================================================
+
+// Time Complexity = O(2^n)
+// Space Complexity = O(2^n)
+
+vector<vector<int>> ans;
+
+void findSubsetsDFS(int pidx, int size, vector<int> &subset, vector<int> &nums)
+{
+    if(pidx == size)
+    {
+        ans.push_back(subset);
+        return;
+    }
+    subset.push_back(nums[pidx]);
+    findSubsetsDFS(pidx+1, size, subset, nums);
+    subset.pop_back();
+    findSubsetsDFS(pidx+1, size, subset, nums);
+}
+
+vector<vector<int>> subsets(vector<int>& nums)
+{
+    int size = nums.size();
+    vector<int> subset;
+    findSubsetsDFS(0, size, subset, nums);
+    return ans;
+}
