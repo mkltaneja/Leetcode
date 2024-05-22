@@ -692,3 +692,51 @@ vector<vector<int>> subsets(vector<int>& nums)
     findSubsetsDFS(0, size, subset, nums);
     return ans;
 }
+
+// DAY 22 (131. Palindrome Partitioning)===================================================================================
+
+// Time Complexity = O(n * 2^n)
+// Space Complexity = O(n * 2^n)
+
+vector<vector<string>> ans;
+void partitionPalString(int pidx, int n, string &s, vector<vector<bool>> &isPal, vector<string> &currRes)
+{
+    if(pidx == n)
+    {
+        ans.push_back(currRes);
+        return;
+    }
+    string curr = "";
+    for(int cidx = pidx; cidx < n; cidx++)
+    {
+        curr += s[cidx];
+        if(isPal[pidx][cidx])
+        {
+            currRes.push_back(curr);
+            partitionPalString(cidx+1, n, s, isPal, currRes);
+            currRes.pop_back();
+        }
+    }
+}
+
+vector<vector<string>> partition(string s) 
+{
+    int n = s.size();
+    vector<vector<bool>> isPal(n, vector<bool>(n, false));
+    for(int len = 1; len <= n; len++)
+    {
+        for(int i = 0, j = len-1; j < n; i++, j++)
+        {
+            if(len == 1)
+                isPal[i][j] = true;
+            else if(len == 2 && s[i] == s[j])
+                isPal[i][j] = true;
+            else if(len > 2 && s[i] == s[j] && isPal[i+1][j-1])
+                isPal[i][j] = true;
+        }
+    }
+    
+    vector<string> currRes;
+    partitionPalString(0, n, s, isPal, currRes);
+    return ans;
+}
