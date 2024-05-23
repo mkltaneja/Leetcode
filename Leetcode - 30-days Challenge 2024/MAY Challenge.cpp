@@ -740,3 +740,38 @@ vector<vector<string>> partition(string s)
     partitionPalString(0, n, s, isPal, currRes);
     return ans;
 }
+
+// DAY 23 (2597. The Number of Beautiful Subsets)====================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(k + n)
+
+int beautifulSubsets(vector<int>& nums, int k) 
+{
+    int tot = nums.size();
+    int ans = 1;
+    vector<map<int,int>> numCnt(k);
+
+    for(int num : nums)
+        numCnt[num%k][num]++;
+    for(int x = k-1; x >= 0; x--)
+    {
+        vector<pair<int,int>> freqMap(numCnt[x].begin(), numCnt[x].end());
+        int m = freqMap.size();
+        vector<int> count(m+1);
+        count[m] = 1;
+        for(int i = m-1; i >= 0; i--)
+        {
+            int skip = count[i+1];
+            int take = (1 << freqMap[i].second) - 1;
+            if(i+1 < m && freqMap[i+1].first == freqMap[i].first + k)
+                take *= count[i+2];
+            else take *= count[i+1];
+
+            count[i] = skip + take;
+        }
+        ans *= count[0];
+    }
+
+    return ans - 1;
+}
