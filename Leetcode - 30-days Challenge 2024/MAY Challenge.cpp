@@ -775,3 +775,40 @@ int beautifulSubsets(vector<int>& nums, int k)
 
     return ans - 1;
 }
+
+// DAY 24 (1255. Maximum Score Words Formed by Letters)===================================================================================
+
+// Time Complexity = O(2^n * n * m)
+// Space Complexity = O(26)
+
+int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) 
+{
+    int wordsSize = words.size();
+    vector<int> freqMap(26, 0);
+    int maxScore = 0;
+    for(char letter : letters)
+        freqMap[letter-'a']++;
+    for(int mask = 1; mask < (1 << wordsSize); mask++)
+    {
+        vector<int> currFreq(26, 0);
+        int currScore = 0;
+        bool possible = true;
+        for(int idx = 0; idx < wordsSize && possible; idx++)
+        {
+            if((mask >> idx) & 1 ^ 1)
+                continue;
+            for(char letter : words[idx])
+            {
+                if(++currFreq[letter-'a'] > freqMap[letter-'a'])
+                {
+                    possible = false;
+                    currScore = 0;
+                    break;
+                }
+                currScore += score[letter-'a'];
+            }
+        }
+        maxScore = max(maxScore, currScore);
+    }
+    return maxScore;
+}
