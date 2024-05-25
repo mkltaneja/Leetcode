@@ -812,3 +812,70 @@ int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& sco
     }
     return maxScore;
 }
+
+// DAY 25 (140. Word Break II)===========================================================================================
+
+// Time Complexity = O(n*k + (2^m)*m)
+// Space Complexity = O(n*k + (2^m)*m)
+
+class Trie
+{
+    public:
+    vector<Trie*> childs;
+    bool wordEnd;
+    Trie()
+    {
+        this->childs.assign(26, nullptr);
+        this->wordEnd = false;
+    }
+
+    void insert(string &word)
+    {
+        Trie* itr = this;
+        for(char c : word)
+        {
+            if(!itr->childs[c-'a'])
+                itr->childs[c-'a'] = new Trie();
+            itr = itr->childs[c-'a'];
+        }
+        itr->wordEnd = true;
+    }
+};
+
+Trie* root = new Trie();
+vector<string> ans;
+void wordBreakDFS(int idx, int size, Trie* node, string &s, string &sentence)
+{
+    if(idx == size)
+    {
+        sentence.pop_back();
+        ans.push_back(sentence);
+        return;
+    }
+    Trie* titr = node;
+    string newSentence = sentence;
+    for(int itr = idx; itr < size; itr++)
+    {
+        if(!titr->childs[s[itr]-'a'])
+            return;
+        titr = titr->childs[s[itr]-'a'];
+        newSentence += s[itr];
+        if(titr->wordEnd)
+        {
+            newSentence += " ";
+            wordBreakDFS(itr+1, size, root, s, newSentence);
+            newSentence.pop_back();
+        }
+    }
+}
+
+vector<string> wordBreak(string s, vector<string>& wordDict) 
+{
+    int size = s.size();
+    for(string word : wordDict)
+        root->insert(word);
+    
+    string sentence = "";
+    wordBreakDFS(0, size, root, s, sentence);
+    return ans;
+}
