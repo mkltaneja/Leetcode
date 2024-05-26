@@ -879,3 +879,38 @@ vector<string> wordBreak(string s, vector<string>& wordDict)
     wordBreakDFS(0, size, root, s, sentence);
     return ans;
 }
+
+// DAY 26 (552. Student Attendance Record II)===================================================================================
+
+// Time Complexity = O(n*3*2)
+// Space Complexity = O(100000*3*2)
+
+const int mod = 1e9 + 7;
+int modAddition(int x, int y)
+{
+    return (x % mod + y % mod) % mod;
+}
+
+int checkRecord(int n) 
+{
+    int totalWays[100001][3][2] = {0};
+    fill(&totalWays[0][0][0], &totalWays[0][0][0] + 6, 1);
+
+    for(int day = 1; day <= n; day++)
+    {
+        for(int late = 0; late <= 2; late++)
+        {
+            for(int absent = 0; absent <= 1; absent++)
+            {
+                int ways = totalWays[day-1][0][absent]; // present
+                if(absent < 1)
+                    ways = modAddition(ways, totalWays[day-1][0][absent+1]); // absent
+                if(late < 2)
+                    ways = modAddition(ways, totalWays[day-1][late+1][absent]); // late
+                totalWays[day][late][absent] = ways;
+            }
+        }
+    }
+    
+    return totalWays[n][0][0];
+}
