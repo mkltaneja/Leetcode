@@ -914,3 +914,18 @@ int checkRecord(int n)
     
     return totalWays[n][0][0];
 }
+
+// DAY 27 (1608. Special Array With X Elements Greater Than or Equal X)=====================================================================================
+
+// Time Complexity = O(n*logn)
+// Time Complexity = O(1)
+
+int specialArray(vector<int>& nums)
+{
+    int size = nums.size();
+    sort(nums.rbegin(), nums.rend());
+    for(int x = 1; x <= size; x++)
+        if((nums[x-1] >= x) && ((x == size) || (x < size && nums[x] < x)))
+            return x;
+    return -1;
+}
