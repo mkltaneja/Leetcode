@@ -929,3 +929,22 @@ int specialArray(vector<int>& nums)
             return x;
     return -1;
 }
+
+// DAY 28 (1208. Get Equal Substrings Within Budget)==============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int equalSubstring(string s, string t, int maxCost) 
+{
+    int size = s.size();
+    int currCost = 0, maxSubarrayLen = 0;
+    for(int idx = 0, prevIdx = 0; idx < size; idx++)
+    {
+        currCost += abs(s[idx] - t[idx]);
+        while(currCost > maxCost)
+            currCost -= abs(s[prevIdx] - t[prevIdx++]);
+        maxSubarrayLen = max(maxSubarrayLen, idx - prevIdx + 1);
+    }
+    return maxSubarrayLen;
+}
