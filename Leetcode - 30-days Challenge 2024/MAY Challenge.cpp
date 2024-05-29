@@ -948,3 +948,39 @@ int equalSubstring(string s, string t, int maxCost)
     }
     return maxSubarrayLen;
 }
+
+// DAY 29 (1404. Number of Steps to Reduce a Number in Binary Representation to One)===================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(1)
+
+const string ONE = "1";
+
+string addOne(string &s)
+{
+    int carry = 1;
+    for(int idx = s.size()-1; idx >= 0 && carry; idx--)
+    {
+        int sum = (s[idx]-'0') + carry;
+        int num = sum % 2;
+        carry = sum / 2;
+        s[idx] = char(num + '0');
+    }
+    if(carry)
+        s = ONE + s;
+    return s;
+}
+
+int numSteps(string s) 
+{
+    int totalSteps = 0;
+    while(s != ONE)
+    {
+        if(s.back() == '0')
+            s.pop_back();
+        else
+            addOne(s);
+        totalSteps++;
+    }
+    return totalSteps;
+}
