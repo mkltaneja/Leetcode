@@ -987,6 +987,8 @@ int numSteps(string s)
 
 // DAY 30 (1442. Count Triplets That Can Form Two Arrays of Equal XOR)===========================================================================
 
+// APPROACH 1 (Brute Force)
+
 // Time Complexity = O(n^3)
 // Space Complexity = O(1)
 
@@ -1007,6 +1009,38 @@ int countTriplets(vector<int>& arr)
                 if(xor1 == xor2)
                     triplets++;
             }
+        }
+    }
+    return triplets;
+}
+
+// APPROACH 2 (Using Map to store further XOR frequencies to every index)
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+int countTriplets(vector<int>& arr) 
+{
+    int size = arr.size();
+    int triplets = 0;
+    vector<unordered_map<int,int>> xorMap(size);
+    for(int i = 0; i < size; i++)
+    {
+        int currXor = 0;
+        for(int j = i; j < size; j++)
+        {
+            currXor ^= arr[j];
+            xorMap[i][currXor]++;
+        }
+    }
+
+    for(int i = 0; i < size-1; i++)
+    {
+        int xor1 = 0;
+        for(int j = i; j < size-1; j++)
+        {
+            xor1 ^= arr[j];
+            triplets += xorMap[j+1][xor1];
         }
     }
     return triplets;
