@@ -1045,3 +1045,24 @@ int countTriplets(vector<int>& arr)
     }
     return triplets;
 }
+
+// APPROACH 3 (Finding Subarrays with XOR = 0)
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(1)
+
+int countTriplets(vector<int>& arr) 
+{
+    arr.insert(arr.begin(), 0);
+    int triplets = 0;
+    int size = arr.size();
+    for(int idx = 1; idx < size; idx++)
+        arr[idx] ^= arr[idx-1];
+
+    for(int i = 0; i < size; i++)
+        for(int j = i+1; j < size; j++)
+            if(arr[i] == arr[j])
+                triplets += j - i - 1;
+    
+    return triplets;
+}
