@@ -1066,3 +1066,24 @@ int countTriplets(vector<int>& arr)
     
     return triplets;
 }
+
+// DAY 31 (260. Single Number III)=========================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+vector<int> singleNumber(vector<int>& nums) 
+{
+    long totalXor = 0;
+    for(int num : nums)
+        totalXor ^= num;
+    int xorRsb = (totalXor & (totalXor - 1)) ^ totalXor;
+    vector<int> ans(2, 0);
+    for(int num : nums)
+    {
+        if(num & xorRsb)
+            ans[0] ^= num;
+        else ans[1] ^= num;
+    }
+    return ans;
+}
