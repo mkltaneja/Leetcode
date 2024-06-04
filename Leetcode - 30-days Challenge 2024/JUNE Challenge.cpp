@@ -41,3 +41,29 @@ int appendCharacters(string s, string t)
     }
     return tSize - idx2;
 }
+
+// DAY 4 (409. Longest Palindrome)=====================================================================================
+
+// Time Complexity = O(n + c)
+// Space Complexity = O(c)
+
+int longestPalindrome(string s) 
+{
+    map<char,int> cntMap;
+    int maxLen = 0, totalOdds = 0, totalOddLen = 0;
+    for(char c : s)
+        cntMap[c]++;
+    
+    for(auto pair : cntMap)
+    {
+        int count = pair.second;
+        if(count & 1 ^ 1)
+            maxLen += count;
+        else
+        {
+            totalOdds++;
+            totalOddLen += count;
+        }
+    }
+    return maxLen + (totalOdds? (totalOddLen - totalOdds + 1) : 0);
+}
