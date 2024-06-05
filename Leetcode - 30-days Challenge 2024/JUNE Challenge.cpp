@@ -67,3 +67,27 @@ int longestPalindrome(string s)
     }
     return maxLen + (totalOdds? (totalOddLen - totalOdds + 1) : 0);
 }
+
+// DAY 5 (1002. Find Common Characters)===================================================================================
+
+// Time Complexity = O(n * (m + 26))
+// Space Complexity = O(n*m + 26)
+
+vector<string> commonChars(vector<string>& words) 
+{
+    vector<int> commonOcc(26, INT_MAX);
+    vector<string> ans;
+    for(string word : words)
+    {
+        vector<int> currOcc(26, 0);
+        for(char c : word)
+            currOcc[c-'a']++;
+        for(int ch = 0; ch < 26; ch++)
+            commonOcc[ch] = min(commonOcc[ch], currOcc[ch]);
+    }
+    for(int ch = 0; ch < 26; ch++)
+        while(commonOcc[ch]--)
+            ans.push_back(string(1, char(ch + 'a')));
+    
+    return ans;
+}
