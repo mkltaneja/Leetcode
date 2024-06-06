@@ -91,3 +91,34 @@ vector<string> commonChars(vector<string>& words)
     
     return ans;
 }
+
+// DAY 6 (846. Hand of Straights)============================================================================================
+
+// Time Complexity = O(n*logn + n)
+// Space Complexity = O(n)
+
+bool isNStraightHand(vector<int>& hand, int groupSize) 
+{
+    int handSize = hand.size();
+    unordered_map<int,int> cardCnt;
+    sort(hand.begin(), hand.end());
+    for(int card : hand)
+        cardCnt[card]++;
+    for(int card : hand)
+    {
+        if(cardCnt[card] == 0)
+            continue;
+        int size = 0, currCard = card;
+        while(size < groupSize && cardCnt.count(currCard))
+        {
+            size++;
+            if(--cardCnt[currCard] == 0)
+                cardCnt.erase(currCard);
+            currCard++;
+        }
+        if(size < groupSize)
+            return false;
+    }
+
+    return true;
+}
