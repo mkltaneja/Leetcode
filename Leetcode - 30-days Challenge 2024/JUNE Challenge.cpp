@@ -122,3 +122,40 @@ bool isNStraightHand(vector<int>& hand, int groupSize)
 
     return true;
 }
+
+// DAY 7 (648. Replace Words)=====================================================================================================
+
+// Time Complexity = >O(n + m)
+// Space Complexity = >O(n*n1 + m)
+
+string replaceWords(vector<string>& dictionary, string sentence) 
+{
+    int size = sentence.size();
+    unordered_set<string> roots;
+    string ans = "";
+    for(string root : dictionary)
+        roots.insert(root);
+    string currWord = "";
+    bool foundRoot = false;
+    for(int idx = 0; idx <= size; idx++)
+    {
+        if(idx == size || sentence[idx] == ' ' || foundRoot)
+        {
+            if(!foundRoot)
+                ans += currWord + " ";
+            else if(idx < size && sentence[idx] == ' ')
+                foundRoot = false;
+            currWord = "";
+            continue;
+        }
+        currWord += sentence[idx];
+        if(roots.count(currWord))
+        {
+            foundRoot = true;
+            ans += currWord + " ";
+        }
+    }
+    if(!ans.empty())
+        ans.pop_back();
+    return ans;
+}
