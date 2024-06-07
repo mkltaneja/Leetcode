@@ -125,8 +125,12 @@ bool isNStraightHand(vector<int>& hand, int groupSize)
 
 // DAY 7 (648. Replace Words)=====================================================================================================
 
-// Time Complexity = >O(n + m)
-// Space Complexity = >O(n*n1 + m)
+// APPROACH 1 (Using Set to store roots)
+
+// [n = dictionary.size(), n1 = average root size, m = sentence.size()]
+
+// Time Complexity = >O(n*n1 + m)
+// Space Complexity = O(n*n1 + m)
 
 string replaceWords(vector<string>& dictionary, string sentence) 
 {
@@ -150,6 +154,75 @@ string replaceWords(vector<string>& dictionary, string sentence)
         }
         currWord += sentence[idx];
         if(roots.count(currWord))
+        {
+            foundRoot = true;
+            ans += currWord + " ";
+        }
+    }
+    if(!ans.empty())
+        ans.pop_back();
+    return ans;
+}
+
+// APPROACH 2 (Using Trie) [OPTIMIZED]
+
+// Time Complexity = O(n*n1 + m)
+// Space Complexity = O(n*n1 + m)
+
+class Trie
+{
+    public:
+    int size;
+    vector<Trie*> children;
+    bool wordEnd;
+    Trie(int size)
+    {
+        this->size = size;
+        this->children.assign(size, nullptr);
+        this->wordEnd = false;
+    }
+
+    void insert(string word)
+    {
+        Trie* itr = this;
+        for(char c : word)
+        {
+            if(!itr->children[c-'a'])
+                itr->children[c-'a'] = new Trie(this->size);
+            itr = itr->children[c-'a'];
+        }
+        itr->wordEnd = true;
+    }
+};
+
+string replaceWords(vector<string>& dictionary, string sentence) 
+{
+    int size = sentence.size();
+    string ans = "";
+    Trie* trieRoot = new Trie(26);
+    for(string root : dictionary)
+        trieRoot->insert(root);
+    
+    Trie* itr = trieRoot;
+    string currWord = "";
+    bool foundRoot = false;
+    for(int idx = 0; idx <= size; idx++)
+    {
+        char currChar = sentence[idx];
+        if(idx == size || currChar == ' ' || foundRoot)
+        {
+            if(!foundRoot)
+                ans += currWord + " ";
+            else if(idx < size && currChar == ' ')
+                foundRoot = false;
+            currWord = "";
+            itr = trieRoot;
+            continue;
+        }
+        currWord += currChar;
+        if(itr)
+            itr = itr->children[currChar-'a'];
+        if(itr && itr->wordEnd)
         {
             foundRoot = true;
             ans += currWord + " ";
