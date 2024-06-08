@@ -232,3 +232,24 @@ string replaceWords(vector<string>& dictionary, string sentence)
         ans.pop_back();
     return ans;
 }
+
+// DAY 8 (523. Continuous Subarray Sum)========================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(k)
+
+bool checkSubarraySum(vector<int>& nums, int k) 
+{
+    unordered_map<int, int> subArraySumCnt;
+    int sum = 0;
+    subArraySumCnt[sum % k] = -1;
+    for(int idx = 0; idx < nums.size(); idx++)
+    {
+        sum += nums[idx];
+        if(subArraySumCnt.count(sum % k) && idx - subArraySumCnt[sum % k] > 1)
+            return true;
+        if(!subArraySumCnt.count(sum % k))
+            subArraySumCnt[sum % k] = idx;
+    }
+    return false;
+}
