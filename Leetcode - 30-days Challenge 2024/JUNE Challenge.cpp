@@ -253,3 +253,22 @@ bool checkSubarraySum(vector<int>& nums, int k)
     }
     return false;
 }
+
+// DAY 9 (974. Subarray Sums Divisible by K)====================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(k)
+
+int subarraysDivByK(vector<int>& nums, int k)
+{
+    int subArrayCount = 0;
+    vector<int> divs(k, 0);
+    int sum = 0;
+    divs[sum] = 1;
+    for(int num : nums)
+    {
+        sum += num;
+        subArrayCount += divs[(sum % k + k) % k]++;
+    }
+    return subArrayCount;
+}
