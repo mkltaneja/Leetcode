@@ -272,3 +272,20 @@ int subarraysDivByK(vector<int>& nums, int k)
     }
     return subArrayCount;
 }
+
+// DAY 10 (1051. Height Checker)===================================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int heightChecker(vector<int>& heights)
+{
+    int n = heights.size();
+    int mismatchCount = 0;
+    vector<int> expected = heights;
+    sort(expected.begin(), expected.end());
+    for(int idx = 0; idx < n; idx++)
+        if(heights[idx] != expected[idx])
+            mismatchCount++;
+    return mismatchCount;
+}
