@@ -289,3 +289,26 @@ int heightChecker(vector<int>& heights)
             mismatchCount++;
     return mismatchCount;
 }
+
+// DAY 11 (1122. Relative Sort Array)==============================================================================
+
+// Time Complexity = O(n + m + mx1)
+// Space Complexity = O(mx1)
+
+vector<int> relativeSortArray(vector<int>& arr1, vector<int>& arr2)
+{
+    int size1 = arr1.size(), size2 = arr2.size();
+    int maxEle = *max_element(arr1.begin(), arr1.end());
+    vector<int> posMap(maxEle + 1);
+    for(int idx = 0; idx < size1; idx++)
+        posMap[arr1[idx]]++;
+    int lastIdx = 0;
+    for(int idx = 0; idx < size2; idx++)
+        while(posMap[arr2[idx]]-- > 0)
+            arr1[lastIdx++] = arr2[idx];
+    for(int num = 0; num <= maxEle; num++)
+        while(posMap[num]-- > 0)
+            arr1[lastIdx++] = num;
+
+    return arr1;
+}
