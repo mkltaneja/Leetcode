@@ -312,3 +312,22 @@ vector<int> relativeSortArray(vector<int>& arr1, vector<int>& arr2)
 
     return arr1;
 }
+
+// DAY 12 (75. Sort Colors)==============================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+void sortColors(vector<int>& nums)
+{
+    int size = nums.size();
+    int idx0 = 0, idx1 = 0, idx2 = size-1;
+    while(idx1 <= idx2)
+    {
+        if(nums[idx1] == 0)
+            swap(nums[idx0++], nums[idx1++]);
+        else if(nums[idx1] == 2)
+            swap(nums[idx2--], nums[idx1]);
+        else idx1++;
+    }
+}
