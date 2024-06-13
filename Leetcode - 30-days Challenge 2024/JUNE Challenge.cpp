@@ -331,3 +331,19 @@ void sortColors(vector<int>& nums)
         else idx1++;
     }
 }
+
+// DAY 13 (2037. Minimum Number of Moves to Seat Everyone)==========================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int minMovesToSeat(vector<int>& seats, vector<int>& students)
+{
+    int size = seats.size();
+    sort(seats.begin(), seats.end());
+    sort(students.begin(), students.end());
+    int minOps = 0;
+    for(int idx = 0; idx < size; idx++)
+        minOps += abs(seats[idx] - students[idx]);
+    return minOps;
+}
