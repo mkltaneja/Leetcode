@@ -366,3 +366,17 @@ int minIncrementForUnique(vector<int>& nums)
     }
     return minMoves;
 }
+
+// [PREMIUM] WEEK 2 (2083. Substrings That Begin and End With the Same Letter)=========================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+long long numberOfSubstrings(string s) 
+{
+    vector<int> charMap(26, 0);
+    long long ans = 0;
+    for(char c : s)
+        ans += ++charMap[c-'a'];
+    return ans;
+}
