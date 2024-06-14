@@ -347,3 +347,22 @@ int minMovesToSeat(vector<int>& seats, vector<int>& students)
         minOps += abs(seats[idx] - students[idx]);
     return minOps;
 }
+
+// DAY 14 (945. Minimum Increment to Make Array Unique)================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(1)
+
+int minIncrementForUnique(vector<int>& nums)
+{
+    int size = nums.size();
+    int prev = -1, minMoves = 0;
+    sort(nums.begin(), nums.end());
+    for(int num : nums)
+    {
+        int curr = max(prev + 1, num);
+        minMoves += curr - num;
+        prev = curr;
+    }
+    return minMoves;
+}
