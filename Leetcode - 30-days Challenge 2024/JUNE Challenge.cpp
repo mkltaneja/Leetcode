@@ -380,3 +380,40 @@ long long numberOfSubstrings(string s)
         ans += ++charMap[c-'a'];
     return ans;
 }
+
+// DAY 15 (502. IPO)==================================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital)
+{
+    int projects = profits.size();
+    vector<pair<int,int>> capProfPair(projects);
+    priority_queue<pair<int,int>> maxProfPq;
+    int lastIdx = 0;
+    int maxCap = w;
+    for(int idx = 0; idx < projects; idx++)
+        capProfPair[idx] = {capital[idx], profits[idx]};
+    sort(capProfPair.begin(), capProfPair.end());
+
+    do
+    {
+        while(lastIdx < projects && maxCap >= capProfPair[lastIdx].first)
+        {
+            int capital = capProfPair[lastIdx].first;
+            int profit = capProfPair[lastIdx].second;
+            maxProfPq.push({profit, capital});
+            lastIdx++;
+        }
+        if(!maxProfPq.empty() && k--)
+        {
+            maxCap += maxProfPq.top().first;
+            maxProfPq.pop();
+        }
+        else break;
+    }
+    while(true);
+
+    return maxCap;
+}
