@@ -417,3 +417,26 @@ int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capita
 
     return maxCap;
 }
+
+// DAY 16 (330. Patching Array)======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int minPatches(vector<int>& nums, int n)
+{
+    int size = nums.size();
+    int ans = 0;
+    long currSum = 1;
+    for(int idx = 0; currSum <= n; )
+    {
+        if(idx < size && nums[idx] <= currSum)
+            currSum += nums[idx++];
+        else
+        {
+            currSum += currSum;
+            ans++;
+        }
+    }
+    return ans;
+}
