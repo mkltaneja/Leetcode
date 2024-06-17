@@ -443,6 +443,8 @@ int minPatches(vector<int>& nums, int n)
 
 // DAY 17 (633. Sum of Square Numbers)===================================================================================
 
+// APPROACH 1 (Binary search)
+
 // Time Complexity = O(sqrt(c) * log(sqrt(c)))
 // Space Complexity = O(1)
 
@@ -461,6 +463,25 @@ bool judgeSquareSum(int c)
                 lo = b + 1;
             else hi = b - 1;
         }
+    }
+    return false;
+}
+
+// APPROACH 2 (2 pointer) [OPTIMIZED]
+
+// Time Complexity = O(sqrt(c))
+// Space Complexity = O(1)
+
+bool judgeSquareSum(int c)
+{
+    long long a = 0, b = sqrt(c);
+    while(a <= b)
+    {
+        if(a*a + b*b == c)
+            return true;
+        if(a*a + b*b < c)
+            a++;
+        else b--;
     }
     return false;
 }
