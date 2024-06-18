@@ -485,3 +485,25 @@ bool judgeSquareSum(int c)
     }
     return false;
 }
+
+// DAY 19 (826. Most Profit Assigning Work)========================================================
+
+// Time Complexity = O(n + maxDifficulty + m)
+// Space Complexity = O(maxDifficulty)
+
+int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker)
+{
+    int n = difficulty.size(), m = worker.size();
+    int maxDifficulty = *max_element(difficulty.begin(), difficulty.end());
+    vector<int> maxProfit(maxDifficulty+1, 0);
+    for(int idx = 0; idx < n; idx++)
+        maxProfit[difficulty[idx]] = max(maxProfit[difficulty[idx]], profit[idx]);
+    for(int diff = 1; diff <= maxDifficulty; diff++)
+        maxProfit[diff] = max(maxProfit[diff], maxProfit[diff-1]);
+    
+    int totalProfit = 0;
+    for(int ability : worker)
+        totalProfit += maxProfit[min(ability, maxDifficulty)];
+    
+    return totalProfit;
+}
