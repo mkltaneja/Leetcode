@@ -486,7 +486,7 @@ bool judgeSquareSum(int c)
     return false;
 }
 
-// DAY 19 (826. Most Profit Assigning Work)========================================================
+// DAY 18 (826. Most Profit Assigning Work)========================================================
 
 // Time Complexity = O(n + maxDifficulty + m)
 // Space Complexity = O(maxDifficulty)
@@ -506,4 +506,46 @@ int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int
         totalProfit += maxProfit[min(ability, maxDifficulty)];
     
     return totalProfit;
+}
+
+// DAY 19 (1482. Minimum Number of Days to Make m Bouquets)===============================================================================================
+
+// Time Complexity = O(n*log(mx))
+// Space Complexity = O(1)
+
+bool canMakeBouquetsInDays(int days, vector<int> &bloomDay, int blooms, int k, int m)
+{
+    int bouquets = 0;
+    for(int idx = 0; idx < blooms && bouquets < m; )
+    {
+        int itr = idx;
+        while(itr < blooms && (itr - idx < k) && bloomDay[itr] <= days)
+            itr++;
+        if(itr - idx == k)
+            bouquets++;
+        idx = itr;
+        if(idx < blooms && bloomDay[idx] > days)
+            idx++;
+    }
+    return bouquets >= m;
+}
+
+int minDays(vector<int>& bloomDay, int m, int k)
+{
+    int blooms = bloomDay.size();
+    if(blooms < 1ll*m*k)
+        return -1;
+    int lo = 1, hi = *max_element(bloomDay.begin(), bloomDay.end());
+    int ans = -1;
+    while(lo <= hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+        if(canMakeBouquetsInDays(mid, bloomDay, blooms, k, m))
+        {
+            hi = mid - 1;
+            ans = mid;
+        }
+        else lo = mid + 1;
+    }
+    return ans;
 }
