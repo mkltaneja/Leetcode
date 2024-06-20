@@ -549,3 +549,41 @@ int minDays(vector<int>& bloomDay, int m, int k)
     }
     return ans;
 }
+
+// DAY 20 (1552. Magnetic Force Between Two Balls)==================================================================================
+
+// Time Complexity = O(n*log(maxDist))
+// Space Complexity = O(1)
+
+bool canArrangeWithDistance(int minDist, vector<int> &position, int m)
+{
+    int ballsPlaced = 0, prevDist = -1;
+    for(int dist : position)
+    {
+        if(prevDist == -1 || dist - prevDist >= minDist)
+        {
+            ballsPlaced++;
+            prevDist = dist;
+        }
+    }
+    return ballsPlaced >= m;
+}
+
+int maxDistance(vector<int>& position, int m)
+{
+    int size = position.size();
+    sort(position.begin(), position.end());
+    int low = 0, high = position[size-1] - position[0];
+    int ans = -1;
+    while(low <= high)
+    {
+        int mid = low + ((high - low) >> 1);
+        if(canArrangeWithDistance(mid, position, m))
+        {
+            low = mid + 1;
+            ans = mid;
+        }
+        else high = mid - 1;
+    }
+    return ans;
+}
