@@ -587,3 +587,23 @@ int maxDistance(vector<int>& position, int m)
     }
     return ans;
 }
+
+// DAY 21 (1052. Grumpy Bookstore Owner)==================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes)
+{
+    int size = customers.size();
+    int maxExtra = 0, currExtra = 0, totalCustomers = 0;
+    for(int minute = 0; minute < size; minute++)
+    {
+        if(!grumpy[minute])
+            totalCustomers += customers[minute];
+        else currExtra += customers[minute];
+        currExtra -= minute - minutes >= 0 && grumpy[minute - minutes]? customers[minute - minutes] : 0;
+        maxExtra = max(maxExtra, currExtra);
+    }
+    return totalCustomers + maxExtra;
+}
