@@ -607,3 +607,35 @@ int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes)
     }
     return totalCustomers + maxExtra;
 }
+
+// WEEK 3 (1580. Put Boxes Into the Warehouse II)==========================================================================
+
+// Time Complexity = O(n*logn + m*logm + m)
+// Space Complexity = O(m)
+
+int maxBoxesInWarehouse(vector<int>& boxes, vector<int>& warehouse)
+{
+    int n = boxes.size(), m = warehouse.size();
+    vector<int> effectiveHeight(m);
+    int minHeight = INT_MAX;
+    int boxCount = 0;
+    for(int idx = 0; idx < m; idx++)
+    {
+        minHeight = min(minHeight, warehouse[idx]);
+        effectiveHeight[idx] = minHeight;
+    }
+    minHeight = INT_MAX;
+    for(int idx = m-1; idx >= 0; idx--)
+    {
+        minHeight = min(minHeight, warehouse[idx]);
+        effectiveHeight[idx] = max(minHeight, effectiveHeight[idx]);
+    }
+    sort(boxes.begin(), boxes.end());
+    sort(effectiveHeight.begin(), effectiveHeight.end());
+
+    for(int idx = 0, boxIdx = 0; idx < m && boxIdx < n; idx++)
+        if(effectiveHeight[idx] >= boxes[boxIdx])
+            boxIdx++, boxCount++;
+    
+    return boxCount;
+}
