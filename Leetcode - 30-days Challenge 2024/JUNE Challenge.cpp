@@ -663,3 +663,27 @@ int maxBoxesInWarehouse(vector<int>& boxes, vector<int>& warehouse)
     
     return boxCount;
 }
+
+// DAY 22 (1248. Count Number of Nice Subarrays)=======================================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+long getNiceCountWithAtMost(int k, int size, vector<int> &nums)
+{
+    long odds = 0, niceCount = 0;
+    for(long ridx = 0, lidx = 0; ridx < size; ridx++)
+    {
+        odds += nums[ridx] & 1;
+        while(odds > k)
+            odds -= nums[lidx++] & 1;
+        niceCount += (ridx - lidx + 1);
+    }
+    return niceCount;
+}
+
+int numberOfSubarrays(vector<int>& nums, int k)
+{
+    int size = nums.size();
+    return getNiceCountWithAtMost(k, size, nums) - getNiceCountWithAtMost(k-1, size, nums);
+}
