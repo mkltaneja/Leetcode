@@ -1,4 +1,6 @@
 
+// APPROACH 1 (Multiple loops)
+
 // Time Complexity = O(n + m)
 // Time Complexity = O(1)
 
@@ -38,5 +40,32 @@ public:
         }
         
         return (r-l+1) * (d-u+1);
+    }
+};
+
+// APPROACH 2 (Single Loop)
+
+// Time Compelxity = O(n*m)
+// Space Compelxity = O(1)
+
+class Solution {
+public:
+    int minimumArea(vector<vector<int>>& grid)
+    {
+        int n = grid.size(), m = grid[0].size();
+        int minRow = n, minCol = m, maxRow = 0, maxCol = 0;
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                if(grid[i][j] == 0)
+                    continue;
+                minRow = min(minRow, i);
+                maxRow = max(maxRow, i);
+                minCol = min(minCol, j);
+                maxCol = max(maxCol, j);
+            }
+        }
+        return (maxRow - minRow + 1) * (maxCol - minCol + 1);
     }
 };
