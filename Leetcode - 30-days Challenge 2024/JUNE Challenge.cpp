@@ -715,3 +715,30 @@ int numberOfSubarrays(vector<int>& nums, int k)
     }
     return niceCount;
 }
+
+// DAY 23 (1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit)=========================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int longestSubarray(vector<int>& nums, int limit)
+{
+    int size = nums.size();
+    multiset<int> st;
+    int maxSize = 0;
+    for(int ridx = 0, lidx = 0; ridx < size; ridx++)
+    {
+        st.insert(nums[ridx]);
+        int minEle = *st.begin();
+        int maxEle = *st.rbegin();
+        while(maxEle - minEle > limit)
+        {
+            st.erase(st.find(nums[lidx++]));
+            minEle = *st.begin();
+            maxEle = *st.rbegin();
+        }
+        maxSize = max(maxSize, ridx - lidx + 1);
+    }
+
+    return maxSize;
+}
