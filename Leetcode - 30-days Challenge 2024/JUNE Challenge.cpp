@@ -742,3 +742,28 @@ int longestSubarray(vector<int>& nums, int limit)
 
     return maxSize;
 }
+
+// DAY 24 (995. Minimum Number of K Consecutive Bit Flips)=======================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int minKBitFlips(vector<int>& nums, int k)
+{
+    int size = nums.size();
+    int totalFlips = 0, currFlips = 0;
+    for(int idx = 0; idx < size; idx++)
+    {
+        if(idx - k >= 0 && nums[idx - k] == 2)
+            currFlips--;
+        if((currFlips & 1) == nums[idx])
+        {
+            if(idx + k > size)
+                return -1;
+            nums[idx] = 2;
+            totalFlips++;
+            currFlips++;
+        }
+    }
+    return totalFlips;
+}
