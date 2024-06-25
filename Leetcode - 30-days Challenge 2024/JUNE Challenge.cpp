@@ -767,3 +767,25 @@ int minKBitFlips(vector<int>& nums, int k)
     }
     return totalFlips;
 }
+
+// DAY 24 (1038. Binary Search Tree to Greater Sum Tree)=========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+void bstToGstDFS(TreeNode* node, int &greaterSum)
+{
+    if(!node) return;
+    
+    bstToGstDFS(node->right, greaterSum);
+    greaterSum += node->val;
+    node->val = greaterSum;
+    bstToGstDFS(node->left, greaterSum);
+}
+
+TreeNode* bstToGst(TreeNode* root)
+{
+    int greaterSum = 0;
+    bstToGstDFS(root, greaterSum);
+    return root;
+}
