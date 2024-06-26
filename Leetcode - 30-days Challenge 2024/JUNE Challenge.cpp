@@ -811,3 +811,38 @@ int numberOfSpecialSubstrings(string s)
     }
     return totalSubtrings;
 }
+
+// DAY 26 (1382. Balance a Binary Search Tree)======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+void addNodesToList(TreeNode* node, vector<int> &nodes)
+{
+    if(!node)
+        return;
+    addNodesToList(node->left, nodes);
+    nodes.push_back(node->val);
+    addNodesToList(node->right, nodes);
+}
+
+TreeNode* createTree(int lidx, int ridx, vector<int> &nodes)
+{
+    if(lidx > ridx)
+        return nullptr;
+    
+    int midIdx = (lidx + ridx) / 2;
+    TreeNode* node = new TreeNode(nodes[midIdx]);
+    
+    node->left = createTree(lidx, midIdx - 1, nodes);
+    node->right = createTree(midIdx + 1, ridx, nodes);
+
+    return node;
+}
+
+TreeNode* balanceBST(TreeNode* root)
+{
+    vector<int> nodes;
+    addNodesToList(root, nodes);
+    return createTree(0, nodes.size()-1, nodes);
+}
