@@ -768,7 +768,7 @@ int minKBitFlips(vector<int>& nums, int k)
     return totalFlips;
 }
 
-// DAY 24 (1038. Binary Search Tree to Greater Sum Tree)=========================================================================
+// DAY 25 (1038. Binary Search Tree to Greater Sum Tree)=========================================================================
 
 // Time Complexity = O(n)
 // Space Complexity = O(n)
@@ -788,4 +788,26 @@ TreeNode* bstToGst(TreeNode* root)
     int greaterSum = 0;
     bstToGstDFS(root, greaterSum);
     return root;
+}
+
+// WEEK 4 (2743. Count Substrings Without Repeating Character)=========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int numberOfSpecialSubstrings(string s)
+{
+    int size = s.size();
+    int totalSubtrings = 0;
+    int charMask = 0;
+    for(int ridx = 0, lidx = 0; ridx < size; ridx++)
+    {
+        int currMask = (1 << (s[ridx]-'a'));
+        while(charMask & currMask)
+            charMask ^= (1 << (s[lidx++]-'a'));
+        charMask ^= currMask;
+
+        totalSubtrings += ridx - lidx + 1;
+    }
+    return totalSubtrings;
 }
