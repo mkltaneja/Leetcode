@@ -846,3 +846,24 @@ TreeNode* balanceBST(TreeNode* root)
     addNodesToList(root, nodes);
     return createTree(0, nodes.size()-1, nodes);
 }
+
+// DAY 27 (1791. Find Center of Star Graph)======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int findCenter(vector<vector<int>>& edges)
+{
+    int n = edges.size() + 1;
+    vector<int> inDegree(n+1, 0);
+    for(vector<int> &edge : edges)
+    {
+        if(inDegree[edge[0]])
+            return edge[0];
+        if(inDegree[edge[1]])
+            return edge[1];
+        inDegree[edge[0]]++;
+        inDegree[edge[1]]++;
+    }
+    return 0;
+}
