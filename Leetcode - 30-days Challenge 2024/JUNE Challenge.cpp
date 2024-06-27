@@ -849,6 +849,8 @@ TreeNode* balanceBST(TreeNode* root)
 
 // DAY 27 (1791. Find Center of Star Graph)======================================================================================
 
+// APPROACH 1 (Through In-degree)
+
 // Time Complexity = O(n)
 // Space Complexity = O(n)
 
@@ -866,4 +868,14 @@ int findCenter(vector<vector<int>>& edges)
         inDegree[edge[1]]++;
     }
     return 0;
+}
+
+// APPROACH 2 (One-Liner) --> [OPTIMIZED]
+
+// Time Complexity = O(1)
+// Space Complexity = O(1)
+
+int findCenter(vector<vector<int>>& edges)
+{
+    return (edges[0][0] == edges[1][0] || edges[0][0] == edges[1][1])? edges[0][0] : edges[0][1];
 }
