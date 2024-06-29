@@ -879,3 +879,24 @@ int findCenter(vector<vector<int>>& edges)
 {
     return (edges[0][0] == edges[1][0] || edges[0][0] == edges[1][1])? edges[0][0] : edges[0][1];
 }
+
+// DAY 28 (2285. Maximum Total Importance of Roads)=================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+long long maximumImportance(int n, vector<vector<int>>& roads)
+{
+    vector<int> inDegree(n, 0);
+    for(vector<int> &road : roads)
+    {
+        inDegree[road[0]]++;
+        inDegree[road[1]]++;
+    }
+    sort(inDegree.rbegin(), inDegree.rend());
+
+    long long maximumTotalImp = 0, currValue = n;
+    for(long long degree : inDegree)
+        maximumTotalImp += degree * currValue--;
+    return maximumTotalImp;
+}
