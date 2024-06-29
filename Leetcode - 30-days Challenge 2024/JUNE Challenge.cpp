@@ -900,3 +900,46 @@ long long maximumImportance(int n, vector<vector<int>>& roads)
         maximumTotalImp += degree * currValue--;
     return maximumTotalImp;
 }
+
+// DAY 29 (2192. All Ancestors of a Node in a Directed Acyclic Graph)=================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*n)
+
+vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges)
+{
+    vector<vector<int>> graph(n);
+    vector<int> inDegree(n, 0);
+    vector<unordered_set<int>> ancestors(n);
+    queue<int> que;
+    for(vector<int> &edge : edges)
+    {
+        int src = edge[0], dest = edge[1];
+        graph[src].push_back(dest);
+        inDegree[dest]++;
+    }
+    for(int node = 0; node < n; node++)
+        if(inDegree[node] == 0)
+            que.push(node);
+    while(!que.empty())
+    {
+        int currNode = que.front();
+        que.pop();
+        for(int nextNode : graph[currNode])
+        {
+            if(--inDegree[nextNode] == 0)
+                que.push(nextNode);
+            ancestors[nextNode].insert(currNode);
+            for(int nodeInPath : ancestors[currNode])
+                ancestors[nextNode].insert(nodeInPath);
+        }
+    }
+
+    vector<vector<int>> ans;
+    for(unordered_set<int> ancestorSet : ancestors)
+    {
+        ans.emplace_back(ancestorSet.begin(), ancestorSet.end());
+        sort(ans.back().begin(), ans.back().end());
+    }
+    return ans;
+}
