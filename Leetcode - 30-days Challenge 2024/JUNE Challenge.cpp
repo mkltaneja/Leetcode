@@ -943,3 +943,91 @@ vector<vector<int>> getAncestors(int n, vector<vector<int>>& edges)
     }
     return ans;
 }
+
+// DAY 30 (1579. Remove Max Number of Edges to Keep Graph Fully Traversable)==================================================================================
+
+// Time Complexity = O(V + E)
+// Space Complexity = O(V)
+
+class DSU
+{
+    public:
+    int size;
+    vector<int> par, parSize;
+    DSU(int size)
+    {
+        this->size = size;
+        this->par.resize(size);
+        this->parSize.assign(size, 1);
+        for(int node = 0; node < size; node++)
+            par[node] = node;
+    }
+
+    int findPar(int node)
+    {
+        return par[node] = par[node] == node? node : findPar(par[node]);
+    }
+
+    bool canMergeThenMerge(int node1, int node2)
+    {
+        int par1 = findPar(node1);
+        int par2 = findPar(node2);
+        if(par1 == par2) return false;
+
+        if(parSize[par1] < parSize[par2])
+            swap(par1, par2);
+        parSize[par1] += parSize[par2];
+        par[par2] = par1;
+
+        return true;
+    }
+};
+
+int redundantEdgesCount = 0;
+
+vector<int> getTypeCount(vector<vector<int>> &edges)
+{
+    vector<int> typeCount(3);
+    for(vector<int> edge : edges)
+        typeCount[edge[0]-1]++;
+    return typeCount;
+}
+
+DSU getGraphForType(int type, DSU dsu, vector<vector<int>> &edges)
+{
+    for(vector<int> &edge : edges)
+        if(edge[0] == type)
+            if(!dsu.canMergeThenMerge(edge[1]-1, edge[2]-1))
+                redundantEdgesCount++;
+    return dsu;
+}
+
+bool isGraphCompletelyConnected(DSU dsu)
+{
+    int lastPar = -1;
+    for(int par : dsu.par)
+    {
+        int realPar = dsu.findPar(par);
+        if(lastPar != -1 && lastPar != realPar)
+            return false;
+        lastPar = realPar;
+    }
+    return true;
+}
+
+int maxNumEdgesToRemove(int n, vector<vector<int>>& edges)
+{
+    DSU dsu(n);
+    
+    DSU dsuType3 = getGraphForType(3, dsu, edges);
+    
+    DSU dsuType1 = getGraphForType(1, dsuType3, edges);
+    if(!isGraphCompletelyConnected(dsuType1))
+        return -1;
+    
+    DSU dsuType2 = getGraphForType(2, dsuType3, edges);
+    if(!isGraphCompletelyConnected(dsuType2))
+        return -1;
+    
+    return redundantEdgesCount;
+}
