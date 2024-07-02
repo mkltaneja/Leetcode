@@ -12,3 +12,20 @@ bool threeConsecutiveOdds(vector<int>& arr)
             return true;
     return false;
 }
+
+// DAY 2 (350. Intersection of Two Arrays II)====================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<int> intersect(vector<int>& nums1, vector<int>& nums2)
+{
+    vector<int> ans;
+    unordered_map<int,int> nums1Map;
+    for(int num : nums1)
+        nums1Map[num]++;
+    for(int num : nums2)
+        if(nums1Map[num]-- > 0)
+            ans.push_back(num);
+    return ans;
+}
