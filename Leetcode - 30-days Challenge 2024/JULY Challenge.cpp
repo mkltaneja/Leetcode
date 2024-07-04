@@ -87,3 +87,30 @@ int minDifference(vector<int>& nums)
     }
     return min({max1 - min4, max2 - min3, max3 - min2, max4 - min1});
 }
+
+// DAY 4 (2181. Merge Nodes in Between Zeros)=======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+ListNode* mergeNodes(ListNode* head)
+{
+    ListNode* newHead = new ListNode(-1);
+    ListNode* itr1 = head, *itr2 = newHead;
+    int currSum = 0;
+    while(itr1)
+    {
+        currSum += itr1->val;
+        if(itr1->val == 0)
+        {
+            if(currSum)
+            {
+                itr2->next = new ListNode(currSum);
+                itr2 = itr2->next;
+            }
+            currSum = 0;
+        }
+        itr1 = itr1->next;
+    }
+    return newHead->next;
+}
