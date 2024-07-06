@@ -114,3 +114,33 @@ ListNode* mergeNodes(ListNode* head)
     }
     return newHead->next;
 }
+
+// DAY 5 (2058. Find the Minimum and Maximum Number of Nodes Between Critical Points)=======================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+vector<int> nodesBetweenCriticalPoints(ListNode* head)
+{
+    int idx = 1, prevCriticalIdx = -1, a = -1;
+    vector<int> dist(2);
+    dist[0] = INT_MAX, dist[1] = INT_MIN;
+    ListNode* itr = head->next, *prev = head;
+    while(itr->next)
+    {
+        if((prev->val < itr->val && itr->next->val < itr->val) || (prev->val > itr->val && itr->next->val > itr->val))
+        {
+            if(prevCriticalIdx != -1)
+            {
+                dist[0] = min(dist[0], idx - prevCriticalIdx);
+                dist[1] = idx - a;
+            }
+            else a = idx;
+            prevCriticalIdx = idx;
+        }
+        prev = itr;
+        itr = itr->next;
+        idx++;
+    }
+    return dist[0] == INT_MAX? vector<int>(2, -1) : dist;
+}
