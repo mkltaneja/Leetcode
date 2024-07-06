@@ -144,3 +144,17 @@ vector<int> nodesBetweenCriticalPoints(ListNode* head)
     }
     return dist[0] == INT_MAX? vector<int>(2, -1) : dist;
 }
+
+// DAY 6 (2582. Pass the Pillow)=============================================================================================
+
+// Time Complexity = O(1)
+// Space Complexity = O(1)
+
+int passThePillow(int n, int time)
+{
+    int dir = int(ceil(1.0 * time / (n-1))) & 1;
+    int index = (time % (n-1));
+    if(index == 0)
+        dir = (time / (n-1)) & 1? 0 : 1;
+    return dir? (1 + index) : (n - index);
+}
