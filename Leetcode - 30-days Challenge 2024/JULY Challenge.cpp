@@ -158,3 +158,21 @@ int passThePillow(int n, int time)
         dir = (time / (n-1)) & 1? 0 : 1;
     return dir? (1 + index) : (n - index);
 }
+
+// DAY 7 (1518. Water Bottles)==========================================================================================
+
+// Time Complexity = O(log[numExchange](numBottles))
+// Space Complexity = O(1)
+
+int numWaterBottles(int numBottles, int numExchange)
+{
+    int bottlesDrunk = 0, emptyBottles = 0;
+    while(numBottles)
+    {
+        bottlesDrunk += numBottles;
+        int currBottles = numBottles;
+        numBottles = (currBottles + emptyBottles) / numExchange;
+        emptyBottles = (currBottles + emptyBottles) % numExchange;
+    }
+    return bottlesDrunk;
+}
