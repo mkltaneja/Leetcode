@@ -176,3 +176,19 @@ int numWaterBottles(int numBottles, int numExchange)
     }
     return bottlesDrunk;
 }
+
+// DAY 8 (1823. Find the Winner of the Circular Game)===========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int getWinnerIndex(int n, int k)
+{
+    if(n == 1) return 0;
+    return (getWinnerIndex(n-1, k) + k) % n;
+}
+
+int findTheWinner(int n, int k)
+{
+    return getWinnerIndex(n, k) + 1;
+}
