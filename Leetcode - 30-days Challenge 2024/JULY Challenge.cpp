@@ -192,3 +192,23 @@ int findTheWinner(int n, int k)
 {
     return getWinnerIndex(n, k) + 1;
 }
+
+// DAY 9 (1701. Average Waiting Time)========================================================================================
+
+// Time Complexity = O(n)
+// Time Complexity = O(1)
+
+double averageWaitingTime(vector<vector<int>>& customers)
+{
+    int totalCustomers = customers.size();
+    long totalWaitingTime = 0, lastEndingTime = 0;
+    for(vector<int> customer : customers)
+    {
+        long arrivalTime = customer[0];
+        long time = customer[1];
+        long currentWaitingTime = max(0l, lastEndingTime - arrivalTime) + time;
+        lastEndingTime = arrivalTime + currentWaitingTime;
+        totalWaitingTime += currentWaitingTime;
+    }
+    return 1.0 * totalWaitingTime / totalCustomers;
+}
