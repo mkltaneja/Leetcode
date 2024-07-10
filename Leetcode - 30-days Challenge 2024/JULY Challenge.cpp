@@ -212,3 +212,21 @@ double averageWaitingTime(vector<vector<int>>& customers)
     }
     return 1.0 * totalWaitingTime / totalCustomers;
 }
+
+// DAY 10 (1598. Crawler Log Folder)==========================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int minOperations(vector<string>& logs)
+{
+    int distanceFromRoot = 0;
+    for(string log : logs)
+    {
+        if(log == "../")
+            distanceFromRoot = max(distanceFromRoot - 1, 0);
+        else if(log[0] != '.')
+            distanceFromRoot++;
+    }
+    return distanceFromRoot;
+}
