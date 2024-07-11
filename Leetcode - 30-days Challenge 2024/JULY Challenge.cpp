@@ -230,3 +230,27 @@ int minOperations(vector<string>& logs)
     }
     return distanceFromRoot;
 }
+
+// DAY 11 (1190. Reverse Substrings Between Each Pair of Parentheses)=============================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n)
+
+string reverseParentheses(string s)
+{
+    string ans = "";
+    stack<int> st;
+    for(char c : s)
+    {
+        if(c == '(')
+            st.push(ans.size());
+        else if(c == ')')
+        {
+            int startIdx = st.top();
+            st.pop();
+            reverse(ans.begin() + startIdx, ans.end());
+        }
+        else ans += c;
+    }
+    return ans;
+}
