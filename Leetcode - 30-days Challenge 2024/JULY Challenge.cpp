@@ -233,6 +233,8 @@ int minOperations(vector<string>& logs)
 
 // DAY 11 (1190. Reverse Substrings Between Each Pair of Parentheses)=============================================================
 
+// APPROACH 1 (Naive way)
+
 // Time Complexity = O(n^2)
 // Space Complexity = O(n)
 
@@ -251,6 +253,42 @@ string reverseParentheses(string s)
             reverse(ans.begin() + startIdx, ans.end());
         }
         else ans += c;
+    }
+    return ans;
+}
+
+// APPROACH 2 (Wormhole Teleportation Technique) --> [OPTIMIZED[
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+string reverseParentheses(string s)
+{
+    int n = s.size();
+    string ans = "";
+    stack<int> st;
+    vector<int> bracePair(n);
+    for(int idx = 0; idx < n; idx++)
+    {
+        if(s[idx] == '(')
+            st.push(idx);
+        else if(s[idx] == ')')
+        {
+            int pairIdx = st.top();
+            st.pop();
+            bracePair[pairIdx] = idx;
+            bracePair[idx] = pairIdx;
+        }
+    }
+
+    for(int idx = 0, dir = 1; idx < n; idx += dir)
+    {
+        if(s[idx] == '(' || s[idx] == ')')
+        {
+            idx = bracePair[idx];
+            dir *= -1;
+        }
+        else ans += s[idx];
     }
     return ans;
 }
