@@ -292,3 +292,34 @@ string reverseParentheses(string s)
     }
     return ans;
 }
+
+// WEEK 2 (1836. Remove Duplicates From an Unsorted Linked List)====================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+ListNode* deleteDuplicatesUnsorted(ListNode* head)
+{
+    unordered_map<int,int> freqMap;
+    ListNode* itr = head;
+    while(itr)
+    {
+        freqMap[itr->val]++;
+        itr = itr->next;
+    }
+
+    itr = head;
+    ListNode* prev = nullptr;
+    while(itr)
+    {
+        if(freqMap[itr->val] > 1)
+        {
+            if(prev)
+                prev->next = itr->next;
+            else head = head->next;
+        }
+        else prev = itr;
+        itr = itr->next;
+    }
+    return head;
+}
