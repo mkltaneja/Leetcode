@@ -323,3 +323,60 @@ ListNode* deleteDuplicatesUnsorted(ListNode* head)
     }
     return head;
 }
+
+// DAY 12 (1717. Maximum Score From Removing Substrings)===================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int getValue(stack<char> &st, int val)
+{
+    if(st.empty()) return 0;
+
+    int cnt1 = 0, cnt2 = 0;
+    char ch2 = st.top();
+    while(!st.empty() && st.top() == ch2)
+    {
+        cnt2++;
+        st.pop();
+    }
+    if(st.empty()) return 0;
+
+    char ch1 = st.top();
+    while(!st.empty() && st.top() == ch1)
+    {
+        cnt1++;
+        st.pop();
+    }
+
+    return min(cnt1, cnt2) * val;
+}
+
+int maximumGain(string s, int x, int y)
+{
+    int ans = 0;
+    stack<char> st;
+    for(char c : s)
+    {
+        if(c == 'a' || c == 'b')
+        {
+            int xx = x, yy = y;
+            char ch = 'b';
+            if(c == 'b')
+            {
+                swap(xx, yy);
+                ch = 'a';
+            }
+            if(yy > xx && !st.empty() && st.top() == ch)
+            {
+                ans += yy;
+                st.pop();
+            }
+            else st.push(c);
+        }
+        else ans += getValue(st, min(x, y));
+    }
+    ans += getValue(st, min(x, y));
+
+    return ans;
+}
