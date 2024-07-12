@@ -326,6 +326,8 @@ ListNode* deleteDuplicatesUnsorted(ListNode* head)
 
 // DAY 12 (1717. Maximum Score From Removing Substrings)===================================================================
 
+// APPROACH 1 (Using Stack)
+
 // Time Complexity = O(n)
 // Space Complexity = O(n)
 
@@ -378,5 +380,42 @@ int maximumGain(string s, int x, int y)
     }
     ans += getValue(st, min(x, y));
 
+    return ans;
+}
+
+// APPROACH 2 (Without Stack - Considering "ab" as the greater string)
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int maximumGain(string s, int x, int y)
+{
+    if(x < y)
+    {
+        swap(x, y);
+        reverse(s.begin(), s.end());
+    }
+
+    int aCount = 0, bCount = 0, ans = 0;
+    for(char c : s)
+    {
+        if(c == 'a')
+            aCount++;
+        else if(c == 'b')
+        {
+            if(aCount)
+            {
+                aCount--;
+                ans += x;
+            }
+            else bCount++;
+        }
+        else
+        {
+            ans += min(aCount, bCount) * y;
+            aCount = bCount = 0;
+        }
+    }
+    ans += min(aCount, bCount) * y;
     return ans;
 }
