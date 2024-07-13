@@ -145,6 +145,65 @@ vector<int> nodesBetweenCriticalPoints(ListNode* head)
     return dist[0] == INT_MAX? vector<int>(2, -1) : dist;
 }
 
+// WEEK 1 (1101. The Earliest Moment When Everyone Become Friends)===================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+class DSU
+{
+    public:
+    int size;
+    vector<int> par, parSize;
+    DSU(int size)
+    {
+        this->size = size;
+        par.resize(size);
+        parSize.assign(size, 1);
+        for(int node = 0; node < size; node++)
+            par[node] = node;
+    }
+
+    int findPar(int u)
+    {
+        return par[u] = par[u] == u? u : findPar(par[u]);
+    }
+
+    bool canMergeAndAllConnected(int u, int v)
+    {
+        int paru = findPar(u);
+        int parv = findPar(v);
+
+        if(paru == parv)
+            return false;
+        
+        if(parSize[parv] > parSize[paru])
+            swap(paru, parv);
+        
+        parSize[paru] += parSize[parv];
+        par[parv] = paru;
+
+        return parSize[paru] == this->size;
+    }
+};
+
+int earliestAcq(vector<vector<int>>& logs, int n)
+{
+    sort(logs.begin(), logs.end());
+    DSU dsu(n);
+
+    for(vector<int> log : logs)
+    {
+        int timestamp = log[0];
+        int x = log[1];
+        int y = log[2];
+
+        if(dsu.canMergeAndAllConnected(x, y))
+            return timestamp;
+    }
+    return -1;
+}
+
 // DAY 6 (2582. Pass the Pillow)=============================================================================================
 
 // Time Complexity = O(1)
@@ -419,3 +478,4 @@ int maximumGain(string s, int x, int y)
     ans += min(aCount, bCount) * y;
     return ans;
 }
+
