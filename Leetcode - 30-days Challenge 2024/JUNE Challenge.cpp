@@ -1,4 +1,38 @@
 
+// WEEK 1 (1940. Longest Common Subsequence Between Sorted Arrays)=========================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n*m)
+
+vector<int> longestCommonSubsequence(vector<vector<int>>& arrays)
+{
+    int size = arrays.size();
+    vector<int> itrs(size, 0);
+    vector<int> commons;
+    while(true)
+    {
+        int maxEle = INT_MIN, maxEle2 = INT_MIN;
+        for(int idx = 0; idx < size; idx++)
+        {
+            if(arrays[idx][itrs[idx]] > maxEle)
+            {
+                maxEle2 = maxEle;
+                maxEle = arrays[idx][itrs[idx]];
+            }
+            else if(arrays[idx][itrs[idx]] < maxEle)
+                maxEle2 = max(maxEle2, arrays[idx][itrs[idx]]);
+        }
+        if(maxEle2 == INT_MIN)
+            commons.push_back(maxEle);
+        for(int idx = 0; idx < size; idx++)
+            if(maxEle2 == INT_MIN || arrays[idx][itrs[idx]] < maxEle)
+                if(++itrs[idx] == arrays[idx].size())
+                    return commons;
+    }
+
+    return commons;
+}
+
 // DAY 1 (3110. Score of a String)=========================================================================
 
 // Time Complexity = O(n)
