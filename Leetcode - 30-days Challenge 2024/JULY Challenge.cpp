@@ -479,3 +479,46 @@ int maximumGain(string s, int x, int y)
     return ans;
 }
 
+// DAY 13 (2751. Robot Collisions)=================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+vector<int> survivedRobotsHealths(vector<int>& positions, vector<int>& healths, string directions)
+{
+    int size = positions.size();
+    vector<vector<int>> roboStack;
+    vector<vector<int>> confs(size);
+    for(int idx = 0; idx < size; idx++)
+        confs[idx] = {positions[idx], healths[idx], directions[idx] == 'R'? 1 : -1, idx};
+    sort(confs.begin(), confs.end());
+    
+    for(vector<int> conf : confs)
+    {
+        int pos = conf[0];
+        int health = conf[1];
+        int dir = conf[2];
+        int idx = conf[3];
+        if(dir == -1)
+        {
+            while(!roboStack.empty() && roboStack.back()[1] > 0 && health > roboStack.back()[1])
+            {
+                roboStack.pop_back();
+                health--;
+            }
+            if(!roboStack.empty() && health == roboStack.back()[1])
+                roboStack.pop_back();
+            else if(roboStack.empty() || roboStack.back()[1] < 0)
+                roboStack.push_back({idx, dir * health});
+            else roboStack.back()[1]--;
+        }
+        else roboStack.push_back({idx, dir * health});
+    }
+
+    sort(roboStack.begin(), roboStack.end());
+    vector<int> ans;
+    for(vector<int> robo : roboStack)
+        ans.push_back(abs(robo[1]));
+    
+    return ans;
+}
