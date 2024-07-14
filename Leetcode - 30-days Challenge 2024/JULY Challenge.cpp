@@ -522,3 +522,89 @@ vector<int> survivedRobotsHealths(vector<int>& positions, vector<int>& healths, 
     
     return ans;
 }
+
+// DAY 14 (726. Number of Atoms)=================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool isNum(char c)
+{
+    return c >= '0' && c <= '9';
+}
+
+bool isUppercaseLetter(char c)
+{
+    return c >= 'A' && c <= 'Z';
+}
+
+bool isLowercaseLetter(char c)
+{
+    return c >= 'a' && c <= 'z';
+}
+
+string getAtom(string &formula, int size, int &start)
+{
+    if(!isUppercaseLetter(formula[start]))
+        return "";
+    string atom = string(1, formula[start++]);
+    while(start < size && isLowercaseLetter(formula[start]))
+        atom += formula[start++];
+    return atom;
+}
+
+int getNum(string &formula, int size, int &start)
+{
+    int num = 0;
+    while(start < size && isNum(formula[start]))
+        num = num*10 + (formula[start++] - '0');
+    return num? num : 1;
+}
+
+string countOfAtoms(string formula)
+{
+    int size = formula.size();
+    map<string,int> tempMap;
+    stack<map<string,int>> atomSt;
+    
+    atomSt.push(tempMap);
+
+    for(int idx = 0; idx < size; )
+    {
+        if(formula[idx] == '(')
+        {
+            map<string,int> tempMap;
+            atomSt.push(tempMap);
+            idx++;
+        }
+        else if(formula[idx] == ')')
+        {
+            idx++;
+            int num = getNum(formula, size, idx);
+            map<string,int> tempMap = atomSt.top();
+            atomSt.pop();
+
+            for(pair<string,int> atomPair : tempMap)
+            {
+                atomPair.second *= num;
+                atomSt.top()[atomPair.first] += atomPair.second;
+            }
+        }
+        else
+        {
+            string atom = getAtom(formula, size, idx);
+            if(atom == "")
+                return "";
+            int num = getNum(formula, size, idx);
+            atomSt.top()[atom] += num;
+        }
+    }
+    string ans = "";
+    for(pair<string,int> atomPair : atomSt.top())
+    {
+        ans += atomPair.first;
+        if(atomPair.second > 1)
+            ans += to_string(atomPair.second);
+    }
+    return ans;
+}
