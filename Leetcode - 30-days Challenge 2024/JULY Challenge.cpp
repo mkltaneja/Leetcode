@@ -608,3 +608,43 @@ string countOfAtoms(string formula)
     }
     return ans;
 }
+
+// DAY 15 (2196. Create Binary Tree From Descriptions)====================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+TreeNode* createBinaryTree(vector<vector<int>>& descriptions)
+{
+    unordered_map<int,int> inDegree;
+    unordered_map<int, TreeNode*> nodeMap;
+
+    for(vector<int> desc : descriptions)
+    {
+        int parent = desc[0];
+        int child = desc[1];
+        int isLeft = desc[2];
+        
+        TreeNode* parentNode = nullptr;
+        if(nodeMap.count(parent))
+            parentNode = nodeMap[parent];
+        else parentNode = new TreeNode(parent);
+        nodeMap[parent] = parentNode;
+        
+        TreeNode* childNode = nullptr;
+        if(nodeMap.count(child))
+            childNode = nodeMap[child];
+        else childNode = new TreeNode(child);
+        nodeMap[child] = childNode;
+
+        if(!isLeft)
+            parentNode->right = childNode;
+        else parentNode->left = childNode;
+
+        inDegree[child]++;
+    }
+    for(vector<int> desc : descriptions)
+        if(inDegree[desc[0]] == 0)
+            return nodeMap[desc[0]];
+    return nullptr;
+}
