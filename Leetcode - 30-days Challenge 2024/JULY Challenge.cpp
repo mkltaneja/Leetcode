@@ -648,3 +648,52 @@ TreeNode* createBinaryTree(vector<vector<int>>& descriptions)
             return nodeMap[desc[0]];
     return nullptr;
 }
+
+// DAY 16 (2096. Step-By-Step Directions From a Binary Tree Node to Another)============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+string path = "";
+string startPath = "", destPath = "";
+
+int getDirectionsDFS(TreeNode* root, int startValue, int destValue)
+{
+    if(!root) return 0;
+
+    int leftVal = getDirectionsDFS(root->left, startValue, destValue);
+    int rightVal = getDirectionsDFS(root->right, startValue, destValue);
+
+    if(!leftVal && !rightVal)
+        return root->val == startValue? 1 : (root->val == destValue? 2 : 0);
+    if((leftVal && rightVal) || ((leftVal || rightVal) && (root->val == startValue || root->val == destValue)))
+    {
+        if(leftVal == 2)
+            destPath += 'L';
+        else if(rightVal == 2)
+            destPath += 'R';
+        if(leftVal == 1 || rightVal == 1)
+            startPath += 'U';
+
+        if(path.empty())
+        {
+            reverse(destPath.begin(), destPath.end());
+            path = startPath + destPath;
+        }
+        return 0;
+    }
+    if(leftVal == 1 || rightVal == 1)
+    {
+        startPath += 'U';
+        return 1;
+    }
+
+    destPath += leftVal == 2? 'L' : 'R';
+    return 2;
+}
+
+string getDirections(TreeNode* root, int startValue, int destValue)
+{
+    getDirectionsDFS(root, startValue, destValue);
+    return path;
+}
