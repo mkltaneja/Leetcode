@@ -697,3 +697,40 @@ string getDirections(TreeNode* root, int startValue, int destValue)
     getDirectionsDFS(root, startValue, destValue);
     return path;
 }
+
+// DAY 17 (1110. Delete Nodes And Return Forest)==============================================================================
+
+// Time Complexty = O(n)
+// Space Complexty = O(n)
+
+vector<TreeNode*> roots;
+unordered_set<int> toDeleteSet;
+
+TreeNode* delNodesDFS(TreeNode* node)
+{
+    if(!node)
+        return nullptr;
+    
+    node->left = delNodesDFS(node->left);
+    node->right = delNodesDFS(node->right);
+
+    if(toDeleteSet.count(node->val))
+    {
+        if(node->left)
+            roots.push_back(node->left);
+        if(node->right)
+            roots.push_back(node->right);
+        return nullptr;
+    }
+    return node;
+}
+
+vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete)
+{
+    toDeleteSet.insert(to_delete.begin(), to_delete.end());
+    delNodesDFS(root);
+    if(!toDeleteSet.count(root->val))
+        roots.push_back(root);
+    
+    return roots;
+}
