@@ -734,3 +734,45 @@ vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete)
     
     return roots;
 }
+
+// DAY 18 (1530. Number of Good Leaf Nodes Pairs)========================================================================================
+
+// Time Complexity = O(n * distance * distance)
+// Space Complexity = O(n * distance)
+
+vector<int> countPairsDFS(TreeNode* node, int distance)
+{
+    if(!node)
+        return vector<int>(distance + 2);
+    if(!node->left && !node->right)
+    {
+        vector<int> ret(distance + 2);
+        ret[0] = 1;
+        return ret;
+    }
+
+    vector<int> lans = countPairsDFS(node->left, distance);
+    vector<int> rans = countPairsDFS(node->right, distance);
+
+    vector<int> curr(distance + 2);
+    for(int d = 0; d < distance; d++)
+        curr[d+1] = lans[d] + rans[d];
+    curr[distance+1] = lans[distance+1] + rans[distance+1];
+
+    for(int d1 = 0; d1 <= distance; d1++)
+    {
+        for(int d2 = 0; d2 <= distance; d2++)
+        {
+            if(d1 + d2 + 2 > distance)
+                continue;
+            curr[distance+1] += lans[d1] * rans[d2];
+        }
+    }
+
+    return curr;
+}
+
+int countPairs(TreeNode* root, int distance)
+{
+    return countPairsDFS(root, distance)[distance+1];
+}
