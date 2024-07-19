@@ -776,3 +776,32 @@ int countPairs(TreeNode* root, int distance)
 {
     return countPairsDFS(root, distance)[distance+1];
 }
+
+// DAY 19 (1380. Lucky Numbers in a Matrix)===============================================================================
+
+// Time Complexity = O(n * m)
+// Space Complexity = O(n + m)
+
+vector<int> luckyNumbers (vector<vector<int>>& matrix)
+{
+    int rows = matrix.size(), cols = matrix[0].size();
+    vector<int> rowMin(rows, -1), colMax(cols, -1);
+    vector<int> ans;
+    for(int row = 0; row <= rows; row++)
+    {
+        for(int col = 0; col < cols; col++)
+        {
+            if(row == rows)
+            {
+                if(rowMin[colMax[col]] == col)
+                    ans.push_back(matrix[colMax[col]][col]);
+                continue;
+            }
+            if(rowMin[row] == -1 || matrix[row][col] < matrix[row][rowMin[row]])
+                rowMin[row] = col;
+            if(colMax[col] == -1 || matrix[row][col] > matrix[colMax[col]][col])
+                colMax[col] = row;
+        }
+    }
+    return ans;
+}
