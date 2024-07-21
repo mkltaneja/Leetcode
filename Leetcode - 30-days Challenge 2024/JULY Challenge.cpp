@@ -827,3 +827,55 @@ vector<vector<int>> restoreMatrix(vector<int>& rowSum, vector<int>& colSum)
     }
     return matrix;
 }
+
+// DAY 21 (2392. Build a Matrix With Conditions)=====================================================================================
+
+// Time Complexity = O(k + E)
+// Space Complexity = O(k)
+
+bool getPosByKahnsAlgo(int k, vector<vector<int>> &rowConditions, vector<int> &pos)
+{
+    vector<unordered_set<int>> graph(k+1);
+    vector<int> inDegree(k+1, 0);
+    queue<int> que;
+    for(vector<int> condition : rowConditions)
+    {
+        if(graph[condition[1]].count(condition[0]))
+            return false;
+        if(graph[condition[0]].count(condition[1]))
+            continue;
+        graph[condition[0]].insert(condition[1]);
+        inDegree[condition[1]]++;
+    }
+
+    for(int node = 1; node <= k; node++)
+        if(inDegree[node] == 0)
+            que.push(node);
+
+    int nodeIdx = 0;
+    while(!que.empty())
+    {
+        int par = que.front();
+        que.pop();
+        pos[par] = nodeIdx++;
+
+        for(int child : graph[par])
+            if(--inDegree[child] == 0)
+                que.push(child);
+    }
+
+    return nodeIdx == k;
+}
+
+vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions, vector<vector<int>>& colConditions)
+{
+    vector<int> rowPos(k+1), colPos(k+1);
+    if(!getPosByKahnsAlgo(k, rowConditions, rowPos) || !getPosByKahnsAlgo(k, colConditions, colPos))
+        return {};
+
+    vector<vector<int>> matrix(k, vector<int>(k, 0));
+    for(int node = 1; node <= k; node++)
+        matrix[rowPos[node]][colPos[node]] = node;
+    
+    return matrix;
+}
