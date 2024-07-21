@@ -805,3 +805,25 @@ vector<int> luckyNumbers (vector<vector<int>>& matrix)
     }
     return ans;
 }
+
+// DAY 20 (1605. Find Valid Matrix Given Row and Column Sums)=================================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*m)
+
+vector<vector<int>> restoreMatrix(vector<int>& rowSum, vector<int>& colSum)
+{
+    int rows = rowSum.size(), cols = colSum.size();
+    vector<vector<int>> matrix(rows, vector<int>(cols, 0));
+    for(int row = 0; row < rows; row++)
+    {
+        for(int col = 0; col < cols; col++)
+        {
+            int currVal = min(rowSum[row], colSum[col]);
+            matrix[row][col] = currVal;
+            rowSum[row] -= currVal;
+            colSum[col] -= currVal;
+        }
+    }
+    return matrix;
+}
