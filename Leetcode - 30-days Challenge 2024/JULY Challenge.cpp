@@ -879,3 +879,37 @@ vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions, vecto
     
     return matrix;
 }
+
+// DAY 22 (2418. Sort the People)====================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+class Person
+{
+    public:
+    string name;
+    int height;
+    Person(string name, int height)
+    {
+        this->name = name;
+        this->height = height;
+    }
+};
+
+vector<string> sortPeople(vector<string>& names, vector<int>& heights)
+{
+    int size = names.size();
+    vector<Person> persons;
+    vector<string> sortedNames(size);
+    for(int idx = 0; idx < size; idx++)
+        persons.push_back(Person(names[idx], heights[idx]));
+    sort(persons.begin(), persons.end(), [](Person &person1, Person &person2){
+        return person1.height > person2.height;
+    });
+
+    for(int idx = 0; idx < size; idx++)
+        sortedNames[idx] = persons[idx].name;
+    
+    return sortedNames;
+}
