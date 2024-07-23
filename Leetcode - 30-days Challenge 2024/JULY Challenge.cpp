@@ -913,3 +913,28 @@ vector<string> sortPeople(vector<string>& names, vector<int>& heights)
     
     return sortedNames;
 }
+
+// DAY 23 (1636. Sort Array by Increasing Frequency)====================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+vector<int> frequencySort(vector<int>& nums)
+{
+    unordered_map<int,int> numCnt;
+    for(int num : nums)
+        numCnt[num]++;
+    vector<pair<int,int>> numCntPairs;
+    for(pair<int,int>  pair : numCnt)
+        numCntPairs.push_back({pair.first, pair.second});
+    sort(numCntPairs.begin(), numCntPairs.end(), [](pair<int,int> &pair1, pair<int,int> &pair2){
+        return pair1.second == pair2.second? pair1.first > pair2.first : pair1.second < pair2.second;
+    });
+
+    vector<int> ans;
+    for(pair<int,int> pair : numCntPairs)
+        while(pair.second--)
+            ans.push_back(pair.first);
+    
+    return ans;
+}
