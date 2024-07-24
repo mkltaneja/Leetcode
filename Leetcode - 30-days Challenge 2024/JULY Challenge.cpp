@@ -938,3 +938,39 @@ vector<int> frequencySort(vector<int>& nums)
     
     return ans;
 }
+
+// DAY 24 (2191. Sort the Jumbled Numbers)====================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int getMappedNum(int num, vector<int> &mapping)
+{
+    if(num == 0)
+        return mapping[num];
+    int mappedNum = 0, place = 1;
+    while(num)
+    {
+        mappedNum += mapping[num % 10] * place;
+        place *= 10;
+        num /= 10;
+    }
+    return mappedNum;
+}
+
+vector<int> sortJumbled(vector<int>& mapping, vector<int>& nums)
+{
+    int size = nums.size();
+    vector<pair<int,int>> numPairs(size);
+    for(int idx = 0; idx < size; idx++)
+    {
+        int mappedNum = getMappedNum(nums[idx], mapping);
+        numPairs[idx] = {mappedNum, idx};
+    }
+    sort(numPairs.begin(), numPairs.end());
+    vector<int> ans;
+    for(pair<int,int> numPair : numPairs)
+        ans.push_back(nums[numPair.second]);
+    
+    return ans;
+}
