@@ -974,3 +974,47 @@ vector<int> sortJumbled(vector<int>& mapping, vector<int>& nums)
     
     return ans;
 }
+
+// DAY 25 (912. Sort an Array)=========================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+vector<int> mergeSort(int lo, int hi, vector<int> &nums)
+{
+    if(lo > hi)
+        return vector<int>();
+    if(lo == hi)
+        return vector<int>(1, nums[lo]);
+    
+    int mid = lo + ((hi - lo) >> 1);
+    vector<int> larr = mergeSort(lo, mid, nums);
+    vector<int> rarr = mergeSort(mid+1, hi, nums);
+
+    vector<int> res;
+    int lidx = 0, ridx = 0;
+    while(lidx < larr.size() || ridx < rarr.size())
+    {
+        int lnum = lidx < larr.size()? larr[lidx] : INT_MAX;
+        int rnum = ridx < rarr.size()? rarr[ridx] : INT_MAX;
+
+        if(lnum < rnum)
+        {
+            res.push_back(lnum);
+            lidx++;
+        }
+        else
+        {
+            res.push_back(rnum);
+            ridx++;
+        }
+    }
+
+    return res;
+}
+
+vector<int> sortArray(vector<int>& nums)
+{
+    int size = nums.size();
+    return mergeSort(0, size-1, nums);
+}
