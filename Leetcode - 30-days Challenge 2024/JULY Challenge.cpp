@@ -1018,3 +1018,60 @@ vector<int> sortArray(vector<int>& nums)
     int size = nums.size();
     return mergeSort(0, size-1, nums);
 }
+
+// DAY 26 (1334. Find the City With the Smallest Number of Neighbors at a Threshold Distance)========================================================================
+
+// Time Complexity = O(V*E*log(V))
+// Space Complexity = O(V + E)
+
+int getVisitingNodesCount(int n, int node, int distanceThreshold, vector<vector<vector<int>>> &graph)
+{
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+    vector<int> dist(n, INT_MAX);
+    unordered_set<int> nodesVisited;
+    pq.push({0, node});
+    dist[node] = 0;
+    while(!pq.empty())
+    {
+        int currDist = pq.top().first;
+        int currNode = pq.top().second;
+        pq.pop();
+
+        for(vector<int> &edge : graph[currNode])
+        {
+            int child = edge[0], childDist = edge[1];
+            int newDist = currDist + childDist;
+            if(newDist < dist[child] && newDist <= distanceThreshold)
+            {
+                pq.push({newDist, child});
+                dist[child] = newDist;
+                nodesVisited.insert(child);
+            }
+        }
+    }
+
+    return nodesVisited.size();
+}
+
+int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold)
+{
+    vector<vector<vector<int>>> graph(n);
+    for(vector<int> &edge : edges)
+    {
+        graph[edge[0]].push_back({edge[1], edge[2]});
+        graph[edge[1]].push_back({edge[0], edge[2]});
+    }
+
+    int minVisitingNodes = INT_MAX, ansNode = -1;
+    for(int node = 0; node < n; node++)
+    {
+        int totalVisitingNodes = getVisitingNodesCount(n, node, distanceThreshold, graph);
+        if(totalVisitingNodes <= minVisitingNodes)
+        {
+            minVisitingNodes = totalVisitingNodes;
+            ansNode = node;
+        }
+    }
+
+    return ansNode;
+}
