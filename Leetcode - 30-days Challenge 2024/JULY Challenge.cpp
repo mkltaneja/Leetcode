@@ -1075,3 +1075,64 @@ int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold)
 
     return ansNode;
 }
+
+// DAY 27 (2976. Minimum Cost to Convert String I)==================================================================
+
+// Time Complexity = O(V*E*log(V))
+// Space Complexity = O(V +E)
+
+#define ll long long
+
+vector<ll> getMinCostDijikstra(int source, vector<vector<ll>> &graph)
+{
+    vector<ll> cost(26, -1);
+    priority_queue<pair<ll,int>, vector<pair<ll,int>>, greater<pair<ll,int>>> minPq;
+    minPq.push({0, source});
+    while(!minPq.empty())
+    {
+        ll currCost = minPq.top().first;
+        int currChar = minPq.top().second;
+        minPq.pop();
+        if(cost[currChar] != -1 && cost[currChar] < currCost)
+            continue;
+
+        for(int childChar = 0; childChar < 26; childChar++)
+        {
+            if(graph[currChar][childChar] == LLONG_MAX)
+                continue;
+            ll newCost = currCost + graph[currChar][childChar];
+            if(cost[childChar] == -1 || newCost < cost[childChar])
+            {
+                cost[childChar] = newCost;
+                minPq.push({newCost, childChar});
+            }
+        }
+    }
+
+    return cost;
+}
+
+long long minimumCost(string source, string target, vector<char>& original, vector<char>& changed, vector<int>& cost)
+{
+    vector<vector<ll>> graph(26, vector<ll>(26, LLONG_MAX));
+    for(int idx = 0; idx < original.size(); idx++)
+        graph[original[idx]-'a'][changed[idx]-'a'] = min(graph[original[idx]-'a'][changed[idx]-'a'], (ll)cost[idx]);
+    
+    vector<vector<ll>> costs(26, vector<ll>(26, LLONG_MAX));
+    for(int i = 0; i < 26; i++)
+        costs[i] = getMinCostDijikstra(i, graph);
+    
+    ll totalCost = 0;
+    for(int idx = 0; idx < source.size(); idx++)
+    {
+        if(source[idx] == target[idx])
+            continue;
+        ll minCost = costs[source[idx]-'a'][target[idx]-'a'];
+        if(minCost == -1)
+            return -1;
+        
+        totalCost += minCost;
+    }
+
+    return totalCost;
+}
