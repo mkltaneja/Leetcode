@@ -1136,3 +1136,57 @@ long long minimumCost(string source, string target, vector<char>& original, vect
 
     return totalCost;
 }
+
+// DAY 28 (2045. Second Minimum Time to Reach Destination)=========================================================================
+
+// Time Compexity = O(E * logV)
+// Space Compexity = O(E)
+
+int secondMinimum(int n, vector<vector<int>>& edges, int time, int change)
+{
+    vector<vector<int>> graph(n+1);
+    for(vector<int> &edge : edges)
+    {
+        graph[edge[0]].push_back(edge[1]);
+        graph[edge[1]].push_back(edge[0]);
+    }
+
+    int minFinalTime = INT_MAX;
+    vector<pair<int,int>> minTimes(n+1, {INT_MAX, INT_MAX});
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> minPq;
+    minPq.push({0, 1});
+
+    while(!minPq.empty())
+    {
+        int currTime = minPq.top().first;
+        int par = minPq.top().second;
+        minPq.pop();
+
+        if(par == n)
+        {
+            if(minFinalTime == INT_MAX)
+                minFinalTime = currTime;
+            else return currTime;
+        }
+
+        for(int child : graph[par])
+        {
+            int waitTime = 0;
+            if((currTime / change) % 2)
+                waitTime = change - (currTime % change);
+            int newTime = waitTime + currTime + time;
+            if(minTimes[child].first == INT_MAX)
+            {
+                minTimes[child].first = newTime;
+                minPq.push({newTime, child});
+            }
+            else if(minTimes[child].second == INT_MAX && minTimes[child].first != newTime)
+            {
+                minTimes[child].second = newTime;
+                minPq.push({newTime, child});
+            }
+        }
+    }
+
+    return -1;
+}
