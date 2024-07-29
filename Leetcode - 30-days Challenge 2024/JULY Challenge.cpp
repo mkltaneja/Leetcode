@@ -1190,3 +1190,36 @@ int secondMinimum(int n, vector<vector<int>>& edges, int time, int change)
 
     return -1;
 }
+
+// DAY 29 (1395. Count Number of Teams)===================================================================
+
+// APPROACH 1 (DP)
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n)
+
+int numTeams(vector<int>& rating)
+{
+    int size = rating.size();
+    vector<int> smallCount(size, 0), largeCount(size, 0);
+    int totalGroups = 0;
+
+    for(int idx1 = 1; idx1 < size; idx1++)
+    {
+        for(int idx2 = idx1 - 1; idx2 >= 0; idx2--)
+        {
+            if(rating[idx2] < rating[idx1])
+            {
+                smallCount[idx1]++;
+                totalGroups += smallCount[idx2];
+            }
+            else if(rating[idx2] > rating[idx1])
+            {
+                largeCount[idx1]++;
+                totalGroups += largeCount[idx2];
+            }
+        }
+    }
+
+    return totalGroups;
+}
