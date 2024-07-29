@@ -1223,3 +1223,67 @@ int numTeams(vector<int>& rating)
 
     return totalGroups;
 }
+
+// APPROACH 2 (Fenwick Tree) --> [OPTIMIZED]
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+class Ftree
+{
+    public:
+    int size;
+    vector<int> tree;
+    Ftree(int size)
+    {
+        this->size = size;
+        this->tree.assign(size, 0);
+    }
+
+    int getCount(int num)
+    {
+        int count = 0;
+        while(num)
+        {
+            count += tree[num];
+            num -= num & -num;
+        }
+
+        return count;
+    }
+
+    void updateCount(int num, int count)
+    {
+        while(num < size)
+        {
+            tree[num] += count;
+            num += num & -num;
+        }
+    }
+};
+
+int numTeams(vector<int>& rating)
+{
+    int size = rating.size();
+    int maxRating = *max_element(rating.begin(), rating.end());
+    Ftree leftTree(maxRating+1), rightTree(maxRating+1);
+    for(int currRating : rating)
+        rightTree.updateCount(currRating, 1);
+    int totalGroups = 0;
+
+    for(int currRating : rating)
+    {
+        rightTree.updateCount(currRating, -1);
+
+        int leftSmallerCount = leftTree.getCount(currRating-1);
+        int rightSmallerCount = rightTree.getCount(currRating-1);
+        int leftLargerCount = leftTree.getCount(maxRating) - leftTree.getCount(currRating);
+        int rightLargerCount = rightTree.getCount(maxRating) - rightTree.getCount(currRating);
+
+        totalGroups += (leftSmallerCount * rightLargerCount) + (leftLargerCount * rightSmallerCount);
+
+        leftTree.updateCount(currRating, 1);
+    }
+
+    return totalGroups;
+}
