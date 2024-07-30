@@ -1287,3 +1287,22 @@ int numTeams(vector<int>& rating)
 
     return totalGroups;
 }
+
+// DAY 30 (1653. Minimum Deletions to Make String Balanced)===========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int minimumDeletions(string s)
+{
+    int minDeletions = 0;
+    int bCount = 0;
+    for(char c : s)
+    {
+        if(c == 'b')
+            bCount++;
+        else minDeletions = min(minDeletions + 1, bCount);
+    }
+    
+    return minDeletions;
+}
