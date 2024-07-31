@@ -1306,3 +1306,32 @@ int minimumDeletions(string s)
     
     return minDeletions;
 }
+
+// DAY 31 (1105. Filling Bookcase Shelves)======================================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n)
+
+int minHeightShelvesDFS(int idx, vector<vector<int>>& books, int shelfWidth, vector<int> &cache)
+{
+    if(idx == books.size())
+        return 0;
+    if(cache[idx] != INT_MAX)
+        return cache[idx];
+    
+    int maxHeight = 0, currWidth = 0, minAns = INT_MAX;
+    for(int idx2 = idx; idx2 < books.size() && currWidth + books[idx2][0] <= shelfWidth; idx2++)
+    {
+        maxHeight = max(maxHeight, books[idx2][1]);
+        currWidth += books[idx2][0];
+        minAns = min(minAns, minHeightShelvesDFS(idx2 + 1, books, shelfWidth, cache) + maxHeight);
+    }
+
+    return cache[idx] = minAns;
+}
+
+int minHeightShelves(vector<vector<int>>& books, int shelfWidth)
+{
+    vector<int> cache(books.size(), INT_MAX);
+    return minHeightShelvesDFS(0, books, shelfWidth, cache);
+}
