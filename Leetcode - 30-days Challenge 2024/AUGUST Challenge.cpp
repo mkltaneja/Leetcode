@@ -38,3 +38,22 @@ int minSwaps(vector<int>& nums)
 
     return minSwaps;
 }
+
+// DAY 3 (1460. Make Two Arrays Equal by Reversing Subarrays)=================================================================================
+
+// Time Complexity = O(n + 1000)
+// Space Complexity = O(1000)
+
+bool canBeEqual(vector<int>& target, vector<int>& arr)
+{
+    vector<int> freq(1001, 0);
+    for(int num : arr)
+        freq[num]++;
+    for(int num : target)
+        freq[num]--;
+    for(int num = 1; num <= 1000; num++)
+        if(freq[num])
+            return false;
+
+    return true;
+}
