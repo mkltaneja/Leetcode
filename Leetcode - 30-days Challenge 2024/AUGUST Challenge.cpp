@@ -58,7 +58,9 @@ bool canBeEqual(vector<int>& target, vector<int>& arr)
     return true;
 }
 
-// DAY 4 ()=====================================================================================================
+// DAY 4 (1508. Range Sum of Sorted Subarray Sums)=====================================================================================================
+
+// APPROACH 1 (Brute Force)
 
 // Time Complexity = O(n^2)
 // Space Complexity = O(n^2)
@@ -83,4 +85,56 @@ int rangeSum(vector<int>& nums, int n, int left, int right)
         ans = (ans % MOD + narr[i] % MOD) % MOD;
 
     return ans;
+}
+
+// APPROACH 2 (Binary Search)
+
+// Time Complexity = O(n*log(sum))
+// Space Complexity = O(1)
+
+const int MOD = 1e9 + 7;
+int rangeSum(vector<int>& nums, int n, int left, int right)
+{
+    long long ans = getSumOfFirstK(nums, n, right) % MOD - getSumOfFirstK(nums, n, left-1) % MOD;
+    return (ans + MOD) % MOD;
+}
+
+pair<int, long long> totalSubarraysLessThanMaxsum(vector<int>& nums, int n, int maxSum)
+{
+    int count = 0;
+    long long currSum = 0, windowSum = 0, totalSum = 0;
+    for(int i = 0, j = 0; i < n; i++)
+    {
+        currSum += nums[i];
+        windowSum += nums[i] * (i - j + 1);
+        while(currSum > maxSum)
+        {
+            windowSum -= currSum;
+            currSum -= nums[j++];
+        }
+        count += i - j + 1;
+        totalSum += windowSum;
+    }
+
+    return {count, totalSum};
+}
+
+long long getSumOfFirstK(vector<int>& nums, int n, int k)
+{
+    int minSum = *min_element(nums.begin(), nums.end());
+    int maxSum = accumulate(nums.begin(), nums.end(), 0);
+    long long lo = minSum, hi = maxSum;
+
+    while(lo <= hi)
+    {
+        int mid = lo + ((hi - lo) >> 1);
+
+        if(totalSubarraysLessThanMaxsum(nums, n, mid).first >= k)
+            hi = mid - 1;
+        else lo = mid + 1;
+    }
+
+    auto [count, sum] = totalSubarraysLessThanMaxsum(nums, n, lo);
+
+    return sum - lo * (count - k);
 }
