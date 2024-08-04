@@ -57,3 +57,30 @@ bool canBeEqual(vector<int>& target, vector<int>& arr)
 
     return true;
 }
+
+// DAY 4 ()=====================================================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+const int MOD = 1e9 + 7;
+int rangeSum(vector<int>& nums, int n, int left, int right)
+{
+    vector<int> narr;
+    for(int i = 0; i < n; i++)
+    {
+        int currSum = 0;
+        for(int j = i; j < n; j++)
+        {
+            currSum += nums[j];
+            narr.push_back(currSum);
+        }
+    }
+    sort(narr.begin(), narr.end());
+
+    int ans = 0;
+    for(int i = left-1; i < right; i++)
+        ans = (ans % MOD + narr[i] % MOD) % MOD;
+
+    return ans;
+}
