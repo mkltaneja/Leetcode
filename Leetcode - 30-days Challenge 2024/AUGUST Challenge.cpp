@@ -138,3 +138,23 @@ long long getSumOfFirstK(vector<int>& nums, int n, int k)
 
     return sum - lo * (count - k);
 }
+
+// DAY 5 (2053. Kth Distinct String in an Array)==============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+string kthDistinct(vector<string>& arr, int k)
+{
+    int size = arr.size();
+    unordered_map<string, int> freqMap;
+    for(int idx = 0; idx < size; idx++)
+        freqMap[arr[idx]]++;
+    
+    int visited = 0;
+    for(int idx = 0; idx < size; idx++)
+        if(freqMap[arr[idx]] == 1 && ++visited == k)
+            return arr[idx];
+    
+    return "";
+}
