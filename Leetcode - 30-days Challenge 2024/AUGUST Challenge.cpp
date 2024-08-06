@@ -158,3 +158,22 @@ string kthDistinct(vector<string>& arr, int k)
     
     return "";
 }
+
+// DAY 6 (3016. Minimum Number of Pushes to Type Word II)=======================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int minimumPushes(string word)
+{
+    vector<int> charFreqMap(26, 0);
+    for(char c : word)
+        charFreqMap[c-'a']++;
+    sort(charFreqMap.rbegin(), charFreqMap.rend());
+    
+    int numKeysPushed = 0;
+    for(int idx = 0; idx < 26 && charFreqMap[idx]; idx++)
+        numKeysPushed += charFreqMap[idx] * ((idx / 8) + 1);
+    
+    return numKeysPushed;
+}
