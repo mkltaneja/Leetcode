@@ -177,3 +177,46 @@ int minimumPushes(string word)
     
     return numKeysPushed;
 }
+
+// DAY 8 (885. Spiral Matrix III)================================================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*m)
+
+vector<vector<int>> spiralMatrixIII(int rows, int cols, int rStart, int cStart)
+{
+    int totalNums = rows * cols;
+    int dir[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    int minRow = rStart, minCol = cStart, maxRow = rStart, maxCol = cStart;
+    int currRow = rStart, currCol = cStart;
+    int numsCovered = 0;
+    int currDir = 0;
+    vector<vector<int>> ans;
+
+    while(numsCovered < totalNums)
+    {
+        while(numsCovered < totalNums && currCol >= minCol && currCol <= maxCol && currRow >= minRow && currRow <= maxRow)
+        {
+            if(currRow >= 0 && currRow < rows && currCol >= 0 && currCol < cols)
+            {
+                ans.push_back({currRow, currCol});
+                numsCovered++;
+            }
+            
+            currRow += dir[currDir][0];
+            currCol += dir[currDir][1];
+        }
+
+        if(currDir == 0)
+            maxCol++;
+        else if(currDir == 1)
+            maxRow++;
+        else if(currDir == 2)
+            minCol--;
+        else minRow--;
+
+        currDir = (currDir + 1) % 4;
+    }
+
+    return ans;
+}
