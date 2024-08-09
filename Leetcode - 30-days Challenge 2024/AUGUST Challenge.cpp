@@ -220,3 +220,47 @@ vector<vector<int>> spiralMatrixIII(int rows, int cols, int rStart, int cStart)
 
     return ans;
 }
+
+// DAY 9 (840. Magic Squares In Grid)=============================================================================
+
+// Time Compexity = O(n*m)
+// Space Compexity = O(1)
+
+bool isMagicSquare(int row, int col, vector<vector<int>> &grid)
+{
+    unordered_set<int> st;
+    int rowSum[3] = {0}, colSum[3] = {0}, diagSum[2] = {0};
+    for(int r = row; r < row + 3; r++)
+    {
+        for(int c = col; c < col + 3; c++)
+        {
+            if(grid[r][c] < 1 || grid[r][c] > 9)
+                return false;
+            st.insert(grid[r][c]);
+
+            int ridx = r - row;
+            int cidx = c - col;
+            rowSum[ridx] += grid[r][c];
+            colSum[cidx] += grid[r][c];
+            if(ridx == cidx)
+                diagSum[0] += grid[r][c];
+            if(ridx + cidx == 2)
+                diagSum[1] += grid[r][c];
+        }
+    }
+    if((rowSum[0] != rowSum[1] || rowSum[0] != rowSum[2]) || (colSum[0] != colSum[1] || colSum[0] != colSum[2]) || (diagSum[0] != diagSum[1]) || st.size() != 9)
+        return false;
+    return true;
+}
+
+int numMagicSquaresInside(vector<vector<int>>& grid)
+{
+    int rows = grid.size(), cols = grid[0].size();
+    int magicSquares = 0;
+    for(int row = 0; row <= rows-3; row++)
+        for(int col = 0; col <= cols-3; col++)
+            if(isMagicSquare(row, col, grid))
+                magicSquares++;
+
+    return magicSquares;
+}
