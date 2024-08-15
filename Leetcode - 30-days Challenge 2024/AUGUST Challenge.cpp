@@ -298,3 +298,35 @@ vector<vector<int>> combinationSum2(vector<int>& candidates, int target)
     getCombinations(0, candidates, target, curr);
     return ans;
 }
+
+// DAY 15 (860. Lemonade Change)===================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+bool lemonadeChange(vector<int>& bills)
+{
+    int fives = 0, tens = 0;
+    for(int bill : bills)
+    {
+        if(bill == 5)
+            fives++;
+        else if(bill == 10)
+        {
+            if(!fives)
+                return false;
+            fives--;
+            tens++;
+        }
+        else
+        {
+            if(tens && fives)
+                tens--, fives--;
+            else if(fives >= 3)
+                fives -= 3;
+            else return false;
+        }
+    }
+
+    return true;
+}
