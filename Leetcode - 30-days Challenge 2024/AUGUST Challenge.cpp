@@ -330,3 +330,33 @@ bool lemonadeChange(vector<int>& bills)
 
     return true;
 }
+
+// DAY 16 (624. Maximum Distance in Arrays)======================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int maxDistance(vector<vector<int>>& arrays)
+{
+    int st1 = -1, st2 = -1, end1 = -1, end2 = -1;
+    for(int idx = 0; idx < arrays.size(); idx++)
+    {
+        if(st1 == -1 || arrays[st1][0] >= arrays[idx][0])
+        {
+            st2 = st1;
+            st1 = idx;
+        }
+        else if(st2 == -1 || arrays[st2][0] >= arrays[idx][0])
+            st2 = idx;
+        
+        if(end1 == -1 || arrays[end1].back() <= arrays[idx].back())
+        {
+            end2 = end1;
+            end1 = idx;
+        }
+        else if(end2 == -1 || arrays[end2].back() <= arrays[idx].back())
+            end2 = idx;
+    }
+
+    return st1 == end1? max(arrays[end1].back() - arrays[st2][0], arrays[end2].back() - arrays[st1][0]) : arrays[end1].back() - arrays[st1][0];
+}
