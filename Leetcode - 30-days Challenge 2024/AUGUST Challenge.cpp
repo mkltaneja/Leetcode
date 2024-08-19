@@ -360,3 +360,32 @@ int maxDistance(vector<vector<int>>& arrays)
 
     return st1 == end1? max(arrays[end1].back() - arrays[st2][0], arrays[end2].back() - arrays[st1][0]) : arrays[end1].back() - arrays[st1][0];
 }
+
+// DAY 19 (650. 2 Keys Keyboard)================================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+int minStepsDFS(int n, int chars, int lastCopied, vector<vector<int>> &cache)
+{
+    if(chars > n)
+        return INT_MAX;
+    if(chars == n)
+        return 0;
+    if(cache[chars][lastCopied] != -1)
+        return cache[chars][lastCopied];
+    long long pasteSteps = INT_MAX, copySteps = INT_MAX;
+    
+    if(lastCopied != chars)
+        copySteps = 1ll + minStepsDFS(n, chars, chars, cache);
+    if(lastCopied)
+        pasteSteps = 1ll + minStepsDFS(n, chars + lastCopied, lastCopied, cache);
+
+    return cache[chars][lastCopied] = min({copySteps, pasteSteps, 1ll * INT_MAX});
+}
+
+int minSteps(int n)
+{
+    vector<vector<int>> cache(n+1, vector<int>(n, -1));
+    return minStepsDFS(n, 1, 0, cache);
+}
