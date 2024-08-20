@@ -389,3 +389,32 @@ int minSteps(int n)
     vector<vector<int>> cache(n+1, vector<int>(n, -1));
     return minStepsDFS(n, 1, 0, cache);
 }
+
+// DAY 20 (1140. Stone Game II)==================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+int getMaximumStones(int idx, int m, bool isAliceTurn, vector<int> &piles, vector<vector<vector<int>>> &cache)
+{
+    if(idx == piles.size())
+        return 0;
+    if(cache[idx][m][isAliceTurn] != -1)
+        return cache[idx][m][isAliceTurn];
+    
+    int totalStones = 0, res = isAliceTurn? 0 : INT_MAX;
+    for(int x = 1; x <= min(2*m, (int)piles.size() - idx); x++)
+    {
+        totalStones += piles[idx + x - 1];
+        if(isAliceTurn)
+            res = max(res, getMaximumStones(idx + x, max(x, m), false, piles, cache) + totalStones);
+        else res = min(res, getMaximumStones(idx + x, max(x, m), true, piles, cache));
+    }
+    return cache[idx][m][isAliceTurn] = res;
+}
+
+int stoneGameII(vector<int>& piles)
+{
+    vector<vector<vector<int>>> cache(piles.size(), vector<vector<int>>(piles.size()+1, vector<int>(2, -1)));
+    return getMaximumStones(0, 1, true, piles, cache);
+}
