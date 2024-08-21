@@ -418,3 +418,29 @@ int stoneGameII(vector<int>& piles)
     vector<vector<vector<int>>> cache(piles.size(), vector<vector<int>>(piles.size()+1, vector<int>(2, -1)));
     return getMaximumStones(0, 1, true, piles, cache);
 }
+
+// DAY 21 (664. Strange Printer)===========================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+int strangePrinterDFS(int lidx, int ridx, string &s, vector<vector<int>> &cache)
+{
+    if(lidx == ridx)
+        return 1;
+    if(cache[lidx][ridx] != -1)
+        return cache[lidx][ridx];
+    
+    int minPrints = INT_MAX;
+    for(int idx = lidx; idx < ridx; idx++)
+    {
+        minPrints = min(minPrints, strangePrinterDFS(lidx, idx, s, cache) + strangePrinterDFS(idx+1, ridx, s, cache));
+    }
+    return cache[lidx][ridx] = minPrints - (s[lidx] == s[ridx]);
+}
+
+int strangePrinter(string s)
+{
+    vector<vector<int>> cache(s.size(), vector<int>(s.size(), -1));
+    return strangePrinterDFS(0, s.size()-1, s, cache);
+}
