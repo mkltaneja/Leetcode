@@ -444,3 +444,20 @@ int strangePrinter(string s)
     vector<vector<int>> cache(s.size(), vector<int>(s.size(), -1));
     return strangePrinterDFS(0, s.size()-1, s, cache);
 }
+
+// DAY 22 (476. Number Complement)=========================================================
+
+// Time Complexity = O(log(num))
+// Space Complexity = O(1)
+
+int findComplement(int num)
+{
+    int newNum = 0, tmp = num, shifts = 0;
+    while(tmp)
+    {
+        newNum |= ((tmp & 1 ^ 1) << shifts);
+        tmp >>= 1;
+        shifts++;
+    }
+    return newNum;
+}
