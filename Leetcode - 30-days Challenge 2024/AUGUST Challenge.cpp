@@ -461,3 +461,94 @@ int findComplement(int num)
     }
     return newNum;
 }
+
+// DAY 23 (592. Fraction Addition and Subtraction)==========================================================
+
+// Time Complexity = O(n*max(num))
+// Space Complexity = O(1)
+
+bool isDigit(char c)
+{
+    return c >= '0' && c <= '9';
+} 
+
+void calculateExpression(int prevNum, int prevDen, int &currNum, int &currDen, int &currSign)
+{
+    if(prevDen == 0)
+    {
+        if(currSign == -1)
+            currNum *= -1;
+        return;
+    }
+    
+    int newDen = (prevDen * currDen) / __gcd(prevDen, currDen);
+
+    int prevFactor = newDen / prevDen;
+    int currFactor = newDen / currDen;
+
+    prevNum *= prevFactor;
+    currNum *= currFactor;
+
+    int newNum = prevNum + currSign * currNum;
+
+    currNum = newNum;
+    currDen = newDen;
+}
+
+void simplifyExpression(int &num, int &den)
+{
+    if(num == 0)
+    {
+        den = 1;
+        return;
+    }
+    for(int fac = 2; fac <= min(abs(num), abs(den)); fac++)
+    {
+        while(num % fac == 0 && den % fac == 0)
+        {
+            num /= fac;
+            den /= fac;
+        }
+    }
+}
+
+string fractionAddition(string expression)
+{
+    int size = expression.size();
+    int prevNum = 0, prevDen = 0, currNum = 0, currDen = 0, currSign = 1;
+    bool isDen = false;
+    for(int idx = 0; idx < size; idx++)
+    {
+        if(expression[idx] == '+' || expression[idx] == '-')
+        {
+            currSign = expression[idx] == '+'? 1 : -1;
+            isDen = false;
+        }
+        else if(expression[idx] == '/')
+            isDen = true;
+        else
+        {
+            while(idx < size && isDigit(expression[idx]))
+            {
+                if(isDen)
+                    currDen = currDen * 10 + (expression[idx]-'0');
+                else currNum = currNum * 10 + (expression[idx]-'0');
+                idx++;
+            }
+            idx--;
+
+
+            if(isDen)
+            {
+                calculateExpression(prevNum, prevDen, currNum, currDen, currSign);
+                simplifyExpression(currNum, currDen);
+            
+                prevNum = currNum;
+                prevDen = currDen;
+                currNum = 0, currDen = 0, currSign = 1;
+            }
+        }
+    }
+
+    return to_string(prevNum) + "/" + to_string(prevDen);
+}
