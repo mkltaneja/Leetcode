@@ -552,3 +552,65 @@ string fractionAddition(string expression)
 
     return to_string(prevNum) + "/" + to_string(prevDen);
 }
+
+// DAY 24 (564. Find the Closest Palindrome)================================================================================
+
+// Time Complexity = O(log2(n)*log10(n))
+// Space Complexity = O(log10(n))
+
+#define ll long long
+
+ll findPal(ll num)
+{
+    string numStr = to_string(num);
+    int size = numStr.size();
+    int left = (size - 1) / 2, right = size / 2;
+    while(left >= 0)
+        numStr[right++] = numStr[left--];
+    ll numAns = stoll(numStr);
+    return numAns;
+}
+
+ll findClosestSmaller(ll num)
+{
+    ll lo = 0, hi = num, ans = -1;
+    while(lo <= hi)
+    {
+        ll mid = lo + ((hi - lo) >> 1);
+        ll palNum = findPal(mid);
+        if(palNum < num)
+        {
+            ans = palNum;
+            lo = mid + 1;
+        }
+        else hi = mid - 1;
+    }
+    return ans;
+}
+
+ll findClosestLarger(ll num)
+{
+    ll lo = num, hi = LLONG_MAX, ans = -1;
+    while(lo <= hi)
+    {
+        ll mid = lo + ((hi - lo) >> 1);
+        ll palNum = findPal(mid);
+        if(palNum > num)
+        {
+            ans = palNum;
+            hi = mid - 1;
+        }
+        else lo = mid + 1;
+    }
+    return ans;
+}
+
+string nearestPalindromic(string n)
+{
+    ll num = stoll(n);
+    ll closestSmaller = findClosestSmaller(num);
+    ll closestLarger = findClosestLarger(num);
+    if(abs(num - closestLarger) < abs(num - closestSmaller))
+        return to_string(closestLarger);
+    return to_string(closestSmaller);
+}
