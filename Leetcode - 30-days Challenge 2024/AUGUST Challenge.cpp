@@ -614,3 +614,23 @@ string nearestPalindromic(string n)
         return to_string(closestLarger);
     return to_string(closestSmaller);
 }
+
+// DAY 25 (145. Binary Tree Postorder Traversal)===================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+void postorderTraversalDFS(TreeNode* node, vector<int> &postNodes)
+{
+    if(!node) return;
+    postorderTraversalDFS(node->left, postNodes);
+    postorderTraversalDFS(node->right, postNodes);
+    postNodes.push_back(node->val);
+}
+
+vector<int> postorderTraversal(TreeNode* root)
+{
+    vector<int> postNodes;
+    postorderTraversalDFS(root, postNodes);
+    return postNodes;
+}
