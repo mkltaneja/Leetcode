@@ -634,3 +634,47 @@ vector<int> postorderTraversal(TreeNode* root)
     postorderTraversalDFS(root, postNodes);
     return postNodes;
 }
+
+// DAY 26 (590. N-ary Tree Postorder Traversal)=======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> children;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+    }
+
+    Node(int _val, vector<Node*> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+public:
+
+    void postorderDFS(Node* root, vector<int> &postNodes)
+    {
+        if(!root) return;
+        for(Node* node : root->children)
+            postorderDFS(node, postNodes);
+        postNodes.push_back(root->val);
+    }
+
+    vector<int> postorder(Node* root)
+    {
+        vector<int> postNodes;
+        postorderDFS(root, postNodes);
+        return postNodes;
+    }
+};
