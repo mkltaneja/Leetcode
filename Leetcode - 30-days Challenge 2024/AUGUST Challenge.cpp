@@ -678,3 +678,43 @@ public:
         return postNodes;
     }
 };
+
+// DAY 27 (1514. Path with Maximum Probability)=======================================================================
+
+// Time Complexity = O(n^2 * logn)
+// Space Complexity = O(n^2)
+
+double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node)
+{
+    vector<vector<pair<int,double>>> graph(n);
+    for(int idx = 0; idx < edges.size(); idx++)
+    {
+        graph[edges[idx][0]].push_back({edges[idx][1], succProb[idx]});
+        graph[edges[idx][1]].push_back({edges[idx][0], succProb[idx]});
+    }
+
+    priority_queue<pair<double,int>> maxPq;
+    vector<double> maxProb(n, 0);
+    maxPq.push({1.0, start_node});
+    maxProb[start_node] = 1.0;
+    while(!maxPq.empty())
+    {
+        double currProb = maxPq.top().first;
+        int currNode = maxPq.top().second;
+        maxPq.pop();
+        if(currNode == end_node)
+            return currProb;
+
+        for(pair<int,double> &child : graph[currNode])
+        {
+            int childNode = child.first;
+            double prob = child.second;
+            if(maxProb[childNode] < currProb * prob)
+            {
+                maxProb[childNode] = currProb * prob;
+                maxPq.push({currProb * prob, childNode});
+            }
+        }
+    }
+    return 0.0;
+}
