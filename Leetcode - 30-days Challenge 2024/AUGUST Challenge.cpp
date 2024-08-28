@@ -718,3 +718,45 @@ double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succPro
     }
     return 0.0;
 }
+
+// DAY 28 (1905. Count Sub Islands)==================================================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+void visitIsland(int row, int col, int rows, int cols, vector<vector<bool>> &isVisited, vector<vector<int>> &grid1, vector<vector<int>> &grid2, vector<vector<int>> &islandCells, bool &isValidIsland)
+{
+    if(row == -1 || col == -1 || row == rows || col == cols || isVisited[row][col] || !grid2[row][col])
+        return;
+    if(!grid1[row][col])
+        isValidIsland = false;
+    
+    isVisited[row][col] = true;
+    islandCells.push_back({row, col});
+    
+    for(int d = 0; d < 4; d++)
+        visitIsland(row + dir[d][0], col + dir[d][1], rows, cols, isVisited, grid1, grid2, islandCells, isValidIsland);
+}
+
+int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2)
+{
+    int rows = grid2.size(), cols = grid2[0].size();
+    int validIslands = 0;
+    vector<vector<bool>> isVisited(rows, vector<bool>(cols, false));
+    for(int row = 0; row < rows; row++)
+    {
+        for(int col = 0; col < cols; col++)
+        {
+            if(grid2[row][col] && !isVisited[row][col])
+            {
+                vector<vector<int>> islandCells;
+                bool isValidIsland = true;
+                visitIsland(row, col, rows, cols, isVisited, grid1, grid2, islandCells, isValidIsland);
+                validIslands += isValidIsland;
+            }
+        }
+    }
+    return validIslands;
+}
