@@ -760,3 +760,59 @@ int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2)
     }
     return validIslands;
 }
+
+// DAY 29 (947. Most Stones Removed with Same Row or Column)==================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n)
+
+class DSU
+{
+    public:
+    int size;
+    vector<int> par, parSize;
+
+    DSU(int size)
+    {
+        this->size = size;
+        this->par.resize(size);
+        this->parSize.assign(size, 1);
+        for(int node = 0; node < size; node++)
+            this->par[node] = node;
+    }
+
+    int findPar(int node)
+    {
+        return par[node] == node? node : findPar(par[node]);
+    }
+
+    bool merge(int node1, int node2)
+    {
+        int par1 = findPar(node1);
+        int par2 = findPar(node2);
+        if(par1 == par2)
+            return false;
+        
+        if(parSize[par1] < parSize[par2])
+            swap(par1, par2);
+        
+        parSize[par2] = par1;
+        par[par2] = par1;
+
+        return true;
+    }
+};
+
+int removeStones(vector<vector<int>>& stones)
+{
+    int size = stones.size();
+    DSU dsu(size);
+    int count = size;
+
+    for(int idx1 = 0; idx1 < size; idx1++)
+        for(int idx2 = idx1 + 1; idx2 < size; idx2++)
+            if(stones[idx1][0] == stones[idx2][0] || stones[idx1][1] == stones[idx2][1])
+                if(dsu.merge(idx1, idx2))
+                    count--;
+    return size - count;
+}
