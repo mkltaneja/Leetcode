@@ -816,3 +816,45 @@ int removeStones(vector<vector<int>>& stones)
                     count--;
     return size - count;
 }
+
+// DAY 31 (1514. Path with Maximum Probability)===================================================================================
+
+// Time Complexity = O(E * logV)
+// Space Complexity = O(E)
+
+double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node)
+{
+    vector<vector<pair<double, int>>> graph(n);
+    priority_queue<pair<double, int>> maxPq;
+    vector<double> maxProb(n, 0);
+    
+    maxProb[start_node] = 1;
+    maxPq.push({1, start_node});
+
+    for(int idx = 0; idx < edges.size(); idx++)
+    {
+        graph[edges[idx][0]].push_back({succProb[idx], edges[idx][1]});
+        graph[edges[idx][1]].push_back({succProb[idx], edges[idx][0]});
+    }
+
+    while(!maxPq.empty())
+    {
+        double psf = maxPq.top().first;
+        int parent = maxPq.top().second;
+        maxPq.pop();
+
+        if(parent == end_node)
+            return psf;
+
+        for(pair<double, int> &child : graph[parent])
+        {
+            if(psf * child.first > maxProb[child.second])
+            {
+                maxProb[child.second] = psf * child.first;
+                maxPq.push({maxProb[child.second], child.second});
+            }
+        }
+    }
+
+    return 0;
+}
