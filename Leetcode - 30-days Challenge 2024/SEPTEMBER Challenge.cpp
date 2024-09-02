@@ -20,3 +20,23 @@ vector<vector<int>> construct2DArray(vector<int>& original, int m, int n)
 
     return ans;
 }
+
+// DAY 2 (1894. Find the Student that Will Replace the Chalk)=========================================================
+
+// Time Complexity = O(n + logn)
+// Time Complexity = O(n)
+
+int chalkReplacer(vector<int>& chalk, int k)
+{
+    int size = chalk.size();
+    vector<long> prefChalkSum(size, 0);
+    for(int idx = 0; idx < size; idx++)
+        prefChalkSum[idx] = (idx? prefChalkSum[idx-1] : 0) + chalk[idx];
+    
+    long kulChalks = prefChalkSum[size-1];
+    int bacheChalks = k % kulChalks;
+
+    int bakchodBacha = upper_bound(prefChalkSum.begin(), prefChalkSum.end(), bacheChalks) - prefChalkSum.begin();
+
+    return bakchodBacha;
+}
