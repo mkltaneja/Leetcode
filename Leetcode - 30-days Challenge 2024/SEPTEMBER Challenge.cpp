@@ -40,3 +40,32 @@ int chalkReplacer(vector<int>& chalk, int k)
 
     return bakchodBacha;
 }
+
+// DAY 3 (1945. Sum of Digits of String After Convert)======================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int getLucky(string s, int k)
+{
+    int size = s.size();
+    string numStr = "";
+    for(char c : s)
+        numStr += to_string(c - 'a' + 1);
+    
+    int ans = 0;
+    for(char c : numStr)
+        ans += c-'0';
+    while(--k)
+    {
+        int nextNum = 0;
+        while(ans)
+        {
+            nextNum += ans % 10;
+            ans /= 10;
+        }
+        ans = nextNum;
+    }
+
+    return ans;
+}
