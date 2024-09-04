@@ -69,3 +69,48 @@ int getLucky(string s, int k)
 
     return ans;
 }
+
+// DAY 4 (874. Walking Robot Simulation)=======================================================================
+
+// Time Complexity = O(n + m)
+// Space Complexity = O(n)
+
+int getEuclidianDistance(int x, int y)
+{
+    return x*x + y*y;
+}
+
+int robotSim(vector<int>& commands, vector<vector<int>>& obstacles)
+{
+    int dir[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    unordered_map<int,unordered_set<int>> obsMap;
+    int itr = 0;
+    for(vector<int> obstacle : obstacles)
+        obsMap[obstacle[0]].insert(obstacle[1]);
+    
+    int maxDist = 0, currX = 0, currY = 0;
+    
+    for(int command : commands)
+    {
+        if(command == -1)
+            itr = (itr + 1) % 4;
+        else if(command == -2)
+            itr = ((itr - 1) + 4) % 4;
+        else
+        {
+            int k = command;
+            int nextX = currX + dir[itr][0];
+            int nextY = currY + dir[itr][1];
+            while(!obsMap[nextX].count(nextY) && k--)
+            {
+                currX = nextX;
+                currY = nextY;
+                maxDist = max(maxDist, getEuclidianDistance(currX, currY));
+                nextX = currX + dir[itr][0];
+                nextY = currY + dir[itr][1];
+            }
+        }
+    }
+
+    return maxDist;
+}
