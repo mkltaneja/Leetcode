@@ -114,3 +114,24 @@ int robotSim(vector<int>& commands, vector<vector<int>>& obstacles)
 
     return maxDist;
 }
+
+// DAY 5 (2028. Find Missing Observations)=======================================================================
+
+// Time Complexity = O(n + m)
+// Space Complexity = O(n)
+
+vector<int> missingRolls(vector<int>& rolls, int mean, int n)
+{
+    int m = rolls.size();
+    int currSum = accumulate(rolls.begin(), rolls.end(), 0);
+    int target = mean * (n + m) - currSum;
+    if(target > n*6 || target < n)
+        return {};
+    
+    int q = target / n;
+    int r = target % n;
+    vector<int> ans(n, q);
+    fill(ans.begin(), ans.begin() + r, q+1);
+
+    return ans;
+}
