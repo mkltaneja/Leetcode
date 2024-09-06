@@ -135,3 +135,30 @@ vector<int> missingRolls(vector<int>& rolls, int mean, int n)
 
     return ans;
 }
+
+// DAY 6 (3217. Delete Nodes From Linked List Present in Array)=================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+ListNode* modifiedList(vector<int>& nums, ListNode* head)
+{
+    unordered_set<int> st;
+    for(int num : nums)
+        st.insert(num);
+    
+    ListNode* itr = head, *prev = nullptr;
+    while(itr)
+    {
+        if(st.count(itr->val))
+        {
+            if(prev)
+                prev->next = itr->next;
+            else head = itr->next;
+        }
+        else prev = itr;
+        itr = itr->next;
+    }
+
+    return head;
+}
