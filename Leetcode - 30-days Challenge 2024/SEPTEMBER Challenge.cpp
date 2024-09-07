@@ -162,3 +162,42 @@ ListNode* modifiedList(vector<int>& nums, ListNode* head)
 
     return head;
 }
+
+// DAY 7 (1367. Linked List in Binary Tree)=================================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+bool checkIfValidPathDFS(ListNode* head, TreeNode* node)
+{
+    if(head == nullptr)
+        return true;
+    if(node == nullptr || head->val != node->val)
+        return false;
+    
+    if(checkIfValidPathDFS(head->next, node->left) || checkIfValidPathDFS(head->next, node->right))
+        return true;
+    
+    return false;
+}
+
+bool traverseDFS(ListNode* head, TreeNode* node)
+{
+    if(!node)
+        return false;
+    
+    if(head->val == node->val && checkIfValidPathDFS(head, node))
+        return true;
+    
+    if(traverseDFS(head, node->left))
+        return true;
+    if(traverseDFS(head, node->right))
+        return true;
+    
+    return false;
+}
+
+bool isSubPath(ListNode* head, TreeNode* root)
+{
+    return traverseDFS(head, root);
+}
