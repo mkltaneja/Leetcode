@@ -201,3 +201,51 @@ bool isSubPath(ListNode* head, TreeNode* root)
 {
     return traverseDFS(head, root);
 }
+
+// DAY 8 (725. Split Linked List in Parts)=========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int getListSize(ListNode* head)
+{
+    ListNode* itr = head;
+    int size = 0;
+    while(itr)
+    {
+        size++;
+        itr = itr->next;
+    }
+    return size;
+}
+
+vector<ListNode*> splitListToParts(ListNode* head, int k)
+{
+    int size = getListSize(head);
+    int subSize = size / k;
+    int extra = size % k;
+    vector<ListNode*> ans;
+
+    ListNode* itr = head;
+    while(k--)
+    {
+        ListNode* tmp = itr;
+        int currSize = subSize;
+        if(extra)
+        {
+            extra--;
+            currSize++;
+        }
+        ans.push_back(tmp);
+        while(tmp && --currSize > 0)
+            tmp = tmp->next;
+        if(tmp)
+        {
+            itr = tmp->next;
+            tmp->next = nullptr;
+        }
+        else itr = nullptr;
+    }
+
+    return ans;
+}
