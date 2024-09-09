@@ -249,3 +249,38 @@ vector<ListNode*> splitListToParts(ListNode* head, int k)
 
     return ans;
 }
+
+// DAY 9 (2326. Spiral Matrix IV)==============================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*m)
+
+vector<vector<int>> spiralMatrix(int m, int n, ListNode* head)
+{
+    vector<vector<int>> ans(m, vector<int>(n, -1));
+    int sr = 0, sc = 0, er = m-1, ec = n-1;
+    int r = 0, c = 0, d = 0;
+    ListNode* itr = head;
+    int dir[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    while(itr)
+    {
+        while(itr && r >= sr && r <= er && c >= sc && c <= ec)
+        {
+            ans[r][c] = itr->val;
+            itr = itr->next;
+            r += dir[d][0];
+            c += dir[d][1];
+        }
+        if(d == 0)
+            r++, c--, sr++;
+        else if(d == 1)
+            r--, c--, ec--;
+        else if(d == 2)
+            r--, c++, er--;
+        else if(d == 3)
+            r++, c++, sc++;
+        d = (d + 1) % 4;
+    }
+
+    return ans;
+}
