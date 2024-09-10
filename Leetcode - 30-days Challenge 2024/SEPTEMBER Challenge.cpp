@@ -284,3 +284,22 @@ vector<vector<int>> spiralMatrix(int m, int n, ListNode* head)
 
     return ans;
 }
+
+// DAY 10 (2807. Insert Greatest Common Divisors in Linked List)==================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+ListNode* insertGreatestCommonDivisors(ListNode* head)
+{
+    ListNode* itr = head;
+    while(itr && itr->next)
+    {
+        int gcd = __gcd(itr->val, itr->next->val);
+        ListNode* next = itr->next;
+        itr->next = new ListNode(gcd);
+        itr->next->next = next;
+        itr = next;
+    }
+    return head;
+}
