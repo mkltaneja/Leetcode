@@ -303,3 +303,20 @@ ListNode* insertGreatestCommonDivisors(ListNode* head)
     }
     return head;
 }
+
+// DAY 11 (2220. Minimum Bit Flips to Convert Number)=============================================================================
+
+// Time Complexity = O(log(N))
+// Space Complexity = O(1)
+
+int minBitFlips(int start, int goal)
+{
+    int minFlips = 0;
+    while(start || goal)
+    {
+        minFlips += (start & 1) ^ (goal & 1);
+        start >>= 1;
+        goal >>= 1;
+    }
+    return minFlips;
+}
