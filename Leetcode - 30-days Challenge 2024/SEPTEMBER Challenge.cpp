@@ -320,3 +320,33 @@ int minBitFlips(int start, int goal)
     }
     return minFlips;
 }
+
+// DAY 12 (1684. Count the Number of Consistent Strings)=======================================================================
+
+// Time Complexity = O(n*26)
+// Space Complexity = O(1)
+
+int getWordMask(string &word)
+{
+    int mask = 0;
+    for(char c : word)
+        mask |= (1 << (c - 'a'));
+    return mask;
+}
+
+int countConsistentStrings(string allowed, vector<string>& words)
+{
+    int allowedMask = getWordMask(allowed);
+    int consistentWords = 0;
+    for(string word : words)
+    {
+        int wordMask = getWordMask(word);
+        bool isConsitentWord = true;
+        for(int bit = 0; bit < 26 && isConsitentWord; bit++)
+            if((wordMask & (1 << bit)) && !(allowedMask & (1 << bit)))
+                isConsitentWord = false;
+        if(isConsitentWord)
+            consistentWords++;
+    }
+    return consistentWords;
+}
