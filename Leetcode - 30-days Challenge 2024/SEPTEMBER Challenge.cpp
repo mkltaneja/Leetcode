@@ -350,3 +350,25 @@ int countConsistentStrings(string allowed, vector<string>& words)
     }
     return consistentWords;
 }
+
+// DAY 13 (1310. XOR Queries of a Subarray)===========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<int> xorQueries(vector<int>& arr, vector<vector<int>>& queries)
+{
+    int size = arr.size();
+    vector<int> prefXor(size, 0);
+    vector<int> ans;
+    for(int idx = 0; idx < size; idx++)
+        prefXor[idx] = arr[idx] ^ (idx? prefXor[idx-1] : 0);
+    
+    for(vector<int> &query : queries)
+    {
+        int left = query[0];
+        int right = query[1];
+        ans.push_back(prefXor[right] ^ (left? prefXor[left-1] : 0));
+    }
+    return ans;
+}
