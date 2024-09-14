@@ -372,3 +372,34 @@ vector<int> xorQueries(vector<int>& arr, vector<vector<int>>& queries)
     }
     return ans;
 }
+
+// DAY 14 (2419. Longest Subarray With Maximum Bitwise AND)=============================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int longestSubarray(vector<int>& nums)
+{
+    int size = nums.size();
+    int maxEle = 0, maxLen = 0;
+    for(int idx = 0; idx < size; )
+    {
+        if(nums[idx] < maxEle)
+        {
+            idx++;
+            continue;
+        }
+        if(nums[idx] > maxEle)
+        {
+            maxEle = nums[idx];
+            maxLen = 0;
+        }
+        int tempIdx = idx;
+        while(tempIdx < size && nums[tempIdx] == maxEle)
+            tempIdx++;
+        maxLen = max(maxLen, tempIdx - idx);
+        idx = tempIdx;
+    }
+
+    return maxLen;
+}
