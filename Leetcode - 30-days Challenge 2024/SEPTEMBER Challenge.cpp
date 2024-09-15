@@ -403,3 +403,38 @@ int longestSubarray(vector<int>& nums)
 
     return maxLen;
 }
+
+// DAY 15 (1371. Find the Longest Substring Containing Vowels in Even Counts)====================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+bool isVowel(char c)
+{
+    return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
+}
+
+int findTheLongestSubstring(string s)
+{
+    int vowelMask = 0;
+    int pos = 0, maxLen = 0;
+    unordered_map<char,int> charIdx;
+    unordered_map<int,int> maskPos;
+    charIdx['a'] = 0;
+    charIdx['e'] = 1;
+    charIdx['i'] = 2;
+    charIdx['o'] = 3;
+    charIdx['u'] = 4;
+    maskPos[0] = -1;
+
+    for(char c : s)
+    {
+        if(isVowel(c))
+            vowelMask ^= (1 << charIdx[c]);
+        if(maskPos.count(vowelMask))
+            maxLen = max(maxLen, pos++ - maskPos[vowelMask]);
+        else maskPos[vowelMask] = pos++;
+    }
+
+    return maxLen;
+}
