@@ -438,3 +438,28 @@ int findTheLongestSubstring(string s)
 
     return maxLen;
 }
+
+// DAY 16 (539. Minimum Time Difference)======================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int getMinutes(string &time)
+{
+    return ((time[0]-'0') * 10 + (time[1]-'0')) * 60 + (time[3]-'0') * 10 + (time[4]-'0');
+}
+
+int findMinDifference(vector<string>& timePoints)
+{
+    int size = timePoints.size();
+    vector<int> minutePoints;
+    for(string time : timePoints)
+        minutePoints.push_back(getMinutes(time));
+    sort(minutePoints.begin(), minutePoints.end());
+
+    int minDiff = 1439 - minutePoints.back() + minutePoints[0] + 1;
+    for(int idx = 0; idx < minutePoints.size()-1; idx++)
+        minDiff = min(minDiff, minutePoints[idx+1] - minutePoints[idx]);
+    
+    return minDiff;
+}
