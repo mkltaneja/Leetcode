@@ -463,3 +463,24 @@ int findMinDifference(vector<string>& timePoints)
     
     return minDiff;
 }
+
+// DAY 17 (884. Uncommon Words from Two Sentences)============================================================
+
+// Time Complexty = O(n + m)
+// Space Complexty = O(n + m)
+
+vector<string> uncommonFromSentences(string s1, string s2)
+{
+    stringstream ss1(s1), ss2(s2);
+    string token;
+    unordered_map<string,int> wordCnt;
+    vector<string> ans;
+    while(getline(ss1, token, ' '))
+        wordCnt[token]++;
+    while(getline(ss2, token, ' '))
+        wordCnt[token]++;
+    for(auto pair : wordCnt)
+        if(pair.second == 1)
+            ans.push_back(pair.first);
+    return ans;
+}
