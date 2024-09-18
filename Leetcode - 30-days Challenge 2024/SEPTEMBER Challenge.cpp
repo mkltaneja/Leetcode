@@ -484,3 +484,25 @@ vector<string> uncommonFromSentences(string s1, string s2)
             ans.push_back(pair.first);
     return ans;
 }
+
+// DAY 18 (179. Largest Number)=============================================================================
+
+// Time Complexity = O(n + (n+m)*log(n+m)*m + n)
+// Space Complexity = O(n)
+
+string largestNumber(vector<int>& nums)
+{
+    string ans = "";
+    vector<string> numStrs;
+    for(int num : nums)
+        numStrs.push_back(to_string(num));
+    sort(numStrs.begin(), numStrs.end(), [](auto const &a, auto const &b){
+        return (a + b) > (b + a);
+    });
+    if(numStrs[0] == "0")
+        return "0";
+    for(string str : numStrs)
+        ans += str;
+
+    return ans;
+}
