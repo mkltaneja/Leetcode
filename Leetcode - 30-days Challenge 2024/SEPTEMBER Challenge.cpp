@@ -506,3 +506,38 @@ string largestNumber(vector<int>& nums)
 
     return ans;
 }
+
+// DAY 19 (241. Different Ways to Add Parentheses)===================================================================
+
+// Time Complexity = O(n^n)
+// Space Complexity = O(n^n)
+
+vector<int> diffWaysToCompute(string expression)
+{
+    vector<int> ans;
+    for(int idx = 0; idx < expression.size(); idx++)
+    {
+        char c = expression[idx];
+        if(c == '+' || c == '-' || c == '*')
+        {
+            vector<int> lans = diffWaysToCompute(expression.substr(0, idx));
+            vector<int> rans = diffWaysToCompute(expression.substr(idx+1));
+
+            for(int num1 : lans)
+            {
+                for(int num2 : rans)
+                {
+                    if(c == '+')
+                        ans.push_back(num1 + num2);
+                    else if(c == '-')
+                        ans.push_back(num1 - num2);
+                    else if(c == '*')
+                        ans.push_back(num1 * num2);
+                }
+            }
+        }
+    }
+    if(ans.empty())
+        ans.push_back(stoi(expression));
+    return ans;
+}
