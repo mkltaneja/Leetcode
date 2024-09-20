@@ -541,3 +541,35 @@ vector<int> diffWaysToCompute(string expression)
         ans.push_back(stoi(expression));
     return ans;
 }
+
+// DAY 20 (214. Shortest Palindrome)====================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int getMaxCommonPrefixLen(string &str)
+{
+    int len = 0, itr = 1;
+    vector<int> lps(str.size(), 0);
+    while(itr < str.size())
+    {
+        if(str[itr] == str[len])
+            lps[itr++] = ++len;
+        else
+        {
+            if(len)
+                len = lps[len - 1];
+            else itr++;
+        }
+    }
+    return lps.back();
+}
+
+string shortestPalindrome(string s)
+{
+    string srev = s;
+    reverse(srev.begin(), srev.end());
+    string snew = s + "#" + srev;
+    int maxCommonPrefixLen = getMaxCommonPrefixLen(snew);
+    return srev.substr(0, s.size() - maxCommonPrefixLen) + s;
+}
