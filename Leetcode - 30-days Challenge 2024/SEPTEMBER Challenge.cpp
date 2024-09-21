@@ -573,3 +573,30 @@ string shortestPalindrome(string s)
     int maxCommonPrefixLen = getMaxCommonPrefixLen(snew);
     return srev.substr(0, s.size() - maxCommonPrefixLen) + s;
 }
+
+// DAY 22 (386. Lexicographical Numbers)===============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<int> ans;
+void lexicalOrderDfS(int num, int n)
+{
+    if(num)
+        ans.push_back(num);
+    
+    for(int x = 0; x <= 9; x++)
+    {
+        if(!num && !x)
+            continue;
+        if(num * 10 + x > n)
+            break;
+        lexicalOrderDfS(num * 10 + x, n);
+    }
+}
+
+vector<int> lexicalOrder(int n)
+{
+    lexicalOrderDfS(0, n);
+    return ans;
+}
