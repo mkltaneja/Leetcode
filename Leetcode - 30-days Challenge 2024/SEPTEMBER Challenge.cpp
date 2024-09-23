@@ -600,3 +600,64 @@ vector<int> lexicalOrder(int n)
     lexicalOrderDfS(0, n);
     return ans;
 }
+
+// DAY 23 (2707. Extra Characters in a String)========================================================================
+
+// Time Complexity = O(n*m*k)
+// Space Complexity = O(n*m*k)
+
+class Trie
+{
+    public:
+    vector<Trie*> children;
+    bool isWordEnd;
+    Trie()
+    {
+        this->children.assign(26, nullptr);
+        this->isWordEnd = false;
+    }
+
+    void insert(string &word)
+    {
+        Trie* itr = this;
+        for(char c : word)
+        {
+            if(!itr->children[c-'a'])
+                itr->children[c-'a'] = new Trie();
+            itr = itr->children[c-'a'];
+        }
+        itr->isWordEnd = true;
+    }
+};
+Trie* root = new Trie();
+
+int minExtraCharDFS(int i, Trie* node, string &s, vector<int> &cache)
+{
+    if(i == s.size())
+        return 0;
+    if(cache[i] != -1)
+        return cache[i];
+    int ans = minExtraCharDFS(i+1, root, s, cache) + 1;
+
+    for(int j = i; j < s.size(); j++)
+    {
+        Trie* nxt = node->children[s[j]-'a'];
+        if(!nxt)
+            break;
+        if(nxt->isWordEnd)
+            ans = min(ans, minExtraCharDFS(j+1, root, s, cache));
+        node = nxt;
+    }
+
+    return cache[i] = ans;
+}
+
+
+int minExtraChar(string s, vector<string>& dictionary)
+{
+    for(string word : dictionary)
+        root->insert(word);
+    
+    vector<int> cache(s.size(), -1);
+    return minExtraCharDFS(0, root, s, cache);
+}
