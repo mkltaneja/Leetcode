@@ -661,3 +661,57 @@ int minExtraChar(string s, vector<string>& dictionary)
     vector<int> cache(s.size(), -1);
     return minExtraCharDFS(0, root, s, cache);
 }
+
+// DAY 24 (3043. Find the Length of the Longest Common Prefix)===============================================================================
+
+// Time Complexity = O(n * log10(x))
+// Space Complexity = O(n * log10(x))
+
+class Trie
+{
+    public:
+    vector<Trie*> children;
+    Trie()
+    {
+        this->children.assign(10, nullptr);
+    }
+
+    void insert(int num)
+    {
+        Trie* itr = this;
+        string numStr = to_string(num);
+        for(char dig : numStr)
+        {
+            if(!itr->children[dig-'0'])
+                itr->children[dig-'0'] = new Trie();
+            itr = itr->children[dig-'0'];
+        }
+    }
+
+    int getPrefixLength(int num)
+    {
+        Trie* itr = this;
+        string numStr = to_string(num);
+        int prefixLength = 0;
+        for(char dig : numStr)
+        {
+            if(!itr->children[dig-'0'])
+                break;
+            itr = itr->children[dig-'0'];
+            prefixLength++;
+        }
+        return prefixLength;
+    }
+};
+Trie* root = new Trie();
+
+int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2)
+{
+    int maxCommonPrefixLength = 0;
+    for(int num : arr1)
+        root->insert(num);
+    for(int num : arr2)
+        maxCommonPrefixLength = max(maxCommonPrefixLength, root->getPrefixLength(num));
+    
+    return maxCommonPrefixLength;
+}
