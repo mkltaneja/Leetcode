@@ -715,3 +715,57 @@ int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2)
     
     return maxCommonPrefixLength;
 }
+
+// DAY 25 (2416. Sum of Prefix Scores of Strings)=============================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*m)
+
+class Trie
+{
+    public:
+    Trie* children[26];
+    int visitCount;
+    Trie()
+    {
+        memset(this->children, NULL, sizeof(this->children));
+        this->visitCount = 0;
+    }
+
+    void insert(string &word)
+    {
+        Trie* itr = this;
+        for(char c : word)
+        {
+            if(!itr->children[c-'a'])
+                itr->children[c-'a'] = new Trie();
+            itr = itr->children[c-'a'];
+            itr->visitCount++;
+        }
+    }
+
+    int getScore(string &word)
+    {
+        Trie* itr = this;
+        int totalScore = 0;
+        for(char c : word)
+        {
+            itr = itr->children[c-'a'];
+            totalScore += itr->visitCount;
+        }
+        return totalScore;
+    }
+};
+Trie* root = new Trie();
+
+vector<int> sumPrefixScores(vector<string>& words)
+{
+    vector<int> ans;
+    for(string word : words)
+        root->insert(word);
+    
+    for(string word : words)
+        ans.push_back(root->getScore(word));
+
+    return ans;
+}
