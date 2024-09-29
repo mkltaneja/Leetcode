@@ -861,3 +861,56 @@ public:
  * bool param_7 = obj->isEmpty();
  * bool param_8 = obj->isFull();
  */
+
+// DAY 29 (432. All O`one Data Structure)===================================================================================
+
+// Time Complexity = O(logn)
+// Space Complexity = O(n)
+
+class AllOne {
+public:
+
+    unordered_map<string, int> keyCnt;
+    map<int, unordered_set<string>> cntKeys;
+    AllOne() {
+        
+    }
+    
+    void inc(string key) {
+        int currCnt = keyCnt[key]++;
+        if(currCnt)
+        {
+            cntKeys[currCnt].erase(key);
+            if(cntKeys[currCnt].empty())
+                cntKeys.erase(currCnt);
+        }
+        cntKeys[currCnt + 1].insert(key);
+    }
+    
+    void dec(string key) {
+        int currCnt = keyCnt[key]--;
+        if(currCnt == 1)
+            keyCnt.erase(key);
+        else cntKeys[currCnt - 1].insert(key);
+        cntKeys[currCnt].erase(key);
+        if(cntKeys[currCnt].empty())
+            cntKeys.erase(currCnt);
+    }
+    
+    string getMaxKey() {
+        return cntKeys.empty()? "" : *(cntKeys.rbegin()->second.begin());
+    }
+    
+    string getMinKey() {
+        return cntKeys.empty()? "" : *(cntKeys.begin()->second.begin());
+    }
+};
+
+/**
+ * Your AllOne object will be instantiated and called as such:
+ * AllOne* obj = new AllOne();
+ * obj->inc(key);
+ * obj->dec(key);
+ * string param_3 = obj->getMaxKey();
+ * string param_4 = obj->getMinKey();
+ */
