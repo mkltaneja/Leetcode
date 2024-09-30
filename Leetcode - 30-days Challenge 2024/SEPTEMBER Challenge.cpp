@@ -914,3 +914,50 @@ public:
  * string param_3 = obj->getMaxKey();
  * string param_4 = obj->getMinKey();
  */
+
+// DAY 30 (1381. Design a Stack With Increment Operation)============================================================================
+
+// Time Complexity = O(1)
+// Space Complexity = O(n)
+
+class CustomStack {
+public:
+
+    int size;
+    vector<pair<int,int>> stack;
+    CustomStack(int maxSize) {
+        this->size = maxSize;
+    }
+    
+    void push(int x) {
+        if(stack.size() == size)
+            return;
+        stack.push_back({x, 0});
+    }
+    
+    int pop() {
+        if(stack.empty())
+            return -1;
+        int topIncs = stack.back().second;
+        int topVal = stack.back().first + topIncs;
+        stack.pop_back();
+        if(!stack.empty())
+            stack.back().second += topIncs;
+        return topVal;
+    }
+    
+    void increment(int k, int val) {
+        if(stack.empty())
+            return;
+        int idx = (stack.size() < k? stack.size() : k) - 1;
+        stack[idx].second += val;
+    }
+};
+
+/**
+ * Your CustomStack object will be instantiated and called as such:
+ * CustomStack* obj = new CustomStack(maxSize);
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * obj->increment(k,val);
+ */
