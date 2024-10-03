@@ -36,3 +36,30 @@ vector<int> arrayRankTransform(vector<int>& arr)
     
     return rank;
 }
+
+// DAY 3 (1590. Make Sum Divisible by P)===========================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(min(n, k))
+
+int minSubarray(vector<int>& nums, int p)
+{
+    long totalSum = accumulate(nums.begin(), nums.end(), 0l);
+    long currSum = 0;
+    int extra = totalSum % p;
+    if(extra == 0)
+        return 0;
+    unordered_map<int,int> lastIdx;
+    int minLen = nums.size();
+    lastIdx[0] = -1;
+    for(int idx = 0; idx < nums.size(); idx++)
+    {
+        currSum += nums[idx];
+        int currMod = currSum % p;
+        int targetMod = (currMod - extra + p) % p;
+        if(lastIdx.find(targetMod) != lastIdx.end())
+            minLen = min(minLen, idx - lastIdx[targetMod]);
+        lastIdx[currMod] = idx;
+    }
+    return minLen == nums.size()? -1 : minLen;
+}
