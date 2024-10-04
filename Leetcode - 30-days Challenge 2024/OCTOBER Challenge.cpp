@@ -63,3 +63,34 @@ int minSubarray(vector<int>& nums, int p)
     }
     return minLen == nums.size()? -1 : minLen;
 }
+
+// DAY 4 (2491. Divide Players Into Teams of Equal Skill)====================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+long long dividePlayers(vector<int>& skill)
+{
+    int size = skill.size();
+    int sum = accumulate(skill.begin(), skill.end(), 0);
+    if((sum * 2) % size)
+        return -1;
+    int teamSkill = (sum * 2) / size;
+
+    unordered_map<int,int> skillCnt;
+    long long chemistrySum = 0;
+    for(int skl : skill)
+        skillCnt[skl]++;
+    for(int skl : skill)
+    {
+        int sklPair = teamSkill - skl;
+        if(skillCnt[skl]-- <= 0)
+            continue;
+        if(skillCnt[sklPair]-- <= 0)
+            return -1;
+        
+        int chemistry = skl * sklPair;
+        chemistrySum += chemistry;
+    }
+    return chemistrySum;
+}
