@@ -94,3 +94,27 @@ long long dividePlayers(vector<int>& skill)
     }
     return chemistrySum;
 }
+
+// DAY 5 (567. Permutation in String)========================================================================================
+
+// Time Complexity = O(n + m*26)
+// Space Complexity = O(1)
+
+bool checkInclusion(string s1, string s2)
+{
+    int size1 = s1.size(), size2 = s2.size();
+    vector<int> charMap1(26, 0), charMap2(26, 0);
+    for(char c : s1)
+        charMap1[c-'a']++;
+
+    for(int idx = 0; idx < size2; idx++)
+    {
+        charMap2[s2[idx]-'a']++;
+        if(idx - size1 >= 0)
+            charMap2[s2[idx - size1]-'a']--;
+        if(charMap2 == charMap1)
+            return true;
+    }
+
+    return false;
+}
