@@ -118,3 +118,42 @@ bool checkInclusion(string s1, string s2)
 
     return false;
 }
+
+// DAY 6 (1813. Sentence Similarity III)===================================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*m)
+
+bool areSentencesSimilar(string sentence1, string sentence2)
+{
+    deque<string> senArr1, senArr2;
+    stringstream ss1(sentence1), ss2(sentence2);
+    string token;
+    while(getline(ss1, token, ' '))
+        senArr1.push_back(token);
+    while(getline(ss2, token, ' '))
+        senArr2.push_back(token);
+
+    int size1 = senArr1.size(), size2 = senArr2.size();
+    if(size2 > size1)
+    {
+        swap(size1, size2);
+        swap(senArr1, senArr2);
+    }
+
+    int itr1 = 0, itr2 = 0;
+    int gaps = 0, noneq = 0;
+    while(!senArr2.empty())
+    {
+        if(senArr1.front() == senArr2.front()) {
+            senArr1.pop_front();
+            senArr2.pop_front();
+        }
+        else if(senArr1.back() == senArr2.back()) {
+            senArr1.pop_back();
+            senArr2.pop_back();
+        }
+        else return false;
+    }
+    return true;
+}
