@@ -157,3 +157,19 @@ bool areSentencesSimilar(string sentence1, string sentence2)
     }
     return true;
 }
+
+// DAY 7 (2696. Minimum String Length After Removing Substrings)============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int minLength(string s) {
+    stack<char> st;
+    for(char c : s)
+    {
+        if(!st.empty() && ((c == 'B' && st.top() == 'A') || (c == 'D' && st.top() == 'C')))
+            st.pop();
+        else st.push(c);
+    }
+    return st.size();
+}
