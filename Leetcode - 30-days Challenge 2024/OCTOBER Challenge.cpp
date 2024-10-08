@@ -173,3 +173,19 @@ int minLength(string s) {
     }
     return st.size();
 }
+
+// DAY 8 (1963. Minimum Number of Swaps to Make the String Balanced)================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int minSwaps(string s)
+{
+    int closingBrace = 0, incorrectPairs = 0;
+    for(char c : s)
+    {
+        closingBrace += c == ']'? 1 : -1;
+        incorrectPairs = max(incorrectPairs, closingBrace);
+    }
+    return (incorrectPairs + 1) >> 1;
+}
