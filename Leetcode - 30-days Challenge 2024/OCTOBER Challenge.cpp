@@ -189,3 +189,19 @@ int minSwaps(string s)
     }
     return (incorrectPairs + 1) >> 1;
 }
+
+// DAY 9 (921. Minimum Add to Make Parentheses Valid)==============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int minAddToMakeValid(string s) {
+    int openBrackets = 0, extraClosingBrackets = 0;
+    for(char c : s) {
+        if(c == '(')
+            openBrackets++;
+        else if(openBrackets) openBrackets--;
+        else extraClosingBrackets++;
+    }
+    return openBrackets + extraClosingBrackets;
+}
