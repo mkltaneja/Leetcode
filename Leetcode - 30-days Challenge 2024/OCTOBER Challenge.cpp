@@ -205,3 +205,35 @@ int minAddToMakeValid(string s) {
     }
     return openBrackets + extraClosingBrackets;
 }
+
+// DAY 11 (1942. The Number of the Smallest Unoccupied Chair)========================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int smallestChair(vector<vector<int>>& times, int targetFriend) {
+    int friends = times.size();
+    vector<vector<int>> friendTimes(friends);
+    for(int friend_ = 0; friend_ < friends; friend_++) {
+        friendTimes[friend_] = {times[friend_][0], times[friend_][1], friend_};
+    }
+    sort(friendTimes.begin(), friendTimes.end());
+
+    priority_queue<int, vector<int>, greater<int>> availableSeatsPq;
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> endTimesPq;
+    for(int seat = 0; seat < friends; seat++)
+        availableSeatsPq.push(seat);
+
+    for(int idx = 0; idx < friends; idx++) {
+        while(!endTimesPq.empty() && endTimesPq.top().first <= friendTimes[idx][0]) {
+                availableSeatsPq.push(endTimesPq.top().second);
+                endTimesPq.pop();
+        }
+        endTimesPq.push({friendTimes[idx][1], availableSeatsPq.top()});
+        if(friendTimes[idx][2] == targetFriend)
+            return availableSeatsPq.top();
+        availableSeatsPq.pop();
+    }
+
+    return friends;
+}
