@@ -206,6 +206,30 @@ int minAddToMakeValid(string s) {
     return openBrackets + extraClosingBrackets;
 }
 
+// DAY 10 (962. Maximum Width Ramp)========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int maxWidthRamp(vector<int>& nums) {
+    stack<int> numSt;
+    int size = nums.size();
+    int maxRamp = 0;
+    for(int idx = 0; idx < size; idx++) {
+        if(numSt.empty() || nums[idx] < nums[numSt.top()]) {
+            numSt.push(idx);
+        }
+    }
+    for(int idx = size-1; idx >= 0; idx--) {
+        while(!numSt.empty() && nums[idx] >= nums[numSt.top()]) {
+            maxRamp = max(maxRamp, idx - numSt.top());
+            numSt.pop();
+        }
+    }
+
+    return maxRamp;
+}
+
 // DAY 11 (1942. The Number of the Smallest Unoccupied Chair)========================================================================
 
 // Time Complexity = O(n*logn)
