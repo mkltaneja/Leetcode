@@ -261,3 +261,26 @@ int smallestChair(vector<vector<int>>& times, int targetFriend) {
 
     return friends;
 }
+
+// DAY 12 (2406. Divide Intervals Into Minimum Number of Groups)==============================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int minGroups(vector<vector<int>>& intervals) {
+    priority_queue<int, vector<int>, greater<int>> minEndPq;
+    int minGroups = 0;
+
+    sort(intervals.begin(), intervals.end());
+    for(vector<int> &interval : intervals) {
+        int start = interval[0], end = interval[1];
+        while(!minEndPq.empty() && minEndPq.top() < start) {
+            minEndPq.pop();
+        }
+        minEndPq.push(end);
+
+        minGroups = max(minGroups, (int) minEndPq.size());
+    }
+
+    return minGroups;
+}
