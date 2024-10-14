@@ -284,3 +284,23 @@ int minGroups(vector<vector<int>>& intervals) {
 
     return minGroups;
 }
+
+// DAY 14 (2530. Maximal Score After Applying K Operations)=================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+long long maxKelements(vector<int>& nums, int k) {
+    priority_queue<int> maxPq;
+    long long ans = 0;
+    for(int num : nums)
+        maxPq.push(num);
+    while(k--) {
+        int top = maxPq.top();
+        maxPq.pop();
+        int val = (top + 2) / 3;
+        ans += top;
+        maxPq.push(val);
+    }
+    return ans;
+}
