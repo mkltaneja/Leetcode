@@ -304,3 +304,20 @@ long long maxKelements(vector<int>& nums, int k) {
     }
     return ans;
 }
+
+// DAY 15 (2938. Separate Black and White Balls)===========================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+long long minimumSteps(string s) {
+    long long steps = 0, lastOnes = 0;
+    for(int idx = 0; idx < s.size(); idx++) {
+        if(s[idx] == '0') {
+            steps += lastOnes;
+        } else {
+            lastOnes++;
+        }
+    }
+    return steps;
+}
