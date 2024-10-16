@@ -321,3 +321,45 @@ long long minimumSteps(string s) {
     }
     return steps;
 }
+
+// DAY 16 (1405. Longest Happy String)=============================================================================
+
+// Time Complexity = O(a + b + c)
+// Space Complexity = O(1)
+
+string longestDiverseString(int a, int b, int c) {
+    string ans = "";
+    priority_queue<pair<int,char>> maxPq;
+    if(a) maxPq.push({a, 'a'});
+    if(b) maxPq.push({b, 'b'});
+    if(c) maxPq.push({c, 'c'});
+
+    while(!maxPq.empty()) {
+        int currFreq = maxPq.top().first;
+        char currChar = maxPq.top().second;
+        maxPq.pop();
+
+        if(ans.size() >= 2 && currChar == ans[ans.size()-1] && currChar == ans[ans.size()-2]) {
+            if(maxPq.empty()) break;
+
+            int nextFreq = maxPq.top().first;
+            char nextChar = maxPq.top().second;
+            maxPq.pop();
+
+            ans += nextChar;
+            nextFreq--;
+
+            if(nextFreq)
+                maxPq.push({nextFreq, nextChar});
+            maxPq.push({currFreq, currChar});
+        }
+        else {
+            ans += currChar;
+            currFreq--;
+            if(currFreq)
+                maxPq.push({currFreq, currChar});
+        }
+    }
+
+    return ans;
+}
