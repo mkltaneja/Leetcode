@@ -363,3 +363,25 @@ string longestDiverseString(int a, int b, int c) {
 
     return ans;
 }
+
+// DAY 17 (670. Maximum Swap=========================================================================
+
+// Time Complexity = O(nums.size()^2)
+// Space Complexity = O(nums.size())
+
+int maximumSwap(int num) {
+    string numStr = to_string(num);
+    for(int pos1 = 0; pos1 < numStr.size(); pos1++) {
+        int maxNumPos = pos1;
+        for(int pos2 = pos1+1; pos2 < numStr.size(); pos2++) {
+            if((numStr[pos2] > numStr[maxNumPos]) || (numStr[pos2] == numStr[maxNumPos] && maxNumPos != pos1)) {
+                maxNumPos = pos2;
+            }
+        }
+        if(maxNumPos != pos1) {
+            swap(numStr[pos1], numStr[maxNumPos]);
+            break;
+        }
+    }
+    return stoi(numStr);
+}
