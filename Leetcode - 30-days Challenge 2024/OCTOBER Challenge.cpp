@@ -385,3 +385,28 @@ int maximumSwap(int num) {
     }
     return stoi(numStr);
 }
+
+// DAY 18 (2044. Count Number of Maximum Bitwise-OR Subsets)=================================================================
+
+// Time Complexity = O(2^n * n)
+// Space Complexity = O(1)
+
+int countMaxOrSubsets(vector<int>& nums) {
+    int maxOr = 0, ans = 0;
+    for(int num : nums) {
+        maxOr |= num;
+    }
+    
+    for(int mask = 0; mask < (1 << nums.size()); mask++) {
+        int currOr = 0;
+        for(int idx = 0; idx < nums.size(); idx++) {
+            if(mask & (1 << idx)) {
+                currOr |= nums[idx];
+            }
+        }
+        if(currOr == maxOr)
+            ans++;
+    }
+
+    return ans;
+}
