@@ -410,3 +410,21 @@ int countMaxOrSubsets(vector<int>& nums) {
 
     return ans;
 }
+
+// DAY 19 (1545. Find Kth Bit in Nth Binary String)====================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+char findKthBit(int n, int k) {
+    if(n == 1) {
+        return '0';
+    }
+    int len = (1 << n) - 1;
+    if(k == len/2 + 1) {
+        return '1';
+    }
+    return (k <= len/2)
+        ? findKthBit(n-1, k)
+        : (findKthBit(n-1, len - k + 1) == '0'? '1' : '0');
+}
