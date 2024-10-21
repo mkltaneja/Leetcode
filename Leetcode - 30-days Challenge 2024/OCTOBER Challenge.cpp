@@ -428,3 +428,31 @@ char findKthBit(int n, int k) {
         ? findKthBit(n-1, k)
         : (findKthBit(n-1, len - k + 1) == '0'? '1' : '0');
 }
+
+// DAY 21 (1593. Split a String Into the Max Number of Unique Substrings)=======================================================
+
+// Time Complexity = O(2^n * n)
+// Space Complexity = O(2^n * n)
+
+int dfs(int i, string &s, string &curr, unordered_set<string> &vis) {
+    if(i == s.size())
+        return 0;
+    
+    int ans = 0;
+    curr += s[i];
+    if(!vis.count(curr)) {
+        vis.insert(curr);
+        string nxt = "";
+        ans = max(ans, dfs(i+1, s, nxt, vis) + 1);
+        vis.erase(curr);
+    }
+    ans = max(ans, dfs(i+1, s, curr, vis));
+
+    return ans;
+}
+
+int maxUniqueSplit(string s) {
+    unordered_set<string> vis;
+    string curr = "";
+    return dfs(0, s, curr, vis);
+}
