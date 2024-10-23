@@ -492,3 +492,38 @@ long long kthLargestLevelSum(TreeNode* root, int k) {
 
     return minPq.size() < k? -1 : minPq.top();
 }
+
+// DAY 23 (2641. Cousins in Binary Tree II)===========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+TreeNode* replaceValueInTree(TreeNode* root) {
+    queue<pair<TreeNode*, int>> que;
+    que.push({root, root->val});
+    int levelSum = root->val;
+    while(!que.empty()) {
+        int size = que.size();
+        int nextLevelSum = 0;
+        while(size--) {
+            TreeNode* node = que.front().first;
+            int sibblingSum = que.front().second;
+            que.pop();
+            node->val = levelSum - sibblingSum;
+
+            int childrenSum = (node->left? node->left->val : 0) + (node->right? node->right->val : 0);
+
+            if(node->left) {
+                nextLevelSum += node->left->val;
+                que.push({node->left, childrenSum});
+            }
+            if(node->right) {
+                nextLevelSum += node->right->val;
+                que.push({node->right, childrenSum});
+            }
+        }
+        levelSum = nextLevelSum;
+    }
+
+    return root;
+}
