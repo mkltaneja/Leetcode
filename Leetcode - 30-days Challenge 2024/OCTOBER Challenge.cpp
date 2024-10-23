@@ -456,3 +456,39 @@ int maxUniqueSplit(string s) {
     string curr = "";
     return dfs(0, s, curr, vis);
 }
+
+// DAY 22 (2583. Kth Largest Sum in a Binary Tree)===================================================================
+
+// Time Complexiity = O(n*logn)
+// Space Complexiity = O(n)
+
+#define ll long long
+long long kthLargestLevelSum(TreeNode* root, int k) {
+    priority_queue<ll, vector<ll>, greater<ll>> minPq;
+    queue<TreeNode*> que;
+    que.push(root);
+
+    while(!que.empty()) {
+        int size = que.size();
+        ll currSum = 0;
+        while(size--) {
+            TreeNode* node = que.front();
+            currSum += node->val;
+            que.pop();
+
+            if(node->left) {
+                que.push(node->left);
+            }
+            if(node->right) {
+                que.push(node->right);
+            }
+        }
+
+        minPq.push(currSum);
+        if(minPq.size() > k) {
+            minPq.pop();
+        }
+    }
+
+    return minPq.size() < k? -1 : minPq.top();
+}
