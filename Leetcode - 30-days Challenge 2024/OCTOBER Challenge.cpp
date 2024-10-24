@@ -530,6 +530,8 @@ TreeNode* replaceValueInTree(TreeNode* root) {
 
 // DAY 24 (951. Flip Equivalent Binary Trees)=======================================================================
 
+// APPROACH 1 (Sorting)
+
 // Time Complexity = O(logn*n*logn)
 // Space Complexity = O(n)
 
@@ -573,4 +575,25 @@ bool flipEquiv(TreeNode* root1, TreeNode* root2) {
             return false;
     }
     return true;
+}
+
+// APPROACH 2 (Recursive - Checking with swap and no swap calls)
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool flipEquiv(TreeNode* root1, TreeNode* root2) {
+    if(!root1 && !root2)
+        return true;
+    if(!root1 || !root2)
+        return false;
+    if(root1->val != root2->val)
+        return false;
+
+    bool noSwapRes = flipEquiv(root1->left, root2->left) && 
+                    flipEquiv(root1->right, root2->right);
+    bool swapRes = flipEquiv(root1->left, root2->right) && 
+                    flipEquiv(root1->right, root2->left);
+
+    return swapRes || noSwapRes;
 }
