@@ -527,3 +527,50 @@ TreeNode* replaceValueInTree(TreeNode* root) {
 
     return root;
 }
+
+// DAY 24 (951. Flip Equivalent Binary Trees)=======================================================================
+
+// Time Complexity = O(logn*n*logn)
+// Space Complexity = O(n)
+
+bool flipEquiv(TreeNode* root1, TreeNode* root2) {
+    queue<pair<TreeNode*, TreeNode*>> que1, que2;
+    if(root1)
+        que1.push({nullptr, root1});
+    if(root2)
+        que2.push({nullptr, root2});
+
+    while(!que1.empty() || !que2.empty()) {
+        int size1 = que1.size(), size2 = que2.size();
+        vector<pair<int,int>> levelNodes1, levelNodes2;
+        while(size1--) {
+            TreeNode* nodePar = que1.front().first;
+            TreeNode* node = que1.front().second;
+            que1.pop();
+            levelNodes1.push_back({nodePar? nodePar->val : -1, node->val});
+
+            if(node->left)
+                que1.push({node, node->left});
+            if(node->right)
+                que1.push({node, node->right});
+        }
+        while(size2--) {
+            TreeNode* nodePar = que2.front().first;
+            TreeNode* node = que2.front().second;
+            que2.pop();
+            levelNodes2.push_back({nodePar? nodePar->val : -1, node->val});
+
+            if(node->left)
+                que2.push({node, node->left});
+            if(node->right)
+                que2.push({node, node->right});
+        }
+
+        sort(levelNodes1.begin(), levelNodes1.end());
+        sort(levelNodes2.begin(), levelNodes2.end());
+
+        if(levelNodes1 != levelNodes2)
+            return false;
+    }
+    return true;
+}
