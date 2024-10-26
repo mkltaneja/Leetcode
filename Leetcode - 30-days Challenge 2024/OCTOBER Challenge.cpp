@@ -597,3 +597,35 @@ bool flipEquiv(TreeNode* root1, TreeNode* root2) {
 
     return swapRes || noSwapRes;
 }
+
+// DAY 26 (2458. Height of Binary Tree After Subtree Removal Queries)=============================================================================
+
+// Time Complexity = O(n + q)
+// Space Complexity = O(n + q)
+
+void findMaxHeights(TreeNode* node, int currHeight, int &maxHeightSf, unordered_map<int,int> &maxNewHeight, bool isL2R) {
+    if(!node) return;
+
+    maxNewHeight[node->val] = max(maxNewHeight[node->val], maxHeightSf);
+    maxHeightSf = max(maxHeightSf, currHeight);
+
+    TreeNode* newNode1 = isL2R? node->left : node->right;
+    TreeNode* newNode2 = isL2R? node->right : node->left;
+    findMaxHeights(newNode1, currHeight + 1, maxHeightSf, maxNewHeight, isL2R);
+    findMaxHeights(newNode2, currHeight + 1, maxHeightSf, maxNewHeight, isL2R);
+}
+
+vector<int> treeQueries(TreeNode* root, vector<int>& queries) {
+    unordered_map<int,int> maxNewHeight;
+    int maxHeightSf = 0;
+    vector<int> ans;
+    findMaxHeights(root, 0, maxHeightSf, maxNewHeight, true);
+    maxHeightSf = 0;
+    findMaxHeights(root, 0, maxHeightSf, maxNewHeight, false);
+
+    for(int removedRoot : queries) {
+        ans.push_back(maxNewHeight[removedRoot]);
+    }
+
+    return ans;
+}
