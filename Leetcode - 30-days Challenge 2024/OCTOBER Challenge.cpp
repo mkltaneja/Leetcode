@@ -666,3 +666,29 @@ int countSquares(vector<vector<int>>& matrix) {
 
     return ans;
 }
+
+// APPROACH 2 (DP)
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+int countSquares(vector<vector<int>>& matrix) {
+    int rows = matrix.size(), cols = matrix[0].size();
+    vector<vector<int>> cache(rows, vector<int>(cols, 0));
+    int ans = 0;
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            if(!matrix[row][col])
+                continue;
+            
+            if(row == 0 || col == 0)
+                cache[row][col] = 1;
+            else cache[row][col] = min({cache[row - 1][col], 
+                                        cache[row][col - 1], 
+                                        cache[row - 1][col - 1]})
+                                    + 1;
+            ans += cache[row][col];
+        }
+    }
+    return ans;
+}
