@@ -629,3 +629,40 @@ vector<int> treeQueries(TreeNode* root, vector<int>& queries) {
 
     return ans;
 }
+
+// DAY 27 (1277. Count Square Submatrices with All Ones)============================================================================
+
+// APPROACH 1 (Traversing through diagonals and finding submatrices of every size)
+
+// Time Complexity = O(n^3)
+// Space Complexity = O(1)
+
+int countSquares(vector<vector<int>>& matrix) {
+    int rows = matrix.size(), cols = matrix[0].size();
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            int upVal = row? matrix[row-1][col] : 0;
+            int leftVal = col? matrix[row][col-1] : 0;
+            int upLeftVal = row && col? matrix[row-1][col-1] : 0;
+            matrix[row][col] += upVal + leftVal - upLeftVal;
+        }
+    }
+    int ans = 0;
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            for(int diag = 0; row + diag < rows && col + diag < cols; diag++) {
+                int topRightOnes = row? matrix[row - 1][col + diag] : 0;
+                int bottomLeftOnes = col? matrix[row + diag][col - 1] : 0;
+                int extraOnes = row && col? matrix[row - 1][col - 1] : 0;
+
+                int totalOnes = matrix[row + diag][col + diag] - 
+                    (topRightOnes + bottomLeftOnes - extraOnes);
+                if(totalOnes == (diag+1) * (diag+1))
+                    ans++;
+                else break;
+            }
+        }
+    }
+
+    return ans;
+}
