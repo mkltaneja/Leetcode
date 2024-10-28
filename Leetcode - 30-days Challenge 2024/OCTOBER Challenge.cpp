@@ -692,3 +692,25 @@ int countSquares(vector<vector<int>>& matrix) {
     }
     return ans;
 }
+
+// DAY 28 (2501. Longest Square Streak in an Array)===================================================================================
+
+// APPROACH 1 (Reverse Sorting and DP)
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int longestSquareStreak(vector<int>& nums) {
+    sort(nums.rbegin(), nums.rend());
+    unordered_map<int,int> seqLengthCache;
+    int maxLen = -1;
+    for(int num : nums) {
+        long long numSquared = 1ll * num * num;
+        if(seqLengthCache.count(numSquared)) {
+            seqLengthCache[num] = seqLengthCache[numSquared] + 1;
+            maxLen = max(maxLen, seqLengthCache[num]);
+        }
+        else seqLengthCache[num] = 1;
+    }
+    return maxLen;
+}
