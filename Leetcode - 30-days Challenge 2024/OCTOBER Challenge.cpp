@@ -714,3 +714,26 @@ int longestSquareStreak(vector<int>& nums) {
     }
     return maxLen;
 }
+
+// APPROACH 2 (By checking the sqrt)
+
+// Time Complexity = O(M*sqrt(M))
+// Space Complexity = O(M)
+
+int longestSquareStreak(vector<int>& nums) {
+    int maxNum = 0;
+    int maxLen = 1;
+    vector<int> seqLengthCache(1e5 + 5, 0);
+    for(int num : nums) {
+        maxNum = max(maxNum, num);
+        seqLengthCache[num] = 1;
+    }
+    for(int num = 4; num <= maxNum; num++) {
+        int numRoot = sqrt(num);
+        if(seqLengthCache[num] && numRoot * numRoot == num) {
+            seqLengthCache[num] = seqLengthCache[numRoot] + 1;
+            maxLen = max(maxLen, seqLengthCache[num]);
+        }
+    }
+    return maxLen == 1? -1 : maxLen;
+}
