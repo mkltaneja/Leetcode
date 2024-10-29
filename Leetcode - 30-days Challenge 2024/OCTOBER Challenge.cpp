@@ -737,3 +737,35 @@ int longestSquareStreak(vector<int>& nums) {
     }
     return maxLen == 1? -1 : maxLen;
 }
+
+// DAY 29 (2684. Maximum Number of Moves in a Grid)==============================================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*m)
+
+int ifValidCellThenGetVal(int row, int col, int rows, int cols, int currVal, vector<vector<int>> &grid, vector<vector<int>> &maxMovesCache) {
+    if(row < 0 || col < 0 || row == rows || col == cols || currVal >= grid[row][col])
+        return 0;
+    return maxMovesCache[row][col] + 1;
+}
+
+int maxMoves(vector<vector<int>>& grid) {
+    int rows = grid.size(), cols = grid[0].size();
+    vector<vector<int>> maxMovesCache(rows, vector<int>(cols, 0));
+    int maxMovesAns = 0;
+
+    for(int col = cols-1; col >= 0; col--) {
+        for(int row = 0; row < rows; row++) {
+            int rightUpMax = ifValidCellThenGetVal(row-1, col+1, rows, cols, grid[row][col], grid, maxMovesCache);
+            int rightMax = ifValidCellThenGetVal(row, col+1, rows, cols, grid[row][col], grid, maxMovesCache);
+            int rightDownMax = ifValidCellThenGetVal(row+1, col+1, rows, cols, grid[row][col], grid, maxMovesCache);
+
+            maxMovesCache[row][col] = max({rightUpMax, rightMax, rightDownMax});
+
+            if(col == 0)
+                maxMovesAns = max(maxMovesAns, maxMovesCache[row][col]);
+        }
+    }
+
+    return maxMovesAns;
+}
