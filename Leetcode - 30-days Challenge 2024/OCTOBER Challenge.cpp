@@ -769,3 +769,39 @@ int maxMoves(vector<vector<int>>& grid) {
 
     return maxMovesAns;
 }
+
+// DAY 30 (1671. Minimum Number of Removals to Make Mountain Array)==================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+void getLongestIncreasingSequence(vector<int> &lis, int size, vector<int> &nums, bool isReversedArray) {
+    vector<int> seq;
+    for(int idx = 0; idx < size; idx++) {
+        int lb = lower_bound(seq.begin(), seq.end(), nums[idx]) - seq.begin();
+        if(lb == seq.size())
+            seq.push_back(nums[idx]);
+        else seq[lb] = nums[idx];
+
+        lis[isReversedArray? size-idx-1 : idx] = seq.size();
+    }
+}
+
+int minimumMountainRemovals(vector<int>& nums) {
+    int size = nums.size();
+    int minRemovals = size;
+    vector<int> lisLeft(size, 1), ldsRight(size, 1);
+    getLongestIncreasingSequence(lisLeft, size, nums, false);
+    reverse(nums.begin(), nums.end());
+    getLongestIncreasingSequence(ldsRight, size, nums, true);
+    
+    for(int idx = 1; idx < size-1; idx++) {
+        if(lisLeft[idx] == 1 || ldsRight[idx] == 1)
+            continue;
+        int leftRemovals = (idx + 1) - lisLeft[idx];
+        int rightRemovals = (size - idx) - ldsRight[idx];
+        minRemovals = min(minRemovals, leftRemovals + rightRemovals);
+    }
+
+    return minRemovals;
+}
