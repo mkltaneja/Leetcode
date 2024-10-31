@@ -805,3 +805,41 @@ int minimumMountainRemovals(vector<int>& nums) {
 
     return minRemovals;
 }
+
+// DAY 31 (2463. Minimum Total Distance Traveled)==================================================================================================
+
+// Time Complexity = O(n^3)
+// Space Complexity = O(n^3)
+
+#define ll long long
+#define INF LLONG_MAX
+long long minimumTotalDistance(vector<int>& robot, vector<vector<int>>& factory) {
+    int size1 = robot.size();
+    vector<int> allFactories;
+    sort(robot.begin(), robot.end());
+    sort(factory.begin(), factory.end());
+    for(vector<int> &fact : factory) {
+        int position = fact[0];
+        int limit = fact[1];
+        while(limit--)
+            allFactories.push_back(position);
+    }
+    int size2 = allFactories.size();
+    vector<vector<ll>> minDistCache(size2+1, vector<ll>(size1+1, LLONG_MAX));
+
+    for(int idx = 1; idx <= size2; idx++)
+        minDistCache[idx][0] = 0;
+    minDistCache[0][1] = abs(allFactories[0] - robot[0]);
+
+    for(int fidx = 1; fidx < size2; fidx++) {
+        for(int ridx = 1; ridx <= size1; ridx++) {
+            minDistCache[fidx][ridx] = min(
+                minDistCache[fidx-1][ridx], 
+                minDistCache[fidx-1][ridx-1] == INF? INF : 
+                    minDistCache[fidx-1][ridx-1] + 
+                        (abs(allFactories[fidx] - robot[ridx-1])));
+        }
+    }
+
+    return minDistCache[size2-1][size1];
+}
