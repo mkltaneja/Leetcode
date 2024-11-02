@@ -15,3 +15,15 @@ string makeFancyString(string s) {
     s.resize(prevItr);
     return s;
 }
+
+// DAY 2 (2490. Circular Sentence)======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+bool isCircularSentence(string sentence) {
+    for(int idx = 0; idx < sentence.size(); idx++)
+        if(sentence[idx] == ' ' && sentence[idx-1] != sentence[idx+1])
+            return false;
+    return sentence[0] == sentence.back();
+}
