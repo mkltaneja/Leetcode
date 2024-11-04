@@ -59,3 +59,21 @@ bool rotateString(string s, string goal) {
     }
     return false;
 }
+
+// DAY 4 (3163. String Compression III)===============================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+string compressedString(string word) {
+    int size = word.size();
+    string ans = "";
+    for(int idx = 0; idx < size; ) {
+        int idx2 = idx;
+        while(idx2 < size && idx2 - idx + 1 <= 9 && word[idx2] == word[idx])
+            idx2++;
+        ans += to_string(idx2 - idx) + word[idx];
+        idx = idx2;
+    }
+    return ans;
+}
