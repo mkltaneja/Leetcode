@@ -80,6 +80,8 @@ string compressedString(string word) {
 
 // DAY 5 (2914. Minimum Number of Changes to Make Binary String Beautiful)============================================================
 
+// APPROACH 1 (Checking through odd-even segments)
+
 // Time Complexity = O(n)
 // Space Complexity = O(1)
 
@@ -103,5 +105,17 @@ int minChanges(string s) {
 
         idx = nextIdx;
     }
+    return moves;
+}
+
+// APPROACH 2 (Checking in bubbles)
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int minChanges(string s) {
+    int moves = 0;
+    for(int idx = 0; idx < s.size(); idx += 2)
+        moves += s[idx] != s[idx+1];
     return moves;
 }
