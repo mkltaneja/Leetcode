@@ -77,3 +77,31 @@ string compressedString(string word) {
     }
     return ans;
 }
+
+// DAY 5 (2914. Minimum Number of Changes to Make Binary String Beautiful)============================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int minChanges(string s) {
+    int size = s.size();
+    int prevEvens = 0, prevOdds = 0;
+    int moves = 0;
+    for(int idx = 0; idx < size; ) {
+        int nextIdx = idx;
+        while(nextIdx < size && s[nextIdx] == s[idx])
+            nextIdx++;
+        if((nextIdx - idx) & 1) {
+            if(prevOdds) {
+                moves += prevEvens + 1;
+                prevOdds = 0;
+            }
+            else prevOdds++;
+            prevEvens = 0;
+        }
+        else prevEvens++;
+
+        idx = nextIdx;
+    }
+    return moves;
+}
