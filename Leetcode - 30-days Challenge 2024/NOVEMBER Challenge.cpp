@@ -119,3 +119,28 @@ int minChanges(string s) {
         moves += s[idx] != s[idx+1];
     return moves;
 }
+
+// DAY 6 (3011. Find if Array Can Be Sorted)======================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(1)
+
+bool isSortedArray(int size, vector<int> &nums) {
+    for(int idx = 1; idx < size; idx++)
+        if(nums[idx] < nums[idx-1])
+            return false;
+    return true;
+}
+
+bool canSortArray(vector<int>& nums) {
+    int size = nums.size();
+    for(int idx = 0; idx < size; idx++) {
+        int pidx = idx;
+        int bits = __builtin_popcount(nums[idx]);
+        while(idx + 1 < size && __builtin_popcount(nums[idx+1]) == bits)
+            idx++;
+        sort(nums.begin() + pidx, nums.begin() + idx + 1);
+    }
+
+    return isSortedArray(size, nums);
+}
