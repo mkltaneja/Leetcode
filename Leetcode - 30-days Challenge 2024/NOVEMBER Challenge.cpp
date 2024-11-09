@@ -144,3 +144,27 @@ bool canSortArray(vector<int>& nums) {
 
     return isSortedArray(size, nums);
 }
+
+// DAY 8 (1829. Maximum XOR for Each Query)================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int getTotalXor(vector<int> &nums) {
+    int res = 0;
+    for(int num : nums)
+        res ^= num;
+    return res;
+}
+
+vector<int> getMaximumXor(vector<int>& nums, int maximumBit) {
+    int size = nums.size();
+    int totalXor = getTotalXor(nums);
+    vector<int> ans(size);
+    for(int idx = size-1; idx >= 0; idx--) {
+        int k = ~totalXor & ((1 << maximumBit) - 1);
+        ans[size - idx - 1] = k;
+        totalXor ^= nums[idx];
+    }
+    return ans;
+}
