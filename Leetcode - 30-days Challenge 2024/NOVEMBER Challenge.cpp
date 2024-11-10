@@ -187,7 +187,7 @@ vector<int> getMaximumXor(vector<int>& nums, int maximumBit) {
     return ans;
 }
 
-// DAY 9 ()===================================================================
+// DAY 9 (3133. Minimum Array End)===================================================================
 
 // Time Complexity = O(1)
 // Space Complexity = O(1)
