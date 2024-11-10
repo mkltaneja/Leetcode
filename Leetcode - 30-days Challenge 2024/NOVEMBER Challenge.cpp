@@ -168,3 +168,23 @@ vector<int> getMaximumXor(vector<int>& nums, int maximumBit) {
     }
     return ans;
 }
+
+// DAY 9 ()===================================================================
+
+// Time Complexity = O(1)
+// Space Complexity = O(1)
+
+#define ll long long
+long long minEnd(int n, int x) {
+    ll ans = x;
+    n--;
+
+    for(int xbit = 0, nbit = 0; xbit < 64; xbit++) {
+        if(x & (1ll << xbit))
+            continue;
+        if(n & (1ll << (nbit++)))
+            ans |= 1ll << xbit;
+    }
+
+    return ans;
+}
