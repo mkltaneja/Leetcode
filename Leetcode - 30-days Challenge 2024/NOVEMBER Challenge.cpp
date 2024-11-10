@@ -145,6 +145,24 @@ bool canSortArray(vector<int>& nums) {
     return isSortedArray(size, nums);
 }
 
+// DAY 7 (2275. Largest Combination With Bitwise AND Greater Than Zero)================================================
+
+// Time Complexity = O(n*32)
+// Space Complexity = O(32)
+
+int largestCombination(vector<int>& candidates) {
+    vector<int> bitCandidates(32);
+    int largestCombination = 0;
+    for(int candidate : candidates)
+        for(int bit = 0; bit < 32; bit++)
+            if(candidate & (1 << bit))
+                bitCandidates[bit]++;
+
+    for(int bit = 0; bit < 32; bit++)
+        largestCombination = max(largestCombination, bitCandidates[bit]);
+    return largestCombination;
+}
+
 // DAY 8 (1829. Maximum XOR for Each Query)================================================================
 
 // Time Complexity = O(n)
