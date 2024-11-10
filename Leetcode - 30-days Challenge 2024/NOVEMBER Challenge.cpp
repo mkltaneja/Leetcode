@@ -206,3 +206,28 @@ long long minEnd(int n, int x) {
 
     return ans;
 }
+
+// DAY 10 (3097. Shortest Subarray With OR at Least K II)===================================================
+
+// Time Complexity = O(n*32)
+// Space Complexity = O(32)
+
+int minimumSubarrayLength(vector<int>& nums, int k) {
+    int minLen = INT_MAX, currOr = 0;
+    vector<int> bitCnt(32);
+    for(int idx = 0, pidx = 0; idx < nums.size(); idx++) {
+        currOr |= nums[idx];
+        for(int bit = 0; bit < 32; bit++)
+            bitCnt[bit] += (nums[idx] >> bit) & 1;
+        while(pidx <= idx && currOr >= k) {
+            minLen = min(minLen, idx - pidx + 1);
+            for(int bit = 0; bit < 32; bit++) {
+                bitCnt[bit] -= (nums[pidx] >> bit) & 1;
+                if(bitCnt[bit] == 0)
+                    currOr &= ~(1 << bit);
+            }
+            pidx++;
+        }
+    }
+    return minLen == INT_MAX? -1 : minLen;
+}
