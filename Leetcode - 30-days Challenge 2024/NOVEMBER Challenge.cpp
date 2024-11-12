@@ -231,3 +231,37 @@ int minimumSubarrayLength(vector<int>& nums, int k) {
     }
     return minLen == INT_MAX? -1 : minLen;
 }
+
+// DAY 12 (2070. Most Beautiful Item for Each Query)================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int getLowerBound(vector<vector<int>>& items, int maxPrice) {
+    int lo = 0, hi = items.size() - 1;
+    int ans = items.size();
+    while(lo <= hi) {
+        int mid = ((lo + hi) >> 1);
+        if(items[mid][0] <= maxPrice) {
+            ans = mid;
+            lo = mid + 1;
+        }
+        else hi = mid - 1;
+    }
+    return ans;
+}
+
+vector<int> maximumBeauty(vector<vector<int>>& items, vector<int>& queries) {
+    vector<int> ans;
+    sort(items.begin(), items.end());
+    for(int idx = 1; idx < items.size(); idx++) {
+        items[idx][1] = max(items[idx][1], items[idx-1][1]);
+    }
+    for(int q : queries) {
+        int lb = getLowerBound(items, q);
+        if(lb == items.size())
+            ans.push_back(0);
+        else ans.push_back(items[lb][1]);
+    }
+    return ans;
+}
