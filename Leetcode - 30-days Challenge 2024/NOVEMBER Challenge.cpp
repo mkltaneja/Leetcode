@@ -265,3 +265,22 @@ vector<int> maximumBeauty(vector<vector<int>>& items, vector<int>& queries) {
     }
     return ans;
 }
+
+// DAY 13 (2563. Count the Number of Fair Pairs)====================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(1)
+
+long long countFairPairs(vector<int>& nums, int lower, int upper) {
+    int size = nums.size();
+    sort(nums.begin(), nums.end());
+    long long ans = 0;
+    for(int idx = 1; idx < size; idx++) {
+        int lowerNum = lower - nums[idx];
+        int upperNum = upper - nums[idx];
+        int lb = lower_bound(nums.begin(), nums.begin() + idx, lowerNum) - nums.begin();
+        int ub = upper_bound(nums.begin(), nums.begin() + idx, upperNum) - nums.begin();
+        ans += 1ll * ub - lb;
+    }
+    return ans;
+}
