@@ -311,3 +311,20 @@ int findLengthOfShortestSubarray(vector<int>& arr) {
     }
     return minLen;
 }
+
+// DAY 16 (3254. Find the Power of K-Size Subarrays I)======================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n - k)
+
+vector<int> resultsArray(vector<int>& nums, int k) {
+    int n = nums.size();
+    vector<int> ans(n - k + 1);
+    vector<int> incLen(n, 1);
+    for(int idx = 1; idx < n; idx++)
+        incLen[idx] = nums[idx] == nums[idx-1] + 1? incLen[idx-1] + 1 : 1;
+    for(int idx = k-1; idx < n; idx++) {
+        ans[idx-k+1] = incLen[idx] >= k? nums[idx] : -1;
+    }
+    return ans;
+}
