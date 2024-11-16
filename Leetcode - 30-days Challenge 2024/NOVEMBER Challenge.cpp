@@ -284,3 +284,30 @@ long long countFairPairs(vector<int>& nums, int lower, int upper) {
     }
     return ans;
 }
+
+// DAY 15 (1574. Shortest Subarray to be Removed to Make Array Sorted)===========================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int findLengthOfShortestSubarray(vector<int>& arr) {
+    int size = arr.size();
+    int sortedPrefixLen = 1, sortedSuffixLen = 1;
+    for(int idx = 1; idx < size && arr[idx] >= arr[idx-1]; idx++) {
+        sortedPrefixLen++;
+    }
+    for(int idx = size-2; idx >= 0 && arr[idx] <= arr[idx+1]; idx--) {
+        sortedSuffixLen++;
+    }
+    if(sortedPrefixLen == size)
+        return 0;
+    int minLen = min(size - sortedPrefixLen, size - sortedSuffixLen);
+    for(int idx1 = sortedPrefixLen-1, idx2 = size-1; idx1 >= 0 && idx2 >= size-sortedSuffixLen; ) {
+        if(arr[idx1] <= arr[idx2]) {
+            minLen = min(minLen, idx2 - idx1 - 1);
+            idx2--;
+        }
+        else idx1--;
+    }
+    return minLen;
+}
