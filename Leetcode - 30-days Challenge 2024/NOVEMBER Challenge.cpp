@@ -328,3 +328,26 @@ vector<int> resultsArray(vector<int>& nums, int k) {
     }
     return ans;
 }
+
+// DAY 19 (2461. Maximum Sum of Distinct Subarrays With Length K)===================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(k)
+
+#define ll long long
+long long maximumSubarraySum(vector<int>& nums, int k) {
+    unordered_map<int, int> numCnt;
+    ll maxSum = 0, currSum = 0;
+    for(int curr = 0, prev = 0; curr < nums.size(); curr++) {
+        numCnt[nums[curr]]++;
+        currSum += nums[curr];
+        while(numCnt[nums[curr]] == 2 || numCnt.size() > k) {
+            if(--numCnt[nums[prev]] == 0)
+                numCnt.erase(nums[prev]);
+            currSum -= nums[prev++];
+        }
+        if(numCnt.size() == k)
+            maxSum = max(maxSum, currSum);
+    }
+    return maxSum;
+}
