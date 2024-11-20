@@ -351,3 +351,45 @@ long long maximumSubarraySum(vector<int>& nums, int k) {
     }
     return maxSum;
 }
+
+// DAY 20 (2516. Take K of Each Character From Left and Right)============================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int takeCharacters(string s, int k) {
+    int acnt = 0, bcnt = 0, ccnt = 0, n = s.size();
+    int i = 0, j = n-1;
+    while(i < n && (acnt < k || bcnt < k || ccnt < k)) {
+        acnt += s[i] == 'a';
+        bcnt += s[i] == 'b';
+        ccnt += s[i] == 'c';
+        i++;
+    }
+    if(acnt < k || bcnt < k || ccnt < k)
+        return -1;
+    int minMin = i--;
+    if(i == j) {
+        acnt -= s[i] == 'a';
+        bcnt -= s[i] == 'b';
+        ccnt -= s[i] == 'c';
+        i--;
+    }
+    while(j >= 0 && i >= 0) {
+        acnt += s[j] == 'a';
+        bcnt += s[j] == 'b';
+        ccnt += s[j] == 'c';
+
+        while(i >= -1 && (acnt >= k && bcnt >= k && ccnt >= k)) {
+            minMin = min(minMin, (i + 1) + (n - j));
+            if(i == -1) break;
+            acnt -= s[i] == 'a';
+            bcnt -= s[i] == 'b';
+            ccnt -= s[i] == 'c';
+            i--;
+        }
+        j--;
+    }
+
+    return minMin;
+}
