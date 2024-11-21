@@ -393,3 +393,48 @@ int takeCharacters(string s, int k) {
 
     return minMin;
 }
+
+// DAY 21 (2257. Count Unguarded Cells in the Grid)================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*m)
+
+int countUnguarded(int m, int n, vector<vector<int>>& guards, vector<vector<int>>& walls) {
+    vector<vector<int>> isGaurded(m, vector<int>(n, 0));
+    int ungaurdedCnt = 0;
+    for(vector<int> cell : guards)
+        isGaurded[cell[0]][cell[1]] = 1;
+    for(vector<int> cell : walls)
+        isGaurded[cell[0]][cell[1]] = -1;
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < n; j++) {
+            if(isGaurded[i][j]) continue;
+            bool isLeftGaurded = (j && (isGaurded[i][j-1] == 1 || isGaurded[i][j-1] == 2 || isGaurded[i][j-1] == 4));
+            bool isUpGaurded = (i && (isGaurded[i-1][j] == 1 || isGaurded[i-1][j] == 3 || isGaurded[i-1][j] == 4));
+            if(isLeftGaurded && isUpGaurded)
+                isGaurded[i][j] = 4;
+            else if(isLeftGaurded)
+                isGaurded[i][j] = 2;
+            else if(isUpGaurded)
+                isGaurded[i][j] = 3;
+        }
+    }
+    for(int i = m-1; i >= 0; i--) {
+        for(int j = n-1; j >= 0; j--) {
+            if(isGaurded[i][j] == -1 || isGaurded[i][j] == 1 || isGaurded[i][j] == 4) continue;
+            bool isRightGaurded = (n-j-1 && (isGaurded[i][j+1] == 1 || isGaurded[i][j+1] == 2 || isGaurded[i][j+1] == 4));
+            bool isDownGaurded = (m-i-1 && (isGaurded[i+1][j] == 1 || isGaurded[i+1][j] == 3 || isGaurded[i+1][j] == 4));
+            if(isRightGaurded && isDownGaurded)
+                isGaurded[i][j] = 4;
+            else if(isRightGaurded)
+                isGaurded[i][j] = 2;
+            else if(isDownGaurded)
+                isGaurded[i][j] = 3;
+            
+                if(isGaurded[i][j] == 0)
+                    ungaurdedCnt++;
+            }
+        }
+
+        return ungaurdedCnt;
+    }
