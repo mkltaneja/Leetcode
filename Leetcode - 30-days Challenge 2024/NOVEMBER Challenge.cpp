@@ -431,10 +431,32 @@ int countUnguarded(int m, int n, vector<vector<int>>& guards, vector<vector<int>
             else if(isDownGaurded)
                 isGaurded[i][j] = 3;
             
-                if(isGaurded[i][j] == 0)
-                    ungaurdedCnt++;
-            }
+            if(isGaurded[i][j] == 0)
+                ungaurdedCnt++;
         }
-
-        return ungaurdedCnt;
     }
+
+    return ungaurdedCnt;
+}
+
+// DAY 22 (1072. Flip Columns For Maximum Number of Equal Rows)===========================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int maxEqualRowsAfterFlips(vector<vector<int>>& matrix) {
+    unordered_map<string, int> maskCnt;
+    for(vector<int> row : matrix) {
+        string mask = "";
+        for(int bit : row) {
+            if(bit) mask += "0";
+            else mask += "1";
+        }
+        maskCnt[mask]++;
+    }
+
+    int maxCnt = 0;
+    for(auto pair : maskCnt)
+        maxCnt = max(maxCnt, pair.second);
+    return maxCnt;
+}
