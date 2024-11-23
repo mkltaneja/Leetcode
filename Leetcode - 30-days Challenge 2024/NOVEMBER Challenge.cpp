@@ -394,6 +394,7 @@ int takeCharacters(string s, int k) {
     return minMin;
 }
 
+
 // DAY 21 (2257. Count Unguarded Cells in the Grid)================================================
 
 // Time Complexity = O(n*m)
@@ -459,4 +460,51 @@ int maxEqualRowsAfterFlips(vector<vector<int>>& matrix) {
     for(auto pair : maskCnt)
         maxCnt = max(maxCnt, pair.second);
     return maxCnt;
+}
+
+// DAY 23 (1861. Rotating the Box)================================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*m)
+
+void moveItemsInBox(vector<vector<char>> &rotatedBox) {
+    int rows = rotatedBox.size(), cols = rotatedBox[0].size();
+    for(int col = 0; col < cols; col++) {
+        int lastStonePos = -1;
+        for(int row = 0; row < rows; row++) {
+            if(rotatedBox[row][col] == '.') {
+                if(lastStonePos != -1) {
+                    swap(rotatedBox[row][col], rotatedBox[lastStonePos++][col]);
+                }
+            }
+            else if(rotatedBox[row][col] == '#') {
+                if(lastStonePos == -1) {
+                    lastStonePos = row;
+                }
+            }
+            else {
+                lastStonePos = row + 1;
+            }
+        }
+    }
+}
+
+void rotateBox(int rows, int cols, vector<vector<char>> &box, vector<vector<char>> &rotatedBox) {
+    int idx = 0;
+    for(int col = 0; col < cols; col++) {
+        for(int row = rows-1; row >= 0; row--) {
+            int rotatedRow = idx / rows;
+            int rotatedCol = idx % rows;
+            idx++;
+            rotatedBox[rotatedRow][rotatedCol] = box[row][col];
+        }
+    }
+}
+
+vector<vector<char>> rotateTheBox(vector<vector<char>>& box) {
+    int rows = box.size(), cols = box[0].size();
+    vector<vector<char>> rotatedBox(cols, vector<char>(rows));
+    rotateBox(rows, cols, box, rotatedBox);
+    moveItemsInBox(rotatedBox);
+    return rotatedBox;
 }
