@@ -513,3 +513,20 @@ vector<vector<char>> rotateTheBox(vector<vector<char>>& box) {
 
 // Time Complexity = O(n*m)
 // Space Complexity = O(1)
+
+long long maxMatrixSum(vector<vector<int>>& matrix) {
+    int rows = matrix.size(), cols = matrix[0].size();
+    int minEle = INT_MAX, totalNegs = 0;
+    long long totalSum = 0;
+    bool hasZero = false;
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            totalSum += abs(matrix[row][col]);
+            minEle = min(minEle, abs(matrix[row][col]));
+            totalNegs += matrix[row][col] < 0;
+            hasZero |= matrix[row][col] == 0;
+        }
+    }
+
+    return ((totalNegs & 1 ^ 1) || hasZero)? totalSum : totalSum - 2*minEle;
+}
