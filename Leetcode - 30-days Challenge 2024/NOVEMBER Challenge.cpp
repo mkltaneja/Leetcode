@@ -530,3 +530,69 @@ long long maxMatrixSum(vector<vector<int>>& matrix) {
 
     return ((totalNegs & 1 ^ 1) || hasZero)? totalSum : totalSum - 2*minEle;
 }
+
+// DAY 25 (773. Sliding Puzzle)==========================================================================
+
+// Time Complexity = O(6!)
+// Space Complexity = O(6!)
+
+int findStartPos(string &state) {
+    for(int idx = 0; idx < state.size(); idx++) {
+        if(state[idx] == '0') {
+            return idx;
+        }
+    }
+    return -1;
+}
+
+string getState(vector<vector<int>> &board) {
+    string state = "";
+    for(int row = 0; row < board.size(); row++) {
+        for(int col = 0; col < board[0].size(); col++) {
+            state += to_string(board[row][col]);
+        }
+    }
+    return state;
+}
+
+int getMinMovesBFS(vector<vector<int>> &board) {
+    string startState = getState(board);
+    string finalState = "123450";
+    if(startState == finalState) {
+        return 0;
+    }
+    int startPos = findStartPos(startState);
+    vector<vector<int>> swapPos = {{1, 3}, {0, 2, 4}, {1, 5}, {0, 4}, {1, 3, 5}, {2, 4}};
+    unordered_set<string> stateSet;
+    queue<pair<string, int>> que;
+    int moves = 0;
+
+    stateSet.insert(startState);
+    que.push({startState, startPos});
+
+    while(!que.empty()) {
+        int queSize = que.size();
+        while(queSize--) {
+            string currState = que.front().first;
+            int currPos = que.front().second;
+            que.pop();
+            for(int nextPos : swapPos[currPos]) {
+                swap(currState[currPos], currState[nextPos]);
+                if(!stateSet.count(currState)) {
+                    if(currState == finalState) {
+                        return moves + 1;
+                    }
+                    stateSet.insert(currState);
+                    que.push({currState, nextPos});
+                }
+                swap(currState[currPos], currState[nextPos]);
+            }
+        }
+        moves++;
+    }
+    return -1;
+}
+
+int slidingPuzzle(vector<vector<int>>& board) {
+    return getMinMovesBFS(board);
+}
