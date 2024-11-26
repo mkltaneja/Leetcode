@@ -596,3 +596,25 @@ int getMinMovesBFS(vector<vector<int>> &board) {
 int slidingPuzzle(vector<vector<int>>& board) {
     return getMinMovesBFS(board);
 }
+
+// DAY 26 (2924. Find Champion II)============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int findChampion(int n, vector<vector<int>>& edges) {
+    vector<int> inDegree(n, 0);
+    int championTeam = -1;
+    for(vector<int> &edge : edges) {
+        inDegree[edge[1]]++;
+    }
+    for(int team = 0; team < n; team++) {
+        if(inDegree[team] == 0) {
+            if(championTeam == -1) {
+                championTeam = team;
+            }
+            else return -1;
+        }
+    }
+    return championTeam;
+}
