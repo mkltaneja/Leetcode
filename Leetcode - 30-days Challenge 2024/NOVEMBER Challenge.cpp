@@ -618,3 +618,52 @@ int findChampion(int n, vector<vector<int>>& edges) {
     }
     return championTeam;
 }
+
+// DAY 30 (2097. Valid Arrangement of Pairs)=============================================================
+
+// Time Complexity = O(E)
+// Space Complexity = O(E)
+
+vector<int> findEulerPath(unordered_map<int,int> &outDeg, unordered_map<int,vector<int>> &adj, int currNode) {
+    vector<int> epath;
+    stack<int> pathStack;
+    pathStack.push(currNode);
+    while(!pathStack.empty()) {
+        int node = pathStack.top();
+        if(adj[node].empty()) {
+            epath.push_back(node);
+            pathStack.pop();
+        }
+        else {
+            pathStack.push(adj[node].back());
+            adj[node].pop_back();
+        }
+    }
+    return epath;
+}
+
+vector<vector<int>> validArrangement(vector<vector<int>>& pairs) {
+    unordered_map<int,int> outDeg;
+    unordered_map<int,vector<int>> adj;
+    vector<vector<int>> ans;
+    for(vector<int> &pair : pairs) {
+        int start = pair[0], end = pair[1];
+        outDeg[start]++;
+        outDeg[end]--;
+        adj[start].push_back(end);
+    }
+    int startNode = pairs[0][0];
+    for(auto pair : outDeg) {
+        if(pair.second == 1) {
+            startNode = pair.first;
+            break;
+        }
+    }
+
+    vector<int> epath = findEulerPath(outDeg, adj, startNode);
+    for(int idx = epath.size()-2; idx >= 0; idx--) {
+        ans.push_back({epath[idx+1], epath[idx]});
+    }
+
+    return ans;
+}
