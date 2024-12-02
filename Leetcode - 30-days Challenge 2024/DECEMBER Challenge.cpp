@@ -13,3 +13,21 @@ bool checkIfExist(vector<int>& arr) {
     }
     return false;
 }
+
+// DAY 2 (1455. Check If a Word Occurs As a Prefix of Any Word in a Sentence)================================================
+
+// Time Complexity = O(count(words) * searchWord.size())
+// Space Complexity = O(sentence.size())
+
+int isPrefixOfWord(string sentence, string searchWord) {
+    stringstream ss(sentence);
+    string word;
+    int index = 1;
+    while(getline(ss, word, ' ')) {
+        if(word.size() >= searchWord.size() && word.substr(0, searchWord.size()) == searchWord) {
+            return index;
+        }
+        index++;
+    }
+    return -1;
+}
