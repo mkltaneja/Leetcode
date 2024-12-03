@@ -31,3 +31,20 @@ int isPrefixOfWord(string sentence, string searchWord) {
     }
     return -1;
 }
+
+// DAY 3 (2109. Adding Spaces to a String)=======================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+string addSpaces(string s, vector<int>& spaces) {
+    string ans = "";
+    for(int sidx = 0, arrIdx = 0; sidx < s.size(); sidx++) {
+        if(arrIdx < spaces.size() && sidx == spaces[arrIdx]) {
+            ans += " ";
+            arrIdx++;
+        }
+        ans += s[sidx];
+    }
+    return ans;
+}
