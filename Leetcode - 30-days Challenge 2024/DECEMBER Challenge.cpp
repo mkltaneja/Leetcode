@@ -48,3 +48,27 @@ string addSpaces(string s, vector<int>& spaces) {
     }
     return ans;
 }
+
+// DAY 4 (2825. Make String a Subsequence Using Cyclic Increments)===============================================
+
+// Time Complexity = O(min(n, m))
+// Space Complexity = O(1)
+
+char getNext(char c) {
+    return char((((c - 'a') + 1) % 26) + 'a');
+}
+
+bool canMakeSubsequence(string str1, string str2) {
+    int size1 = str1.size(), size2 = str2.size();
+    if(size2 > size1) {
+        return false;
+    }
+    int idx1 = 0, idx2 = 0;
+    while(idx1 < str1.size() && idx2 < str2.size()) {
+        if(str2[idx2] == str1[idx1] || str2[idx2] == getNext(str1[idx1])) {
+            idx2++;
+        }
+        idx1++;
+    }
+    return idx2 == str2.size();
+}
