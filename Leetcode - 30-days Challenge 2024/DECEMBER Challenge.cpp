@@ -72,3 +72,34 @@ bool canMakeSubsequence(string str1, string str2) {
     }
     return idx2 == str2.size();
 }
+
+// DAY 5 (2337. Move Pieces to Obtain a String)==================================================================================
+
+// Time Complexity = O(min(n, m))
+// Space Complexity = O(1)
+
+bool canChange(string start, string target) {
+    int sitr = 0, titr = 0;
+    int size1 = start.size(), size2 = target.size();
+    while(sitr < size1 || titr < size2) {
+        while(sitr < size1 && start[sitr] == '_') {
+            sitr++;
+        }
+        while(titr < size2 && target[titr] == '_') {
+            titr++;
+        }
+
+        if(sitr == size1 || titr == size2) {
+            break;
+        }
+
+        if(start[sitr] != target[titr]) {
+            return false;
+        }
+        if((start[sitr] == 'L' && sitr < titr) || (start[sitr] == 'R' && sitr > titr)) {
+            return false;
+        }
+        sitr++, titr++;
+    }
+    return sitr == size1 && titr == size2;
+}
