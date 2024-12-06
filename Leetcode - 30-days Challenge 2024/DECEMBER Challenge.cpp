@@ -103,3 +103,24 @@ bool canChange(string start, string target) {
     }
     return sitr == size1 && titr == size2;
 }
+
+// DAY 6 (2554. Maximum Number of Integers to Choose From a Range I)=================================================================
+
+// Time Complexity = O(n + m)
+// Space Complexity = O(m)
+
+int maxCount(vector<int>& banned, int n, int maxSum) {
+    unordered_set<int> bannedSet;
+    int currSum = 0, totalNums = 0;
+    for(int num : banned) {
+        bannedSet.insert(num);
+    }
+    for(int num = 1; num <= n && currSum + num <= maxSum; num++) {
+        if(!bannedSet.count(num)) {
+            currSum += num;
+            totalNums++;
+        }
+    }
+
+    return totalNums;
+}
