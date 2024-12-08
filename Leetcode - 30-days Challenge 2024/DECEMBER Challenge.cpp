@@ -124,3 +124,38 @@ int maxCount(vector<int>& banned, int n, int maxSum) {
 
     return totalNums;
 }
+
+// DAY 8 (2054. Two Best Non-Overlapping Events)================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(1)
+
+int upperBound(vector<vector<int>> &events, int lo, int hi, int val) {
+    while(lo < hi) {
+        int mid = lo + ((hi - lo) >> 1);
+        if(events[mid][0] <= val) {
+            lo = mid + 1;
+        }
+        else {
+            hi = mid;
+        }
+    }
+    return lo;
+}
+
+int maxTwoEvents(vector<vector<int>>& events) {
+    int maxSum = 0;
+    sort(events.begin(), events.end());
+    for(int idx = events.size()-1; idx >= 0; idx--) {
+        int startTime = events[idx][0];
+        int endTime = events[idx][1];
+        int value = events[idx][2];
+
+        int nextStartIdx = upperBound(events, idx + 1, events.size(), endTime);
+        int nextMaxVal = nextStartIdx == events.size()? 0 : events[nextStartIdx][2];
+        maxSum = max(maxSum, value + nextMaxVal);
+        events[idx][2] = max(events[idx][2], (idx + 1 < events.size())? events[idx+1][2] : 0);
+    }
+
+    return maxSum;
+}
