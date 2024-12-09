@@ -159,3 +159,27 @@ int maxTwoEvents(vector<vector<int>>& events) {
 
     return maxSum;
 }
+
+// DAY 9 (3152. Special Array II)=================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<bool> isArraySpecial(vector<int>& nums, vector<vector<int>>& queries) {
+    vector<int> seqCnt(nums.size(), 0);
+    vector<bool> ans(queries.size());
+    seqCnt[0] = 1;
+    for(int idx = 1; idx < nums.size(); idx++) {
+        seqCnt[idx] = seqCnt[idx-1] + ((nums[idx] & 1) ^ (nums[idx-1] & 1));
+    }
+
+    for(int idx = 0; idx < queries.size(); idx++) {
+        int left = queries[idx][0], right = queries[idx][1];
+        int expectedNums = right - left + 1;
+        int actualNums = seqCnt[right] - seqCnt[left] + 1;
+
+        ans[idx] = expectedNums == actualNums;
+    }
+
+    return ans;
+}
