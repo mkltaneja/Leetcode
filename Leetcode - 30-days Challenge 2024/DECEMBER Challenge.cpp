@@ -183,3 +183,35 @@ vector<bool> isArraySpecial(vector<int>& nums, vector<vector<int>>& queries) {
 
     return ans;
 }
+
+// DAY 10 (2981. Find Longest Special Substring That Occurs Thrice I)===========================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int maximumLength(string s) {
+    unordered_map<string,int> subCnt;
+    int maxLen = -1;
+    for(int idx1 = 0, idx2 = idx1; idx1 < s.size(); ) {
+        string sub = "";
+        while(idx2 < s.size() && s[idx2] == s[idx1]) {
+            sub += s[idx2++];
+        }
+
+        if(sub.size() >= 3) {
+            maxLen = max(maxLen, (int)sub.size()-2);
+        }
+        if(++subCnt[sub] >= 3) {
+            maxLen = max(maxLen, (int)sub.size());
+        }
+        sub.pop_back();
+        if(!sub.empty()) {
+            subCnt[sub] += 2;
+            if(subCnt[sub] >= 3) {
+                maxLen = max(maxLen, (int)sub.size());
+            }
+        }
+        idx1 = idx2;
+    }
+    return maxLen;
+}
