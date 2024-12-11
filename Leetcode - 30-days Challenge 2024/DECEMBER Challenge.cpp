@@ -218,6 +218,8 @@ int maximumLength(string s) {
 
 // DAY 11 (2779. Maximum Beauty of an Array After Applying Operation)==============================================================
 
+// APPROACH 1 (Sorting)
+
 // Time Complexity = O(n*logn + n)
 // Space Complexity = O(1)
 
@@ -232,6 +234,28 @@ int maximumBeauty(vector<int>& nums, int k) {
         } else {
             prev++;
         }
+    }
+
+    return maxLen;
+}
+
+// APPROACH 2 (Prefix Sum)
+
+// Time Complexity = O(2*n + M)
+// Space Complexity = O(n)
+
+int maximumBeauty(vector<int>& nums, int k) {
+    int size = nums.size();
+    int maxEle = *max_element(nums.begin(), nums.end()) + 2*k + 2;
+    int maxLen = 1, len = 0;
+    vector<int> numCnt(maxEle, 0);
+    for(int idx = 0; idx < size; idx++) {
+        numCnt[nums[idx]]++;
+        numCnt[nums[idx] + 2*k + 1]--;
+    }
+    for(int num = 0; num < maxEle; num++) {
+        len += numCnt[num];
+        maxLen = max(maxLen, len);
     }
 
     return maxLen;
