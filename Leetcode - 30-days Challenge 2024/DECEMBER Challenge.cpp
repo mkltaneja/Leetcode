@@ -260,3 +260,30 @@ int maximumBeauty(vector<int>& nums, int k) {
 
     return maxLen;
 }
+
+// DAY 12 (2558. Take Gifts From the Richest Pile)==========================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+long long pickGifts(vector<int>& gifts, int k) {
+    long long totalGifts = 0;
+    priority_queue<int> pq;
+    for(int gift : gifts) {
+        pq.push(gift);
+    }
+    while(k--) {
+        int remGifts = sqrt(pq.top());
+        pq.pop();
+
+        if(remGifts) {
+            pq.push(remGifts);
+        }
+    }
+    while(!pq.empty()) {
+        totalGifts += pq.top();
+        pq.pop();
+    }
+
+    return totalGifts;
+}
