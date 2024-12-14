@@ -323,3 +323,31 @@ long long findScore(vector<int>& nums) {
     }
     return score;
 }
+
+// DAY 14 (2762. Continuous Subarrays)=======================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool isValidSubarray(int num, unordered_map<int,int> &numCnt) {
+    int validNums = 0;
+    for(int pairNum = num - 2; pairNum <= num + 2; pairNum++) {
+        validNums += numCnt.count(pairNum);
+    }
+    return numCnt.size() == validNums;
+}
+
+long long continuousSubarrays(vector<int>& nums) {
+    unordered_map<int,int> numCnt;
+    long long totalSubarrays = 0;
+    for(int curr = 0, prev = 0; curr < nums.size(); curr++) {
+        numCnt[nums[curr]]++;
+        while(!isValidSubarray(nums[curr], numCnt)) {
+            if(--numCnt[nums[prev++]] == 0) {
+                numCnt.erase(nums[prev-1]);
+            }
+        }
+        totalSubarrays += curr - prev + 1;
+    }
+    return totalSubarrays;
+}
