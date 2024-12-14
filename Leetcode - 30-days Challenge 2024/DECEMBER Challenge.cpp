@@ -287,3 +287,39 @@ long long pickGifts(vector<int>& gifts, int k) {
 
     return totalGifts;
 }
+
+// DAY 13 (2593. Find Score of an Array After Marking All Elements)==========================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+long long findScore(vector<int>& nums) {
+    int size = nums.size();
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> minPq;
+    long long score = 0;
+    vector<bool> isMarked(size, false);
+    for(int idx = 0; idx < size; idx++) {
+        minPq.push({nums[idx], idx});
+    }
+
+    while(true) {
+        while(!minPq.empty() && isMarked[minPq.top().second]) {
+            minPq.pop();
+        }
+        if(minPq.empty()) {
+            break;
+        }
+        int num = minPq.top().first;
+        int idx = minPq.top().second;
+        score += num;
+
+        if(idx) {
+            isMarked[idx-1] = true;
+        }
+        isMarked[idx] = true;
+        if(nums.size()-idx-1) {
+            isMarked[idx+1] = true;
+        }
+    }
+    return score;
+}
