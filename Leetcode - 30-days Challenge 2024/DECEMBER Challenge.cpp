@@ -351,3 +351,41 @@ long long continuousSubarrays(vector<int>& nums) {
     }
     return totalSubarrays;
 }
+
+// DAY 15 (1792. Maximum Average Pass Ratio)===========================================================================
+
+// Time Complexity = O(n*logn + elogn)
+// Time Complexity = O(n)
+
+double maxAverageRatio(vector<vector<int>>& classes, int extraStudents) {
+    priority_queue<pair<double, pair<int,int>>> maxPq;
+    double maxAvPassRatio = 0.0;
+    for(vector<int> class_ : classes) {
+        int pass = class_[0];
+        int total = class_[1];
+        double currRatio = 1.0 * pass / total;
+        double nextRatio = 1.0 * (pass + 1) / (total + 1);
+        maxPq.push({nextRatio - currRatio, {pass, total}});
+    }
+
+    while(extraStudents--) {
+        double diff = maxPq.top().first;
+        int pass = maxPq.top().second.first;
+        int total = maxPq.top().second.second;
+        double currRatio = 1.0 * (pass + 1) / (total + 1);
+        double nextRatio = 1.0 * (pass + 2) / (total + 2);
+        maxPq.pop();
+
+        maxPq.push({nextRatio - currRatio, {pass + 1, total + 1}});
+    }
+
+    while(!maxPq.empty()) {
+        int pass = maxPq.top().second.first;
+        int total = maxPq.top().second.second;
+        maxPq.pop();
+        maxAvPassRatio += 1.0 * pass / total;
+    }
+    maxAvPassRatio /= classes.size();
+
+    return maxAvPassRatio;
+}
