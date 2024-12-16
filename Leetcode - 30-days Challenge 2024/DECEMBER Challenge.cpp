@@ -389,3 +389,28 @@ double maxAverageRatio(vector<vector<int>>& classes, int extraStudents) {
 
     return maxAvPassRatio;
 }
+
+// DAY 16 (3264. Final Array State After K Multiplication Operations I)=======================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+vector<int> getFinalState(vector<int>& nums, int k, int multiplier) {
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> minPq;
+    int size = nums.size();
+    for(int idx = 0; idx < size; idx++) {
+        minPq.push({nums[idx], idx});
+    }
+
+    while(k--) {
+        int num = minPq.top().first;
+        int idx = minPq.top().second;
+        minPq.pop();
+
+        num *= multiplier;
+        nums[idx] = num;
+        minPq.push({num, idx});
+    }
+    
+    return nums;
+}
