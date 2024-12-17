@@ -414,3 +414,45 @@ vector<int> getFinalState(vector<int>& nums, int k, int multiplier) {
     
     return nums;
 }
+
+// DAY 17 (2182. Construct String With Repeat Limit)===================================================================
+
+// Time Complexity = O(n + n*log26)
+// Space Complexity = O(n)
+
+string repeatLimitedString(string s, int repeatLimit) {
+    priority_queue<pair<char,int>> maxPq;
+    vector<int> charFreq(26, 0);
+    string repeatLimitedString = "";
+    char lastChar = '#';
+    int lastFreq = 0;
+    for(char c : s) {
+        charFreq[c-'a']++;
+    }
+    for(int idx = 0; idx < 26; idx++) {
+        if(charFreq[idx]) {
+            maxPq.push({char(idx + 'a'), charFreq[idx]});
+        }
+    }
+    while(!maxPq.empty()) {
+        int limit = repeatLimit;
+        char currChar = maxPq.top().first;
+        int currFreq = maxPq.top().second;
+        maxPq.pop();
+        while(limit-- && currFreq) {
+            repeatLimitedString += currChar;
+            currFreq--;
+        }
+        if(currFreq && !maxPq.empty()) {
+            char nextChar = maxPq.top().first;
+            int nextFreq = maxPq.top().second;
+            maxPq.pop();
+            repeatLimitedString += nextChar;
+            if(--nextFreq) {
+                maxPq.push({nextChar, nextFreq});
+            }
+            maxPq.push({currChar, currFreq});
+        }
+    }
+    return repeatLimitedString;
+}
