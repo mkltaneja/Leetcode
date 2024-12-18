@@ -456,3 +456,24 @@ string repeatLimitedString(string s, int repeatLimit) {
     }
     return repeatLimitedString;
 }
+
+// DAY 18 (1475. Final Prices With a Special Discount in a Shop)===============================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n)
+
+vector<int> finalPrices(vector<int>& prices) {
+    int size = prices.size();
+    vector<int> answer(size);
+    for(int idx1 = 0; idx1 < size; idx1++) {
+        answer[idx1] = prices[idx1];
+        int idx2 = idx1 + 1;
+        while(idx2 < size && prices[idx2] > prices[idx1]) {
+            idx2++;
+        }
+        if(idx2 < size) {
+            answer[idx1] -= prices[idx2];
+        }
+    }
+    return answer;
+}
