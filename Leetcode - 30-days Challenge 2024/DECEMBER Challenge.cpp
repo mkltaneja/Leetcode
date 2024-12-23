@@ -477,3 +477,53 @@ vector<int> finalPrices(vector<int>& prices) {
     }
     return answer;
 }
+
+
+// DAY 23 (2471. Minimum Number of Operations to Sort a Binary Tree by Level)============================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int countSwaps(vector<pair<int,int>> &nodes, vector<pair<int,int>> &sortedNodes) {
+    int swaps = 0;
+    for(int idx = 0; idx < nodes.size(); idx++) {
+        int tempIdx = idx;
+        while(nodes[tempIdx].first != sortedNodes[tempIdx].first) {
+            swap(nodes[tempIdx].first, nodes[sortedNodes[tempIdx].second].first);
+            tempIdx = sortedNodes[tempIdx].second;
+            swaps++;
+        }
+    }
+    return swaps;
+}
+
+int minimumOperations(TreeNode* root) {
+    queue<pair<TreeNode*, int>> que;
+    que.push({root, 0});
+    int minSwaps = 0;
+
+    while(!que.empty()) {
+        int size = que.size();
+        vector<pair<int,int>> nodes;
+        int childIdx = 0;
+        while(size--) {
+            TreeNode* node = que.front().first;
+            int idx = que.front().second;
+            que.pop();
+            nodes.push_back({node->val, idx});
+            if(node->left) {
+                que.push({node->left, childIdx++});
+            }
+            if(node->right) {
+                que.push({node->right, childIdx++});
+            }
+        }
+
+        vector<pair<int,int>> sortedNodes = nodes;
+        sort(sortedNodes.begin(), sortedNodes.end());
+        int swaps = countSwaps(nodes, sortedNodes);
+        minSwaps += swaps;
+    }
+
+    return minSwaps;
+}
