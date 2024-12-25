@@ -527,3 +527,36 @@ int minimumOperations(TreeNode* root) {
 
     return minSwaps;
 }
+
+// DAY 25 (515. Find Largest Value in Each Tree Row)===========================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<int> largestValues(TreeNode* root) {
+    vector<int> maxVals;
+    if(!root) {
+        return maxVals;
+    }
+    queue<TreeNode*> que;
+    que.push(root);
+
+    while(!que.empty()) {
+        int size = que.size();
+        int maxLevelVal = INT_MIN;
+        while(size--) {
+            TreeNode* node = que.front();
+            que.pop();
+
+            maxLevelVal = max(maxLevelVal, node->val);
+            if(node->left) {
+                que.push(node->left);
+            }
+            if(node->right) {
+                que.push(node->right);
+            }
+        }
+        maxVals.push_back(maxLevelVal);
+    }
+    return maxVals;
+}
