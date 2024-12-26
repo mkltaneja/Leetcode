@@ -560,3 +560,46 @@ vector<int> largestValues(TreeNode* root) {
     }
     return maxVals;
 }
+
+// DAY 26 (494. Target Sum)=========================================================================
+
+// APPROACH 1 (All subsequences) -> TLE
+
+// Time Complexity = O(2^n * n)
+// Space Complexity = O(1)
+
+int findTargetSumWays(vector<int>& nums, int target) {
+    int size = nums.size();
+    int totalExpressions = 0;
+    for(int mask = 0; mask < (1 << size); mask++) {
+        int sum = 0;
+        for(int idx = 0; idx < size; idx++) {
+            sum += nums[idx] * (((mask >> idx) & 1)? 1 : -1);
+        }
+        totalExpressions += sum == target;
+    }
+    return totalExpressions;
+}
+
+// APPROACH 2 (Target sum of the difference)
+
+// Time Complexity = O(n * d)
+// Space Complexity = O(d)
+
+int findTargetSumWays(vector<int>& nums, int target) {
+    int sum = accumulate(nums.begin(), nums.end(), 0);
+    int diff = sum - target;
+    if(diff < 0 || diff & 1) {
+        return 0;
+    }
+    diff >>= 1;
+    vector<int> cache(diff + 1, 0);
+    cache[0] = 1;
+    for(int num : nums) {
+        for(int sum = diff; sum >= num; sum--) {
+            cache[sum] += cache[sum - num];
+        }
+    }
+
+    return cache[diff];
+}
