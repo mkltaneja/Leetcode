@@ -603,3 +603,18 @@ int findTargetSumWays(vector<int>& nums, int target) {
 
     return cache[diff];
 }
+
+// DAY 27 (1014. Best Sightseeing Pair)===============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int maxScoreSightseeingPair(vector<int>& values) {
+    int currMaxVal = 0, maxScore = INT_MIN;
+    for(int idx = 0; idx < values.size(); idx++) {
+        int currVal = values[idx] - idx;
+        maxScore = max(maxScore, currVal + currMaxVal);
+        currMaxVal = max(currMaxVal, values[idx] + idx);
+    }
+    return maxScore;
+}
