@@ -618,3 +618,28 @@ int maxScoreSightseeingPair(vector<int>& values) {
     }
     return maxScore;
 }
+
+// DAY 30 (2466. Count Ways To Build Good Strings)=====================================================================
+
+// Time Complexity = O(high)
+// Space Complexity = O(high)
+
+int MOD = 1e9 + 7;
+int countGoodStrings(int low, int high, int zero, int one) {
+    vector<int> cache(high + 1, 0);
+    cache[0] = 1;
+    int totalStrings = 0;
+    for(int len = min(zero, one); len <= high; len++) {
+        if(len >= zero) {
+            cache[len] = (cache[len] % MOD + cache[len - zero] % MOD) % MOD;
+        }
+        if(len >= one) {
+            cache[len] = (cache[len] % MOD + cache[len - one] % MOD) % MOD;
+        }
+    }
+    for(int len = low; len <= high; len++) {
+        totalStrings = (totalStrings % MOD + cache[len] % MOD) % MOD;
+    }
+
+    return totalStrings;
+}
