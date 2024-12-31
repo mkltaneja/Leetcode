@@ -643,3 +643,27 @@ int countGoodStrings(int low, int high, int zero, int one) {
 
     return totalStrings;
 }
+
+// DAY 31 (983. Minimum Cost For Tickets)==============================================================================
+
+// Time Complexity = O(1)
+// Space Complexity = O(1)
+
+int mincostTickets(vector<int>& days, vector<int>& costs) {
+    int TOTAL_DAYS = 365;
+    vector<int> minCost(TOTAL_DAYS + 2, 0);
+    for(int idx = days.size()-1, day = TOTAL_DAYS; day; day--) {
+        if(idx >= 0 && days[idx] == day) {
+            int oneDayPassCost = costs[0] + (day + 1 <= TOTAL_DAYS + 1? minCost[day + 1] : 0);
+            int sevenDayPassCost = costs[1] + (day + 7 <= TOTAL_DAYS + 1? minCost[day + 7] : 0);
+            int thirtyDayPassCost = costs[2] + (day + 30 <= TOTAL_DAYS + 1? minCost[day + 30] : 0);
+
+            minCost[day] = min({oneDayPassCost, sevenDayPassCost, thirtyDayPassCost});
+            idx--;
+        }
+        else {
+            minCost[day] = minCost[day + 1];
+        }
+    }
+    return minCost[1];
+}
