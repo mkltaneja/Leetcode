@@ -22,3 +22,33 @@ int maxScore(string s) {
 
     return maxScore;
 }
+
+// DAY 2 (2559. Count Vowel Strings in Ranges)=================================================================
+
+// Time Complexity = O(n + q)
+// Space Complexity = O(n + q)
+
+bool isVowel(char c) {
+    if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'){
+        return true;
+    }
+    return false;
+}
+
+vector<int> vowelStrings(vector<string>& words, vector<vector<int>>& queries) {
+    int wsize = words.size();
+    int qsize = queries.size();
+    vector<int> prefCount(wsize, 0);
+    vector<int> ans(qsize);
+    for(int idx = 0; idx < wsize; idx++) {
+        prefCount[idx] = (isVowel(words[idx][0]) && isVowel(words[idx].back())) + (idx? prefCount[idx-1] : 0);
+    }
+
+    for(int idx = 0; idx < qsize; idx++) {
+        int left = queries[idx][0];
+        int right = queries[idx][1];
+        ans[idx] = prefCount[right] - (left? prefCount[left-1] : 0);
+    }
+
+    return ans;
+}
