@@ -52,3 +52,25 @@ vector<int> vowelStrings(vector<string>& words, vector<vector<int>>& queries) {
 
     return ans;
 }
+
+// DAY 3 (2270. Number of Ways to Split Array)==============================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int waysToSplitArray(vector<int>& nums) {
+    int size = nums.size();
+    vector<long long> prefixSum(size, 0);
+    for(int idx = 0; idx < size; idx++) {
+        prefixSum[idx] = (idx? prefixSum[idx-1] : 0) + nums[idx];
+    }
+    long long postfixSum = 0, totalSplits = 0;
+    for(int idx = size-1; idx >= 1; idx--) {
+        postfixSum += nums[idx];
+        if(postfixSum <= prefixSum[idx-1]) {
+            totalSplits++;
+        }
+    }
+
+    return totalSplits;
+}
