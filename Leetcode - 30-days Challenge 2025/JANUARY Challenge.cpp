@@ -74,3 +74,44 @@ int waysToSplitArray(vector<int>& nums) {
 
     return totalSplits;
 }
+
+// DAY 4 (1930. Unique Length-3 Palindromic Subsequences)==========================================================
+
+// Time Complexity = O(n + 26*26)
+// Space Complexity = O(n*26)
+
+int getTotalUniqueCharactersBetween(int start, int end, vector<vector<int>> &arr) {
+    int uniqueChars = 0;
+    for(int idx = 0; idx < 26; idx++) {
+        uniqueChars += (arr[end - 1][idx] - arr[start][idx]) > 0;
+    }
+    return uniqueChars;
+}
+
+int countPalindromicSubsequence(string s) {
+    int size = s.size();
+    vector<vector<int>> firstLastPos(26, vector<int>(2, -1));
+    vector<int> charMap(26, 0);
+    vector<vector<int>> prefixUniqueCount(size, vector<int>(26, 0));
+    int totalCount = 0;
+    for(int idx = 0; idx < size; idx++) {
+        if(firstLastPos[s[idx]-'a'][0] == -1) {
+            firstLastPos[s[idx]-'a'][0] = idx;
+        }
+        else {
+            firstLastPos[s[idx]-'a'][1] = idx;
+        }
+        ++charMap[s[idx]-'a'];
+        prefixUniqueCount[idx] = charMap;
+    }
+
+    for(vector<int> &pair : firstLastPos) {
+        int firstPos = pair[0];
+        int lastPos = pair[1];
+        if(lastPos != -1) {
+            totalCount += getTotalUniqueCharactersBetween(firstPos, lastPos, prefixUniqueCount);
+        }
+    }
+
+    return totalCount;
+}
