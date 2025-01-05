@@ -115,3 +115,28 @@ int countPalindromicSubsequence(string s) {
 
     return totalCount;
 }
+
+// DAY 5 (2381. Shifting Letters II)=================================================================================
+
+// Time Complexity = O(n + m)
+// Space Complexity = O(n)
+
+string shiftingLetters(string s, vector<vector<int>>& shifts) {
+    int size = s.size();
+    vector<int> netShift(size+1, 0);
+    for(vector<int> &shift : shifts) {
+        int start = shift[0];
+        int end = shift[1];
+        int dir = shift[2]? 1 : -1;
+        netShift[start] += dir;
+        netShift[end+1] += -1 * dir;
+    }
+    for(int idx = 0; idx < size; idx++) {
+        netShift[idx] += idx? netShift[idx-1] : 0;
+        netShift[idx] = (netShift[idx] % 26 + 26) % 26;
+
+        s[idx] = char((((s[idx] - 'a') + netShift[idx]) % 26) + 'a');
+    }
+
+    return s;
+}
