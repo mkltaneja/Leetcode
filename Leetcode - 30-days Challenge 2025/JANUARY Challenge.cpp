@@ -140,3 +140,26 @@ string shiftingLetters(string s, vector<vector<int>>& shifts) {
 
     return s;
 }
+
+// DAY 6 (1769. Minimum Number of Operations to Move All Balls to Each Box)====================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<int> minOperations(string boxes) {
+    int size = boxes.size();
+    int leftOnes = 0, leftJumps = 0, rightOnes = 0, rightJumps = 0;
+    vector<int> answer(size, 0);
+    for(int left = 0, right = size-1; left < size; left++, right--) {
+        answer[left] += leftJumps;
+        answer[right] += rightJumps;
+
+        leftOnes += boxes[left] == '1';
+        rightOnes += boxes[right] == '1';
+
+        leftJumps += leftOnes;
+        rightJumps += rightOnes;
+    }
+
+    return answer;
+}
