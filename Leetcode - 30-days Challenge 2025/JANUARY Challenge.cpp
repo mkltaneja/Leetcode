@@ -163,3 +163,36 @@ vector<int> minOperations(string boxes) {
 
     return answer;
 }
+
+// DAY 7 (1408. String Matching in an Array)========================================================================
+
+// Time Complexity = O()
+// Space Complexity = O(n^2*m^2)
+
+bool isSubstring(string &word1, string &word2) {
+    if(word2.size() <= word1.size()) {
+        return false;
+    }
+
+    for(int idx = 0; idx <= word2.size()-word1.size(); idx++) {
+        if(word1 == word2.substr(idx, word1.size())) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+vector<string> stringMatching(vector<string>& words) {
+    int size = words.size();
+    vector<string> ans;
+    for(int idx1 = 0; idx1 < size; idx1++) {
+        for(int idx2 = 0; idx2 < size; idx2++) {
+            if(isSubstring(words[idx1], words[idx2])) {
+                ans.push_back(words[idx1]);
+                break;
+            }
+        }
+    }
+    return ans;
+}
