@@ -196,3 +196,29 @@ vector<string> stringMatching(vector<string>& words) {
     }
     return ans;
 }
+
+// DAY 8 (3042. Count Prefix and Suffix Pairs I)==============================================================
+
+// Time Complexity = O(n^2 * m1)
+// Space Complexity = O(1)
+
+bool isPrefixAndSuffix(string &word1, string &word2) {
+    int size1 = word1.size(), size2 = word2.size();
+    if(size2 < size1) {
+        return false;
+    }
+    return word1 == word2.substr(0, size1) && word1 == word2.substr(size2-size1);
+}
+
+int countPrefixSuffixPairs(vector<string>& words) {
+    int size = words.size();
+    int pairs = 0;
+    for(int idx1 = 0; idx1 < size; idx1++) {
+        for(int idx2 = idx1+1; idx2 < size; idx2++) {
+            if(isPrefixAndSuffix(words[idx1], words[idx2])) {
+                pairs++;
+            }
+        }
+    }
+    return pairs;
+}
