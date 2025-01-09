@@ -222,3 +222,16 @@ int countPrefixSuffixPairs(vector<string>& words) {
     }
     return pairs;
 }
+
+// DAY 9 (2185. Counting Words With a Given Prefix)===========================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(1)
+
+int prefixCount(vector<string>& words, string pref) {
+    int totalWords = 0;
+    for(string word : words) {
+        totalWords += word.size() >= pref.size() && word.substr(0, pref.size()) == pref;
+    }
+    return totalWords;
+}
