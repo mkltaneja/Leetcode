@@ -235,3 +235,36 @@ int prefixCount(vector<string>& words, string pref) {
     }
     return totalWords;
 }
+
+// DAY 10 (916. Word Subsets)================================================================================
+
+// Time Complexity = O(n*m*26)
+// Space Complexity = O(26)
+
+vector<string> wordSubsets(vector<string>& words1, vector<string>& words2) {
+    vector<string> ans;
+    vector<int> freqMap2(26, 0);
+    for(string word : words2) {
+        vector<int> tempFreq(26, 0);
+        for(char c : word) {
+            freqMap2[c-'a'] = max(freqMap2[c-'a'], ++tempFreq[c-'a']);
+        }
+    }
+    for(string word : words1) {
+        vector<int> freqMap1(26, 0);
+        bool isUniversal = true;
+        for(char c : word) {
+            freqMap1[c-'a']++;
+        }
+        for(int c = 0; c < 26; c++) {
+            if(freqMap1[c] < freqMap2[c]) {
+                isUniversal = false;
+                break;
+            }
+        }
+        if(isUniversal) {
+            ans.push_back(word);
+        }
+    }
+    return ans;
+}
