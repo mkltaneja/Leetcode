@@ -268,3 +268,25 @@ vector<string> wordSubsets(vector<string>& words1, vector<string>& words2) {
     }
     return ans;
 }
+
+// DAY 11 (1400. Construct K Palindrome Strings)==============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+bool canConstruct(string s, int k) {
+    int size = s.size();
+    if(size < k) {
+        return false;
+    }
+    int freqMask = 0;
+    for(char c : s) {
+        freqMask ^= (1 << (c-'a'));
+    }
+
+    int oddChars = __builtin_popcount(freqMask);
+    if(oddChars > k) {
+        return false;
+    }
+    return true;
+}
