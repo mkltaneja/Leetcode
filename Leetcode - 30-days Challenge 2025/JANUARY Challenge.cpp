@@ -290,3 +290,39 @@ bool canConstruct(string s, int k) {
     }
     return true;
 }
+
+// DAY 12 (2116. Check if a Parentheses String Can Be Valid)=====================================================================
+
+// Time Complexioty = O(n)
+// Space Complexioty = O(1)
+
+bool canBeValid(string s, string locked) {
+    if(s.size() & 1) {
+        return false;
+    }
+    int open = 0, close = 0;
+    for(int idx = 0; idx < s.size(); idx++) {
+        if(locked[idx] == '0' || s[idx] == '(') {
+            open++;
+        }
+        else if(open) {
+            open--;
+        }
+        else {
+            return false;
+        }
+    }
+    for(int idx = s.size()-1; idx >= 0; idx--) {
+        if(locked[idx] == '0' || s[idx] == ')') {
+            close++;
+        }
+        else if(close) {
+            close--;
+        }
+        else {
+            return false;
+        }
+    }
+
+    return true;
+}
