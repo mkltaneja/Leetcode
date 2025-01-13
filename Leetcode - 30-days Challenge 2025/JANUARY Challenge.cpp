@@ -326,3 +326,22 @@ bool canBeValid(string s, string locked) {
 
     return true;
 }
+
+// DAY 13 (3223. Minimum Length of String After Operations)===================================================================================
+
+// Time Complexity = O(n + 26)
+// Space Complexity = O(26)
+
+int minimumLength(string s) {
+    vector<int> freq(26, 0);
+    int minLen = 0;
+    for(char c : s) {
+        freq[c-'a']++;
+    }
+
+    for(int c = 0; c < 26; c++) {
+        minLen += freq[c] == 0? 0 : ((freq[c] & 1)? 1 : 2);
+    }
+
+    return minLen;
+}
