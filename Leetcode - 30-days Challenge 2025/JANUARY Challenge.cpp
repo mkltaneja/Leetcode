@@ -345,3 +345,30 @@ int minimumLength(string s) {
 
     return minLen;
 }
+
+// DAY 15 (2657. Find the Prefix Common Array of Two Arrays)=============================================================================
+
+// Time Complexity = O(n*logx)
+// Space Complexity = O(n)
+
+int countSetBits(long long mask) {
+    int setBits = 0;
+    while(mask) {
+        mask &= mask - 1;
+        setBits++;
+    }
+    return setBits;
+}
+
+vector<int> findThePrefixCommonArray(vector<int>& A, vector<int>& B) {
+    unsigned long long maska = 0, maskb = 0;
+    vector<int> perfixCommonArr(A.size());
+    for(int idx = 0; idx < A.size(); idx++) {
+        maska |= (1ull << A[idx]);
+        maskb |= (1ull << B[idx]);
+        unsigned long long commonMask = maska & maskb;
+        int commonCount = countSetBits(commonMask);
+        perfixCommonArr[idx] = commonCount;
+    }
+    return perfixCommonArr;
+}
