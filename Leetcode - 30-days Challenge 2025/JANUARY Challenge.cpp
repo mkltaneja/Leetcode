@@ -372,3 +372,26 @@ vector<int> findThePrefixCommonArray(vector<int>& A, vector<int>& B) {
     }
     return perfixCommonArr;
 }
+
+// DAY 15 (2429. Minimize XOR)==============================================================================
+
+// Time Complexity = O(1)
+// Space Complexity = O(1)
+
+int minimizeXor(int num1, int num2) {
+    int setBitsIn2 = __builtin_popcount(num2);
+    int x = 0;
+    for(int bit = 31; bit >= 0 && setBitsIn2; bit--) {
+        if(num1 & (1 << bit)) {
+            x ^= (1 << bit);
+            setBitsIn2--;
+        }
+    }
+    for(int bit = 0; bit < 32 && setBitsIn2; bit++) {
+        if(!(x & (1 << bit))) {
+            x |= (1 << bit);
+            setBitsIn2--;
+        }
+    }
+    return x;
+}
