@@ -395,3 +395,33 @@ int minimizeXor(int num1, int num2) {
     }
     return x;
 }
+
+// DAY 16 (2425. Bitwise XOR of All Pairings)=================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int findAllXor(vector<int> &nums) {
+    int xorAns = 0;
+    for(int num : nums) {
+        xorAns ^= num;
+    }
+    return xorAns;
+}
+
+int xorAllNums(vector<int>& nums1, vector<int>& nums2) {
+    int size1 = nums1.size(), size2 = nums2.size();
+    int xor1 = findAllXor(nums1);
+    int xor2 = findAllXor(nums2);
+
+    if((size1 & 1) && (size2 & 1)) {
+        return xor1 ^ xor2;
+    }
+    if(size1 & 1) {
+        return xor2;
+    }
+    if(size2 & 1) {
+        return xor1;
+    }
+    return 0;
+}
