@@ -425,3 +425,16 @@ int xorAllNums(vector<int>& nums1, vector<int>& nums2) {
     }
     return 0;
 }
+
+// DAY 17 (2683. Neighboring Bitwise XOR)=====================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+bool doesValidArrayExist(vector<int>& derived) {
+    int currNum = 0;
+    for(int idx = 0; idx < derived.size(); idx++) {
+        currNum ^= derived[idx];
+    }
+    return currNum == 0;
+}
