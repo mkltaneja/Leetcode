@@ -438,3 +438,42 @@ bool doesValidArrayExist(vector<int>& derived) {
     }
     return currNum == 0;
 }
+
+// DAY 18 (1368. Minimum Cost to Make at Least One Valid Path in a Grid)=======================================================================
+
+// Time Complexity = O(n*m * log(n*m))
+// Space Complexity = O(n*m)
+
+int minCost(vector<vector<int>>& grid) {
+    int rows = grid.size(), cols = grid[0].size();
+    priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> minPq;
+    vector<vector<int>> minCost(rows, vector<int>(cols, rows*cols));
+    int dir[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    minPq.push({0, 0, 0});
+    minCost[0][0] = 0;
+
+    while(!minPq.empty()) {
+        int row = minPq.top()[0];
+        int col = minPq.top()[1];
+        int costsf = minPq.top()[2];
+        minPq.pop();
+
+        if(row == rows-1 && col == cols-1) {
+            return costsf;
+        }
+
+        for(int d = 0; d < 4; d++) {
+            int nrow = row + dir[d][0];
+            int ncol = col + dir[d][1];
+            int ncost = costsf + (grid[row][col] != (d+1));
+
+            if(nrow == -1 || ncol == -1 || nrow == rows || ncol == cols || minCost[nrow][ncol] <= ncost) {
+                continue;
+            }
+
+            minPq.push({nrow, ncol, ncost});
+            minCost[nrow][ncol] = ncost;
+        }
+    }
+    return -1;
+}
