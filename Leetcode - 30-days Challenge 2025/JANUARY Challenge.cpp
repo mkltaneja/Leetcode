@@ -477,3 +477,54 @@ int minCost(vector<vector<int>>& grid) {
     }
     return -1;
 }
+
+// DAY 19 (407. Trapping Rain Water II)==============================================================================
+
+// Time Complexity = O(n*m log(n*m))
+// Space Complexity = O(n*m)
+
+int trapRainWater(vector<vector<int>>& heightMap) {
+    int rows = heightMap.size(), cols = heightMap[0].size();
+    priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> minPq;
+    vector<vector<bool>> isVis(rows, vector<bool>(cols, false));
+    int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    int waterTrapped = 0;
+
+    for(int row = 0; row < rows; row++) {
+        minPq.push({heightMap[row][0], row, 0});
+        minPq.push({heightMap[row][cols-1], row, cols-1});
+        isVis[row][0] = true;
+        isVis[row][cols-1] = true;
+    }
+    for(int col = 0; col < cols; col++) {
+        minPq.push({heightMap[0][col], 0, col});
+        minPq.push({heightMap[rows-1][col], rows-1, col});
+        isVis[0][col] = true;
+        isVis[rows-1][col] = true;
+    }
+
+    while(!minPq.empty()) {
+        int currHeight = minPq.top()[0];
+        int currRow = minPq.top()[1];
+        int currCol = minPq.top()[2];
+        minPq.pop();
+
+        for(int d = 0; d < 4; d++) {
+            int nextRow = currRow + dir[d][0];
+            int nextCol = currCol + dir[d][1];
+            if(nextRow == -1 || nextRow == rows || nextCol == -1 || nextCol == cols || isVis[nextRow][nextCol]) {
+                continue;
+            }
+
+            int nextHeight = heightMap[nextRow][nextCol];
+            if(nextHeight < currHeight) {
+                waterTrapped += currHeight - nextHeight;
+                nextHeight = currHeight;
+            }
+            minPq.push({nextHeight, nextRow, nextCol});
+            isVis[nextRow][nextCol] = true;
+        }
+    }
+
+    return waterTrapped;
+}
