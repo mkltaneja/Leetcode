@@ -528,3 +528,31 @@ int trapRainWater(vector<vector<int>>& heightMap) {
 
     return waterTrapped;
 }
+
+// DAY 20 (2661. First Completely Painted Row or Column)=================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*m)
+
+int firstCompleteIndex(vector<int>& arr, vector<vector<int>>& mat) {
+    int rows = mat.size(), cols = mat[0].size();
+    vector<int> rowCount(cols, 0);
+    vector<int> colCount(rows, 0);
+    vector<pair<int,int>> numPos(rows*cols+1, {-1, -1});
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            numPos[mat[row][col]] = {row, col};
+        }
+    }
+
+    for(int i = 0; i < arr.size(); i++) {
+        int row = numPos[arr[i]].first;
+        int col = numPos[arr[i]].second;
+
+        if(++rowCount[col] == rows || ++colCount[row] == cols) {
+            return i;
+        }
+    }
+
+    return -1;
+}
