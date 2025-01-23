@@ -556,3 +556,40 @@ int firstCompleteIndex(vector<int>& arr, vector<vector<int>>& mat) {
 
     return -1;
 }
+
+// DAY 23 (1267. Count Servers that Communicate)==============================================================================
+
+// Time Complexity = O(n * m * (n + m))
+// Space Complexity = O(n * m)
+
+int countServersDFS(int startRow, int startCol, int rows, int cols, vector<vector<int>> &grid, vector<vector<bool>> &vis) {
+    int connections = 0;
+    vis[startRow][startCol] = true;
+    for(int row = 0; row < rows; row++) {
+        if(grid[row][startCol] && !vis[row][startCol]) {
+            connections += countServersDFS(row, startCol, rows, cols, grid, vis);
+        }
+    }
+    for(int col = 0; col < cols; col++) {
+        if(grid[startRow][col] && !vis[startRow][col]) {
+            connections += countServersDFS(startRow, col, rows, cols, grid, vis);
+        }
+    }
+
+    return connections + 1;
+}
+
+int countServers(vector<vector<int>>& grid) {
+    int rows = grid.size(), cols = grid[0].size();
+    vector<vector<bool>> vis(rows, vector<bool>(cols, false));
+    int connections = 0;
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            if(grid[row][col] && !vis[row][col]) {
+                int servers = countServersDFS(row, col, rows, cols, grid, vis);
+                connections += servers > 1? servers : 0;
+            }
+        }
+    }
+    return connections;
+}
