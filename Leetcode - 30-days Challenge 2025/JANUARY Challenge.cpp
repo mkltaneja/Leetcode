@@ -593,3 +593,45 @@ int countServers(vector<vector<int>>& grid) {
     }
     return connections;
 }
+
+// DAY 24 (802. Find Eventual Safe States)===========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool eventualSafeNodesDFS(int node, vector<bool> &isVis, vector<bool> &isSafe, vector<vector<int>> &graph) {
+    if(isSafe[node]) {
+        return true;
+    }
+    if(isVis[node]) {
+        return false;
+    }
+    isVis[node] = true;
+
+    bool safeFlag = true;
+    for(int nextNode : graph[node]) {
+        safeFlag &= eventualSafeNodesDFS(nextNode, isVis, isSafe, graph);
+    }
+    if(safeFlag) {
+        isSafe[node] = true;
+        return true;
+    }
+    return false;
+}
+
+vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+    int nodes = graph.size();
+    vector<bool> isVis(nodes, false), isSafe(nodes, false);
+    vector<int> safeNodes;
+    for(int node = 0; node < nodes; node++) {
+        if(!isVis[node]) {
+            eventualSafeNodesDFS(node, isVis, isSafe, graph);
+        }
+    }
+    for(int node = 0; node < nodes; node++) {
+        if(isSafe[node]) {
+            safeNodes.push_back(node);
+        }
+    }
+    return safeNodes;
+}
