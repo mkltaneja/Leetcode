@@ -635,3 +635,35 @@ vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
     }
     return safeNodes;
 }
+
+// DAY 25 (2948. Make Lexicographically Smallest Array by Swapping Elements)=================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+vector<int> lexicographicallySmallestArray(vector<int>& nums, int limit) {
+    int size = nums.size();
+    vector<int> res(size);
+    vector<pair<int,int>> numIdx(size);
+    for(int idx = 0; idx < size; idx++) {
+        numIdx[idx] = {nums[idx], idx};
+    }
+    sort(numIdx.begin(), numIdx.end());
+
+    for(int idx = 0; idx < size; ) {
+        int tempIdx = idx;
+        vector<int> sortedIdx;
+        sortedIdx.push_back(numIdx[tempIdx++].second);
+        while(tempIdx < size && numIdx[tempIdx].first - numIdx[tempIdx-1].first <= limit) {
+            sortedIdx.push_back(numIdx[tempIdx++].second);
+        }
+        sort(sortedIdx.begin(), sortedIdx.end());
+        for(int itr = 0; itr < sortedIdx.size(); itr++) {
+            res[sortedIdx[itr]] = numIdx[idx + itr].first;
+        }
+        
+        idx = tempIdx;
+    }
+
+    return res;
+}
