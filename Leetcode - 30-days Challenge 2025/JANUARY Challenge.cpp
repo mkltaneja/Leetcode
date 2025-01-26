@@ -667,3 +667,72 @@ vector<int> lexicographicallySmallestArray(vector<int>& nums, int limit) {
 
     return res;
 }
+
+// DAY 26 (2127. Maximum Employees to Be Invited to a Meeting)====================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int getChainLen(int node, vector<vector<int>> &graph, vector<bool> &isVis) {
+    isVis[node] = true;
+    int len = 0;
+    for(int nextNode : graph[node]) {
+        len = max(len, getChainLen(nextNode, graph, isVis));
+    }
+    return len + 1;
+}
+
+int getTotalChainLen(int n, vector<int> &favorite, vector<bool> &isVis) {
+    vector<vector<int>> favoriteRev(n);
+    int totalChainLen = 0;
+    for(int node = 0; node < n; node++) {
+        if(favorite[favorite[node]] != node) {
+            favoriteRev[favorite[node]].push_back(node);
+        }
+    }
+    
+    for(int node = 0; node < n; node++) {
+        if(isVis[node]) {
+            continue;
+        }
+        if(favorite[favorite[node]] == node) {
+            isVis[node] = true;
+            isVis[favorite[node]] = true;
+            int chainLenWithNode1 = getChainLen(node, favoriteRev, isVis);
+            int chainLenWithNode2 = getChainLen(favorite[node], favoriteRev, isVis);
+            totalChainLen += chainLenWithNode1 + chainLenWithNode2;
+        }
+    }
+
+    return totalChainLen;
+}
+
+int getMaxCycleLen(int n, vector<int> &favorite, vector<bool> &isVis) {
+    vector<pair<int,int>> tailLen(n, {-1, -1}); // {length, discoveryTime}
+    int maxCycleLen = 0, discoveryTime = 0;
+    for(int node = 0; node < n; node++) {
+        if(isVis[node]) {
+            continue;
+        }
+        int cycleLen = 0, tempNode = node;
+        while(tailLen[tempNode].first == -1) {
+            tailLen[tempNode].first = cycleLen++;
+            tailLen[tempNode].second = discoveryTime;
+            isVis[tempNode] = true;
+            tempNode = favorite[tempNode];
+        }
+        cycleLen -= tailLen[tempNode].second == discoveryTime? tailLen[tempNode].first : cycleLen;
+        discoveryTime++;
+        maxCycleLen = max(maxCycleLen, cycleLen);
+    }
+    return maxCycleLen;
+}
+
+int maximumInvitations(vector<int>& favorite) {
+    int n = favorite.size();
+    vector<bool> isVis(n, false);
+    int totalChainLen = getTotalChainLen(n, favorite, isVis);
+    int maxCycleLen = getMaxCycleLen(n, favorite, isVis);
+
+    return max(totalChainLen, maxCycleLen);
+}
