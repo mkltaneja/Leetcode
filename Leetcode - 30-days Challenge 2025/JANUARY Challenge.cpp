@@ -736,3 +736,36 @@ int maximumInvitations(vector<int>& favorite) {
 
     return max(totalChainLen, maxCycleLen);
 }
+
+// DAY 27 (1462. Course Schedule IV)===========================================================================
+
+// Time Complexity = O(n^3 + q)
+// Space Complexity = O(n^2 + q)
+
+void reachReachables(int parentCourse, int course, vector<vector<int>> &graph, vector<vector<bool>> &isReachable) {
+    if(isReachable[parentCourse][course]) {
+        return;
+    }
+    isReachable[parentCourse][course] = true;
+    for(int nextCourse : graph[course]) {
+        reachReachables(parentCourse, nextCourse, graph, isReachable);
+    }
+}
+
+vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+    vector<vector<bool>> isReachable(numCourses, vector<bool>(numCourses, false));
+    vector<vector<int>> graph(numCourses);
+    vector<bool> ans;
+    for(vector<int> &prerequisite : prerequisites) {
+        graph[prerequisite[1]].push_back(prerequisite[0]);
+    }
+    for(int course = 0; course < numCourses; course++) {
+        reachReachables(course, course, graph, isReachable);
+    }
+
+    for(vector<int> &query : queries) {
+        ans.push_back(isReachable[query[1]][query[0]]);
+    }
+
+    return ans;
+}
