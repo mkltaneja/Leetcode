@@ -769,3 +769,32 @@ vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisi
 
     return ans;
 }
+
+// DAY 28 (2658. Maximum Number of Fish in a Grid)======================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(1)
+
+int catchAllFishes(int row, int col, int rows, int cols, vector<vector<int>> &grid) {
+    if(row == -1 || col == -1 || row == rows || col == cols || grid[row][col] == 0) {
+        return 0;
+    }
+    int fishes = grid[row][col];
+    grid[row][col] = 0;
+
+    return fishes + catchAllFishes(row + 1, col, rows, cols, grid)
+        + catchAllFishes(row, col + 1, rows, cols, grid)
+        + catchAllFishes(row - 1, col, rows, cols, grid)
+        + catchAllFishes(row, col - 1, rows, cols, grid);
+}
+
+int findMaxFish(vector<vector<int>>& grid) {
+    int rows = grid.size(), cols = grid[0].size();
+    int maxFishes = 0;
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            maxFishes = max(maxFishes, catchAllFishes(row, col, rows, cols, grid));
+        }
+    }
+    return maxFishes;
+}
