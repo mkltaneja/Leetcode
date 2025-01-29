@@ -798,3 +798,52 @@ int findMaxFish(vector<vector<int>>& grid) {
     }
     return maxFishes;
 }
+
+// DAY 29 (684. Redundant Connection)===================================================================================
+
+// Time Complexity = O(E)
+// Space Complexity = O(E)
+
+class DSU {
+    public:
+    int size;
+    vector<int> parSize, par;
+    DSU(int size) {
+        this->size = size;
+        parSize.assign(size, 1);
+        par.resize(size);
+        for(int node = 0; node < size; node++) {
+            par[node] = node;
+        }
+    }
+    int findPar(int node) {
+        return par[node] = (par[node] == node)? node : findPar(par[node]);
+    }
+
+    bool canMergeThenMergeNodes(int node1, int node2) {
+        int par1 = findPar(node1);
+        int par2 = findPar(node2);
+        if(par1 == par2) {
+            return false;
+        }
+
+        if(parSize[par2] >= parSize[par1]) {
+            swap(par1, par2);
+        }
+        parSize[par1] += parSize[par2];
+        par[par2] = par1;
+
+        return true;
+    }
+};
+
+vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+    int totalEdges = edges.size();
+    DSU dsu(totalEdges+1);
+    for(vector<int> &edge : edges) {
+        if(!dsu.canMergeThenMergeNodes(edge[0], edge[1])) {
+            return edge;
+        }
+    }
+    return {-1, -1};
+}
