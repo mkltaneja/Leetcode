@@ -847,3 +847,89 @@ vector<int> findRedundantConnection(vector<vector<int>>& edges) {
     }
     return {-1, -1};
 }
+
+// DAY 30 (2493. Divide Nodes Into the Maximum Number of Groups)============================================================================
+
+// Time Complexity = O(V * (V+E))
+// Space Complexity = O(V + E)
+
+bool isBipartite(int src, int currColor, vector<int> &color, vector<vector<int>> &graph) {
+    if(color[src] != -1) {
+        return color[src] == currColor;
+    }
+    color[src] = currColor;
+    for(int dest : graph[src]) {
+        if(!isBipartite(dest, currColor ^ 1, color, graph)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int getMaximumDepthWithNode(int node, int n, vector<vector<int>> &graph) {
+    queue<int> que;
+    vector<bool> isVisited(n, false);
+    int depth = 0;
+    que.push(node);
+    isVisited[node] = true;
+    while(!que.empty()) {
+        int size = que.size();
+        while(size--) {
+            int src = que.front();
+            que.pop();
+
+            for(int dest : graph[src]) {
+                if(!isVisited[dest]) {
+                    isVisited[dest] = true;
+                    que.push(dest);
+                }
+            }
+        }
+        depth++;
+    }
+    return depth;
+}
+
+int getMaximumGroupsWithComponent(int src, vector<bool> &isVisited, vector<int> &depth, vector<vector<int>> &graph) {
+    int maxGroups = depth[src];
+    isVisited[src] = true;
+    for(int dest : graph[src]) {
+        if(!isVisited[dest]) {
+            maxGroups = max(maxGroups, getMaximumGroupsWithComponent(dest, isVisited, depth, graph));
+        }
+    }
+    return maxGroups;
+}
+
+int magnificentSets(int n, vector<vector<int>>& edges) {
+    vector<vector<int>> graph(n);
+    vector<int> color(n, -1), depth(n, 0);
+    vector<bool> isVisited(n, false);
+    int maxGroups = 0;
+    for(vector<int> &edge : edges) {
+        graph[edge[0]-1].push_back(edge[1]-1);
+        graph[edge[1]-1].push_back(edge[0]-1);
+    }
+
+    for(int node = 0; node < n; node++) {
+        if(color[node] != -1) {
+            continue;
+        }
+        if(!isBipartite(node, 0, color, graph)) {
+            return -1;
+        }
+    }
+
+    for(int node = 0; node < n; node++) {
+        depth[node] = getMaximumDepthWithNode(node, n, graph);
+    }
+
+    for(int node = 0; node < n; node++) {
+        if(isVisited[node]) {
+            continue;
+        }
+        maxGroups += getMaximumGroupsWithComponent(node, isVisited, depth, graph);
+    }
+
+    return maxGroups;
+}
