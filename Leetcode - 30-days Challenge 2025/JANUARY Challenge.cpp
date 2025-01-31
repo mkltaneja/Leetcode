@@ -933,3 +933,110 @@ int magnificentSets(int n, vector<vector<int>>& edges) {
 
     return maxGroups;
 }
+
+// DAY 31 (827. Making A Large Island)=============================================================================
+
+// Time Complexity = O(n * m)
+// Space Complexity = O(n * m)
+
+class DSU {
+    public:
+    int size;
+    vector<int> par, parSize;
+    DSU(int size) {
+        this->size = size;
+        this->par.resize(size);
+        this->parSize.assign(size, 1);
+        for(int node = 0; node < size; node++) {
+            this->par[node] = node;
+        }
+    }
+
+    int getParSize(int node) {
+        return parSize[node];
+    }
+
+    int findPar(int node) {
+        return par[node] = par[node] == node? node : findPar(par[node]);
+    }
+
+    void merge(int node1, int node2) {
+        int par1 = findPar(node1);
+        int par2 = findPar(node2);
+        if(par1 == par2) {
+            return;
+        }
+
+        if(parSize[par1] < parSize[par2]) {
+            swap(par1, par2);
+        }
+
+        par[par2] = par1;
+        parSize[par1] += parSize[par2];
+    }
+};
+
+void visitIsland(int parentNode, int row, int col, int rows, int cols, vector<vector<bool>> &isVis, vector<vector<int>> &grid, DSU &dsu) {
+    if(row == -1 || col == -1 || row == rows || col == cols || isVis[row][col] || grid[row][col] == 0) {
+        return;
+    }
+
+    int childNode = row * cols + col;
+    dsu.merge(parentNode, childNode);
+    isVis[row][col] = true;
+    visitIsland(parentNode, row + 1, col, rows, cols, isVis, grid, dsu);
+    visitIsland(parentNode, row, col + 1, rows, cols, isVis, grid, dsu);
+    visitIsland(parentNode, row - 1, col, rows, cols, isVis, grid, dsu);
+    visitIsland(parentNode, row, col - 1, rows, cols, isVis, grid, dsu);
+}
+
+int getNewIslandCount(int row, int col, int rows, int cols, vector<vector<int>> &grid, DSU &dsu) {
+    unordered_set<int> pars;
+    int totalIslandCount = 1;
+    int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+    for(int d = 0; d < 4; d++) {
+        int nrow = row + dir[d][0];
+        int ncol = col + dir[d][1];
+        if(nrow == -1 || nrow == rows || ncol == -1 || ncol == cols || grid[nrow][ncol] == 0){
+            continue;
+        }
+        int node = nrow * rows + ncol;
+        pars.insert(dsu.findPar(node));
+    }
+    for(int par : pars) {
+        totalIslandCount += dsu.getParSize(par);
+    }
+
+    return totalIslandCount;
+}
+
+int largestIsland(vector<vector<int>>& grid) {
+    int rows = grid.size(), cols = grid[0].size();
+    DSU dsu(rows * cols);
+    int maxIsland = 0;
+    vector<vector<bool>> isVis(rows, vector<bool>(cols, false));
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            if(grid[row][col] == 1 && !isVis[row][col]) {
+                int parent = row * cols + col;
+                visitIsland(parent, row, col, rows, cols, isVis, grid, dsu);
+            }
+        }
+    }
+
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            if(grid[row][col] == 0) {
+                int newIslandCount = getNewIslandCount(row, col, rows, cols, grid, dsu);
+                maxIsland = max(newIslandCount, maxIsland);
+            }
+            else {
+                int node = row * cols + col;
+                maxIsland = max(dsu.getParSize(node), maxIsland);
+            }
+        }
+    }
+
+    return maxIsland;
+}
