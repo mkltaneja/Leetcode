@@ -557,6 +557,28 @@ int firstCompleteIndex(vector<int>& arr, vector<vector<int>>& mat) {
     return -1;
 }
 
+// DAY 21 (2017. Grid Game)===================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+#define ll long long
+long long gridGame(vector<vector<int>>& grid) {
+    if(grid.empty()) {
+        return 0ll;
+    }
+    int n = grid[0].size();
+    ll row1sum = accumulate(grid[0].begin(), grid[0].end(), 0ll);
+    ll row2sum = 0;
+    ll robot2points = LLONG_MAX;
+    for(int col = 0; col < n; col++) {
+        row1sum -= grid[0][col];
+        robot2points = min(robot2points, max(row1sum, row2sum));
+        row2sum += grid[1][col];
+    }
+    return robot2points;
+}
+
 // DAY 23 (1267. Count Servers that Communicate)==============================================================================
 
 // Time Complexity = O(n * m * (n + m))
