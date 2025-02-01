@@ -579,6 +579,47 @@ long long gridGame(vector<vector<int>>& grid) {
     return robot2points;
 }
 
+// DAY 22 (1765. Map of Highest Peak)============================================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n*m)
+
+vector<vector<int>> highestPeak(vector<vector<int>>& isWater) {
+    int rows = isWater.size(), cols = isWater[0].size();
+    int currHeight = 1;
+    queue<vector<int>> que;
+    vector<vector<int>> buildingHeight(rows, vector<int>(cols, -1));
+    int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            if(isWater[row][col]) {
+                que.push({row, col});
+                buildingHeight[row][col] = 0;
+            }
+        }
+    }
+
+    while(!que.empty()) {
+        int size = que.size();
+        while(size--) {
+            int row = que.front()[0];
+            int col = que.front()[1];
+            que.pop();
+            for(int d = 0; d < 4; d++) {
+                int nrow = row + dir[d][0];
+                int ncol = col + dir[d][1];
+                if(nrow == -1 || ncol == -1 || nrow == rows || ncol == cols || buildingHeight[nrow][ncol] != -1) {
+                    continue;
+                }
+                que.push({nrow, ncol});
+                buildingHeight[nrow][ncol] = currHeight;
+            }
+        }
+        currHeight++;
+    }
+    return buildingHeight;
+}
+
 // DAY 23 (1267. Count Servers that Communicate)==============================================================================
 
 // Time Complexity = O(n * m * (n + m))
