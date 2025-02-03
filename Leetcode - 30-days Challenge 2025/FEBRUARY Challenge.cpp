@@ -28,3 +28,28 @@ bool check(vector<int>& nums) {
     }
     return partitionCount < 2;
 }
+
+// DAY 3 (3105. Longest Strictly Increasing or Strictly Decreasing Subarray)==============================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int largestIncreasingOrDecreasingSubarray(vector<int> &nums, int size, bool checkForIncreasing) {
+    int largestSubarray = 0;
+    for(int curr = 0; curr < size; ) {
+        int forw = curr + 1;
+        while(forw < size && (checkForIncreasing? nums[forw] > nums[forw-1] : nums[forw] < nums[forw-1])) {
+            forw++;
+        }
+        largestSubarray = max(largestSubarray, forw - curr);
+        curr = forw;
+    }
+    return largestSubarray;
+}
+
+int longestMonotonicSubarray(vector<int>& nums) {
+    int size = nums.size();
+    int largestIncreasingSubarray = largestIncreasingOrDecreasingSubarray(nums, size, true);
+    int largestDecreasingSubarray = largestIncreasingOrDecreasingSubarray(nums, size, false);
+    return max(largestIncreasingSubarray, largestDecreasingSubarray);
+}
