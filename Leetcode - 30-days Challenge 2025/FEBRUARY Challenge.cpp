@@ -53,3 +53,23 @@ int longestMonotonicSubarray(vector<int>& nums) {
     int largestDecreasingSubarray = largestIncreasingOrDecreasingSubarray(nums, size, false);
     return max(largestIncreasingSubarray, largestDecreasingSubarray);
 }
+
+// DAY 4 (1800. Maximum Ascending Subarray Sum)========================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int maxAscendingSum(vector<int>& nums) {
+    int size = nums.size();
+    int maxSum = 0;
+    for(int curr = 0; curr < size; ) {
+        int forw = curr + 1;
+        int currSum = nums[curr];
+        while(forw < size && nums[forw] > nums[forw-1]) {
+            currSum += nums[forw++];
+        }
+        maxSum = max(maxSum, currSum);
+        curr = forw;
+    }
+    return maxSum;
+}
