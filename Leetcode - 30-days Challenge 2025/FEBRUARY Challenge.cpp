@@ -73,3 +73,33 @@ int maxAscendingSum(vector<int>& nums) {
     }
     return maxSum;
 }
+
+// DAY 5 (1790. Check if One String Swap Can Make Strings Equal)==================================================================
+
+// time Complexity = O(n)
+// Space Complexity = O(1)
+
+bool areAlmostEqual(string s1, string s2) {
+    int invalidIdx1 = -1, invalidIdx2 = -1;
+    for(int idx = 0; idx < s1.size(); idx++) {
+        if(s1[idx] != s2[idx]) {
+            if(invalidIdx1 == -1) {
+                invalidIdx1 = idx;
+            }
+            else if(invalidIdx2 == -1) {
+                invalidIdx2 = idx;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    if(invalidIdx1 != -1) {
+        if(invalidIdx2 == -1) {
+            return false;
+        }
+        swap(s1[invalidIdx1], s1[invalidIdx2]);
+    }
+
+    return s1 == s2;
+}
