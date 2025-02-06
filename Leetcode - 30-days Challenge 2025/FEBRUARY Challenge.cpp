@@ -103,3 +103,25 @@ bool areAlmostEqual(string s1, string s2) {
 
     return s1 == s2;
 }
+
+// DAY 6 (1726. Tuple with Same Product)==============================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+int tupleSameProduct(vector<int>& nums) {
+    int tuples = 0;
+    int size = nums.size();
+    unordered_map<int,int> prodCount;
+    for(int idx1 = 0; idx1 < size; idx1++) {
+        for(int idx2 = idx1+1; idx2 < size; idx2++) {
+            int prod = nums[idx1] * nums[idx2];
+            prodCount[prod]++;
+        }
+    }
+    for(auto pc : prodCount) {
+        int pairs = pc.second;
+        tuples += pairs * (pairs - 1) / 2; // nC2
+    }
+    return 8 * tuples;
+}
