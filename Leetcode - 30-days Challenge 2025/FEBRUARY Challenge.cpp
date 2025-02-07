@@ -125,3 +125,25 @@ int tupleSameProduct(vector<int>& nums) {
     }
     return 8 * tuples;
 }
+
+// DAY 7 (3160. Find the Number of Distinct Colors Among the Balls)==========================================================
+
+// Time Complexity = O(q)
+// Space Complexity = O(q)
+
+vector<int> queryResults(int limit, vector<vector<int>>& queries) {
+    unordered_map<int,int> color;
+    vector<int> ans;
+    unordered_map<int,int> colorCnt;
+    for(vector<int> &query : queries) {
+        int currentColor = color[query[0]];
+        int newColor = query[1];
+        if(currentColor && --colorCnt[currentColor] == 0) {
+            colorCnt.erase(currentColor);
+        }
+        colorCnt[newColor]++;
+        color[query[0]] = newColor;
+        ans.push_back(colorCnt.size());
+    }
+    return ans;
+}
