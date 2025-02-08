@@ -147,3 +147,72 @@ vector<int> queryResults(int limit, vector<vector<int>>& queries) {
     }
     return ans;
 }
+
+// DAY 8 (2349. Design a Number Container System)=============================================================
+
+// APPROACH 1 (Using Map of Set)
+
+// Time Complexity = O(q*logq)
+// Space Complexity = O(q)
+
+class NumberContainers {
+public:
+
+    unordered_map<int,int> idxNum;
+    unordered_map<int,set<int>> numIdx;
+    NumberContainers() {
+        
+    }
+    
+    void change(int index, int number) {
+        numIdx[idxNum[index]].erase(index);
+        numIdx[number].insert(index);
+        idxNum[index] = number;
+    }
+    
+    int find(int number) {
+        return numIdx[number].empty()? -1 : *numIdx[number].begin();
+    }
+};
+
+/**
+ * Your NumberContainers object will be instantiated and called as such:
+ * NumberContainers* obj = new NumberContainers();
+ * obj->change(index,number);
+ * int param_2 = obj->find(number);
+ */
+
+// APPROACH 2 (Using Map of Min Heap)
+
+// Time Complexity = O(q*logq)
+// Space Complexity = O(q)
+
+class NumberContainers {
+public:
+
+    unordered_map<int,int> idxNum;
+    unordered_map<int,priority_queue<int, vector<int>, greater<int>>> numIdx;
+    NumberContainers() {
+        
+    }
+    
+    void change(int index, int number) {
+        numIdx[number].push(index);
+        idxNum[index] = number;
+    }
+    
+    int find(int number) {
+        priority_queue<int, vector<int>, greater<int>> &minPq = numIdx[number];
+        while(!minPq.empty() && idxNum[minPq.top()] != number) {
+            minPq.pop();
+        }
+        return minPq.empty()? -1 : minPq.top();
+    }
+};
+
+/**
+ * Your NumberContainers object will be instantiated and called as such:
+ * NumberContainers* obj = new NumberContainers();
+ * obj->change(index,number);
+ * int param_2 = obj->find(number);
+ */
