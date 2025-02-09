@@ -216,3 +216,23 @@ public:
  * obj->change(index,number);
  * int param_2 = obj->find(number);
  */
+
+// DAY 9 (2364. Count Number of Bad Pairs)===================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+long long countBadPairs(vector<int>& nums) {
+    int size = nums.size();
+    long long totalPairs = 0;
+    unordered_map<int,int> diffCnt, pairCnt;
+    for(int idx = size-1; idx >= 0; idx--) {
+        int diff = idx - nums[idx];
+        pairCnt[diff] += (size - idx - 1) - diffCnt[diff]++;
+    }
+    for(auto &pair : pairCnt) {
+        totalPairs += pair.second;
+    }
+
+    return totalPairs;
+}
