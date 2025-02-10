@@ -236,3 +236,23 @@ long long countBadPairs(vector<int>& nums) {
 
     return totalPairs;
 }
+
+// DAY 10 (3174. Clear Digits)========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+string clearDigits(string s) {
+    string ans = "";
+    for(char c : s) {
+        if(isdigit(c)) {
+            if(!ans.empty()) {
+                ans.pop_back();
+            }
+        }
+        else {
+            ans += c;
+        }
+    }
+    return ans;
+}
