@@ -259,6 +259,8 @@ string clearDigits(string s) {
 
 // DAY 11 (1910. Remove All Occurrences of a Substring)===================================================
 
+// METHOD 1 (Naive)
+
 // Time Complexity = O(n*m)
 // Space Complexity = O(n)
 
@@ -278,4 +280,16 @@ string removeOccurrences(string s, string part) {
         }
     }
     return ans;
+}
+
+// METHOD 2 (More concise)
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n)
+
+string removeOccurrences(string s, string part) {
+    while(s.size() >= part.size() && s.find(part) != string::npos) {
+        s.erase(s.find(part), part.size());
+    }
+    return s;
 }
