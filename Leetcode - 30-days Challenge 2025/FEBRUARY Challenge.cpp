@@ -256,3 +256,26 @@ string clearDigits(string s) {
     }
     return ans;
 }
+
+// DAY 11 (1910. Remove All Occurrences of a Substring)===================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n)
+
+void removeSuffix(int size, string &ans) {
+    while(size--) {
+        ans.pop_back();
+    }
+}
+
+string removeOccurrences(string s, string part) {
+    int psize = part.size();
+    string ans = "";
+    for(char c : s) {
+        ans += c;
+        if(ans.size() >= psize && ans.substr(ans.size() - psize, psize) == part) {
+            removeSuffix(psize, ans);
+        }
+    }
+    return ans;
+}
