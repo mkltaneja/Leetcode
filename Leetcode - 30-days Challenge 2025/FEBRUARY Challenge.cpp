@@ -293,3 +293,38 @@ string removeOccurrences(string s, string part) {
     }
     return s;
 }
+
+// DAY 12 (2342. Max Sum of a Pair With Equal Sum of Digits)=====================================================================
+
+// Time Complexity = O(n * log10(x))
+// Space Complexity = O(1)
+
+const int MAX_DIG_SUM = 82;
+
+int getDigitsSum(int num) {
+    int sum = 0;
+    while(num) {
+        sum += num % 10;
+        num /= 10;
+    }
+    return sum;
+}
+
+int maximumSum(vector<int>& nums) {
+    vector<vector<int>> digSum(MAX_DIG_SUM, {0, 0});
+    int maxSum = -1;
+    for(int num : nums) {
+        int sum = getDigitsSum(num);
+        if(digSum[sum][0] < num) {
+            digSum[sum][1] = digSum[sum][0];
+            digSum[sum][0] = num;
+        }
+        else digSum[sum][1] = max(digSum[sum][1], num);
+    }
+    for(int sum = 1; sum < MAX_DIG_SUM; sum++) {
+        if(digSum[sum][0] && digSum[sum][1]) {
+            maxSum = max(maxSum, digSum[sum][0] + digSum[sum][1]);
+        }
+    }
+    return maxSum;
+}
