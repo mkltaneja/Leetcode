@@ -328,3 +328,29 @@ int maximumSum(vector<int>& nums) {
     }
     return maxSum;
 }
+
+// DAY 13 (3066. Minimum Operations to Exceed Threshold Value II)====================================================================================
+
+// Time Complexity = O(n*logn)
+// Space Complexity = O(n)
+
+int minOperations(vector<int>& nums, int k) {
+    priority_queue<long, vector<long>, greater<long>> minPq;
+    int operations = 0;
+    for(int num : nums) {
+        minPq.push(num);
+    }
+
+    while(minPq.size() >= 2 && minPq.top() < k) {
+        long smallestNum = minPq.top();
+        minPq.pop();
+        long secondSmallestNum = minPq.top();
+        minPq.pop();
+
+        long newNum = smallestNum * 2 + secondSmallestNum;
+        minPq.push(newNum);
+        operations++;
+    }
+
+    return operations;
+}
