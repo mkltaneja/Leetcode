@@ -354,3 +354,44 @@ int minOperations(vector<int>& nums, int k) {
 
     return operations;
 }
+
+// DAY 14 (1352. Product of the Last K Numbers)=======================================================================
+
+// Time Complexity = O(q)
+// Space Complexity = O(q)
+
+class ProductOfNumbers {
+public:
+
+    vector<int> prefProd;
+    int size;
+    ProductOfNumbers() {
+        this->size = 0;
+        prefProd = {1};
+    }
+    
+    void add(int num) {
+        if(num == 0) {
+            prefProd = {1};
+            size = 0;
+        }
+        else {
+            prefProd.push_back(prefProd.back() * num);
+            size++;
+        }
+    }
+    
+    int getProduct(int k) {
+        if(k > size) {
+            return 0;
+        }
+        return prefProd[size] / prefProd[size-k];
+    }
+};
+
+/**
+ * Your ProductOfNumbers object will be instantiated and called as such:
+ * ProductOfNumbers* obj = new ProductOfNumbers();
+ * obj->add(num);
+ * int param_2 = obj->getProduct(k);
+ */
