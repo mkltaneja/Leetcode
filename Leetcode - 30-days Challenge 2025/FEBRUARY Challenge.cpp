@@ -395,3 +395,39 @@ public:
  * obj->add(num);
  * int param_2 = obj->getProduct(k);
  */
+
+// DAY 15 (2698. Find the Punishment Number of an Integer)================================================================
+
+// Time Complexity = O(n * 2^log10(n))
+// Space Complexity = O(log10(n))
+
+bool isValidNum(int num, string &numSq, int idx, int currSum) {
+    if(idx == numSq.size()) {
+        return currSum == num;
+    }
+
+    int currNum = 0;
+    for(int itr = idx; itr < numSq.size(); itr++) {
+        currNum = currNum * 10 + (numSq[itr]-'0');
+        if(isValidNum(num, numSq, itr + 1, currSum + currNum)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool isValidNum(int num) {
+    string numSq = to_string(num*num);
+    return isValidNum(num, numSq, 0, 0);
+}
+
+int punishmentNumber(int n) {
+    int ans = 0;
+    for(int x = 1; x <= n; x++) {
+        if(isValidNum(x)) {
+            ans += x*x;
+        }
+    }
+    return ans;
+}
