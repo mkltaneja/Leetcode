@@ -431,3 +431,46 @@ int punishmentNumber(int n) {
     }
     return ans;
 }
+
+// DAY 16 (1718. Construct the Lexicographically Largest Valid Sequence)===================================================================
+
+// Time Complexity = O(n! ~= 2^n)
+// Space Complexity = O(n! ~= 2^n)
+
+bool constructDistancedSequenceDFS(int idx, int numVisMask, int n, vector<int> &currSeq) {
+    if(idx == currSeq.size()) {
+        return true;
+    }
+    if(currSeq[idx]) {
+        return constructDistancedSequenceDFS(idx + 1, numVisMask, n, currSeq);
+    }
+    for(int x = n; x >= 1; x--) {
+        if(numVisMask & (1 << x)) {
+            continue;
+        }
+        currSeq[idx] = x;
+        numVisMask ^= (1 << x);
+        if(x == 1) {
+            if(constructDistancedSequenceDFS(idx + 1, numVisMask, n, currSeq)) {
+                return true;
+            }
+        }
+        else if(idx + x < currSeq.size() && currSeq[x + idx] == 0) {
+            currSeq[idx + x] = x;
+            if(constructDistancedSequenceDFS(idx + 1, numVisMask, n, currSeq)) {
+                return true;
+            }
+            currSeq[idx + x] = 0;
+        }
+        currSeq[idx] = 0;
+        numVisMask ^= (1 << x);
+    }
+    return false;
+}
+
+vector<int> constructDistancedSequence(int n) {
+    vector<int> currSeq(2*n - 1, 0);
+    int numVisMask = 0;
+    constructDistancedSequenceDFS(0, numVisMask, n, currSeq);
+    return currSeq;
+}
