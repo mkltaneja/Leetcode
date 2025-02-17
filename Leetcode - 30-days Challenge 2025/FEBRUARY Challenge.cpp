@@ -474,3 +474,28 @@ vector<int> constructDistancedSequence(int n) {
     constructDistancedSequenceDFS(0, numVisMask, n, currSeq);
     return currSeq;
 }
+
+// DAY 17 (1079. Letter Tile Possibilities)==============================================================
+
+// Time Complexity = O(n!)
+// Space Complexity = O(n*n!)
+
+int numTilePossibilities(string tiles) {
+    int size = tiles.size();
+    if(size == 0) {
+        return 0;
+    }
+    int charMask = 0;
+    int totalCount = 0;
+    for(int idx = 0; idx < size; idx++) {
+        int mask = 1 << (tiles[idx]-'A');
+        if(charMask & mask) {
+            continue;
+        }
+        charMask ^= mask;
+        string leftString = tiles.substr(0, idx);
+        string rightString = tiles.substr(idx + 1);
+        totalCount += numTilePossibilities(leftString + rightString) + 1;
+    }
+    return totalCount;
+}
