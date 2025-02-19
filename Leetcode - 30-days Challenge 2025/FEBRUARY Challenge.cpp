@@ -499,3 +499,47 @@ int numTilePossibilities(string tiles) {
     }
     return totalCount;
 }
+
+// DAY 19 (1415. The k-th Lexicographical String of All Happy Strings of Length n)==========================================================
+
+// Time Complexity = O(k * n)
+// Space Complexity = O(n)
+
+const char LAST_CHAR = 'c';
+
+bool isValidString(string &str) {
+    for(int idx = 0; idx < str.size()-1; idx++) {
+        if(str[idx] == str[idx+1]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool incrementString(string &str) {
+    int size = str.size();
+    int idx = size - 1;
+    for(; idx >= 0 && str[idx] == LAST_CHAR; idx--);
+    if(idx == -1) {
+        return false;
+    }
+    str[idx++]++;
+    for(; idx < size; idx++) {
+        str[idx] = 'a';
+    }
+    return true;
+}
+
+string getHappyString(int n, int k) {
+    string res = string(n, 'a');
+    k = k - (n == 1);
+    for(int itr = 0; itr < k; itr++) {
+        do {
+            if(!incrementString(res)) {
+                return "";
+            }
+        }
+        while(!isValidString(res));
+    }
+    return res;
+}
