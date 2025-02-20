@@ -546,6 +546,8 @@ string getHappyString(int n, int k) {
 
 // DAY 20 (1980. Find Unique Binary String)=====================================================================
 
+// APPROACH 1 (Finding 1st absent element through mask)
+
 // Time Complexity = O(n^2)
 // Space Complexity = O(n)
 
@@ -579,4 +581,17 @@ string findDifferentBinaryString(vector<string>& nums) {
     numMask = numMask & -numMask;
     int minAbsentNum = log2(numMask);
     return numToBinary(n, minAbsentNum);
+}
+
+// APPROACH 2 (Finding answer by taking inverse of specific set of bits) --> [OPTIMIZED]
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+string findDifferentBinaryString(vector<string>& nums) {
+    string ans = "";
+    for(int idx = 0; idx < nums.size(); idx++) {
+        ans += char(((nums[idx][idx] - '0') ^ 1) + '0');
+    }
+    return ans;
 }
