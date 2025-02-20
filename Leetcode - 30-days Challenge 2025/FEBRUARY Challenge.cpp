@@ -543,3 +543,40 @@ string getHappyString(int n, int k) {
     }
     return res;
 }
+
+// DAY 20 (1980. Find Unique Binary String)=====================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n)
+
+int binaryToNum(int n, string &str) {
+    int num = 0;
+    for(int idx = n-1; idx >= 0; idx--) {
+        num += ((str[idx]-'0') << (n-idx-1));
+    }
+    return num;
+}
+
+string numToBinary(int n, int num) {
+    string bin = "";
+    for(int idx = 0; idx < n; idx++) {
+        bin += (num & (1 << idx))? "1" : "0";
+    }
+    reverse(bin.begin(), bin.end());
+    return bin;
+}
+
+string findDifferentBinaryString(vector<string>& nums) {
+    int n = nums.size();
+    int numMask = 0;
+    for(int idx = 0; idx < n; idx++) {
+        int num = binaryToNum(n, nums[idx]);
+        if(num <= n) {
+            numMask |= (1 << num);
+        }
+    }
+    numMask = ~numMask;
+    numMask = numMask & -numMask;
+    int minAbsentNum = log2(numMask);
+    return numToBinary(n, minAbsentNum);
+}
