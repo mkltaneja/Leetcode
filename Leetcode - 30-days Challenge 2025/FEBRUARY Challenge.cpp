@@ -637,3 +637,25 @@ public:
  * FindElements* obj = new FindElements(root);
  * bool param_1 = obj->find(target);
  */
+
+// DAY 23 (889. Construct Binary Tree from Preorder and Postorder Traversal)========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+TreeNode* constructTree(int &preIdx, int &postIdx, vector<int>& preorder, vector<int>& postorder) {
+    TreeNode* node = new TreeNode(preorder[preIdx++]);
+    if(postorder[postIdx] != node->val) {
+        node->left = constructTree(preIdx, postIdx, preorder, postorder);
+    }
+    if(postorder[postIdx] != node->val) {
+        node->right = constructTree(preIdx, postIdx, preorder, postorder);
+    }
+    postIdx++;
+    return node;
+}
+
+TreeNode* constructFromPrePost(vector<int>& preorder, vector<int>& postorder) {
+    int preIdx = 0, postIdx = 0;
+    return constructTree(preIdx, postIdx, preorder, postorder);
+}
