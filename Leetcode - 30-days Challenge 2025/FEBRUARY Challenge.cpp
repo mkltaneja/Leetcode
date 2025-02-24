@@ -659,3 +659,58 @@ TreeNode* constructFromPrePost(vector<int>& preorder, vector<int>& postorder) {
     int preIdx = 0, postIdx = 0;
     return constructTree(preIdx, postIdx, preorder, postorder);
 }
+
+// DAY 24 (2467. Most Profitable Path in a Tree)========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+const int INF = INT_MAX;
+int getBobIncome(int par, int src, int dest, vector<int> &amount, vector<vector<int>> &graph, vector<int> &dist) {
+   if(src == dest) {
+    dist[src] = 0;
+    return amount[src];
+   }
+   for(int node : graph[src]) {
+    if(node != par) {
+        int childCost = getBobIncome(src, node, dest, amount, graph, dist);
+        if(childCost != INF) {
+            dist[src] = dist[node] + 1;
+            return childCost + amount[src];
+        }
+    }
+   }
+   return INF;
+}
+
+int getAliceIncome(int par, int src, int depth, vector<int> &amount, vector<vector<int>> &graph, vector<int> &dist) {
+    int maxIncome = INT_MIN;
+    for(int node : graph[src]) {
+        if(node != par) {
+            maxIncome = max(maxIncome, getAliceIncome(src, node, depth + 1, amount, graph, dist));
+        }
+    }
+    int currIncome = amount[src];
+    if(dist[src] != -1) {
+        if(depth == dist[src]) {
+            currIncome = amount[src] / 2;
+        }
+        else if(depth > dist[src]) {
+            currIncome = 0;
+        }
+    }
+    return (maxIncome == INT_MIN? 0 : maxIncome) + currIncome;
+}
+
+int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) 
+{
+    int n = edges.size() + 1;
+    vector<vector<int>> graph(n);
+    for(vector<int> &edge : edges) {
+        graph[edge[0]].push_back(edge[1]);
+        graph[edge[1]].push_back(edge[0]);
+    }
+    vector<int> dist(n, -1);
+    int bobIncome = getBobIncome(-1, 0, bob, amount, graph, dist);
+    return getAliceIncome(-1, 0, 0, amount, graph, dist);
+}
