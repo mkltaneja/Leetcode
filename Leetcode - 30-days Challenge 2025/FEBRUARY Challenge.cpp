@@ -714,3 +714,31 @@ int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount)
     int bobIncome = getBobIncome(-1, 0, bob, amount, graph, dist);
     return getAliceIncome(-1, 0, 0, amount, graph, dist);
 }
+
+// DAY 25 (1524. Number of Sub-arrays With Odd Sum)================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+const int MOD = 1e9 + 7;
+
+int addNums(int num1, int num2) {
+    return (num1 % MOD + num2 % MOD) % MOD;
+}
+
+int numOfSubarrays(vector<int>& arr) {
+    int prefixSum = 0, oddPrefixSumCount = 0, evenPrefixSumCount = 1;
+    int totalSubarrays = 0;
+    for(int num : arr) {
+        prefixSum += num;
+        if(prefixSum & 1) {
+            totalSubarrays = addNums(totalSubarrays, evenPrefixSumCount);
+            oddPrefixSumCount++;
+        }
+        else {
+            totalSubarrays = addNums(totalSubarrays, oddPrefixSumCount);
+            evenPrefixSumCount++;
+        }
+    }
+    return totalSubarrays;
+}
