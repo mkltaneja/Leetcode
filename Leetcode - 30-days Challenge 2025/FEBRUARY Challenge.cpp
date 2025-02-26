@@ -742,3 +742,25 @@ int numOfSubarrays(vector<int>& arr) {
     }
     return totalSubarrays;
 }
+
+// DAY 26 (1749. Maximum Absolute Sum of Any Subarray)====================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int getMaxSumSubarray(int size, int prod, vector<int> &nums) {
+    int currSum = 0, maxSum = 0;
+    for(int num : nums) {
+        currSum += num;
+        if(currSum * prod < 0) {
+            currSum = 0;
+        }
+        maxSum = max(maxSum, currSum * prod);
+    }
+    return maxSum;
+}
+
+int maxAbsoluteSum(vector<int>& nums) {
+    int size = nums.size();
+    return max(getMaxSumSubarray(size, 1, nums), getMaxSumSubarray(size, -1, nums));
+}
