@@ -767,6 +767,8 @@ int maxAbsoluteSum(vector<int>& nums) {
 
 // DAY 27 (873. Length of Longest Fibonacci Subsequence)=============================================================================
 
+// APPROACH 1 (Using Binary search)
+
 // Time Complexity = O(n^2 * logn)
 // Space Complexity = O(1)
 
@@ -797,6 +799,53 @@ int lenLongestFibSubseq(vector<int>& arr) {
             } while(found);
             maxSize = max(maxSize, currSize > 2? currSize : 0);
         }
+    }
+    return maxSize;
+}
+
+// APPROACH 2 (Using Map and 2 Sum)
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n)
+
+int lenLongestFibSubseq(vector<int>& arr) {
+    map<pair<int,int>, int> idxMap;
+    int size = arr.size();
+    int maxSize = 0;
+    for(int idx = 2; idx < size; idx++) {
+        int st = 0, end = idx-1;
+        int sum = arr[idx];
+        while(st < end) {
+            int currSum = arr[st] + arr[end];
+            if(currSum == sum) {
+                idxMap[{st++, end--}] = idx;
+            }
+            else if(currSum < sum) {
+                st++;
+            }
+            else {
+                end--;
+            }
+        }
+    }
+
+    for(auto mapPair : idxMap) {
+        int idx1 = mapPair.first.first;
+        int idx2 = mapPair.first.second;
+        int idx3 = mapPair.second;
+        int currSize = 3;
+        while(true) {
+            pair<int,int> nextPair = {idx2, idx3};
+            if(idxMap.count(nextPair)) {
+                idx2 = idx3;
+                idx3 = idxMap[nextPair];
+                currSize++;
+            }
+            else {
+                break;
+            }
+        }
+        maxSize = max(maxSize, currSize > 2? currSize : 0);
     }
     return maxSize;
 }
