@@ -764,3 +764,39 @@ int maxAbsoluteSum(vector<int>& nums) {
     int size = nums.size();
     return max(getMaxSumSubarray(size, 1, nums), getMaxSumSubarray(size, -1, nums));
 }
+
+// DAY 27 (873. Length of Longest Fibonacci Subsequence)=============================================================================
+
+// Time Complexity = O(n^2 * logn)
+// Space Complexity = O(1)
+
+int lenLongestFibSubseq(vector<int>& arr) {
+    int size = arr.size();
+    int maxSize = 0;
+    for(int itr1 = 0; itr1 < size; itr1++) {
+        for(int itr2 = itr1 + 1; itr2 < size; itr2++) {
+            int num1 = arr[itr1];
+            int num2 = arr[itr2];
+            int num3 = num1 + num2;
+            int searchItr = itr2 + 1;
+            int currSize = 2;
+            bool found = false;
+            do {
+                int itr3 = lower_bound(arr.begin() + searchItr, arr.end(), num3) - arr.begin();
+                if(itr3 == size || arr[itr3] != num3) {
+                    found = false;
+                }
+                else {
+                    currSize++;
+                    found = true;
+                    searchItr = itr3 + 1;
+                    int tempNum = num3;
+                    num3 += num2;
+                    num2 = tempNum;
+                }
+            } while(found);
+            maxSize = max(maxSize, currSize > 2? currSize : 0);
+        }
+    }
+    return maxSize;
+}
