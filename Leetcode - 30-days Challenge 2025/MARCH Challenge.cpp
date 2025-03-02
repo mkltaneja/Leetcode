@@ -20,3 +20,33 @@ vector<int> applyOperations(vector<int>& nums) {
     }
     return nums;
 }
+
+// DAY 2 (2570. Merge Two 2D Arrays by Summing Values)===============================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<vector<int>> mergeArrays(vector<vector<int>>& nums1, vector<vector<int>>& nums2) {
+    vector<vector<int>> ans;
+    int size1 = nums1.size(), size2 = nums2.size();
+    for(int idx1 = 0, idx2 = 0; idx1 < size1 || idx2 < size2; ) {
+        if(idx1 == size1 || idx2 == size2) {
+            if(idx1 == size1) {
+                ans.push_back(nums2[idx2++]);
+            }
+            else {
+                ans.push_back(nums1[idx1++]);
+            }
+        }
+        else if(nums1[idx1][0] < nums2[idx2][0]) {
+            ans.push_back(nums1[idx1++]);
+        }
+        else if(nums1[idx1][0] > nums2[idx2][0]) {
+            ans.push_back(nums2[idx2++]);
+        }
+        else {
+            ans.push_back({nums1[idx1][0], nums1[idx1++][1] + nums2[idx2++][1]});
+        }
+    }
+    return ans;
+}
