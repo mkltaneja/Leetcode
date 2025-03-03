@@ -50,3 +50,33 @@ vector<vector<int>> mergeArrays(vector<vector<int>>& nums1, vector<vector<int>>&
     }
     return ans;
 }
+
+// DAY 3 (2161. Partition Array According to Given Pivot)=========================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<int> pivotArray(vector<int>& nums, int pivot) {
+    vector<int> smaller, greater;
+    for(int num : nums) {
+        if(num < pivot) {
+            smaller.push_back(num);
+        }
+        else if(num > pivot) {
+            greater.push_back(num);
+        }
+    }
+    int equals = nums.size() - (smaller.size() + greater.size());
+    int idx = 0;
+    for(int num : smaller) {
+        nums[idx++] = num;
+    }
+    while(equals--) {
+        nums[idx++] = pivot;
+    }
+    for(int num : greater) {
+        nums[idx++] = num;
+    }
+    
+    return nums;
+}
