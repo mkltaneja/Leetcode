@@ -142,3 +142,16 @@ bool checkPowersOfThree(int n) {
     }
     return true;
 }
+
+// DAY 5 (2579. Count Total Number of Colored Cells)=========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+long long coloredCells(int n) {
+    long long totalCells = 1;
+    while(--n) {
+        totalCells += 4ll * n;
+    }
+    return totalCells;
+}
