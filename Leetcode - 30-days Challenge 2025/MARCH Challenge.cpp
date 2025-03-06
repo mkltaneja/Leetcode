@@ -155,3 +155,25 @@ long long coloredCells(int n) {
     }
     return totalCells;
 }
+
+// DAY 6 (2965. Find Missing and Repeated Values)=================================================================================
+
+// Time Complexity = O(n*n)
+// Space Complexity = O(1)
+
+vector<int> findMissingAndRepeatedValues(vector<vector<int>>& grid) {
+    int n = grid[0].size();
+    long long total = n*n;
+    long long sum = 0, sumSq = 0;
+    for(int row = 0; row < n; row++) {
+        for(int col = 0; col < n; col++) {
+            sum += grid[row][col];
+            sumSq += grid[row][col] * grid[row][col];
+        }
+    }
+    long long sumDiff = sum - (total * (total + 1) / 2);
+    long long sumSqDiff = sumSq - (total * (total + 1) * (2 * total + 1) / 6);
+    int repeatedNum = ((sumSqDiff / sumDiff) + sumDiff) / 2;
+    int missingNum = ((sumSqDiff / sumDiff) - sumDiff) / 2;
+    return {repeatedNum, missingNum};
+}
