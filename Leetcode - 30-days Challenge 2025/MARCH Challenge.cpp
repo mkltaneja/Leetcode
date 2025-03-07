@@ -177,3 +177,46 @@ vector<int> findMissingAndRepeatedValues(vector<vector<int>>& grid) {
     int missingNum = ((sumSqDiff / sumDiff) - sumDiff) / 2;
     return {repeatedNum, missingNum};
 }
+
+// DAY 7 (2523. Closest Prime Numbers in Range)==============================================================================
+
+// Time Complexity = O(n * log(logn))
+// Time Complexity = O(n)
+
+vector<int> closestPrimes(int left, int right) {
+    vector<bool> isPrime(right + 1, true);
+    isPrime[0] = isPrime[1] = false;
+    int tempNum1 = -1, tempNum2 = -1, num1 = -1, num2 = -1, minDiff = INT_MAX;
+    for(int num = 2; num <= right; num++) {
+        if(!isPrime[num]) {
+            continue;
+        }
+        for(long long nextNum = 1ll * num * num; nextNum <= right; nextNum += num) {
+            isPrime[nextNum] = false;
+        }
+    }
+
+    for(int num = left; num <= right; num++) {
+        if(!isPrime[num]) {
+            continue;
+        }
+        if(tempNum1 == -1) {
+            tempNum1 = num;
+        }
+        else if(tempNum2 == -1) {
+            tempNum2 = num;
+        }
+        else {
+            tempNum1 = tempNum2;
+            tempNum2 = num;
+        }
+        if(tempNum1 != -1 && tempNum2 != -1) {
+            if(tempNum2 - tempNum1 < minDiff) {
+                num1 = tempNum1;
+                num2 = tempNum2;
+                minDiff = tempNum2 - tempNum1;
+            }
+        }
+    }
+    return {num1, num2};
+}
