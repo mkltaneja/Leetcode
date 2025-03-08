@@ -220,3 +220,22 @@ vector<int> closestPrimes(int left, int right) {
     }
     return {num1, num2};
 }
+
+// DAY 8 (2379. Minimum Recolors to Get K Consecutive Black Blocks)=========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int minimumRecolors(string blocks, int k) {
+    int currWhiteCount = 0, minOperations = k;
+    for(int idx = 0; idx < blocks.size(); idx++) {
+        currWhiteCount += blocks[idx] == 'W';
+        if(idx >= k - 1) {
+            if(idx >= k) {
+                currWhiteCount -= blocks[idx - k] == 'W';
+            }
+            minOperations = min(minOperations, currWhiteCount);
+        }
+    }
+    return minOperations;
+}
