@@ -239,3 +239,21 @@ int minimumRecolors(string blocks, int k) {
     }
     return minOperations;
 }
+
+// DAY 9 (3208. Alternating Groups II)================================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int numberOfAlternatingGroups(vector<int>& colors, int k) {
+    int size = colors.size(), groups = 0;
+    for(int left = 0, right = 0; right < size + k - 1; right++) {
+        if(right && colors[right % size] == colors[(right - 1) % size]) {
+            left = right;
+        }
+        if(right - left + 1 >= k) {
+            groups++;
+        }
+    }
+    return groups;
+}
