@@ -260,6 +260,8 @@ int numberOfAlternatingGroups(vector<int>& colors, int k) {
 
 // DAY 10 (1358. Number of Substrings Containing All Three Characters)====================================================
 
+// APPROACH 1 (Storing the counts of a, b, c)
+
 // Time Complexity = O(n)
 // Space Complexity = O(1)
 
@@ -272,6 +274,24 @@ int numberOfSubstrings(string s) {
         while(charCount[0] && charCount[1] && charCount[2]) {
             totalSubstrs += size - right;
             charCount[s[left++]-'a']--;
+        }
+    }
+    return totalSubstrs;
+}
+
+// APPROACH 2 (Storing the next positions of a, b, c) --> [OPTIMIZED]
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int numberOfSubstrings(string s) {
+    int size = s.size();
+    int totalSubstrs = 0;
+    vector<int> nextPos(3, -1);
+    for(int idx = 0; idx < size; idx++) {
+        nextPos[s[idx]-'a'] = idx;
+        if(nextPos[0] != -1 && nextPos[1] != -1 && nextPos[2] != -1) {
+            totalSubstrs += min({nextPos[0], nextPos[1], nextPos[2]}) + 1;
         }
     }
     return totalSubstrs;
