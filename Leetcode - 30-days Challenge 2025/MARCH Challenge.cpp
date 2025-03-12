@@ -296,3 +296,28 @@ int numberOfSubstrings(string s) {
     }
     return totalSubstrs;
 }
+
+// DAY 12 (2529. Maximum Count of Positive Integer and Negative Integer)===================================================================
+
+// Time Complexity = O(logn)
+// Space Complexity = O(1)
+
+int lowerBound(int num, vector<int> &nums) {
+    int st = 0, end = nums.size();
+    while(st < end) {
+        int mid = st + ((end - st) >> 1);
+        if(nums[mid] >= num) {
+            end = mid;
+        }
+        else {
+            st = mid + 1;
+        }
+    }
+    return st;
+}
+
+int maximumCount(vector<int>& nums) {
+    int posCount = lowerBound(0, nums);
+    int negCount = nums.size() - lowerBound(1, nums);
+    return max(posCount, negCount);
+}
