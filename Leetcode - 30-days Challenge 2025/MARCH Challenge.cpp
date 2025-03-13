@@ -321,3 +321,43 @@ int maximumCount(vector<int>& nums) {
     int negCount = nums.size() - lowerBound(1, nums);
     return max(posCount, negCount);
 }
+
+// DAY 13 (3356. Zero Array Transformation II)=============================================================================
+
+// Time Complexity = O(q * log (n + q))
+// Space Complexity = O(n)
+
+bool canMakeZeroAt(int idx, vector<vector<int>>& queries, int size, vector<int>& nums) {
+    vector<long> prefSum(size+1, 0);
+    for(int itr = 0; itr <= idx; itr++) {
+        prefSum[queries[itr][0]] += queries[itr][2];
+        prefSum[queries[itr][1] + 1] -= queries[itr][2];
+    }
+    for(int itr = 0; itr < size; itr++) {
+        prefSum[itr] += itr? prefSum[itr-1] : 0;
+        if(nums[itr] - prefSum[itr] > 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int minZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
+    long totalSum = accumulate(nums.begin(), nums.end(), 0ll);
+    if(totalSum == 0) {
+        return 0;
+    }
+    int qsize = queries.size(), size = nums.size();
+    int lo = 0, hi = queries.size();
+    while(lo < hi) {
+        int mid = lo + ((hi - lo) >> 1);
+        if(canMakeZeroAt(mid, queries, size, nums)) {
+            hi = mid;
+        }
+        else {
+            lo = mid + 1;
+        }
+    }
+    int totalQueries = lo + 1;
+    return totalQueries == qsize + 1? -1 : totalQueries;
+}
