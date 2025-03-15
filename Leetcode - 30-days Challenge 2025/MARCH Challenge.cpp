@@ -361,3 +361,39 @@ int minZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
     int totalQueries = lo + 1;
     return totalQueries == qsize + 1? -1 : totalQueries;
 }
+
+// DAY 15 (2560. House Robber IV)==================================================================================
+
+// Time Complexity = O(n * log(MX))
+// Time Complexity = O(1)
+
+bool canSteal(int cap, int k, vector<int> &nums) {
+    int lastStolen = -2, totalStolen = 0;
+    for(int idx = 0; idx < nums.size(); idx++) {
+        if(nums[idx] > cap) {
+            continue;
+        }
+        if(idx - lastStolen != 1) {
+            lastStolen = idx;
+            if(++totalStolen >= k) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+int minCapability(vector<int>& nums, int k) {
+    int lo = *min_element(nums.begin(), nums.end());
+    int hi = *max_element(nums.begin(), nums.end());
+    while(lo < hi) {
+        int cap = lo + ((hi - lo) >> 1);
+        if(canSteal(cap, k, nums)) {
+            hi = cap;
+        }
+        else {
+            lo = cap + 1;
+        }
+    }
+    return lo;
+}
