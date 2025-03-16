@@ -397,3 +397,32 @@ int minCapability(vector<int>& nums, int k) {
     }
     return lo;
 }
+
+// DAY 16 (2594. Minimum Time to Repair Cars)=============================================================================
+
+// Time Complexity = O(n * (log(MN) + log(cars)))
+// Time Complexity = O(1)
+
+#define ll long long
+
+bool canRepairCars(ll time, int cars, vector<int> &ranks) {
+    ll carsRepaired = 0;
+    for(int rank : ranks) {
+        carsRepaired += sqrt(time / rank);
+    }
+    return carsRepaired >= cars;
+}
+
+long long repairCars(vector<int>& ranks, int cars) {
+    ll loTime = 1, hiTime = 1ll * *min_element(ranks.begin(), ranks.end()) * cars * cars;
+    while(loTime < hiTime) {
+        ll time = loTime + ((hiTime - loTime) >> 1);
+        if(canRepairCars(time, cars, ranks)) {
+            hiTime = time;
+        }
+        else {
+            loTime = time + 1;
+        }
+    }
+    return loTime;
+}
