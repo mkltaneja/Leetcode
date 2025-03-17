@@ -426,3 +426,21 @@ long long repairCars(vector<int>& ranks, int cars) {
     }
     return loTime;
 }
+
+// DAY 17 (2206. Divide Array Into Equal Pairs)==========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+bool divideArray(vector<int>& nums) {
+    vector<int> freqMap(*max_element(nums.begin(), nums.end()) + 1, 0);
+    for(int num : nums) {
+        freqMap[num]++;
+    }
+    for(int freq : freqMap) {
+        if(freq & 1) {
+            return false;
+        }
+    }
+    return true;
+}
