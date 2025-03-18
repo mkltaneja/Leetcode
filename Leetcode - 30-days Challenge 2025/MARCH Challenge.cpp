@@ -444,3 +444,20 @@ bool divideArray(vector<int>& nums) {
     }
     return true;
 }
+
+// DAY 18 (2401. Longest Nice Subarray)======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int longestNiceSubarray(vector<int>& nums) {
+    int maxSubarrayLen = 0;
+    for(int curr = 0, prev = 0, currMask = 0; curr < nums.size(); curr++) {
+        while(currMask & nums[curr]) {
+            currMask ^= nums[prev++];
+        }
+        currMask |= nums[curr];
+        maxSubarrayLen = max(maxSubarrayLen, curr - prev + 1);
+    }
+    return maxSubarrayLen;
+}
