@@ -461,3 +461,26 @@ int longestNiceSubarray(vector<int>& nums) {
     }
     return maxSubarrayLen;
 }
+
+// DAY 19 (3191. Minimum Operations to Make Binary Array Elements Equal to One I)===================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int minOperations(vector<int>& nums) {
+    int size = nums.size();
+    int flips = 0;
+    for(int idx = 0; idx < size - 2; idx++) {
+        if(nums[idx] == 0) {
+            nums[idx] ^= 1;
+            if(idx + 1 < size) {
+                nums[idx + 1] ^= 1;
+            }
+            if(idx + 2 < size) {
+                nums[idx + 2] ^= 1;
+            }
+            flips++;
+        }
+    }
+    return nums[size-1] == 0 || nums[size-2] == 0? -1 : flips;
+}
