@@ -484,3 +484,57 @@ int minOperations(vector<int>& nums) {
     }
     return nums[size-1] == 0 || nums[size-2] == 0? -1 : flips;
 }
+
+// DAY 21 (2115. Find All Possible Recipes from Given Supplies)=======================================================
+
+// Time Complexity = O(V + E)
+// Space Complexity = O(V + E)
+
+bool canCreate(string recipe, unordered_set<string> &supplySet, unordered_map<string,vector<string>> &graph, unordered_set<string> &vis) {
+    if(supplySet.count(recipe)) {
+        return true;
+    }
+    if(vis.count(recipe)) {
+        return false;
+    }
+    if(graph[recipe].empty()) {
+        return false;
+    }
+
+    vis.insert(recipe);
+
+    for(string ingredient : graph[recipe]) {
+        if(!canCreate(ingredient, supplySet, graph, vis)) {
+            return false;
+        }
+    }
+
+    vis.erase(recipe);
+
+    supplySet.insert(recipe);
+
+    return true;
+}
+
+vector<string> findAllRecipes(vector<string>& recipes, vector<vector<string>>& ingredients, vector<string>& supplies) {
+    unordered_set<string> supplySet;
+    unordered_map<string,vector<string>> graph;
+    vector<string> finalRecipes;
+    for(int idx = 0; idx < recipes.size(); idx++) {
+        for(string ingredient : ingredients[idx]) {
+            graph[recipes[idx]].push_back(ingredient);
+        }
+    }
+    for(string supply : supplies) {
+        supplySet.insert(supply);
+    }
+
+    for(string recipe : recipes) {
+        unordered_set<string> vis;
+        if(canCreate(recipe, supplySet, graph, vis)) {
+            finalRecipes.push_back(recipe);
+        }
+    }
+
+    return finalRecipes;
+}
