@@ -538,3 +538,78 @@ vector<string> findAllRecipes(vector<string>& recipes, vector<vector<string>>& i
 
     return finalRecipes;
 }
+
+// DAY 22 (2685. Count the Number of Complete Components)===================================================================
+
+// Time Complexity = O(V + E)
+// Space Complexity = O(V)
+
+class DSU {
+    private:
+    int size;
+    vector<int> par;
+    vector<int> parNodes;
+    vector<int> parEdges;
+
+    public:
+    DSU(int size) {
+        this->size = size;
+        this->par.resize(size);
+        this->parNodes.assign(size, 1);
+        this->parEdges.assign(size, 0);
+        for(int node = 0; node < size; node++) {
+            par[node] = node;
+        }
+    }
+
+    int getParEdges(int par) {
+        return parEdges[par];
+    }
+
+    int getParNodes(int par) {
+        return parNodes[par];
+    }
+
+    int findPar(int node) {
+        return par[node] = par[node] == node? node : findPar(par[node]);
+    }
+
+    void merge(int u, int v) {
+        int paru = findPar(u);
+        int parv = findPar(v);
+
+        if(parNodes[parv] > parNodes[paru]) {
+            swap(paru, parv);
+        }
+
+        parEdges[paru]++;
+
+        if(paru == parv) {
+            return;
+        }
+
+        par[parv] = paru;
+        parNodes[paru] += parNodes[parv];
+        parEdges[paru] += parEdges[parv];
+    }
+};
+
+int countCompleteComponents(int n, vector<vector<int>>& edges) {
+    DSU dsu(n);
+    unordered_set<int> ansPars;
+    for(vector<int> &edge : edges) {
+        int u = edge[0], v = edge[1];
+        dsu.merge(u, v);
+    }
+
+    for(int node = 0; node < n; node++) {
+        int par = dsu.findPar(node);
+        int parEdges = dsu.getParEdges(par);
+        int parNodes = dsu.getParNodes(par);
+        if(parEdges == (parNodes * (parNodes - 1)) / 2) {
+            ansPars.insert(par);
+        }
+    }
+
+    return ansPars.size();
+}
