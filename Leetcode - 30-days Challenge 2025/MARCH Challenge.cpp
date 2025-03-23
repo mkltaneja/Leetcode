@@ -613,3 +613,55 @@ int countCompleteComponents(int n, vector<vector<int>>& edges) {
 
     return ansPars.size();
 }
+
+// DAY 23 (1976. Number of Ways to Arrive at Destination)==================================================================
+
+// Time Complexity = O(E * logV)
+// Space Complexity = O(E + V)
+
+#define ll long long
+const int MOD = 1e9 + 7;
+int countPaths(int n, vector<vector<int>>& roads) {
+    vector<ll> waysCount(n, 0);
+    vector<ll> minTime(n, LLONG_MAX);
+    vector<vector<vector<int>>> graph(n);
+    priority_queue<pair<ll,int>, vector<pair<ll,int>>, greater<pair<ll,int>>> minPq;
+    minPq.push({0, 0}); // {wt, node}
+    minTime[0] = 0;
+    waysCount[0] = 1;
+
+    for(vector<int> &road : roads) {
+        int u = road[0];
+        int v = road[1];
+        int t = road[2];
+        graph[u].push_back({v, t});
+        graph[v].push_back({u, t});
+    }
+
+    while(!minPq.empty()) {
+        ll parTime = minPq.top().first;
+        int u = minPq.top().second;
+        minPq.pop();
+        if(u == n-1) {
+            continue;
+        }
+
+        for(vector<int> &vt : graph[u]) {
+            int v = vt[0];
+            int childTime = vt[1];
+            ll newTime = parTime + childTime;
+            if(newTime <= minTime[v]) {
+                if(newTime < minTime[v]) {
+                    minTime[v] = newTime;
+                    waysCount[v] = waysCount[u];
+                    minPq.push({newTime, v});
+                }
+                else {
+                    waysCount[v] = (waysCount[v] % MOD + waysCount[u] % MOD) % MOD;
+                }
+            }
+        }
+    }
+
+    return waysCount[n-1];
+}
