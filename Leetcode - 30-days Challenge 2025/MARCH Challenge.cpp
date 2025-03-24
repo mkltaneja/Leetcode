@@ -665,3 +665,20 @@ int countPaths(int n, vector<vector<int>>& roads) {
 
     return waysCount[n-1];
 }
+
+// DAY 24 (3169. Count Days Without Meetings)=================================================================================
+
+// Time Complexity = O(n * logn)
+// Space Complexity = O(1)
+
+int countDays(int days, vector<vector<int>>& meetings) {
+    sort(meetings.begin(), meetings.end());
+    int noMeetingDays = meetings[0][0] - 1;
+    int maxEnd = meetings[0][1];
+    for(int idx = 1; idx < meetings.size() && days > meetings[idx-1][1]; idx++) {
+        noMeetingDays += max(0, min(meetings[idx][0], days) - maxEnd - 1);
+        maxEnd = max(maxEnd, meetings[idx][1]);
+    }
+    noMeetingDays += max(0, days - maxEnd);
+    return noMeetingDays;
+}
