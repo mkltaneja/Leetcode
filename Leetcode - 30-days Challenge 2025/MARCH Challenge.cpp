@@ -682,3 +682,29 @@ int countDays(int days, vector<vector<int>>& meetings) {
     noMeetingDays += max(0, days - maxEnd);
     return noMeetingDays;
 }
+
+// DAY 25 (3394. Check if Grid can be Cut into Sections)======================================================================
+
+// Time Complexity = O(n * logn)
+// Space Complexity = O(1)
+
+bool checkValidCutsForAxis(int initIdx, vector<vector<int>>& rectangles) {
+    sort(rectangles.begin(), rectangles.end(), [initIdx](auto const &arr1, auto const &arr2) {
+        return arr1[initIdx] < arr2[initIdx];
+    });
+    int size = rectangles.size();
+    int rectCount = 0;
+    for(int curr = 0; curr < size; ) {
+        int next = curr, maxEnd = rectangles[curr][initIdx + 2];
+        while(next < size && rectangles[next][initIdx] < maxEnd) {
+            maxEnd = max(maxEnd, rectangles[next++][initIdx + 2]);
+        }
+        rectCount++;
+        curr = next;
+    }
+    return rectCount >= 3;
+}
+
+bool checkValidCuts(int n, vector<vector<int>>& rectangles) {
+    return checkValidCutsForAxis(0, rectangles) || checkValidCutsForAxis(1, rectangles);
+}
