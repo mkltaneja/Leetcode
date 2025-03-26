@@ -708,3 +708,63 @@ bool checkValidCutsForAxis(int initIdx, vector<vector<int>>& rectangles) {
 bool checkValidCuts(int n, vector<vector<int>>& rectangles) {
     return checkValidCutsForAxis(0, rectangles) || checkValidCutsForAxis(1, rectangles);
 }
+
+// DAY 26 (2033. Minimum Operations to Make a Uni-Value Grid)===============================================================
+
+// APPROACH 1 (Using Sorting)
+
+// Time Complexity = O(n * m * log(n * m))
+// Space Complexity = O(n * m)
+
+int minOperations(vector<vector<int>>& grid, int x) {
+    vector<int> nums;
+    int rows = grid.size(), cols = grid[0].size();
+    int operations = 0;
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            nums.push_back(grid[row][col]);
+        }
+    }
+    sort(nums.begin(), nums.end());
+
+    int median = nums[nums.size() / 2];
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            int diff = abs(grid[row][col] - median);
+            if(diff % x) {
+                return -1;
+            }
+            operations += diff / x;
+        }
+    }
+    return operations;
+}
+
+// APPROACH 2 (Using nth_element) --> [OPTIMIZED]
+
+// Time Complexity = O(n * m)
+// Space Complexity = O(n * m)
+
+int minOperations(vector<vector<int>>& grid, int x) {
+    vector<int> nums;
+    int rows = grid.size(), cols = grid[0].size();
+    int operations = 0;
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            nums.push_back(grid[row][col]);
+        }
+    }
+    nth_element(nums.begin(), (nums.begin() + (rows * cols) / 2), (nums.begin() + (rows * cols)));
+    int median = nums[nums.size() / 2];
+
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            int diff = abs(grid[row][col] - median);
+            if(diff % x) {
+                return -1;
+            }
+            operations += diff / x;
+        }
+    }
+    return operations;
+}
