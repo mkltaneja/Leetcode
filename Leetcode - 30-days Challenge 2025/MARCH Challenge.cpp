@@ -768,3 +768,43 @@ int minOperations(vector<vector<int>>& grid, int x) {
     }
     return operations;
 }
+
+// DAY 27 (2780. Minimum Index of a Valid Split)==========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int minimumIndex(vector<int>& nums) {
+    int size = nums.size();
+    int countDom = 0, dom = -1;
+    for(int num : nums) {
+        if(dom == -1) {
+            dom = num;
+            countDom = 1;
+        }
+        else {
+            countDom += num == dom? 1 : -1;
+            if(countDom == 0) {
+                dom = -1;
+            }
+        }
+    }
+    countDom = 0;
+    for(int num : nums) {
+        if(num == dom) {
+            countDom++;
+        }
+    }
+
+    int countDomLeft = 0, countDomRight = countDom;
+    for(int idx = 0; idx < size - 1; idx++) {
+        int countLeft = idx + 1;
+        int countRight = size - idx - 1;
+        countDomLeft += nums[idx] == dom;
+        countDomRight -= nums[idx] == dom;
+        if(countDomLeft > countLeft / 2 && countDomRight > countRight / 2) {
+            return idx;
+        }
+    }
+    return -1;
+}
