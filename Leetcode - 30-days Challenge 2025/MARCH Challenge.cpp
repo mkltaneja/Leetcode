@@ -912,3 +912,28 @@ vector<int> maxPoints(vector<vector<int>>& grid, vector<int>& queries) {
 
     return ans;
 }
+
+// DAY 30 (763. Partition Labels)=================================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+vector<int> partitionLabels(string s) {
+    int size = s.size();
+    int currIntEnd = 0;
+    vector<int> lastOcc(26, -1);
+    vector<int> lens;
+    for(int idx = 0; idx < size; idx++) {
+        lastOcc[s[idx]-'a'] = idx;
+    }
+    for(int idx = 0; idx < size; ) {
+        int currIdx = idx;
+        while(currIdx <= currIntEnd) {
+            currIntEnd = max(currIntEnd, lastOcc[s[currIdx++]-'a']);
+        }
+        lens.push_back(currIdx - idx);
+        idx = currIdx;
+        currIntEnd = currIdx;
+    }
+    return lens;
+}
