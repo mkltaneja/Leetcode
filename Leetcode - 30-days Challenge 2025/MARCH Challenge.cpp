@@ -808,3 +808,107 @@ int minimumIndex(vector<int>& nums) {
     }
     return -1;
 }
+
+// DAY 28 (2503. Maximum Number of Points From Grid Queries)=================================================================================
+
+// APPROACH 1 (Using Queue)
+
+// Time Complexity = O((k * logk) + (k * (rows * cols)))
+// Space Complexity = O((rows * cols) + k)
+
+vector<int> maxPoints(vector<vector<int>>& grid, vector<int>& queries) {
+    int rows = grid.size(), cols = grid[0].size(), k = queries.size();
+    vector<int> ans(k);
+    vector<vector<int>> queriesIdx(k);
+    vector<vector<bool>> vis(rows, vector<bool>(cols, false));
+    queue<pair<int,int>> nextQue, que;
+    int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    int count = 0, lastQuery = -1;
+    nextQue.push({0, 0});
+    vis[0][0] = true;
+    for(int idx = 0; idx < k; idx++) {
+        queriesIdx[idx] = {queries[idx], idx};
+    }
+    sort(queriesIdx.begin(), queriesIdx.end());
+
+    for(auto &queryPair : queriesIdx) {
+        int query = queryPair[0];
+        int idx = queryPair[1];
+        if(lastQuery != query) {
+            que = nextQue;
+            nextQue = {};
+            while(!que.empty()) {
+                int row = que.front().first;
+                int col = que.front().second;
+                que.pop();
+
+                if(grid[row][col] >= query) {
+                    nextQue.push({row, col});
+                }
+                else {
+                    count++;
+                    for(int d = 0; d < 4; d++) {
+                        int nrow = row + dir[d][0];
+                        int ncol = col + dir[d][1];
+                        if(nrow > -1 && nrow < rows && ncol > -1 && ncol < cols && !vis[nrow][ncol]) {
+                            vis[nrow][ncol] = true;
+                            if(grid[nrow][ncol] >= query) {
+                                nextQue.push({nrow, ncol});
+                            }
+                            else {
+                                que.push({nrow, ncol});
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        lastQuery = query;
+        ans[idx] = count;
+    }
+
+    return ans;
+}
+
+// APPROACH 2 (Using Priority Queue) -> [OPTIMIZED]
+
+// Time Complexity = O((k * logk) + ((rows * cols) + (k * log(rows * cols))))
+// Space Complexity = O((rows * cols) + k)
+
+vector<int> maxPoints(vector<vector<int>>& grid, vector<int>& queries) {
+    int rows = grid.size(), cols = grid[0].size(), k = queries.size();
+    vector<int> ans(k);
+    vector<vector<int>> queriesIdx(k);
+    vector<vector<bool>> vis(rows, vector<bool>(cols, false));
+    priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> minPq;
+    int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    int count = 0;
+    minPq.push({grid[0][0], 0, 0});
+    vis[0][0] = true;
+    for(int idx = 0; idx < k; idx++) {
+        queriesIdx[idx] = {queries[idx], idx};
+    }
+    sort(queriesIdx.begin(), queriesIdx.end());
+
+    for(auto &queryPair : queriesIdx) {
+        int query = queryPair[0];
+        int idx = queryPair[1];
+        while(!minPq.empty() && minPq.top()[0] < query) {
+            int row = minPq.top()[1];
+            int col = minPq.top()[2];
+            minPq.pop();
+            count++;
+            for(int d = 0; d < 4; d++) {
+                int nrow = row + dir[d][0];
+                int ncol = col + dir[d][1];
+                if(nrow > -1 && nrow < rows && ncol > -1 && ncol < cols && !vis[nrow][ncol]) {
+                    vis[nrow][ncol] = true;
+                    minPq.push({grid[nrow][ncol], nrow, ncol});
+                }
+            }
+        }
+        ans[idx] = count;
+    }
+
+    return ans;
+}
