@@ -937,3 +937,34 @@ vector<int> partitionLabels(string s) {
     }
     return lens;
 }
+
+// DAY 31 (2551. Put Marbles in Bags)=========================================================================================
+
+// Time Complexity = O(n * log(k))
+// Space Complexity = O(k)
+
+long long putMarbles(vector<int>& weights, int k) {
+    priority_queue<int, vector<int>, greater<int>> minPq;
+    priority_queue<int> maxPq;
+    long long minSum = 0, maxSum = 0;
+
+    // 1st and last weights will always be considered,
+    // so we'll consider the (k-1) splits instead of k subarrays
+
+    for(int idx = 0; idx < weights.size()-1; idx++) {
+        int weightsSum = weights[idx] + weights[idx + 1];
+        minPq.push(weightsSum);
+        maxPq.push(weightsSum);
+        maxSum += weightsSum;
+        minSum += weightsSum;
+
+        if(minPq.size() > k - 1) {
+            maxSum -= minPq.top();
+            minSum -= maxPq.top();
+            minPq.pop();
+            maxPq.pop();
+        }
+    }
+
+    return maxSum - minSum;
+}
