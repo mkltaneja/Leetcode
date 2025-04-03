@@ -31,3 +31,18 @@ long long maximumTripletValue(vector<int>& nums) {
     }
     return maxProd;
 }
+
+// DAY 3 (2874. Maximum Value of an Ordered Triplet II)=====================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+long long maximumTripletValue(vector<int>& nums) {
+    long long maxNum = nums[0], maxDiff = nums[0] - nums[1], maxProd = 0;
+    for(int idx = 2; idx < nums.size(); idx++) {
+        maxProd = max(maxProd, maxDiff * nums[idx]);
+        maxNum = max(maxNum, 1ll * nums[idx - 1]);
+        maxDiff = max(maxDiff, maxNum - nums[idx]);
+    }
+    return maxProd;
+}
