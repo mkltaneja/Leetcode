@@ -46,3 +46,30 @@ long long maximumTripletValue(vector<int>& nums) {
     }
     return maxProd;
 }
+
+// DAY 4 (1123. Lowest Common Ancestor of Deepest Leaves)========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+TreeNode* ans = nullptr;
+int maxDepth = -1;
+
+int lcaDeepestLeaves_postOrder(TreeNode* node, int depth) {
+    if(!node) {
+        maxDepth = max(maxDepth, depth);
+        return depth;
+    }
+
+    int leftMaxDepth = lcaDeepestLeaves_postOrder(node->left, depth + 1);
+    int rightMaxDepth = lcaDeepestLeaves_postOrder(node->right, depth + 1);
+    if(leftMaxDepth == rightMaxDepth && leftMaxDepth == maxDepth) {
+        ans = node;
+    }
+    return max(leftMaxDepth, rightMaxDepth);
+}
+
+TreeNode* lcaDeepestLeaves(TreeNode* root) {
+    lcaDeepestLeaves_postOrder(root, 0);
+    return ans;
+}
