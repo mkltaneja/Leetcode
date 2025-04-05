@@ -73,3 +73,23 @@ TreeNode* lcaDeepestLeaves(TreeNode* root) {
     lcaDeepestLeaves_postOrder(root, 0);
     return ans;
 }
+
+// DAY 5 (1863. Sum of All Subset XOR Totals)=========================================================================================
+
+// Time Complexity = O(2^n * n)
+// Space Complexity = O(1)
+
+int subsetXORSum(vector<int>& nums) {
+    int size = nums.size();
+    int totalSum = 0;
+    for(int mask = 0; mask < (1 << size); mask++) {
+        int currXor = 0;
+        for(int idx = 0; idx < size; idx++) {
+            if(mask & (1 << idx)) {
+                currXor ^= nums[idx];
+            }
+        }
+        totalSum += currXor;
+    }
+    return totalSum;
+}
