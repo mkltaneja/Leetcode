@@ -93,3 +93,37 @@ int subsetXORSum(vector<int>& nums) {
     }
     return totalSum;
 }
+
+// DAY 6 (368. Largest Divisible Subset)==================================================================
+
+// Time Complexity = O(n*logn + n^2)
+// Space Complexity = O(n)
+
+vector<int> largestDivisibleSubset(vector<int>& nums) {
+    int size = nums.size();
+    int maxLen = -1, startIdx = -1;
+    vector<int> maxCount(size, 0), nextIdx(size, -1);
+    vector<int> ans;
+
+    sort(nums.begin(), nums.end());
+
+    for(int idx1 = size-1; idx1 >= 0; idx1--) {
+        for(int idx2 = idx1 + 1; idx2 < size; idx2++) {
+            if((nums[idx2] % nums[idx1]) == 0 && maxCount[idx2] + 1 > maxCount[idx1]) {
+                maxCount[idx1] = maxCount[idx2] + 1;
+                nextIdx[idx1] = idx2;
+            }
+        }
+        if(maxCount[idx1] > maxLen) {
+            maxLen = maxCount[idx1];
+            startIdx = idx1;
+        }
+    }
+
+    while(startIdx != -1) {
+        ans.push_back(nums[startIdx]);
+        startIdx = nextIdx[startIdx];
+    }
+
+    return ans;
+}
