@@ -127,3 +127,26 @@ vector<int> largestDivisibleSubset(vector<int>& nums) {
 
     return ans;
 }
+
+// DAY 7 (416. Partition Equal Subset Sum)========================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+bool canPartition(vector<int>& nums) {
+    int totSum = accumulate(nums.begin(), nums.end(), 0);
+    if(totSum & 1) {
+        return false;
+    }
+    
+    totSum >>= 1;
+    bitset<20001> sumDp = 1;
+    for(int num : nums) {
+        sumDp |= (sumDp << num);
+        if(sumDp.test(totSum)) {
+            return true;
+        }
+    }
+
+    return false;
+}
