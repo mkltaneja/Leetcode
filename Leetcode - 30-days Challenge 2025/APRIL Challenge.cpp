@@ -150,3 +150,28 @@ bool canPartition(vector<int>& nums) {
 
     return false;
 }
+
+// DAY 8 (3396. Minimum Number of Operations to Make Elements in Array Distinct)======================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int minimumOperations(vector<int>& nums) {
+    unordered_map<int,int> cntMap;
+    int size = nums.size(), idx = 0, operations = 0;
+    for(int num : nums) {
+        cntMap[num]++;
+    }
+    while(cntMap.size() != (size - idx)) {
+        int removals = 0;
+        while(idx < size && removals < 3) {
+            if(--cntMap[nums[idx]] == 0) {
+                cntMap.erase(nums[idx]);
+            }
+            removals++;
+            idx++;
+        }
+        operations++;
+    }
+    return operations;
+}
