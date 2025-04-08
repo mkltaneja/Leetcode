@@ -153,6 +153,8 @@ bool canPartition(vector<int>& nums) {
 
 // DAY 8 (3396. Minimum Number of Operations to Make Elements in Array Distinct)======================================
 
+// APPROACH 1 (Using count map)
+
 // Time Complexity = O(n)
 // Space Complexity = O(n)
 
@@ -174,4 +176,21 @@ int minimumOperations(vector<int>& nums) {
         operations++;
     }
     return operations;
+}
+
+// APPROACH 2 (Traversing backwardes and finding the answer optimally) --> [OPTIMIZED]
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+const int MAX_NUM = 101;
+int minimumOperations(vector<int>& nums) {
+    vector<bool> vis(MAX_NUM, false);
+    for(int idx = nums.size() - 1; idx >= 0; idx--) {
+        if(vis[nums[idx]]) {
+            return ceil(1.0 * (idx + 1) / 3);
+        }
+        vis[nums[idx]] = true;
+    }
+    return 0;
 }
