@@ -194,3 +194,22 @@ int minimumOperations(vector<int>& nums) {
     }
     return 0;
 }
+
+// DAY 9 (3375. Minimum Operations to Make Array Values Equal to K)===================================================
+
+// Time Complexxity = O(n)
+// Space Complexxity = O(1)
+
+int minOperations(vector<int>& nums, int k) {
+    int minEle = *min_element(nums.begin(), nums.end());
+    if(k > minEle) {
+        return -1;
+    }
+    bool vis[101] = {false};
+    int uniqueCount = 0;
+    for(int num : nums) {
+        uniqueCount += !vis[num];
+        vis[num] = true;
+    }
+    return uniqueCount - vis[k];
+}
