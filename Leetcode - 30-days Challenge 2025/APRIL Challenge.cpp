@@ -213,3 +213,29 @@ int minOperations(vector<int>& nums, int k) {
     }
     return uniqueCount - vis[k];
 }
+
+// DAY 11 (2843. Count Symmetric Integers)========================================================================
+
+// Time Complexity = O((high - low + 1) * log10(high))
+// Space Complexity = O(log10(high))
+
+bool isSymmetricNum(int num) {
+    string numStr = to_string(num);
+    int st = 0, end = numStr.size()-1;
+    int sum1 = 0, sum2 = 0;
+    while(st < end) {
+        sum1 += numStr[st++];
+        sum2 += numStr[end--];
+    }
+    return st > end && sum1 == sum2;
+}
+
+int countSymmetricIntegers(int low, int high) {
+    int ans = 0;
+    for(int num = low; num <= high; num++) {
+        if(isSymmetricNum(num)) {
+            ans++;
+        }
+    }
+    return ans;
+}
