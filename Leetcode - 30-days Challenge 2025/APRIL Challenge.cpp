@@ -307,3 +307,33 @@ long long countGoodIntegers(int n, int k) {
     precomputeFactorials();
     return countGoodIntegersDfs(0, num, n, k);
 }
+
+// DAY 13 (1922. Count Good Numbers)=========================================================================
+
+// Time Complexity = O(logn)
+// Space Complexity = O(1)
+
+#define ll long long
+const ll MOD = 1e9 + 7;
+
+int modularMultiplication(int num1, int num2) {
+    return (num1 % MOD * num2 % MOD) % MOD;
+}
+
+int modularPower_BinaryExponentiation(ll base, ll pow) {
+    int res = 1;
+    while(pow) {
+        if(pow & 1) {
+            res = modularMultiplication(res, base);
+        }
+        base = modularMultiplication(base, base);
+        pow >>= 1;
+    }
+    return res % MOD;
+}
+
+int countGoodNumbers(long long n) {
+    ll odds = n / 2;
+    ll evens = (n + 1) / 2;
+    return modularMultiplication(modularPower_BinaryExponentiation(4ll, odds), modularPower_BinaryExponentiation(5ll, evens));
+}
