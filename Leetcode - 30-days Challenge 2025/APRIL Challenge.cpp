@@ -239,3 +239,71 @@ int countSymmetricIntegers(int low, int high) {
     }
     return ans;
 }
+
+// DAY 12 (3272. Find the Count of Good Integers)=======================================================================
+
+// Time Complexity = O(10^(m) * m*logm) [m = (n + 1 / 2)]
+// Space Complexity = O(10^m)
+
+#define ll long long
+ll fact[11] = {1};
+unordered_set<ll> vis;
+
+void precomputeFactorials() {
+    for(int dig = 1; dig <= 10; dig++) {
+        fact[dig] = dig * fact[dig - 1];
+    }
+}
+
+bool isKPalindrome(string &num, int k) {
+    return stoll(num) % k == 0;
+}
+
+ll countPermutations(string &num, int size) {
+    string tempNum = num;
+    sort(tempNum.begin(), tempNum.end());
+    if(vis.count(stoll(tempNum))) {
+        return 0;
+    }
+    vis.insert(stoll(tempNum));
+    int freq[10] = {0};
+    ll numerator = fact[size], denomenator = 1;
+    for(char dig : tempNum) {
+        freq[dig - '0']++;
+    }
+    for(int dig = 0; dig <= 9; dig++) {
+        denomenator *= fact[freq[dig]];
+    }
+    ll count = numerator / denomenator;
+    if(freq[0]) {
+        denomenator = (denomenator / fact[freq[0]]) * (fact[freq[0] - 1]);
+        count -= fact[size - 1] / denomenator;
+    }
+    return count;
+}
+
+ll countGoodIntegersDfs(int idx, string &num, int size, int k) {
+    if(idx == (size + 1) / 2) {
+        if(isKPalindrome(num, k)) {
+            return countPermutations(num, size);
+        }
+        return 0;
+    }
+
+    ll count = 0;
+    for(char dig = char('0' + (idx == 0)); dig <= '9'; dig++) {
+        num[idx] = dig;
+        num[size - idx - 1] = dig;
+        count += countGoodIntegersDfs(idx + 1, num, size, k);
+    }
+    num[idx] = '#';
+    num[size - idx - 1] = '#';
+
+    return count;
+}
+
+long long countGoodIntegers(int n, int k) {
+    string num = string(n, '#');
+    precomputeFactorials();
+    return countGoodIntegersDfs(0, num, n, k);
+}
