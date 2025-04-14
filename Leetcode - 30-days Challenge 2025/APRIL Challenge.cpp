@@ -337,3 +337,22 @@ int countGoodNumbers(long long n) {
     ll evens = (n + 1) / 2;
     return modularMultiplication(modularPower_BinaryExponentiation(4ll, odds), modularPower_BinaryExponentiation(5ll, evens));
 }
+
+// DAY 14 (1534. Count Good Triplets)==================================================================
+
+// Time Complexity = O(n^3)
+// Space Complexity = O(1)
+
+int countGoodTriplets(vector<int>& arr, int a, int b, int c) {
+    int size = arr.size(), tripletsCount = 0;
+    for(int idx1 = 0; idx1 < size; idx1++) {
+        for(int idx2 = idx1 + 1; idx2 < size; idx2++) {
+            for(int idx3 = idx2 + 1; idx3 < size; idx3++) {
+                if(abs(arr[idx1] - arr[idx2]) <= a && abs(arr[idx2] - arr[idx3]) <= b && abs(arr[idx1] - arr[idx3]) <= c) {
+                    tripletsCount++;
+                }
+            }
+        }
+    }
+    return tripletsCount;
+}
