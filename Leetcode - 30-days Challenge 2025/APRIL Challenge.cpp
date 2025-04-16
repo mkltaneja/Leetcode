@@ -356,3 +356,22 @@ int countGoodTriplets(vector<int>& arr, int a, int b, int c) {
     }
     return tripletsCount;
 }
+
+// DAY 16 (2537. Count the Number of Good Subarray)===================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+long long countGood(vector<int>& nums, int k) {
+    int size = nums.size();
+    long long subarraysCount = 0, currPairs = 0;
+    unordered_map<int, long long> freqMap;
+    for(int left = 0, right = 0; right < size; ) {
+        currPairs += freqMap[nums[right++]]++;
+        while(left < right && currPairs >= k) {
+            currPairs -= --freqMap[nums[left++]];
+            subarraysCount += size - right + 1;
+        }
+    }
+    return subarraysCount;
+}
