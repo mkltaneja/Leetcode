@@ -375,3 +375,21 @@ long long countGood(vector<int>& nums, int k) {
     }
     return subarraysCount;
 }
+
+// DAY 17 (2176. Count Equal and Divisible Pairs in an Array)=======================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(1)
+
+int countPairs(vector<int>& nums, int k) {
+    int size = nums.size();
+    int pairsCount = 0;
+    for(int idx1 = 0; idx1 < size; idx1++) {
+        for(int idx2 = idx1 + 1; idx2 < size; idx2++) {
+            if((idx1 * idx2) % k == 0 && nums[idx1] == nums[idx2]) {
+                pairsCount++;
+            }
+        }
+    }
+    return pairsCount;
+}
