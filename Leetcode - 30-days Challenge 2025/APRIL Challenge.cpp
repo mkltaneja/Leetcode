@@ -393,3 +393,27 @@ int countPairs(vector<int>& nums, int k) {
     }
     return pairsCount;
 }
+
+// DAY 18 (38. Count and Say)=======================================================================================
+
+// Time Complexity = O(n^2)
+// Space Complexity = O(n^2)
+
+string countAndSay(int n) {
+    string ans = "1";
+    while(--n) {
+        string curr = ans;
+        string next = "";
+        for(int idx = 0; idx < curr.size(); ) {
+            int itr = idx;
+            while(itr < curr.size() && curr[idx] == curr[itr]) {
+                itr++;
+            }
+            int count = itr - idx;
+            next += to_string(count) + curr[idx];
+            idx = itr;
+        }
+        ans = next;
+    }
+    return ans;
+}
