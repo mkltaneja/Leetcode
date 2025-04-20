@@ -417,3 +417,22 @@ string countAndSay(int n) {
     }
     return ans;
 }
+
+// DAY 20 (781. Rabbits in Forest)=================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+const int MAX_RABBITS = 1001;
+int numRabbits(vector<int>& answers) {
+    vector<int> countMap(MAX_RABBITS, 0);
+    int minRabbits = 0;
+    for(int count : answers) {
+        countMap[count]++;
+    }
+    for(int rabbits = 0; rabbits < MAX_RABBITS; rabbits++) {
+        int count = countMap[rabbits];
+        minRabbits += ceil(1.0 * count / (rabbits + 1)) * (rabbits + 1);
+    }
+    return minRabbits;
+}
