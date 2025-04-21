@@ -436,3 +436,19 @@ int numRabbits(vector<int>& answers) {
     }
     return minRabbits;
 }
+
+// DAY 21 (2145. Count the Hidden Sequences)=====================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int numberOfArrays(vector<int>& differences, int lower, int upper) {
+    long long currNum = 0, minNum = 0, maxNum = 0;
+    for(int diff : differences) {
+        currNum += diff;
+        minNum = min(minNum, currNum);
+        maxNum = max(maxNum, currNum);
+    }
+    int gap = (upper - lower) - (maxNum - minNum);
+    return gap < 0? 0 : gap + 1;
+}
