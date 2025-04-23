@@ -452,3 +452,32 @@ int numberOfArrays(vector<int>& differences, int lower, int upper) {
     int gap = (upper - lower) - (maxNum - minNum);
     return gap < 0? 0 : gap + 1;
 }
+
+// DAY 23 (1399. Count Largest Group)===========================================================================
+
+// Time Complexity = O(n * log10(n))
+// Space Complexity = O(1)
+
+int getDigitsSum(int num) {
+    int sum = 0;
+    while(num) {
+        sum += num % 10;
+        num /= 10;
+    }
+    return sum;
+}
+
+int countLargestGroup(int n) {
+    int digSum[40] = {0};
+    int maxSize = 0, totalGroups = 0;
+    for(int x = 1; x <= n; x++) {
+        int sum = getDigitsSum(x);
+        if(++digSum[sum] > maxSize) {
+            maxSize = digSum[sum];
+            totalGroups = 1;
+        } else if(digSum[sum] == maxSize) {
+            totalGroups++;
+        }
+    }
+    return totalGroups;
+}
