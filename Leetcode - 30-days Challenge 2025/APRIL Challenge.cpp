@@ -481,3 +481,39 @@ int countLargestGroup(int n) {
     }
     return totalGroups;
 }
+
+// DAY 24 (2799. Count Complete Subarrays in an Array)================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+int getDistinctNums(vector<int> &nums) {
+    unordered_set<int> vis;
+    for(int num : nums) {
+        vis.insert(num);
+    }
+    return vis.size();
+}
+
+int countSubarraysWithAtmostKDistincts(int k, int size, vector<int> &nums) {
+    int left = 0, right = 0, subarrays = 0;
+    unordered_map<int,int> numCnt;
+    while(right < size) {
+        numCnt[nums[right]]++;
+        while(numCnt.size() > k) {
+            if(--numCnt[nums[left]] == 0) {
+                numCnt.erase(nums[left]);
+            }
+            left++;
+        }
+        subarrays += right - left + 1;
+        right++;
+    }
+    return subarrays;
+}
+
+int countCompleteSubarrays(vector<int>& nums) {
+    int size = nums.size();
+    int distinctNums = getDistinctNums(nums);
+    return countSubarraysWithAtmostKDistincts(distinctNums, size, nums) - countSubarraysWithAtmostKDistincts(distinctNums - 1, size, nums);
+}
