@@ -517,3 +517,22 @@ int countCompleteSubarrays(vector<int>& nums) {
     int distinctNums = getDistinctNums(nums);
     return countSubarraysWithAtmostKDistincts(distinctNums, size, nums) - countSubarraysWithAtmostKDistincts(distinctNums - 1, size, nums);
 }
+
+// DAY 25 (2845. Count of Interesting Subarrays)=============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+long long countInterestingSubarrays(vector<int>& nums, int modulo, int k) {
+    int size = nums.size(), cnt = 0;
+    long long ans = 0;
+    unordered_map<int,int> cntMap;
+    cntMap[0] = 1;
+
+    for(int idx = 0; idx < size; idx++) {
+        cnt += ((nums[idx] % modulo) == k);
+        ans += cntMap[(cnt - k + modulo) % modulo];
+        cntMap[cnt % modulo]++;
+    }
+    return ans;
+}
