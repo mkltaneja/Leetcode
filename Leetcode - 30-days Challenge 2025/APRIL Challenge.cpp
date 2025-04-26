@@ -536,3 +536,25 @@ long long countInterestingSubarrays(vector<int>& nums, int modulo, int k) {
     }
     return ans;
 }
+
+// DAY 26 (2444. Count Subarrays With Fixed Bounds)===============================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+long long countSubarrays(vector<int>& nums, int minK, int maxK) {
+    long long subarrayCount = 0;
+    for(int minKPtr = -1, maxKPtr = -1, startItr = -1, itr = 0; itr < nums.size(); itr++) {
+        if(nums[itr] == minK) {
+            minKPtr = itr;
+        }
+        if(nums[itr] == maxK) {
+            maxKPtr = itr;
+        }
+        if(nums[itr] < minK || nums[itr] > maxK) {
+            minKPtr = maxKPtr = startItr = itr;
+        }
+        subarrayCount += min(minKPtr, maxKPtr) - startItr;
+    }
+    return subarrayCount;
+}
