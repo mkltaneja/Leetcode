@@ -558,3 +558,19 @@ long long countSubarrays(vector<int>& nums, int minK, int maxK) {
     }
     return subarrayCount;
 }
+
+// DAY 27 (3392. Count Subarrays of Length Three With a Condition)=====================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+const int MAX_NUM = 101;
+int countSubarrays(vector<int>& nums) {
+    int subarrayCount = 0;
+    for(int idx = 1; idx < nums.size()-1; idx++) {
+        if(nums[idx] & 1 ^ 1) {
+            subarrayCount += (nums[idx] / 2) == (nums[idx - 1] + nums[idx + 1]);
+        }
+    }
+    return subarrayCount;
+}
