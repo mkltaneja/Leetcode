@@ -574,3 +574,24 @@ int countSubarrays(vector<int>& nums) {
     }
     return subarrayCount;
 }
+
+// DAY 28 (2302. Count Subarrays With Score Less Than K)====================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+#define ll long long
+long long countSubarrays(vector<int>& nums, long long k) {
+    int prev = 0;
+    ll currScore = 0, totalSubarrays = 0, currSum = 0;
+    for(int curr = 0; curr < nums.size(); curr++) {
+        currSum += nums[curr];
+        currScore = currSum * (curr - prev + 1);
+        while(prev <= curr && currScore >= k) {
+            currSum -= nums[prev++];
+            currScore = currSum * (curr - prev + 1);
+        }
+        totalSubarrays += curr - prev + 1;
+    }
+    return totalSubarrays;
+}
