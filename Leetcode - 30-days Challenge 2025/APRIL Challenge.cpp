@@ -595,3 +595,22 @@ long long countSubarrays(vector<int>& nums, long long k) {
     }
     return totalSubarrays;
 }
+
+// DAY 29 (2962. Count Subarrays Where Max Element Appears at Least K Times)=======================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+long long countSubarrays(vector<int>& nums, int k) {
+    int maxEle = *max_element(nums.begin(), nums.end());
+    int maxCnt = 0;
+    long long totalSubarrays = 0;
+    for(int curr = 0, prev = 0; curr < nums.size(); curr++) {
+        maxCnt += nums[curr] == maxEle;
+        while(maxCnt - (nums[prev] == maxEle) >= k) {
+            maxCnt -= nums[prev++] == maxEle;
+        }
+        totalSubarrays += maxCnt == k? (prev + 1) : 0;
+    }
+    return totalSubarrays;
+}
