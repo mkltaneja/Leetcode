@@ -614,3 +614,25 @@ long long countSubarrays(vector<int>& nums, int k) {
     }
     return totalSubarrays;
 }
+
+// DAY 30 (1295. Find Numbers with Even Number of Digits)===============================================================
+
+// Time Complexity = O(n * log10(x))
+// Space Complexity = O(1)
+
+int countDigits(int num) {
+    int digits = 0;
+    while(num) {
+        num /= 10;
+        digits++;
+    }
+    return digits;
+}
+
+int findNumbers(vector<int>& nums) {
+    int ans = 0;
+    for(int num : nums) {
+        ans += countDigits(num) & 1 ^ 1;
+    }
+    return ans;
+}
