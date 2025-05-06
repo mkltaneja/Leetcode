@@ -59,3 +59,17 @@ int numEquivDominoPairs(vector<vector<int>>& dominoes) {
     }
     return pairCount;
 }
+
+// DAY 6 (1920. Build Array from Permutation)================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+vector<int> buildArray(vector<int>& nums) {
+    int size = nums.size();
+    vector<int> ans(size);
+    for(int idx = 0; idx < size; idx++) {
+        ans[idx] = nums[nums[idx]];
+    }
+    return ans;
+}
