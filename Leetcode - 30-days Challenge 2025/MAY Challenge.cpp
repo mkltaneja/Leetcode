@@ -73,3 +73,38 @@ vector<int> buildArray(vector<int>& nums) {
     }
     return ans;
 }
+
+// DAY 7 (3341. Find Minimum Time to Reach Last Room I)===========================================================================
+
+// Time Complexity = O(n^2 * logn)
+// Space Complexity = O(n^2)
+
+int minTimeToReach(vector<vector<int>>& moveTime) {
+    int rows = moveTime.size(), cols = moveTime[0].size();
+    int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    priority_queue<pair<int, pair<int,int>>, vector<pair<int, pair<int,int>>>, greater<pair<int, pair<int,int>>>> minPq;
+    minPq.push({0, {0, 0}});
+    moveTime[0][0] = -1;
+
+    while(!minPq.empty()) {
+        int ctime = minPq.top().first;
+        int crow = minPq.top().second.first;
+        int ccol = minPq.top().second.second;
+        minPq.pop();
+
+        for(int d = 0; d < 4; d++) {
+            int nrow = crow + dir[d][0];
+            int ncol = ccol + dir[d][1];
+            if(nrow == -1 || ncol == -1 || nrow == rows || ncol == cols || moveTime[nrow][ncol] == -1) {
+                continue;
+            }
+            int ntime = max(ctime + 1, moveTime[nrow][ncol] + 1);
+            if(nrow == rows - 1 && ncol == cols - 1) {
+                return ntime;
+            }
+            minPq.push({ntime, {nrow, ncol}});
+            moveTime[nrow][ncol] = -1;
+        }
+    }
+    return -1;
+}
