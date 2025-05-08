@@ -108,3 +108,40 @@ int minTimeToReach(vector<vector<int>>& moveTime) {
     }
     return -1;
 }
+
+// DAY 8 (3342. Find Minimum Time to Reach Last Room II)================================================================================
+
+// Time Complexity = O(n*m * log(n*m))
+// Space Complexity = O(n*m)
+
+int minTimeToReach(vector<vector<int>>& moveTime) {
+    int rows = moveTime.size(), cols = moveTime[0].size();
+    int dir[4][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> minPq;
+    minPq.push({0, 0, 0, 0});
+    moveTime[0][0] = -1;
+    while(!minPq.empty()) {
+        int ctime = minPq.top()[0];
+        int crow = minPq.top()[1];
+        int ccol = minPq.top()[2];
+        int cmove = minPq.top()[3];
+        minPq.pop();
+
+        for(int d = 0; d < 4; d++) {
+            int nrow = crow + dir[d][0];
+            int ncol = ccol + dir[d][1];
+            int nmove = cmove ^ 1;
+            if(nrow == -1 || ncol == -1 || nrow == rows || ncol == cols || moveTime[nrow][ncol] == -1) {
+                continue;
+            }
+            int stepTime = (cmove & 1) + 1;
+            int ntime = max(moveTime[nrow][ncol] + stepTime, ctime + stepTime);
+            if(nrow == rows - 1 && ncol == cols - 1) {
+                return ntime;
+            }
+            minPq.push({ntime, nrow, ncol, nmove});
+            moveTime[nrow][ncol] = -1;
+        }
+    }
+    return -1;
+}
