@@ -145,3 +145,32 @@ int minTimeToReach(vector<vector<int>>& moveTime) {
     }
     return -1;
 }
+
+// DAY 10 (2918. Minimum Equal Sum of Two Arrays After Replacing Zeros)=====================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+long long minSum(vector<int>& nums1, vector<int>& nums2) {
+    long long sum1 = 0, sum2 = 0;
+    int canInc1 = 0, canInc2 = 0;
+    for(int num : nums1) {
+        sum1 += num? num : 1;
+        canInc1 |= num == 0;
+    }
+    for(int num : nums2) {
+        sum2 += num? num : 1;
+        canInc2 |= num == 0;
+    }
+    if(sum2 < sum1) {
+        swap(sum1, sum2);
+        swap(canInc1, canInc2);
+    }
+    else if(sum1 == sum2) {
+        return sum1;
+    }
+    if(!canInc1) {
+        return -1;
+    }
+    return sum2;
+}
