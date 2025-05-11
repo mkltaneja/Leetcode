@@ -174,3 +174,17 @@ long long minSum(vector<int>& nums1, vector<int>& nums2) {
     }
     return sum2;
 }
+
+// DAY 11 (1550. Three Consecutive Odds)======================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+bool threeConsecutiveOdds(vector<int>& arr) {
+    for(int idx = 0; idx < (int)arr.size()-2; idx++) {
+        if((arr[idx] & 1) && (arr[idx + 1] & 1) && (arr[idx + 2] & 1)) {
+            return true;
+        }
+    }
+    return false;
+}
