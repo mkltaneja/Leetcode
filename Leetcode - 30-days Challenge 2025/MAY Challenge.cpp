@@ -188,3 +188,27 @@ bool threeConsecutiveOdds(vector<int>& arr) {
     }
     return false;
 }
+
+// DAY 12 (2094. Finding 3-Digit Even Numbers)========================================================================================
+
+// Time Complexity = O(n^3 * logn)
+// Space Complexity = O(n^3)
+
+vector<int> findEvenNumbers(vector<int>& digits) {
+    int size = digits.size();
+    set<int> ansSet;
+    vector<int> ans;
+    for(int idx1 = 0; idx1 < size; idx1++) {
+        for(int idx2 = 0; idx2 < size; idx2++) {
+            for(int idx3 = 0; idx3 < size; idx3++) {
+                if(!digits[idx1] || (digits[idx3] & 1) || (idx1 == idx2 || idx1 == idx3 || idx2 == idx3)) {
+                    continue;
+                }
+                int num = digits[idx1] * 100 + digits[idx2] * 10 + digits[idx3];
+                ansSet.insert(num);
+            }
+        }
+    }
+    ans.insert(ans.begin(), ansSet.begin(), ansSet.end());
+    return ans;
+}
