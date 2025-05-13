@@ -212,3 +212,32 @@ vector<int> findEvenNumbers(vector<int>& digits) {
     ans.insert(ans.begin(), ansSet.begin(), ansSet.end());
     return ans;
 }
+
+// DAY 13 (3335. Total Characters in String After Transformations I)===========================================================================
+
+// Time Complexity = O(t * 26)
+// Space Complexity = O(1)
+
+const int MOD = 1e9 + 7;
+int lengthAfterTransformations(string s, int t) {
+    vector<int> cntMap(26, 0);
+    for(char c : s) {
+        cntMap[c - 'a']++;
+    }
+    int totalLen = 0;
+
+    for(int trans = 1; trans <= t; trans++) {
+        vector<int> nxtCntMap(26);
+        nxtCntMap[0] = cntMap[25];
+        nxtCntMap[1] = (cntMap[25] % MOD + cntMap[0] % MOD) % MOD;
+        for(int c = 2; c < 26; c++) {
+            nxtCntMap[c] = cntMap[c - 1];
+        }
+        cntMap = nxtCntMap;
+    }
+    for(int c = 0; c < 26; c++) {
+        totalLen = (totalLen % MOD + cntMap[c] % MOD) % MOD;
+    }
+
+    return totalLen;
+}
