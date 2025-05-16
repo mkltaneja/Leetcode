@@ -241,3 +241,20 @@ int lengthAfterTransformations(string s, int t) {
 
     return totalLen;
 }
+
+// DAY 15 (2900. Longest Unequal Adjacent Groups Subsequence I)===========================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(n)
+
+vector<string> getLongestSubsequence(vector<string>& words, vector<int>& groups) {
+    vector<string> ans;
+    int lastGroup = -1;
+    for(int idx = 0; idx < words.size(); idx++) {
+        if(lastGroup != groups[idx]) {
+            ans.push_back(words[idx]);
+            lastGroup = groups[idx];
+        }
+    }
+    return ans;
+}
