@@ -258,3 +258,47 @@ vector<string> getLongestSubsequence(vector<string>& words, vector<int>& groups)
     }
     return ans;
 }
+
+// DAY 16 (2901. Longest Unequal Adjacent Groups Subsequence II)========================================================================
+
+// Time Complexity = O(n^2 * m)
+// Space Complexity = O(n)
+
+int getHammingDistance(string &word1, string &word2) {
+    if(word1.size() != word2.size()) {
+        return -1;
+    }
+    int hammingDist = 0;
+    for(int idx = 0; idx < word1.size(); idx++) {
+        hammingDist += word1[idx] != word2[idx];
+    }
+    return hammingDist;
+}
+
+vector<string> getWordsInLongestSubsequence(vector<string>& words, vector<int>& groups) {
+    int size = words.size();
+    vector<string> ans;
+    int overallMaxCount = 0, startIdx = -1;
+    vector<int> maxCount(size, 1), nextIdx(size, -1);
+    for(int idx1 = size - 1; idx1 >= 0; idx1--) {
+        for(int idx2 = idx1 + 1; idx2 < size; idx2++) {
+            if(getHammingDistance(words[idx1], words[idx2]) == 1 && groups[idx1] != groups[idx2]) {
+                if(maxCount[idx2] + 1 > maxCount[idx1]) {
+                    maxCount[idx1] = maxCount[idx2] + 1;
+                    nextIdx[idx1] = idx2;
+                }
+            }
+        }
+        if(overallMaxCount < maxCount[idx1]) {
+            overallMaxCount = maxCount[idx1];
+            startIdx = idx1;
+        }
+    }
+
+    while(startIdx != -1) {
+        ans.push_back(words[startIdx]);
+        startIdx = nextIdx[startIdx];
+    }
+
+    return ans;
+}
