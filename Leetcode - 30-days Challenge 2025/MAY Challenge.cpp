@@ -302,3 +302,21 @@ vector<string> getWordsInLongestSubsequence(vector<string>& words, vector<int>& 
 
     return ans;
 }
+
+// DAY 17 (75. Sort Colors)=================================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+void sortColors(vector<int>& nums) {
+    int st = 0, end = nums.size() - 1, curr = 0;
+    while(curr <= end) {
+        if(nums[curr] == 0) {
+            swap(nums[st++], nums[curr++]);
+        } else if(nums[curr] == 2) {
+            swap(nums[end--], nums[curr]);
+        } else {
+            curr++;
+        }
+    }
+}
