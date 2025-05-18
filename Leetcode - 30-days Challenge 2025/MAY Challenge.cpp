@@ -320,3 +320,39 @@ void sortColors(vector<int>& nums) {
         }
     }
 }
+
+// DAY 18 (1931. Painting a Grid With Three Different Colors)=============================================================
+
+// Time Complexity = O(n * m * 4^m)
+// Space Complexity = O(n*m + n*(4^m))
+
+const int MOD = 1e9 + 7;
+int stateCache[1001][1025];
+int colorTheGridDFS(int r, int c, int m, int n, int prevState, int currState) {
+    if(c == n) {
+        return 1;
+    }
+    if(r == m) {
+        return colorTheGridDFS(0, c + 1, m, n, currState, 0);
+    }
+    if(r == 0 && stateCache[c][prevState] != -1) {
+        return stateCache[c][prevState];
+    }
+    int upColor = currState & 3;
+    int leftColor = (prevState >> ((m - r - 1) * 2)) & 3;
+    int totalWays = 0;
+    for(int currColor = 1; currColor <= 3; currColor++) {
+        if(currColor != upColor && currColor != leftColor) {
+            totalWays = (totalWays % MOD + (colorTheGridDFS(r + 1, c, m, n, prevState, (currState << 2) | currColor)) % MOD) % MOD;
+        }
+    }
+    if(r == 0) {
+        stateCache[c][prevState] = totalWays;
+    }
+    return totalWays;
+}
+
+int colorTheGrid(int m, int n) {
+    memset(stateCache, -1, sizeof(stateCache));
+    return colorTheGridDFS(0, 0, m, n, 0, 0) % MOD;
+}
