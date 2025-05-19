@@ -356,3 +356,24 @@ int colorTheGrid(int m, int n) {
     memset(stateCache, -1, sizeof(stateCache));
     return colorTheGridDFS(0, 0, m, n, 0, 0) % MOD;
 }
+
+// DAY 19 (3024. Type of Triangle)==========================================================
+
+// Time Complexity = O(1)
+// Space Complexity = O(1)
+
+string triangleType(vector<int>& nums) {
+    bool isTriangle = (nums[0] < nums[1] + nums[2]) && (nums[1] < nums[0] + nums[2]) && (nums[2] < nums[0] + nums[1]);
+    if(!isTriangle) {
+        return "none";
+    }
+    bool isEquilateral = nums[0] == nums[1] && nums[0] == nums[2];
+    bool isIsosceles = nums[0] == nums[1] || nums[0] == nums[2] || nums[1] == nums[2];
+    if(isEquilateral) {
+        return "equilateral";
+    }
+    if(isIsosceles) {
+        return "isosceles";
+    }
+    return "scalene";
+}
