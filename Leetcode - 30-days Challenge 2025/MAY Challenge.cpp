@@ -377,3 +377,28 @@ string triangleType(vector<int>& nums) {
     }
     return "scalene";
 }
+
+// DAY 20 (3355. Zero Array Transformation I)==============================================================================
+
+// Time Complexity = O(n + q)
+// Space Complexity = O(n)
+
+bool isZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
+    int size = nums.size();
+    vector<int> netSum(size + 1, 0);
+    for(vector<int> &query : queries) {
+        int l = query[0];
+        int r = query[1];
+        netSum[l] += -1;
+        netSum[r + 1] += 1;
+    }
+    for(int idx = 1; idx < size; idx++) {
+        netSum[idx] += netSum[idx - 1];
+    }
+    for(int idx = 0; idx < size; idx++) {
+        if(nums[idx] + netSum[idx] > 0) {
+            return false;
+        }
+    }
+    return true;
+}
