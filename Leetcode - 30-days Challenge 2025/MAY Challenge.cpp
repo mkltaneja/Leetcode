@@ -402,3 +402,28 @@ bool isZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
     }
     return true;
 }
+
+// DAY 21 (73. Set Matrix Zeroes)==============================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(1)
+
+void setZeroes(vector<vector<int>>& matrix) {
+    int rows = matrix.size(), cols = matrix[0].size();
+    vector<bool> isZeroRow(rows, false), isZeroCol(cols, false);
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            if(matrix[row][col] == 0) {
+                isZeroRow[row] = true;
+                isZeroCol[col] = true;
+            }
+        }
+    }
+    for(int row = 0; row < rows; row++) {
+        for(int col = 0; col < cols; col++) {
+            if(isZeroRow[row] || isZeroCol[col]) {
+                matrix[row][col] = 0;
+            }
+        }
+    }
+}
