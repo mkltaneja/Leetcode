@@ -427,3 +427,21 @@ void setZeroes(vector<vector<int>>& matrix) {
         }
     }
 }
+
+// DAY 24 (2942. Find Words Containing Character)==========================================================
+
+// Time Complexity = O(n*m)
+// Space Complexity = O(n)
+
+vector<int> findWordsContaining(vector<string>& words, char x) {
+    vector<int> ans;
+    for(int idx = 0; idx < words.size(); idx++) {
+        for(char c : words[idx]) {
+            if(c == x) {
+                ans.push_back(idx);
+                break;
+            }
+        }
+    }
+    return ans;
+}
