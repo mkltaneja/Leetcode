@@ -445,3 +445,33 @@ vector<int> findWordsContaining(vector<string>& words, char x) {
     }
     return ans;
 }
+
+// DAY 25 (2131. Longest Palindrome by Concatenating Two Letter Words)============================================================================
+
+// Time Complexity = O(n)
+// Space Complexity = O(1)
+
+int longestPalindrome(vector<string>& words) {
+    vector<vector<int>> charMap(26, vector<int>(26, 0));
+    int longestStringLen = 0;
+    bool hasOddEqualChars = false;
+    for(int idx = 0; idx < words.size(); idx++) {
+        int c0 = words[idx][0];
+        int c1 = words[idx][1];
+        int strCount = charMap[c0-'a'][c1-'a'];
+        int strPairCount = charMap[c1-'a'][c0-'a'];
+        if(strPairCount) {
+            longestStringLen += 4;
+            charMap[c1-'a'][c0-'a']--;
+        } else {
+            charMap[c0-'a'][c1-'a']++;
+        }
+    }
+    for(int c = 0; c < 26; c++) {
+        if(charMap[c][c]) {
+            hasOddEqualChars = true;
+            break;
+        }
+    }
+    return longestStringLen + (hasOddEqualChars? 2 : 0);
+}
