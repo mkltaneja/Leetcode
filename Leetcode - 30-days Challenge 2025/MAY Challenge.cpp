@@ -475,3 +475,15 @@ int longestPalindrome(vector<string>& words) {
     }
     return longestStringLen + (hasOddEqualChars? 2 : 0);
 }
+
+// DAY 27 (2894. Divisible and Non-divisible Sums Difference)==================================================================================
+
+// Time Complexity = O(1)
+// Space Complexity = O(1)
+
+int differenceOfSums(int n, int m) {
+    int divs = n / m;
+    int num2 = m * (divs * (divs + 1) / 2);
+    int num1 = (n * (n + 1) / 2) - num2;
+    return num1 - num2;
+}
