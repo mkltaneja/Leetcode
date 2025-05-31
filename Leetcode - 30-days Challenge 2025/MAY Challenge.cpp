@@ -487,3 +487,43 @@ int differenceOfSums(int n, int m) {
     int num1 = (n * (n + 1) / 2) - num2;
     return num1 - num2;
 }
+
+// DAY 31 (909. Snakes and Ladders)=============================================================================
+
+// Time Complexity = O(n * m)
+// Space Complexity = O(n * m)
+
+const int MAX_MOVES = 1e5;
+void snakesAndLaddersDfs(int currPos, int maxPos, int moves, int rows, int cols, vector<vector<int>> &board, vector<int> &movesCache, vector<int> &totalMoves) {
+    if(moves >= totalMoves[currPos]) {
+        return;
+    }
+    totalMoves[currPos] = moves;
+    if(currPos == maxPos) {
+        return;
+    }
+
+    int minMoves = MAX_MOVES;
+    for(int nextPos = currPos + 1; nextPos <= min(currPos + 6, maxPos); nextPos++) {
+        int nextRow = rows - (nextPos / cols) - 1;
+        int nextCol = (nextPos % cols);
+        if((rows - nextRow - 1) & 1) {
+            nextCol = cols - nextCol - 1;
+        }
+        int newPos = nextPos;
+        if(board[nextRow][nextCol] != -1) {
+            newPos = board[nextRow][nextCol] - 1;
+        }
+        snakesAndLaddersDfs(newPos, maxPos, moves + 1, rows, cols, board, movesCache, totalMoves);
+    }
+
+    return;
+}
+
+int snakesAndLadders(vector<vector<int>>& board) {
+    int rows = board.size(), cols = board[0].size();
+    int maxPos = rows * cols - 1;
+    vector<int> movesCache(maxPos + 1, -1), totalMoves(maxPos + 1, MAX_MOVES);
+    snakesAndLaddersDfs(0, maxPos, 0, rows, cols, board, movesCache, totalMoves);
+    return totalMoves[maxPos] >= MAX_MOVES? -1 : totalMoves[maxPos];
+}
